@@ -42,7 +42,8 @@ jobs:
           curl -fsSL --retry 3 -o "$RUNNER_TEMP/opus-vectors.tar.gz" https://opus-codec.org/static/testvectors/opus_testvectors-rfc8251.tar.gz
           echo "6b26a22f9ba87b2b836906a9bb7afec5f8e54d49553b1200382520ee6fedfa55  $RUNNER_TEMP/opus-vectors.tar.gz" | sha256sum -c -
           mkdir -p "$RUNNER_TEMP/opus-vectors"
-          tar -xzf "$RUNNER_TEMP/opus-vectors.tar.gz" -C "$RUNNER_TEMP/opus-vectors"
+          # Windows paths start with a drive letter, which GNU tar reads as a remote host.
+          cd "$RUNNER_TEMP" && tar -xzf opus-vectors.tar.gz -C opus-vectors
       # The community plugins' JavaScript, which tests run, and the
       # registry check reads: main keeps their TypeScript only.
       - uses: oven-sh/setup-bun@v2
