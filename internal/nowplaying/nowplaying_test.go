@@ -237,8 +237,8 @@ func TestCloseShowsNothing(t *testing.T) {
 // names its sandbox lets it own, and gives the Flatpak's desktop entry.
 func TestMPRISNames(t *testing.T) {
 	for _, c := range []struct{ id, bus, entry string }{
-		{"", "org.mpris.MediaPlayer2.mixmusic", "mixmusic"},
-		{"io.github.fzn0x.mixmusic", "org.mpris.MediaPlayer2.io.github.fzn0x.mixmusic", "io.github.fzn0x.mixmusic"},
+		{"", "org.mpris.MediaPlayer2.mymusic", "mymusic"},
+		{"io.github.bigdaddy284.mymusic", "org.mpris.MediaPlayer2.io.github.bigdaddy284.mymusic", "io.github.bigdaddy284.mymusic"},
 	} {
 		if bus, entry := mprisNames(c.id); bus != c.bus || entry != c.entry {
 			t.Errorf("mprisNames(%q) = %q, %q, want %q, %q", c.id, bus, entry, c.bus, c.entry)

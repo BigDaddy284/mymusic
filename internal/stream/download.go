@@ -25,14 +25,14 @@ var (
 	// or asks to confirm this is not a bot.
 	ErrThrottled = errors.New("stream: YouTube is turning down requests from this network for now")
 	// ErrUnavailable: YouTube won't send this track's audio, to anyone or
-	// to MixMusic: age-restricted, members only, private, removed, or not in
+	// to MyMusic: age-restricted, members only, private, removed, or not in
 	// this country.
 	ErrUnavailable = errors.New("stream: YouTube won't send this track")
 	// ErrNetwork: the network failed while the stream was found or fetched.
 	ErrNetwork = errors.New("stream: the network failed")
 	// ErrNoAudio: YouTube gave a stream of a format the engine doesn't
 	// play.
-	ErrNoAudio = errors.New("YouTube has no audio of this track that MixMusic plays")
+	ErrNoAudio = errors.New("YouTube has no audio of this track that MyMusic plays")
 	// ErrLive: the video is live, as its broadcast goes on: its stream is
 	// a playlist of what comes next, with no file to keep.
 	ErrLive = errors.New("it's a live stream, which doesn't download")

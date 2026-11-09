@@ -6,7 +6,7 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-// TestVisualizerOfSilence draws nothing while MixMusic hears nothing, as
+// TestVisualizerOfSilence draws nothing while MyMusic hears nothing, as
 // of a Spotify device elsewhere: no flat line of bars, which would look
 // broken.
 func TestVisualizerOfSilence(t *testing.T) {

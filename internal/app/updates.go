@@ -20,11 +20,11 @@ import (
 	"github.com/egoist/mygo/netproxy"
 )
 
-// releasesAPI answers with the newest release of MixMusic.
-const releasesAPI = "https://api.github.com/repos/fzn0x/mixmusic/releases/latest"
+// releasesAPI answers with the newest release of MyMusic.
+const releasesAPI = "https://api.github.com/repos/bigdaddy284/mymusic/releases/latest"
 
 const (
-	// firstUpdateCheck is how long after start MixMusic looks for a new
+	// firstUpdateCheck is how long after start MyMusic looks for a new
 	// version.
 	firstUpdateCheck = 10 * time.Second
 	// updateEvery is how often it looks again while it runs.
@@ -32,12 +32,12 @@ const (
 	// updateRetry is how soon it looks again after a check failed.
 	updateRetry = time.Hour
 	// putOff is how long "later" puts off the version offered while
-	// MixMusic runs; the next start offers it again.
+	// MyMusic runs; the next start offers it again.
 	putOff = 24 * time.Hour
 )
 
 // updatePrefs are the user's choices of updates. They are kept in
-// updater.json, where MyGo's update window kept them until MixMusic 0.4.0,
+// updater.json, where MyGo's update window kept them until MyMusic 0.4.0,
 // so that the choices made there carry over.
 type updatePrefs struct {
 	// AutomaticChecks is nil until the user chose, which checks.
@@ -48,17 +48,17 @@ type updatePrefs struct {
 	LastCheck      time.Time `json:"lastCheck,omitzero"`
 }
 
-// checks reports whether MixMusic looks for new versions.
+// checks reports whether MyMusic looks for new versions.
 func (p updatePrefs) checks() bool { return p.AutomaticChecks == nil || *p.AutomaticChecks }
 
-// UpdateStatus is whether MixMusic updates itself, and how.
+// UpdateStatus is whether MyMusic updates itself, and how.
 type UpdateStatus struct {
 	// Enabled is false for builds that cannot replace themselves: those
 	// of development, and installs of a package manager.
 	Enabled bool `json:"enabled"`
 	// Kind is how this copy was installed, which decides the download of
 	// a release that replaces it: "installer", "portable", "app",
-	// "archive", "deb", "rpm", "pacman" (the AUR's mixmusic-bin, which
+	// "archive", "deb", "rpm", "pacman" (the AUR's mymusic-bin, which
 	// pacman updates, and no download replaces), "appimage", "flatpak",
 	// "flathub" (Flathub's, which the software center updates) or
 	// "development".
@@ -69,10 +69,10 @@ type UpdateStatus struct {
 	// AutomaticDownloads installs new versions without asking; they run
 	// at the next launch.
 	AutomaticDownloads bool `json:"automaticDownloads"`
-	// LastCheck is when MixMusic last checked, as RFC 3339, or "".
+	// LastCheck is when MyMusic last checked, as RFC 3339, or "".
 	LastCheck string `json:"lastCheck"`
 	// Installed is the version InstallUpdate put in place of this one,
-	// which runs once MixMusic restarts, or "".
+	// which runs once MyMusic restarts, or "".
 	Installed string `json:"installed"`
 }
 
@@ -118,7 +118,7 @@ func (a *App) watchUpdates() {
 	}()
 }
 
-// checkUpdatesNow has MixMusic look for a new version at once.
+// checkUpdatesNow has MyMusic look for a new version at once.
 func (a *App) checkUpdatesNow() {
 	select {
 	case a.checkUpdates <- struct{}{}:
@@ -126,7 +126,7 @@ func (a *App) checkUpdatesNow() {
 	}
 }
 
-// updateAction is what MixMusic does of the newest release.
+// updateAction is what MyMusic does of the newest release.
 type updateAction int
 
 const (
@@ -162,11 +162,11 @@ func (a *App) lookForUpdate() time.Duration {
 	r, err := latestRelease(ctx, http.DefaultClient, releasesAPI, installKind(), runtime.GOARCH, a.version())
 	cancel()
 	if err != nil {
-		log.Printf("mixmusic: looking for a new version: %v", err)
+		log.Printf("mymusic: looking for a new version: %v", err)
 		return updateRetry
 	}
 	if err := a.updates.Update(func(p *updatePrefs) error { p.LastCheck = time.Now(); return nil }); err != nil {
-		log.Printf("mixmusic: keeping the update preferences: %v", err)
+		log.Printf("mymusic: keeping the update preferences: %v", err)
 	}
 	notify()
 	a.mu.Lock()
@@ -178,7 +178,7 @@ func (a *App) lookForUpdate() time.Duration {
 		defer cancel()
 		if _, err := a.installUpdate(ctx, nil); err != nil {
 			// As when GitHub lists the release before its update files.
-			log.Printf("mixmusic: installing MixMusic %s: %v", r.Version, err)
+			log.Printf("mymusic: installing MyMusic %s: %v", r.Version, err)
 			return updateRetry
 		}
 	case updateOffer:
@@ -200,11 +200,11 @@ func (a *App) offerUpdate(r Release) {
 	notify()
 }
 
-// Updates returns whether MixMusic updates itself, and how.
+// Updates returns whether MyMusic updates itself, and how.
 func (s *System) Updates() UpdateStatus { return s.a.updateStatus() }
 
 // SetUpdates turns the checks for new versions and the installs without
-// asking on or off. Turned on, MixMusic looks for a new version at once.
+// asking on or off. Turned on, MyMusic looks for a new version at once.
 func (s *System) SetUpdates(automaticChecks, automaticDownloads bool) (UpdateStatus, error) {
 	before := s.a.updates.Get()
 	err := s.a.updates.Update(func(p *updatePrefs) error {
@@ -253,7 +253,7 @@ func (s *System) DismissUpdate(skip bool) error {
 	return a.updates.Update(func(p *updatePrefs) error { p.SkippedVersion = offer.Version; return nil })
 }
 
-// Release is the newest release of MixMusic, as this copy gets it.
+// Release is the newest release of MyMusic, as this copy gets it.
 type Release struct {
 	// Version is the newest version, without its "v".
 	Version string `json:"version"`
@@ -278,7 +278,7 @@ type Release struct {
 	manifest string
 }
 
-// LatestRelease asks GitHub for the newest release of MixMusic.
+// LatestRelease asks GitHub for the newest release of MyMusic.
 func (s *System) LatestRelease(ctx context.Context) (Release, error) {
 	ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
@@ -298,7 +298,7 @@ func (a *App) installUpdate(ctx context.Context, progress func(done, total int64
 	}
 	switch {
 	case errors.Is(err, mygo.ErrUpdatesDisabled):
-		return "", errors.New("this copy of MixMusic cannot replace its own files: download the new version instead")
+		return "", errors.New("this copy of MyMusic cannot replace its own files: download the new version instead")
 	case err != nil:
 		return "", err
 	case up == nil:
@@ -326,7 +326,7 @@ func (a *App) installUpdate(ctx context.Context, progress func(done, total int64
 // release's address and the API worked (#412). It returns failed when the
 // API doesn't tell the release's manifest.
 func (a *App) checkTagged(ctx context.Context, failed error) (*mygo.Update, error) {
-	log.Printf("mixmusic: checking for updates again, at the release's address: %v", failed)
+	log.Printf("mymusic: checking for updates again, at the release's address: %v", failed)
 	apiCtx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	r, err := latestRelease(apiCtx, http.DefaultClient, releasesAPI, installKind(), runtime.GOARCH, a.version())
 	cancel()
@@ -378,7 +378,7 @@ func getUpdateFile(ctx context.Context, url string) (io.ReadCloser, error) {
 	return res.Body, nil
 }
 
-// Restart quits MixMusic and starts it again, as the update it installed.
+// Restart quits MyMusic and starts it again, as the update it installed.
 func (s *System) Restart() { mygo.App.Relaunch() }
 
 // githubRelease is what GitHub tells of a release.
@@ -401,7 +401,7 @@ func latestRelease(ctx context.Context, client *http.Client, api, kind, arch, ru
 		return Release{}, err
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("User-Agent", "MixMusic/"+running)
+	req.Header.Set("User-Agent", "MyMusic/"+running)
 	res, err := client.Do(req)
 	if err != nil {
 		return Release{}, fmt.Errorf("asking GitHub for the newest version: %w", err)
@@ -458,26 +458,26 @@ func summary(notes string) string {
 func releaseFile(kind, version, arch string) string {
 	switch kind {
 	case "installer":
-		return fmt.Sprintf("mixmusic-%s-windows-%s-setup.exe", version, arch)
+		return fmt.Sprintf("mymusic-%s-windows-%s-setup.exe", version, arch)
 	case "portable":
-		return fmt.Sprintf("mixmusic-%s-windows-%s-portable.zip", version, arch)
+		return fmt.Sprintf("mymusic-%s-windows-%s-portable.zip", version, arch)
 	case "app":
-		return fmt.Sprintf("mixmusic-%s-macos-universal.dmg", version)
+		return fmt.Sprintf("mymusic-%s-macos-universal.dmg", version)
 	case "archive":
-		return fmt.Sprintf("mixmusic-%s-linux-%s.tar.gz", version, arch)
+		return fmt.Sprintf("mymusic-%s-linux-%s.tar.gz", version, arch)
 	case "deb":
-		return fmt.Sprintf("mixmusic-%s-linux-%s.deb", version, arch)
+		return fmt.Sprintf("mymusic-%s-linux-%s.deb", version, arch)
 	case "rpm":
-		return fmt.Sprintf("mixmusic-%s-linux-%s.rpm", version, arch)
+		return fmt.Sprintf("mymusic-%s-linux-%s.rpm", version, arch)
 	case "appimage":
-		return fmt.Sprintf("mixmusic-%s-linux-%s.AppImage", version, arch)
+		return fmt.Sprintf("mymusic-%s-linux-%s.AppImage", version, arch)
 	case "flatpak":
-		return fmt.Sprintf("mixmusic-%s-linux-%s.flatpak", version, arch)
+		return fmt.Sprintf("mymusic-%s-linux-%s.flatpak", version, arch)
 	}
 	return ""
 }
 
-// installKind tells how this copy of MixMusic was installed.
+// installKind tells how this copy of MyMusic was installed.
 func installKind() string {
 	if mygo.IsDev() {
 		return "development"
@@ -498,8 +498,8 @@ func installKind() string {
 // kindOf tells how a copy whose executable is in dir was installed on
 // goos: the Windows installer leaves its uninstaller beside it, a Flatpak
 // has /.flatpak-info at the root of its sandbox, Flathub's build
-// flathubMarker too, and the .deb, the .rpm and the AUR's mixmusic-bin
-// put it in /opt/mixmusic, which dpkg keeps a list of for the .deb, and
+// flathubMarker too, and the .deb, the .rpm and the AUR's mymusic-bin
+// put it in /opt/mymusic, which dpkg keeps a list of for the .deb, and
 // which pacman's database tells the AUR's by.
 func kindOf(goos, dir string, appImage bool, exists func(string) bool) string {
 	switch goos {
@@ -518,11 +518,11 @@ func kindOf(goos, dir string, appImage bool, exists func(string) bool) string {
 		return "flatpak"
 	case appImage:
 		return "appimage"
-	case dir == "/opt/mixmusic" && exists("/var/lib/dpkg/info/mixmusic.list"):
+	case dir == "/opt/mymusic" && exists("/var/lib/dpkg/info/mymusic.list"):
 		return "deb"
-	case dir == "/opt/mixmusic" && exists("/var/lib/pacman/local"):
+	case dir == "/opt/mymusic" && exists("/var/lib/pacman/local"):
 		return "pacman"
-	case dir == "/opt/mixmusic":
+	case dir == "/opt/mymusic":
 		return "rpm"
 	}
 	return "archive"

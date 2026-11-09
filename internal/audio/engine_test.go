@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // fakeDevice starts outputs that the test renders, frame for frame.

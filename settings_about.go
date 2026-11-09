@@ -6,18 +6,18 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-// The groups of Settings › About: this copy of MixMusic and its licenses
+// The groups of Settings › About: this copy of MyMusic and its licenses
 // here, the updates in desktop.go.
 
-func init() { addSettings("about", 10, (*shell).mixmusicSettings) }
+func init() { addSettings("about", 10, (*shell).mymusicSettings) }
 
-// mixmusicSettings tell of this copy of MixMusic, and of a newer one.
-func (s *shell) mixmusicSettings(c *ui.Context) {
+// mymusicSettings tell of this copy of MyMusic, and of a newer one.
+func (s *shell) mymusicSettings(c *ui.Context) {
 	k := &s.lk
 	info := s.svc.System.Info()
 	u := s.svc.System.Updates()
-	s.group(c, "MixMusic", func() {
-		version := "MixMusic " + info.Version + " · " + info.Platform + " " + info.Arch
+	s.group(c, "MyMusic", func() {
+		version := "MyMusic " + info.Version + " · " + info.Platform + " " + info.Arch
 		if build, ok := buildNames[u.Kind]; ok {
 			version += " · " + build
 		}
@@ -25,12 +25,12 @@ func (s *shell) mixmusicSettings(c *ui.Context) {
 		s.releaseRow(c, u)
 		// Its links go under it, as they are many.
 		about := "Spotify and YouTube Music in one player, open source under the MIT license or the GNU GPL, version 3. Your data lives in " + info.DataDir + "."
-		s.found(c, "MixMusic", about+" source code, contribute, report a problem, a bug, open logs folder", func() {
+		s.found(c, "MyMusic", about+" source code, contribute, report a problem, a bug, open logs folder", func() {
 			ui.Column(c).Gap(4).Padding(14, 0).Children(func() {
-				ui.Text(c, "MixMusic").FontSize(k.bodySize())
+				ui.Text(c, "MyMusic").FontSize(k.bodySize())
 				ui.Text(c, about).FontSize(k.smallSize()).TextColor(k.muted)
 				ui.Row(c).Gap(8).Wrap().Margin(12, 0, 0).Children(func() {
-					const repo = "https://github.com/fzn0x/mixmusic"
+					const repo = "https://github.com/bigdaddy284/mymusic"
 					if s.button(c, "source", "source code", false).Clicked() {
 						go s.svc.System.OpenExternal(repo)
 					}
@@ -53,7 +53,7 @@ func (s *shell) mixmusicSettings(c *ui.Context) {
 
 func init() { addSettings("about", 30, (*shell).licenseSettings) }
 
-// licenseSettings show the licenses of what MixMusic is made of.
+// licenseSettings show the licenses of what MyMusic is made of.
 func (s *shell) licenseSettings(c *ui.Context) {
 	k := &s.lk
 	s.group(c, "Licenses", func() {

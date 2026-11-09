@@ -7,7 +7,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/app"
 )
 
 // The interface's face is Selawik, as the web interface's was, in
@@ -41,7 +41,7 @@ const (
 
 var fontsOnce sync.Once
 
-// fonts are the faces MixMusic registers, in the order it registers them.
+// fonts are the faces MyMusic registers, in the order it registers them.
 // Selawik Light and Semilight both say they weigh 300, and are both of the
 // family Selawik in their names: weight 300 of Selawik is the one that
 // comes first, so Light does, for the page titles and pivots. Registered
@@ -74,13 +74,13 @@ func registerFonts() {
 				err = ui.RegisterFont(data, f.family)
 			}
 			if err != nil {
-				log.Printf("mixmusic: the font %s: %v", f.file, err)
+				log.Printf("mymusic: the font %s: %v", f.file, err)
 			}
 		}
 	})
 }
 
-// fontNotices are the licenses of the faces MixMusic includes, which its
+// fontNotices are the licenses of the faces MyMusic includes, which its
 // copies must reproduce, as those of its code. Settings › About shows them
 // in every frame, and every section does while the user searches the
 // settings: they are read once.

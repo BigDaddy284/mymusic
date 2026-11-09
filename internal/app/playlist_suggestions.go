@@ -4,7 +4,7 @@ import (
 	"context"
 	"slices"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // PlaylistSuggestions are songs a service suggests adding to a playlist of

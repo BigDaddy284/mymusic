@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // TestVolumeCurveRow chooses the volume's curve in Settings › Playback ›

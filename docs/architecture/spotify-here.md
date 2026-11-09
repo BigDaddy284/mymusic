@@ -1,14 +1,14 @@
-# Spotify in MixMusic on each system
+# Spotify in MyMusic on each system
 
-"In MixMusic, from Spotify" plays Spotify tracks with Spotify's Web
+"In MyMusic, from Spotify" plays Spotify tracks with Spotify's Web
 Playback SDK, in the hidden window of `public/spotify.html`
 ([its web view](webviews.md)). Spotify encrypts its audio, and the SDK
 plays only where the web view has a decryption module (a CDM) it takes.
 Here is what each system's web view gives it, as tried for #295 in
-November 2026, and what playing there takes. MixMusic plays Spotify
+November 2026, and what playing there takes. MyMusic plays Spotify
 itself on Windows and macOS.
 
-| System | Its web view | Spotify in MixMusic |
+| System | Its web view | Spotify in MyMusic |
 |---|---|---|
 | Windows | WebView2: Chromium, with Widevine | plays; the default |
 | macOS | WKWebView: WebKit, with FairPlay | plays; the default |
@@ -33,7 +33,7 @@ itself on Windows and macOS.
 
 ## macOS
 
-MixMusic plays Spotify itself on macOS too, with the FairPlay of its web
+MyMusic plays Spotify itself on macOS too, with the FairPlay of its web
 view (#295). Two probes on the test Mac found what that takes. Both ran on
 macOS 26.5 (Apple silicon), with MyGo 0.7.3's WKWebView.
 
@@ -67,7 +67,7 @@ What it found:
     `BackgroundThrottling` is `ThrottlingOff`.
 
 **Signed in.** A build of the change, with the maintainer's own Spotify
-sign-in, played one track on MixMusic's device at volume 0. The page's
+sign-in, played one track on MyMusic's device at volume 0. The page's
 gain was set to 0 before the player was made. What it found:
 
 - **The device gets ready.** `mm.supported()` is true, and `ready` gives a
@@ -93,7 +93,7 @@ What it took:
 - **The window.** On macOS the device's window keeps its page running
   while hidden (`herePage`: `ThrottlingOff`), for the SDK's own timers.
   Its autoplay needs nothing.
-- **The default.** In MixMusic is the default of a new install on macOS,
+- **The default.** In MyMusic is the default of a new install on macOS,
   as on Windows (`defaultSpotifyPlayback`). An install whose settings.json
   already has `spotifyPlayback` keeps it.
 
@@ -103,7 +103,7 @@ on Windows ([the audio engine](audio.md)):
 
 - **The process.** WKWebView plays media in WebKit's GPU process,
   `com.apple.WebKit.GPU`, one for each app that has web views, with a new
-  PID at each launch. MixMusic's is the one macOS holds MixMusic
+  PID at each launch. MyMusic's is the one macOS holds MyMusic
   responsible for (`processes_darwin.go`):
   - launchd starts WebKit's processes, so their parent is PID 1, but
     libSystem's private `responsibility_get_pid_responsible_for_pid`
@@ -123,25 +123,25 @@ on Windows ([the audio engine](audio.md)):
     frames to the capture's goroutine, which converts them to 48 kHz when
     the output device runs at another rate, and gives silence at a
     stream's pace when the I/O stops, as the loopback of Windows does.
-- **When.** The listener hears only while Spotify plays in MixMusic and
+- **When.** The listener hears only while Spotify plays in MyMusic and
   the visualizer or a plugin reads the analyser, and for 2 s after the
-  last read. It stops when Spotify pauses, and as MixMusic quits.
-- **The permission.** macOS asks once whether MixMusic may record what
+  last read. It stops when Spotify pauses, and as MyMusic quits.
+- **The permission.** macOS asks once whether MyMusic may record what
   other apps play, with `NSAudioCaptureUsageDescription` from
   `mygo.config.ts`. A tap hears only once the user allowed it: until they
   answer, and once they refuse, it runs but hears digital silence, and no
   call fails.
-  - **MixMusic asks first**, through TCC's private `TCCAccessRequest`
+  - **MyMusic asks first**, through TCC's private `TCCAccessRequest`
     (`kTCCServiceAudioCapture`), and taps once the user answered. The
     capture waits for the answer.
   - **Not the tap.** A tap that has macOS ask itself started only 90 s
     later on the test Mac, though the user had answered in 5 s:
-    coreaudiod started the tap at the answer, and MixMusic's call returned
+    coreaudiod started the tap at the answer, and MyMusic's call returned
     90 s later.
   - **Not the preflight alone.** `TCCAccessPreflight` (0 allowed, 1
     refused, 2 not asked) answered 2 in that process for the rest of its
     run, though the user had allowed it; a new process was told 0. So
-    MixMusic keeps `TCCAccessRequest`'s answer for the run.
+    MyMusic keeps `TCCAccessRequest`'s answer for the run.
   - Once refused, a capture fails with `ErrRefused`, and the log says why,
     once a run, as it does of a Windows without process loopback.
 - **Before macOS 14.2** there is no `AudioHardwareCreateProcessTap`: the
@@ -151,19 +151,19 @@ on Windows ([the audio engine](audio.md)):
 **Tried on the test Mac** (macOS 26.5, November 2026), with a muted tap,
 so that nothing played out loud:
 
-- **A tone** at -80 dBFS in the page of MixMusic's device, in a build
+- **A tone** at -80 dBFS in the page of MyMusic's device, in a build
   signed with the hardened runtime, as releases are, without entitlements:
   the analyser's waveform peaked at -80.0 dBFS, and its bars rose.
-- **Spotify in MixMusic**, with the maintainer's sign-in: the tap hears
+- **Spotify in MyMusic**, with the maintainer's sign-in: the tap hears
   FairPlay's decrypted audio.
   - At volume 0 the tap heard exact zeros.
   - At a gain of -80 dB, the song peaked at -90 to -105 dBFS; at -73 dB,
     about 7 dB higher; at 0 again, zeros.
   - Pausing stopped the tap.
 - **The first tap, as macOS asked** at the tap itself, took about 90 s to
-  start, and TCC went on answering 2 in that run: why MixMusic asks
+  start, and TCC went on answering 2 in that run: why MyMusic asks
   first.
-- **The first run, as MixMusic asks first**, with the build of MixMusic's
+- **The first run, as MyMusic asks first**, with the build of MyMusic's
   own name that had never been allowed: the tap started as soon as the
   user clicked Allow, and heard Spotify in that same run, as above.
 
@@ -180,7 +180,7 @@ would be costly:
 ## Linux
 
 The probe ran in GitHub Actions, on a branch of its own since deleted. It
-used Python's GObject bindings, with WebKitGTK 4.1, as MixMusic does:
+used Python's GObject bindings, with WebKitGTK 4.1, as MyMusic does:
 
 - Ubuntu 24.04's WebKitGTK 2.52.6 (`libwebkit2gtk-4.1-0`), as the .deb
   gets it;
@@ -204,7 +204,7 @@ What it found:
   - Widevine would come through Thunder (OpenCDM), with closed binaries
     that Google licenses to whoever builds the device.
 
-So MixMusic can't play Spotify itself in its web view on Linux. What
+So MyMusic can't play Spotify itself in its web view on Linux. What
 remains:
 
 - **An embedded Chromium (CEF) with Widevine.** This is possible but
@@ -232,14 +232,14 @@ remains:
     its security fixes.
 - **Spotify Soloist**, Spotify's own headless client (August 2026), for
   Linux, Apple silicon Macs and Windows.
-  - It shows among the Spotify Connect devices, so MixMusic's "On Spotify
-    Connect" plays on it today, with no Spotify app open. MixMusic could
+  - It shows among the Spotify Connect devices, so MyMusic's "On Spotify
+    Connect" plays on it today, with no Spotify app open. MyMusic could
     help find and choose it.
   - Users download it from Spotify, which forbids redistributing it.
   - It starts with an API key of the user's own, made with a Premium
     account.
   - Its builds expire after 90 days.
-  - MixMusic's visualizer can't hear it on Linux.
+  - MyMusic's visualizer can't hear it on Linux.
 - **Unofficial clients** (librespot, and spotifyd and ncspot, built on
   it) speak Spotify's private protocol. They are a known option only, not
   a plan:

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // fakeYouTube is a YouTube Music that answers each request with what
@@ -152,7 +152,7 @@ func TestCreateYouTubePlaylist(t *testing.T) {
 }
 
 // TestDeleteYouTubePlaylist deletes a playlist of YouTube Music by its
-// MixMusic ID, and nothing of another service or signed out.
+// MyMusic ID, and nothing of another service or signed out.
 func TestDeleteYouTubePlaylist(t *testing.T) {
 	ctx := context.Background()
 	if err := (&Collection{a: &App{youtube: youtube.New()}}).DeleteYouTubePlaylist(ctx, "yt:PLmine"); !errors.Is(err, errNotSignedIn) {

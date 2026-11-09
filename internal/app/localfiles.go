@@ -14,10 +14,10 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // LocalFiles is the music on the user's computer, as the windows show it:
@@ -55,7 +55,7 @@ func (a *App) openLocalFiles() error {
 	return nil
 }
 
-// startLocalFiles scans the folders of the settings, quietly, as MixMusic
+// startLocalFiles scans the folders of the settings, quietly, as MyMusic
 // starts, and from then on as the settings change them.
 func (a *App) startLocalFiles() {
 	a.localScans.mu.Lock()
@@ -94,13 +94,13 @@ func (a *App) scanLocalFiles(folders []string, force bool) {
 	go func() {
 		defer sc.wg.Done()
 		if err := a.localFiles.Scan(sc.ctx, folders); err != nil && !errors.Is(err, context.Canceled) {
-			log.Printf("mixmusic: scanning the music on this computer: %v", err)
+			log.Printf("mymusic: scanning the music on this computer: %v", err)
 		}
 	}()
 }
 
 // closeLocalFiles stops a scan and the watch of the folders, and waits for
-// them, as MixMusic quits.
+// them, as MyMusic quits.
 func (a *App) closeLocalFiles() {
 	if a.localFiles == nil {
 		return

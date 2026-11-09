@@ -5,7 +5,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/fzn0x/mixmusic/resample"
+	"github.com/bigdaddy284/mymusic/resample"
 )
 
 // pcmCodec is the decoder of a file kept on a computer, whose audio comes

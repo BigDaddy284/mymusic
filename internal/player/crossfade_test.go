@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // pausedInPreparation plays a and b with a crossfade of 5 s, and pauses a

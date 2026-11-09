@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestColorFileReadsInOrder has a read of the colour file that began

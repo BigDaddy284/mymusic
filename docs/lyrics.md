@@ -1,7 +1,7 @@
 # Lyrics
 <!-- docs: group=using order=30 -->
 
-MixMusic shows synced and word-by-word lyrics for Spotify and YouTube Music tracks, and can translate them or show them in Latin letters.
+MyMusic shows synced and word-by-word lyrics for Spotify and YouTube Music tracks, and can translate them or show them in Latin letters.
 
 Lyrics come from Unison, LRCLIB and YouTube Music, for the track that plays, whichever service it's from. Nothing needs setting up. The lyrics themselves go to Unison, for their translation or for the romanization of Arabic, only while you turn those on.
 
@@ -26,19 +26,19 @@ Refresh this page (F5, or ⇧⌘R on macOS) asks again. For a podcast episode, t
 
 ## Where they come from
 
-MixMusic asks, in order:
+MyMusic asks, in order:
 
-1. **[Unison](https://unison.boidu.dev),** an open, crowdsourced database of lyrics, by the track's video ID, or by its title, artists, album and length. Unison has many lyrics timed word by word. While it's out of reach, MixMusic goes on to LRCLIB after a wait of 3 seconds at most.
+1. **[Unison](https://unison.boidu.dev),** an open, crowdsourced database of lyrics, by the track's video ID, or by its title, artists, album and length. Unison has many lyrics timed word by word. While it's out of reach, MyMusic goes on to LRCLIB after a wait of 3 seconds at most.
 2. **[LRCLIB](https://lrclib.net),** the open database of synced lyrics, by the track's title, artists, album and length: when Unison has no lyrics, can't be reached, or has only plain lyrics where LRCLIB has synced ones.
 3. **YouTube Music:** when neither has any lyrics, or both have only plain ones and YouTube Music's are longer.
 
-A Spotify track is looked up by the video ID of its [recording on YouTube Music](playing-music.md#how-spotify-tracks-play) once MixMusic has matched one, and by its title, artists, album and length before. The line at the end of the lyrics names where they came from.
+A Spotify track is looked up by the video ID of its [recording on YouTube Music](playing-music.md#how-spotify-tracks-play) once MyMusic has matched one, and by its title, artists, album and length before. The line at the end of the lyrics names where they came from.
 
 ## Synced and plain lyrics
 
 Synced lyrics have a time for each line. The line sung now lights in the accent colour, the lines sung before it dim, and the view keeps it in the middle.
 
-- **Synced or Plain text:** above synced lyrics, this choice shows them as plain text instead, without following the song. MixMusic remembers it for every track.
+- **Synced or Plain text:** above synced lyrics, this choice shows them as plain text instead, without following the song. MyMusic remembers it for every track.
 - **When "synced" is offered:** only for lyrics whose lines can be followed in time. Lyrics of one timed line, or whose lines all have one time, count as plain, and another source's lyrics take their place when it has more of them.
 - **At another [speed](playing-music.md#speed),** synced lyrics keep the track's own time, so they still light as the words are sung.
 
@@ -83,9 +83,9 @@ Japanese lyrics can show in romaji, Japanese in Latin letters by the Hepburn sys
 
 For 今日はいい天気, the romaji is "kyō wa ii tenki".
 
-- **Made on your computer.** MixMusic reads the kanji with kagome, a Japanese morphological analyser, and its IPA dictionary. The lyrics aren't sent anywhere for it.
-- **The dictionary.** The first time you turn romaji on, MixMusic downloads the dictionary of the readings of kanji, 11.7 MB, from GitHub, and keeps it in its cache folder. Until it's there, or while it can't be downloaded, kana show in romaji and kanji as they are: the panel says "The readings of kanji are downloading: kanji show as they are until then.", or that they couldn't be downloaded, with try again.
-- **Memory.** While Japanese lyrics show in romaji, MixMusic uses some 90 MB more memory, which it gives back a few minutes after.
+- **Made on your computer.** MyMusic reads the kanji with kagome, a Japanese morphological analyser, and its IPA dictionary. The lyrics aren't sent anywhere for it.
+- **The dictionary.** The first time you turn romaji on, MyMusic downloads the dictionary of the readings of kanji, 11.7 MB, from GitHub, and keeps it in its cache folder. Until it's there, or while it can't be downloaded, kana show in romaji and kanji as they are: the panel says "The readings of kanji are downloading: kanji show as they are until then.", or that they couldn't be downloaded, with try again.
+- **Memory.** While Japanese lyrics show in romaji, MyMusic uses some 90 MB more memory, which it gives back a few minutes after.
 - **It's remembered** for the next Japanese song.
 
 ## Other scripts in Latin letters
@@ -126,7 +126,7 @@ These are romanized on your computer, and nothing of them is sent, each by the o
 
 Arabic doesn't write its short vowels, which no rule can tell, so Arabic's romanization comes from Unison, which has Google romanize the lyrics with them. While Romanize is on, the lyrics of the track playing and its video ID go to Unison. Until its romanization comes, and when it can't, Arabic shows in Latin letters made on your computer, by ALA-LC's plain form.
 
-For lyrics in another script that MixMusic doesn't romanize itself, the Romanize switch shows once you turn on Translate and their translation from Unison comes with Latin letters.
+For lyrics in another script that MyMusic doesn't romanize itself, the Romanize switch shows once you turn on Translate and their translation from Unison comes with Latin letters.
 
 ## The notch player's line
 

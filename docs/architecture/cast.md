@@ -1,6 +1,6 @@
 # Casting
 
-MixMusic plays on cast devices, Chromecasts, Google Home and Nest speakers
+MyMusic plays on cast devices, Chromecasts, Google Home and Nest speakers
 and TVs with Chromecast built in, through their default media receiver,
 which plays the media at a URL it's given and shows its title, artist and
 cover on a screen.
@@ -10,7 +10,7 @@ cover on a screen.
   - `Browse` asks for `_googlecast._tcp.local.` by mDNS, as a one-shot
     querier (RFC 6762, 6.7): from a port of its own, to the mDNS group on
     each of the computer's networks, so the devices answer it directly, and
-    MixMusic listens on no port of mDNS's. The few DNS records it reads,
+    MyMusic listens on no port of mDNS's. The few DNS records it reads,
     PTR, SRV, TXT and A, it reads by hand (`dns.go`); a device that
     answers the first question alone is asked for the rest. The TXT record
     tells the device's ID, its name (`fn`) and its model (`md`); groups of
@@ -24,10 +24,10 @@ cover on a screen.
     loads, plays, pauses, seeks and stops the media, sets the volume, and
     hears the device's statuses: of the media, which come as it changes,
     statuses of media a later load took over from left out, and of the
-    receiver, whose volume shows in MixMusic and whose end, as another app
+    receiver, whose volume shows in MyMusic and whose end, as another app
     takes the device over, ends the session. Devices have certificates of
     their own, which aren't checked: the connection is encrypted, and
-    MixMusic doesn't ask the device to prove what it is.
+    MyMusic doesn't ask the device to prove what it is.
   - `casttest` is a fake device for tests, a TLS server on the loopback
     address that speaks the protocol and keeps the messages it gets, and an
     mDNS responder for it, with DNS and frames of their own, apart from
@@ -46,8 +46,8 @@ cover on a screen.
   the device's statuses into the engine's events: the position moves on
   between them, and the device is asked where it is every 5 s. The engine's
   events go nowhere while casting.
-- **The audio** comes from MixMusic: the addresses the player plays are
-  MixMusic's own, which no device can open, and YouTube's streams need the
+- **The audio** comes from MyMusic: the addresses the player plays are
+  MyMusic's own, which no device can open, and YouTube's streams need the
   proxy, which fetches them in chunks, waits for YouTube to serve them, and
   serves downloads and the cache first. `castServer` serves the proxy's
   `/yt/` paths, only while casting, at a port of its own on the address
@@ -56,5 +56,5 @@ cover on a screen.
   as a firewall's doing.
 
 Not yet: live streams, gapless playback through the receiver's own queue,
-lyrics on screens, groups of speakers, a receiver of MixMusic's own, and
+lyrics on screens, groups of speakers, a receiver of MyMusic's own, and
 video.

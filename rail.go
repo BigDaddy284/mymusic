@@ -204,7 +204,7 @@ func (s *shell) logo(c *ui.Context, room float32) {
 	// The mark keeps its gradient in every theme, as the app's icon does.
 	ui.Icon(c, brandMark).Size(26, 26).Shrink(0)
 	size := s.wordmarkSize(c, room)
-	ui.Text(c, "mymusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
+	ui.Text(c, "MyMusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
 		SingleLine().Grow(1).MinWidth(0)
 }
 
@@ -239,7 +239,7 @@ func (s *shell) wordmarkSize(c *ui.Context, room float32) float32 {
 	if s.wordmark.size > 0 && s.wordmark.font == f.font && s.wordmark.weight == f.weight && s.wordmark.room == f.room {
 		return s.wordmark.size
 	}
-	f.width, _ = c.MeasureText(0, ui.Span{Text: "mymusic", Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
+	f.width, _ = c.MeasureText(0, ui.Span{Text: "MyMusic", Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
 	f.size = fitSize(24, f.width, room)
 	s.wordmark = f
 	return f.size

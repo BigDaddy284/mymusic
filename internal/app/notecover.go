@@ -11,8 +11,8 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/artwork"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // noteCoverWait bounds the wait for the cover of a track's notification,
@@ -59,7 +59,7 @@ func (a *App) noteCover(t media.Track) []byte {
 	}
 	square, err := artwork.Square(data, noteCoverSize)
 	if err != nil {
-		log.Printf("mixmusic: the cover of the notification of %s: %v", t.ID, err)
+		log.Printf("mymusic: the cover of the notification of %s: %v", t.ID, err)
 		return nil
 	}
 	return square

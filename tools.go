@@ -9,10 +9,10 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
-// toolStatus is what MixMusic knows of yt-dlp and the JavaScript runtime,
+// toolStatus is what MyMusic knows of yt-dlp and the JavaScript runtime,
 // kept until an install changes it.
 func (s *shell) toolStatus() *loaded[tools.Status] {
 	return fetch(s, "tools", func(ctx context.Context) (tools.Status, error) { return s.svc.System.Tools(ctx), nil })
@@ -74,7 +74,7 @@ func (s *shell) toolProblems(c *ui.Context) {
 	switch {
 	case !y.Found:
 		panel("Some tracks need yt-dlp",
-			"MixMusic finds the audio of most tracks itself, and asks yt-dlp for the rest, such as tracks made for children. Install it once, and it stays up to date from Settings.",
+			"MyMusic finds the audio of most tracks itself, and asks yt-dlp for the rest, such as tracks made for children. Install it once, and it stays up to date from Settings.",
 			func() { s.installButton(c, "install-ytdlp", "install yt-dlp") })
 	case outdated(y) && s.set.SkippedYTDLP != y.Latest:
 		how := "the way you installed it"
@@ -82,9 +82,9 @@ func (s *shell) toolProblems(c *ui.Context) {
 			how = "with " + y.UpdateCommand
 		}
 		panel("Your yt-dlp is out of date",
-			fmt.Sprintf("yt-dlp %s finds the audio of the tracks YouTube won't give MixMusic itself, and %s is out. As YouTube changes, an old yt-dlp stops finding it. Update it %s, or use MixMusic's own, which it keeps up to date.", y.Version, y.Latest, how),
+			fmt.Sprintf("yt-dlp %s finds the audio of the tracks YouTube won't give MyMusic itself, and %s is out. As YouTube changes, an old yt-dlp stops finding it. Update it %s, or use MyMusic's own, which it keeps up to date.", y.Version, y.Latest, how),
 			func() {
-				s.installButton(c, "use-ours", "use MixMusic's yt-dlp")
+				s.installButton(c, "use-ours", "use MyMusic's yt-dlp")
 				if s.button(c, "not-now", "not now", false).Clicked() {
 					s.set.SkippedYTDLP = y.Latest
 					s.save()
@@ -95,7 +95,7 @@ func (s *shell) toolProblems(c *ui.Context) {
 
 func init() { addSettings("playback", 90, (*shell).toolSettings) }
 
-// toolSettings show the tools MixMusic runs, and install yt-dlp.
+// toolSettings show the tools MyMusic runs, and install yt-dlp.
 func (s *shell) toolSettings(c *ui.Context) {
 	k := &s.lk
 	s.group(c, "Tools", func() {
@@ -112,10 +112,10 @@ func (s *shell) toolSettings(c *ui.Context) {
 		if y.Found {
 			desc = "yt-dlp " + y.Version + " at " + y.Path
 			if y.Managed {
-				desc += ", MixMusic's own, which it keeps up to date"
+				desc += ", MyMusic's own, which it keeps up to date"
 			}
 			if y.Bundled {
-				desc += ", which comes with MixMusic and updates with it"
+				desc += ", which comes with MyMusic and updates with it"
 			}
 			if outdated(y) {
 				desc += ". " + y.Latest + " is out."
@@ -128,7 +128,7 @@ func (s *shell) toolSettings(c *ui.Context) {
 			case y.Managed:
 				s.installButton(c, "update-ytdlp", "update yt-dlp")
 			case outdated(y):
-				s.installButton(c, "use-ours-settings", "use MixMusic's yt-dlp")
+				s.installButton(c, "use-ours-settings", "use MyMusic's yt-dlp")
 			}
 		})
 		flatpak := s.svc.System.Info().Flatpak
@@ -170,14 +170,14 @@ func jsRuntimeHelp(js tools.Tool, flatpak bool) string {
 	case flatpak:
 		return "yt-dlp needs a JavaScript runtime to read most YouTube streams. The Flatpak has Node.js, and no other: choose Find one."
 	}
-	return "yt-dlp needs Deno, Node.js, Bun or QuickJS to read most YouTube streams. Install one, and MixMusic finds it."
+	return "yt-dlp needs Deno, Node.js, Bun or QuickJS to read most YouTube streams. Install one, and MyMusic finds it."
 }
 
 // ownYTDLPHelp describes the setting of a yt-dlp of the user's own, which
 // a Flatpak finds only in its own folders.
 func ownYTDLPHelp(flatpak bool) string {
 	if flatpak {
-		return "Use a yt-dlp of your own instead. The Flatpak sees only its own folders: put it in ~/.var/app/io.github.fzn0x.mixmusic."
+		return "Use a yt-dlp of your own instead. The Flatpak sees only its own folders: put it in ~/.var/app/io.github.bigdaddy284.mymusic."
 	}
 	return "Use a yt-dlp of your own, such as your package manager's, instead."
 }
@@ -233,7 +233,7 @@ func (s *shell) cacheSettings(c *ui.Context) {
 			labels[i] = cacheSizeLabel(mb)
 		}
 		chosen := cacheSizeLabel(s.set.CacheSizeMB)
-		what := "Off: MixMusic keeps no tracks."
+		what := "Off: MyMusic keeps no tracks."
 		if s.set.CacheSizeMB > 0 {
 			what = chosen + " at most."
 		}

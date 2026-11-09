@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // fakeAPI serves canned responses by path and query, and records the

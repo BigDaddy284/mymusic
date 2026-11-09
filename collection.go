@@ -9,8 +9,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // headProps are what the head of an album, a playlist or an artist shows.
@@ -471,7 +471,7 @@ func (s *shell) youtubeLibraryItems(m *ui.Menu, p media.Playlist) {
 // another device.
 func (s *shell) deleteYouTubePlaylist(p media.Playlist) {
 	s.ask("delete playlist", "Delete "+p.Title+" from YouTube Music? It goes from YouTube too, and you can't undo this. "+
-		"To keep its tracks in MixMusic, copy it into a mix first.", "delete", func() {
+		"To keep its tracks in MyMusic, copy it into a mix first.", "delete", func() {
 		key := "delete:" + p.ID
 		s.keeping[key] = true
 		go func() {
@@ -668,7 +668,7 @@ func (s *shell) artistPage(c *ui.Context, id string) {
 		if len(a.TopTracks) > 0 {
 			h.play = func() { s.p.PlayAll(a.TopTracks, false) }
 		}
-		// Signed out of the artist's service, they're followed in MixMusic.
+		// Signed out of the artist's service, they're followed in MyMusic.
 		// An artist of the music on this computer has no releases to follow.
 		following := s.followsArtist(a)
 		if a.Source != media.SourceFile {

@@ -128,7 +128,7 @@ func (m *mediaServers) do(client *http.Client, req *http.Request) (*http.Respons
 		if errors.Is(err, errNoConnection) {
 			err = fmt.Errorf("no connection in %s", limit.Round(time.Millisecond))
 		}
-		log.Printf("mixmusic: YouTube's server %d of %d of a stream didn't answer (%v); asking the next", i+1, len(urls), loggable(err))
+		log.Printf("mymusic: YouTube's server %d of %d of a stream didn't answer (%v); asking the next", i+1, len(urls), loggable(err))
 	}
 	return nil, "", errNoConnection // not reached: the last server returns
 }

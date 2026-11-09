@@ -1,5 +1,5 @@
 {
-  description = "MixMusic: Spotify and YouTube Music in one customizable desktop player";
+  description = "MyMusic: Spotify and YouTube Music in one customizable desktop player";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -21,11 +21,11 @@
       version = (lib.importJSON ./package.json).version;
     in
     {
-      # MixMusic for Linux, built from source: `nix build`, or
-      # `nix run github:fzn0x/mixmusic`.
+      # MyMusic for Linux, built from source: `nix build`, or
+      # `nix run github:bigdaddy284/mymusic`.
       packages = each linux (pkgs: rec {
-        mixmusic = pkgs.callPackage ./nix/package.nix { inherit version; };
-        default = mixmusic;
+        mymusic = pkgs.callPackage ./nix/package.nix { inherit version; };
+        default = mymusic;
       });
 
       # The tools releases are built and published with, at the versions

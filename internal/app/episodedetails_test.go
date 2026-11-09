@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // detailsPage is YouTube Music's page of an episode's details, made up:

@@ -79,10 +79,10 @@ func TestReportPlayUnplayable(t *testing.T) {
 
 // TestLivePlaybackTracking asks YouTube Music's player, signed out, as a
 // play is reported, and finds the URLs of the reports in its answer. It
-// runs with MIXMUSIC_LIVE=1.
+// runs with MYMUSIC_LIVE=1.
 func TestLivePlaybackTracking(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube Music")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube Music")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

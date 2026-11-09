@@ -1,4 +1,4 @@
-// Package portal asks the desktop's XDG portals for what MixMusic can't do
+// Package portal asks the desktop's XDG portals for what MyMusic can't do
 // by itself inside a Flatpak's sandbox: to keep running without a window,
 // and to start when the user logs in, which the Background portal decides.
 // The sandbox's own autostart folder is one the desktop never reads.
@@ -10,18 +10,18 @@ import (
 	"strings"
 )
 
-// ErrUnsupported is returned where MixMusic can't reach the portals: on
+// ErrUnsupported is returned where MyMusic can't reach the portals: on
 // systems other than Linux, or without GIO.
 var ErrUnsupported = errors.New("portal: the desktop's portals are not supported here")
 
 // ErrNoBackground is returned where the desktop has no Background portal.
 var ErrNoBackground = errors.New("portal: the desktop has no Background portal")
 
-// Background is what MixMusic asks of the Background portal.
+// Background is what MyMusic asks of the Background portal.
 type Background struct {
 	// Reason tells the user why, should the desktop ask them.
 	Reason string
-	// Autostart starts MixMusic when the user logs in, and false stops it:
+	// Autostart starts MyMusic when the user logs in, and false stops it:
 	// every request writes or removes the autostart entry.
 	Autostart bool
 	// Commandline is the command the autostart entry runs, inside the
@@ -31,13 +31,13 @@ type Background struct {
 
 // Answer is what the desktop allowed.
 type Answer struct {
-	// Background lets MixMusic run without a window.
+	// Background lets MyMusic run without a window.
 	Background bool
-	// Autostart tells whether MixMusic starts at login now.
+	// Autostart tells whether MyMusic starts at login now.
 	Autostart bool
 }
 
-// RequestBackground asks the desktop to let MixMusic run in the background,
+// RequestBackground asks the desktop to let MyMusic run in the background,
 // and to start it at login or not, and waits for its answer, which may
 // wait for the user's choice, until ctx is done. A refusal is an Answer;
 // the error tells that the request failed or got no answer.

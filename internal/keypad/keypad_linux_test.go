@@ -90,7 +90,7 @@ func TestWatch(t *testing.T) {
 	if !gtkInitCheck(0, 0) {
 		t.Fatal("GTK can't open the display")
 	}
-	const title = "MixMusic keypad test"
+	const title = "MyMusic keypad test"
 	win := gtkWindowNew(0) // GTK_WINDOW_TOPLEVEL
 	gtkWindowSetTitle(win, title)
 	gtkWindowSetDefaultSize(win, 200, 200)

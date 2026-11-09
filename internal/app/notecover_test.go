@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // thumbnail is a music video's 16:9 thumbnail, w by h, as a JPEG: red at

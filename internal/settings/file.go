@@ -13,7 +13,7 @@ import (
 	"unicode/utf8"
 )
 
-// Decode reads the settings a settings.json holds, as MixMusic does at
+// Decode reads the settings a settings.json holds, as MyMusic does at
 // start and each time the file changes: keys it lacks take their defaults,
 // and values out of range go back in range. A byte order mark is fine, and
 // so is UTF-16 with one, which Windows PowerShell 5.1 writes. A file that
@@ -285,13 +285,13 @@ func position(text []byte, at int) (line, column int) {
 	return 1 + bytes.Count(before, []byte{'\n'}), 1 + utf8.RuneCount(before[start:])
 }
 
-// Report is what of a settings file MixMusic doesn't take as it is.
+// Report is what of a settings file MyMusic doesn't take as it is.
 type Report struct {
 	// NotUTF8 is set when its text was neither UTF-8 nor UTF-16: letters
 	// outside ASCII read as replacement characters.
 	NotUTF8 bool
 	// Unknown are the keys no setting has, as the typo crosfade, which
-	// MixMusic's next save drops.
+	// MyMusic's next save drops.
 	Unknown []string
 	// Adjusted are the keys whose values went back in range, or to their
 	// defaults.

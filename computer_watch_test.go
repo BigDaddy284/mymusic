@@ -7,9 +7,9 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // watchedShell is a test shell with a folder of music of a song, scanned,
@@ -35,7 +35,7 @@ func watchedShell(t *testing.T, watch localfiles.WatchFolder) (*shell, string) {
 }
 
 // TestComputerUnwatched tells, in Settings › Playback, of a folder of
-// music MixMusic can't watch for changes, as on a network drive, and that
+// music MyMusic can't watch for changes, as on a network drive, and that
 // a rescan shows them.
 func TestComputerUnwatched(t *testing.T) {
 	s, music := watchedShell(t, func(string, localfiles.Changes) (func(), error) {
@@ -43,14 +43,14 @@ func TestComputerUnwatched(t *testing.T) {
 	})
 	tt := testerOf(t, s, 1280, 4000)
 	show(s, tt, "/settings/playback")
-	want := "MixMusic can't watch " + music + " for changes: it's on a network drive. Rescan to see what changed in it."
+	want := "MyMusic can't watch " + music + " for changes: it's on a network drive. Rescan to see what changed in it."
 	until(t, s, tt, "the folder unwatched", func() bool { return tt.HasText(want) && tt.HasText("1 track") })
 	// The search of the settings finds it.
 	show(s, tt, "/settings/playback?q=network+drive")
 	until(t, s, tt, "the folder unwatched, searched", func() bool { return tt.HasText(want) })
 }
 
-// TestComputerWatched tells of no folder MixMusic watches.
+// TestComputerWatched tells of no folder MyMusic watches.
 func TestComputerWatched(t *testing.T) {
 	var watched atomic.Bool
 	s, _ := watchedShell(t, func(string, localfiles.Changes) (func(), error) {

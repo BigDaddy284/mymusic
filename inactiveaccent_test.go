@@ -3,11 +3,11 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestAccentWhileBehind keeps the accent of the sliders and switches in a
-// window another is in front of, as MixMusic's own parts keep theirs, in
+// window another is in front of, as MyMusic's own parts keep theirs, in
 // every layout and around the notch: MyGo 0.8 fades its widgets' to gray
 // there unless the theme keeps it.
 func TestAccentWhileBehind(t *testing.T) {

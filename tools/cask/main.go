@@ -1,11 +1,11 @@
-// Command cask writes the Homebrew cask of a release, Casks/mixmusic.rb of
-// the tap fzn0x/homebrew-tap, from packaging/homebrew/mixmusic.rb.tmpl: with
+// Command cask writes the Homebrew cask of a release, Casks/mymusic.rb of
+// the tap bigdaddy284/homebrew-tap, from packaging/homebrew/mymusic.rb.tmpl: with
 // the version, the SHA-256 of the release's disk image, and, until the app
 // is notarized, caveats that tell how to allow its first launch.
 // release.yml runs it once the release is out, and puts the cask in the
 // tap.
 //
-//	go run ./tools/cask -version 0.5.9 -dmg release/mixmusic-0.5.9-macos-universal.dmg -notarized=false -o mixmusic.rb
+//	go run ./tools/cask -version 0.5.9 -dmg release/mymusic-0.5.9-macos-universal.dmg -notarized=false -o mymusic.rb
 package main
 
 import (
@@ -23,7 +23,7 @@ import (
 )
 
 // templateFile is the cask, as a text/template of a release.
-const templateFile = "packaging/homebrew/mixmusic.rb.tmpl"
+const templateFile = "packaging/homebrew/mymusic.rb.tmpl"
 
 // release is what the cask of a version holds.
 type release struct {
@@ -38,7 +38,7 @@ type release struct {
 func main() {
 	root := flag.String("root", ".", "the repository's root")
 	version := flag.String("version", "", "the version released, as 0.5.9")
-	dmg := flag.String("dmg", "", "the release's disk image, mixmusic-<version>-macos-universal.dmg")
+	dmg := flag.String("dmg", "", "the release's disk image, mymusic-<version>-macos-universal.dmg")
 	notarized := flag.Bool("notarized", false, "the app is notarized: no caveats on its first launch")
 	out := flag.String("o", "", "the file to write; standard output when empty")
 	flag.Parse()
@@ -73,7 +73,7 @@ func releaseOf(version, dmg string, notarized bool) (release, error) {
 	if !semver.MatchString(version) {
 		return release{}, fmt.Errorf("-version %q is not a version, as 0.5.9", version)
 	}
-	if want := "mixmusic-" + version + "-macos-universal.dmg"; filepath.Base(dmg) != want {
+	if want := "mymusic-" + version + "-macos-universal.dmg"; filepath.Base(dmg) != want {
 		return release{}, fmt.Errorf("-dmg %q is not the release's %s", dmg, want)
 	}
 	f, err := os.Open(dmg)

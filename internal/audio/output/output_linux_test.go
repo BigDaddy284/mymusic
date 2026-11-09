@@ -16,11 +16,11 @@ import (
 // TestStreamMovesBetweenSinks plays silence on a sink of its own, which
 // pactl adds, then takes away, then adds again: the stream plays on the
 // default sink while its sink is gone, and goes back to it once it's back,
-// telling Moved each time. It runs with MIXMUSIC_AUDIO=1 where PulseAudio
+// telling Moved each time. It runs with MYMUSIC_AUDIO=1 where PulseAudio
 // or PipeWire's PulseAudio server and pactl are, as on CI's runner.
 func TestStreamMovesBetweenSinks(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	if _, err := exec.LookPath("pactl"); err != nil {
 		t.Skip("no pactl")
@@ -28,10 +28,10 @@ func TestStreamMovesBetweenSinks(t *testing.T) {
 	if _, ok := pulseSinks(); !ok {
 		t.Skip("no PulseAudio server")
 	}
-	const sink = "mixmusic_test_sink"
+	const sink = "mymusic_test_sink"
 	load := func() string {
 		out, err := exec.Command("pactl", "load-module", "module-null-sink", "sink_name="+sink,
-			"sink_properties=device.description=MixMusic-test").Output()
+			"sink_properties=device.description=MyMusic-test").Output()
 		if err != nil {
 			t.Fatalf("pactl load-module: %v", err)
 		}
@@ -53,7 +53,7 @@ func TestStreamMovesBetweenSinks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !slices.ContainsFunc(devices, func(d Device) bool { return d.ID == sink && d.Name == "MixMusic-test" }) {
+	if !slices.ContainsFunc(devices, func(d Device) bool { return d.ID == sink && d.Name == "MyMusic-test" }) {
 		t.Fatalf("the sink isn't among the devices: %+v", devices)
 	}
 

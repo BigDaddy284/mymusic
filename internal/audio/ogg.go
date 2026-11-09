@@ -8,13 +8,13 @@ import (
 	"io"
 	"time"
 
-	"github.com/fzn0x/mixmusic/ogg"
-	"github.com/fzn0x/mixmusic/opus"
+	"github.com/bigdaddy284/mymusic/ogg"
+	"github.com/bigdaddy284/mymusic/opus"
 	"github.com/jfreymuth/vorbis"
 )
 
 // VorbisLicense is the license of jfreymuth/vorbis, the Vorbis decoder
-// of Johann Freymuth, which MixMusic is built with, and whose binary
+// of Johann Freymuth, which MyMusic is built with, and whose binary
 // copies must give it.
 //
 //go:embed LICENSE.vorbis

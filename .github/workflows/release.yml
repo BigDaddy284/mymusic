@@ -1,6 +1,6 @@
 name: Release
 
-# Pushing a tag such as v0.2.0 builds MixMusic for macOS, Windows and Linux
+# Pushing a tag such as v0.2.0 builds MyMusic for macOS, Windows and Linux
 # and publishes the release: the version's section of CHANGELOG.md, the
 # downloads of .github/release-notes.md, the installers and SHA256SUMS.
 # Nix builds: every job runs in the shell of flake.nix, whose tools
@@ -73,7 +73,7 @@ jobs:
       # The tools of flake.nix's shell, at the versions of flake.lock.
       # From main rather than the checkout: a tag rebuilt from before the
       # action came has none of its own.
-      - uses: fzn0x/mixmusic/.github/actions/install-nix@main
+      - uses: bigdaddy284/mymusic/.github/actions/install-nix@main
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       # The shell's tools, fetched once, again if a download breaks off. A
@@ -134,7 +134,7 @@ jobs:
           security find-identity -v -p codesigning "$keychain" | grep "$identity"
           # The profile that mygo build notarizes with, checked with Apple.
           printf '%s\n' "$APPLE_API_KEY" > "$RUNNER_TEMP/notary-key.p8"
-          xcrun notarytool store-credentials mixmusic-notary --keychain "$keychain" \
+          xcrun notarytool store-credentials mymusic-notary --keychain "$keychain" \
             --key "$RUNNER_TEMP/notary-key.p8" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER"
           # Nix's shell has an xcrun of its own, with the SDK of nixpkgs as
           # DEVELOPER_DIR: build.sh puts the Mac's own first, with Xcode's.
@@ -177,7 +177,7 @@ jobs:
       - name: Gatekeeper accepts the app
         if: matrix.name == 'macOS' && env.MACOS_SIGNING_IDENTITY != ''
         run: |
-          app=build/darwin-universal/MixMusic.app
+          app=build/darwin-universal/MyMusic.app
           dmg="$(ls build/darwin-universal/*.dmg)"
           # A tag from before signing, built again, signs ad hoc.
           if codesign -dv "$app" 2>&1 | grep -q '^Signature=adhoc'; then
@@ -207,17 +207,17 @@ jobs:
             target="$(basename "$dir")" # darwin-universal, windows-arm64, linux-amd64
             arch="${target#*-}"
             # What installed apps update from, under the names their manifests use.
-            for f in "$dir"update-*.json "$dir"*.delta "$dir"mixmusic-"$v"-"$target".tar.g[z]; do cp "$f" release/; done
+            for f in "$dir"update-*.json "$dir"*.delta "$dir"mymusic-"$v"-"$target".tar.g[z]; do cp "$f" release/; done
             case "$target" in
               darwin-*)
-                for f in "$dir"*.dmg; do cp "$f" "release/mixmusic-$v-macos-$arch.dmg"; done ;;
+                for f in "$dir"*.dmg; do cp "$f" "release/mymusic-$v-macos-$arch.dmg"; done ;;
               windows-*)
-                # mygo build names it mixmusic-setup-<version>-<arch>.exe.
-                for f in "$dir"*-setup-*.exe; do cp "$f" "release/mixmusic-$v-windows-$arch-setup.exe"; done ;;
+                # mygo build names it mymusic-setup-<version>-<arch>.exe.
+                for f in "$dir"*-setup-*.exe; do cp "$f" "release/mymusic-$v-windows-$arch-setup.exe"; done ;;
               linux-*)
-                for f in "$dir"*.deb; do cp "$f" "release/mixmusic-$v-linux-$arch.deb"; done
+                for f in "$dir"*.deb; do cp "$f" "release/mymusic-$v-linux-$arch.deb"; done
                 # install.sh finds the archive next to it by this name.
-                cp "${dir}mixmusic-$v-linux-$arch.tar.gz" release/
+                cp "${dir}mymusic-$v-linux-$arch.tar.gz" release/
                 cp "${dir}install.sh" release/install.sh ;;
             esac
           done
@@ -272,22 +272,22 @@ jobs:
           v="${TAG#v}"
           echo "version=$v" >> "$GITHUB_OUTPUT"
           mkdir -p packaging/flatpak/dist
-          cp "linux/mixmusic-$v-linux-${{ matrix.arch }}.tar.gz" packaging/flatpak/dist/mixmusic-linux-${{ matrix.arch }}.tar.gz
-          go run ./tools/metainfo -o packaging/flatpak/dist/io.github.fzn0x.mixmusic.metainfo.xml
-          appstreamcli validate --no-net --explain packaging/flatpak/dist/io.github.fzn0x.mixmusic.metainfo.xml
+          cp "linux/mymusic-$v-linux-${{ matrix.arch }}.tar.gz" packaging/flatpak/dist/mymusic-linux-${{ matrix.arch }}.tar.gz
+          go run ./tools/metainfo -o packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
+          appstreamcli validate --no-net --explain packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
         with:
-          manifest-path: packaging/flatpak/io.github.fzn0x.mixmusic.yml
-          bundle: mixmusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak
+          manifest-path: packaging/flatpak/io.github.bigdaddy284.mymusic.yml
+          bundle: mymusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak
           arch: ${{ matrix.flatpak }}
           branch: stable
           upload-artifact: false
       - name: Install it
-        run: bash packaging/flatpak/check.sh "mixmusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak"
+        run: bash packaging/flatpak/check.sh "mymusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak"
       - uses: actions/upload-artifact@v7
         with:
           name: Flatpak-${{ matrix.arch }}
-          path: mixmusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak
+          path: mymusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak
           if-no-files-found: error
 
   # The release waits for the Flatpaks, but goes out without one whose job
@@ -332,8 +332,8 @@ jobs:
           fi
           # The target of each archive, as darwin-universal, has a manifest
           # of this version, which names files of this release.
-          for archive in mixmusic-"$v"-*.tar.gz; do
-            target="${archive#mixmusic-"$v"-}"
+          for archive in mymusic-"$v"-*.tar.gz; do
+            target="${archive#mymusic-"$v"-}"
             if [ ! -f "update-${target%.tar.gz}.json" ]; then
               echo "$archive has no update-${target%.tar.gz}.json" >&2
               exit 1
@@ -372,7 +372,7 @@ jobs:
           downloads="$RUNNER_TEMP/downloads.md"
           cp .github/release-notes.md "$downloads"
           for arch in amd64 arm64; do
-            if [ ! -f "release/mixmusic-$v-linux-$arch.flatpak" ]; then
+            if [ ! -f "release/mymusic-$v-linux-$arch.flatpak" ]; then
               echo "::warning::The release has no $arch Flatpak: its job failed"
               sed -i "/-linux-$arch\.flatpak/d" "$downloads"
             fi
@@ -413,7 +413,7 @@ jobs:
       # The tools of flake.nix's shell, at the versions of flake.lock.
       # From main rather than the checkout: a tag rebuilt from before the
       # action came has none of its own.
-      - uses: fzn0x/mixmusic/.github/actions/install-nix@main
+      - uses: bigdaddy284/mymusic/.github/actions/install-nix@main
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       # The shell's tools, fetched once, again if a download breaks off. A
@@ -432,8 +432,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ env.TAG }}
         run: nix develop --command goreleaser release --clean --release-notes "$RUNNER_TEMP/notes.md"
-      # The Homebrew cask, Casks/mixmusic.rb of fzn0x/homebrew-tap, for
-      # `brew install --cask fzn0x/tap/mixmusic`: tools/cask writes it for
+      # The Homebrew cask, Casks/mymusic.rb of bigdaddy284/homebrew-tap, for
+      # `brew install --cask fzn0x/tap/mymusic`: tools/cask writes it for
       # the disk image of the release, now out, and the token of the
       # HOMEBREW_TAP_TOKEN secret puts it in the tap. Without the secret or
       # the tap, the release goes out without it. (GoReleaser's
@@ -441,7 +441,7 @@ jobs:
       - name: The Homebrew cask
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          TAP: fzn0x/homebrew-tap
+          TAP: bigdaddy284/homebrew-tap
           # With these secrets, the macOS build notarizes or fails.
           NOTARIZED: ${{ secrets.MACOS_CERTIFICATE != '' }}
         run: |
@@ -459,22 +459,22 @@ jobs:
             echo "::warning::$TAP doesn't exist, or HOMEBREW_TAP_TOKEN can't reach it: the Homebrew cask stays as it is"
             exit 0
           fi
-          cask="$RUNNER_TEMP/mixmusic.rb"
+          cask="$RUNNER_TEMP/mymusic.rb"
           nix develop --command go run ./tools/cask -version "$v" \
-            -dmg "release/mixmusic-$v-macos-universal.dmg" -notarized="$NOTARIZED" -o "$cask"
+            -dmg "release/mymusic-$v-macos-universal.dmg" -notarized="$NOTARIZED" -o "$cask"
           cat "$cask"
           # Replacing the cask takes the SHA of the file it replaces.
-          path=Casks/mixmusic.rb
+          path=Casks/mymusic.rb
           sha=""
           if found="$(gh api "repos/$TAP/contents/$path" --jq .sha 2>/dev/null)"; then
             sha="$found"
           fi
           gh api --method PUT "repos/$TAP/contents/$path" --silent \
-            -f message="mixmusic $v" \
+            -f message="mymusic $v" \
             -f content="$(base64 -w0 "$cask")" \
             ${sha:+-f "sha=$sha"}
-          echo "$TAP's $path is of MixMusic $v"
-      # The AUR's mixmusic-bin, for `yay -S mixmusic-bin` on Arch Linux and
+          echo "$TAP's $path is of MyMusic $v"
+      # The AUR's mymusic-bin, for `yay -S mymusic-bin` on Arch Linux and
       # its derivatives: tools/aur writes its PKGBUILD and .SRCINFO for the
       # .deb files of the release, now out, and the key of the
       # AUR_SSH_PRIVATE_KEY secret pushes them to the AUR, which makes the
@@ -509,17 +509,17 @@ jobs:
           ssh-keygen -lf ~/.ssh/known_hosts
           export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/aur -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
           aur="$RUNNER_TEMP/aur"
-          git clone ssh://aur@aur.archlinux.org/mixmusic-bin.git "$aur"
+          git clone ssh://aur@aur.archlinux.org/mymusic-bin.git "$aur"
           nix develop --command go run ./tools/aur -version "$v" -release release -o "$aur"
           cat "$aur/PKGBUILD"
           cd "$aur"
           git add PKGBUILD .SRCINFO
           if git diff --cached --quiet; then
-            echo "The AUR's mixmusic-bin is of MixMusic $v already"
+            echo "The AUR's mymusic-bin is of MyMusic $v already"
             exit 0
           fi
           git -c user.name="github-actions[bot]" \
             -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit -q -m "mixmusic-bin $v"
+            commit -q -m "mymusic-bin $v"
           git push origin HEAD:master
-          echo "The AUR's mixmusic-bin is of MixMusic $v"
+          echo "The AUR's mymusic-bin is of MyMusic $v"

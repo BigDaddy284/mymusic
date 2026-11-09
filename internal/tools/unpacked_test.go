@@ -84,7 +84,7 @@ func TestInstallUnpacked(t *testing.T) {
 		t.Fatal(err)
 	}
 	if got := m.managedPath(); got != single || !m.singleOnMac() {
-		t.Fatalf("before the update, MixMusic's yt-dlp is %q", got)
+		t.Fatalf("before the update, MyMusic's yt-dlp is %q", got)
 	}
 	// An earlier unpacked install, with a file the new one hasn't.
 	if err := os.MkdirAll(filepath.Join(dir, macFolder, "_internal"), 0o755); err != nil {
@@ -138,7 +138,7 @@ func TestUpdateReplacesSingle(t *testing.T) {
 		t.Fatalf("UpdateYTDLP() = %v, %v", updated, err)
 	}
 	if got := m.managedPath(); got != filepath.Join(dir, macFolder, macProgram) {
-		t.Errorf("after the update, MixMusic's yt-dlp is %q", got)
+		t.Errorf("after the update, MyMusic's yt-dlp is %q", got)
 	}
 	if updated, err := m.UpdateYTDLP(context.Background()); err != nil || updated {
 		t.Errorf("the unpacked build of the latest release was updated again: %v, %v", updated, err)

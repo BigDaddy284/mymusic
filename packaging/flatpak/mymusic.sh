@@ -1,5 +1,5 @@
 #!/bin/sh
-# Starts MixMusic in its Flatpak.
+# Starts MyMusic in its Flatpak.
 #
 # MyGo writes the tray icon into a temporary folder and gives the desktop's
 # tray the folder's path, which the tray reads outside the sandbox, where
@@ -11,4 +11,4 @@ dir="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
 if [ -n "$XDG_RUNTIME_DIR" ] && [ -n "$FLATPAK_ID" ] && mkdir -p "$dir" 2>/dev/null; then
 	export TMPDIR="$dir"
 fi
-exec /app/lib/mixmusic/mixmusic "$@"
+exec /app/lib/mymusic/mymusic "$@"

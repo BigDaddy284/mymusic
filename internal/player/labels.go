@@ -15,8 +15,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // Label is what the app knows of the label YouTube gives the recording of
@@ -59,7 +59,7 @@ var (
 const labelAhead = 5
 
 // pausedChecks tells that the checks of labels pause.
-const pausedChecks = "YouTube isn't answering MixMusic's checks for AI labels, so tracks play unchecked for now"
+const pausedChecks = "YouTube isn't answering MyMusic's checks for AI labels, so tracks play unchecked for now"
 
 // errOnlyLabeled is why a radio added nothing: all it held that wasn't
 // queued is labeled as made with AI.

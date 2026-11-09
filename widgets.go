@@ -7,7 +7,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // iconButton is a 32px button of an icon, in muted ink, which turns to ink
@@ -467,7 +467,7 @@ func (s *shell) alert(c *ui.Context, title, message string, actions func()) ui.E
 
 // sourceMark tells where a track comes from by a shape: a disc for
 // Spotify, a square for YouTube Music, a ring and its hole for the music
-// on this computer, two rings for MixMusic's own mixes.
+// on this computer, two rings for MyMusic's own mixes.
 func (s *shell) sourceMark(c *ui.Context, source media.Source, on bool) {
 	k := &s.lk
 	ink := k.muted

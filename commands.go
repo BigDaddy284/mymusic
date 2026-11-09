@@ -16,7 +16,7 @@ type command struct {
 	run                        func()
 }
 
-// commands are MixMusic's own commands, and those of plugins.
+// commands are MyMusic's own commands, and those of plugins.
 func (s *shell) commands() []command {
 	cur, playing := s.st.Current()
 	cmds := []command{

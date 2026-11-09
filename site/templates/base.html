@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}MixMusic{% endblock title %}</title>
+  <title>{% block title %}MyMusic{% endblock title %}</title>
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}" />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fff8f8" media="(prefers-color-scheme: light)" />
@@ -35,7 +35,7 @@
     {%- block menu %}{% endblock menu %}
     <a class="brand" href="{{ home }}">
       <svg class="brand-mark" width="28" height="28" aria-hidden="true"><use href="#i-rings" /></svg>
-      <span>MixMusic</span>
+      <span>MyMusic</span>
     </a>
     <a class="topbar-docs" href="{{ get_url(path='@/docs/_index.md') }}"{% block docs_current %}{% endblock docs_current %}>Docs</a>
     <nav class="topbar-nav" aria-label="Site">
@@ -43,7 +43,7 @@
       <a href="{{ home }}#download">Download</a>
     </nav>
     <button class="icon-btn theme-toggle" type="button" aria-label="Theme: as the system" data-theme-toggle><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-theme-system" /></svg></button>
-    <a class="btn btn-tonal btn-small topbar-github" href="https://github.com/fzn0x/mixmusic">
+    <a class="btn btn-tonal btn-small topbar-github" href="https://github.com/bigdaddy284/mymusic">
       <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-star" /></svg>
       <span>GitHub</span>
       <span class="stars" data-stars></span>
@@ -56,15 +56,15 @@
     <div class="footer-inner">
       <a class="brand brand-small" href="{{ home }}">
         <svg class="brand-mark" width="22" height="22" aria-hidden="true"><use href="#i-rings" /></svg>
-        <span>MixMusic</span>
+        <span>MyMusic</span>
       </a>
-      <p>Free and open source under the <a href="https://github.com/fzn0x/mixmusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/fzn0x/mixmusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. Spotify and YouTube Music are trademarks of their owners; MixMusic is not made by either.</p>
+      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. Spotify and YouTube Music are trademarks of their owners; MyMusic is not made by either.</p>
       <nav class="footer-nav" aria-label="Project">
         <a href="{{ get_url(path='@/docs/contributing/index.md') }}">Contributing</a>
         <a href="{{ get_url(path='@/docs/code-of-conduct/index.md') }}">Code of conduct</a>
         <a href="{{ get_url(path='@/docs/security/index.md') }}">Security</a>
-        <a href="https://github.com/fzn0x/mixmusic/blob/main/CHANGELOG.md">Changelog</a>
-        <a href="https://github.com/fzn0x/mixmusic/releases/latest">Download</a>
+        <a href="https://github.com/bigdaddy284/mymusic/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/bigdaddy284/mymusic/releases/latest">Download</a>
       </nav>
     </div>
   </footer>

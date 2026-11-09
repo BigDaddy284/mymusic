@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // errSongsOnYouTube is returned for a track of another service: only

@@ -6,8 +6,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestMiniVolume mutes and unmutes from the mini player's volume button,
@@ -162,7 +162,7 @@ func TestMiniVolumeFits(t *testing.T) {
 				}
 				return top, bottom
 			}
-			_, windowFoot := row("Open MixMusic", "Close the mini player")
+			_, windowFoot := row("Open MyMusic", "Close the mini player")
 			panelsTop, panelsFoot := row("Queue", "Lyrics", "Output device")
 			transportTop, _ := row("Shuffle", "Previous", "Pause", "Next", "Repeat: off", "Like", "Dislike", "Mute")
 			if panelsTop < windowFoot-0.01 || transportTop < panelsFoot-0.01 {

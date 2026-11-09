@@ -78,7 +78,7 @@ func TestPrograms(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	write("mixmusic", program(elf.EM_X86_64, "/lib64/ld-linux-x86-64.so.2"))
+	write("mymusic", program(elf.EM_X86_64, "/lib64/ld-linux-x86-64.so.2"))
 	write("install.sh", []byte("#!/bin/sh\n"))
 	write("update-linux-amd64.json", []byte("{}"))
 
@@ -86,8 +86,8 @@ func TestPrograms(t *testing.T) {
 	z := gzip.NewWriter(&gz)
 	tw := tar.NewWriter(z)
 	for name, data := range map[string][]byte{
-		"mixmusic":       program(elf.EM_X86_64, nixLoader),
-		"mixmusic.png":   []byte("\x89PNG"),
+		"mymusic":       program(elf.EM_X86_64, nixLoader),
+		"mymusic.png":   []byte("\x89PNG"),
 		"share/a/b.desk": []byte("[Desktop Entry]"),
 	} {
 		tw.WriteHeader(&tar.Header{Name: name, Mode: 0o755, Size: int64(len(data)), Typeflag: tar.TypeReg})
@@ -95,7 +95,7 @@ func TestPrograms(t *testing.T) {
 	}
 	tw.Close()
 	z.Close()
-	write("mixmusic-0.5.6-linux-amd64.tar.gz", gz.Bytes())
+	write("mymusic-0.5.6-linux-amd64.tar.gz", gz.Bytes())
 
 	found := map[string]error{}
 	if err := programs(dir, func(name string, data []byte) {
@@ -107,10 +107,10 @@ func TestPrograms(t *testing.T) {
 	if len(found) != 2 {
 		t.Fatalf("found %v, want the program and the archive's", found)
 	}
-	if err := found["mixmusic"]; err != nil {
+	if err := found["mymusic"]; err != nil {
 		t.Errorf("the program: %v", err)
 	}
-	if err := found["mixmusic-0.5.6-linux-amd64.tar.gz!mixmusic"]; err == nil {
+	if err := found["mymusic-0.5.6-linux-amd64.tar.gz!mymusic"]; err == nil {
 		t.Error("the archive's program asks for Nix's loader, and passed")
 	}
 }

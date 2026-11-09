@@ -1,4 +1,4 @@
-- Sort a list of songs by Plays, the songs you played most in MixMusic
+- Sort a list of songs by Plays, the songs you played most in MyMusic
   first, as your history counts them: liked and disliked songs, mixes,
   playlists, downloads and the music on this computer. And put a mix in
   order: drag a song onto another, or press Alt+Up and Alt+Down on its

@@ -1,11 +1,11 @@
-// The MixMusic site: the working player in the hero, feature tabs, the
+// The MyMusic site: the working player in the hero, feature tabs, the
 // video's chapters, the gallery of layouts and themes, and
 // download buttons named for the visitor's system. Every download goes to
 // the latest release on GitHub.
 (() => {
   "use strict";
 
-  const REPO = "fzn0x/mixmusic";
+  const REPO = "bigdaddy284/mymusic";
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
@@ -185,7 +185,7 @@
           c.setAttribute("aria-pressed", String(on));
         });
         const other = layout ? "the Mix theme" : "the Blend layout";
-        show(src(chip), `MixMusic's home page in the ${chip.dataset.name} ${layout ? "layout" : "theme"} and ${other}.`);
+        show(src(chip), `MyMusic's home page in the ${chip.dataset.name} ${layout ? "layout" : "theme"} and ${other}.`);
         name.textContent = `${chip.dataset.name}, in ${other}`;
         desc.textContent = chip.dataset.desc;
         const accent = $(".dots i:nth-child(2)", chip)?.style.background;
@@ -194,7 +194,7 @@
     });
   }
 
-  // The player in the hero: a working copy of MixMusic's window in its
+  // The player in the hero: a working copy of MyMusic's window in its
   // default look, playing Creative Commons songs from this site, with its
   // mini player for narrow screens and for the mini player button.
   const wrap = $("[data-demo-wrap]");

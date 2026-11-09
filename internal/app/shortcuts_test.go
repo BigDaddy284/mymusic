@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // fakeHotkeys registers global shortcuts as MyGo does, for the presses the
@@ -251,7 +251,7 @@ func TestApplyGlobalShortcuts(t *testing.T) {
 	}
 
 	// Keys in use elsewhere stay the user's, with the problem, until they
-	// register as MixMusic tries again.
+	// register as MyMusic tries again.
 	inUse := acc(t, "Mod+Alt+N")
 	hk.fail[inUse] = errors.New("mygo: cannot register \"Ctrl+Alt+N\": Hot key is already registered.")
 	setGlobal(t, a, map[string]string{"player.toggle": "Mod+Alt+O", "player.next": "Mod+Alt+N"})
@@ -305,7 +305,7 @@ func TestApplyGlobalShortcuts(t *testing.T) {
 }
 
 // TestGlobalShortcutsFromSettingsFile registers the global shortcuts an
-// edit of settings.json sets while MixMusic runs, and lets go of those it
+// edit of settings.json sets while MyMusic runs, and lets go of those it
 // takes away.
 func TestGlobalShortcutsFromSettingsFile(t *testing.T) {
 	a, hk, _ := newShortcutApp(t)
@@ -322,8 +322,8 @@ func TestGlobalShortcutsFromSettingsFile(t *testing.T) {
 }
 
 func TestGlobalShortcutError(t *testing.T) {
-	entry := errors.New("mygo: global shortcuts on Wayland need the app installed, with its desktop entry mixmusic.desktop: GDBus.Error:org.freedesktop.portal.Error.NotAllowed")
-	if got := globalShortcutError(entry, "linux"); got != "Global shortcuts need MixMusic installed with its desktop entry" {
+	entry := errors.New("mygo: global shortcuts on Wayland need the app installed, with its desktop entry mymusic.desktop: GDBus.Error:org.freedesktop.portal.Error.NotAllowed")
+	if got := globalShortcutError(entry, "linux"); got != "Global shortcuts need MyMusic installed with its desktop entry" {
 		t.Errorf("no desktop entry: %q", got)
 	}
 	grab := errors.New("mygo: Ctrl+Alt+P is already a global shortcut of another app")

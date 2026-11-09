@@ -8,9 +8,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // shows fails unless the element labelled label shows whole in a window
@@ -85,7 +85,7 @@ func TestPaletteFollowsArrows(t *testing.T) {
 // the search box the offer takes the focus from, would press.
 func TestOfferFirstFocus(t *testing.T) {
 	offer := &app.Release{Version: "9.9.9", Newer: true, Page: "https://example.invalid/notes",
-		Download: "https://example.invalid/m.deb", File: "mixmusic-9.9.9-linux-amd64.deb"}
+		Download: "https://example.invalid/m.deb", File: "mymusic-9.9.9-linux-amd64.deb"}
 	s := newTestShell(t)
 	tt := tester(t, s)
 	s.offer = offer
@@ -118,7 +118,7 @@ const longNotes = "Added\n- Dislike songs, and skip the ones you dislike.\n- Pod
 // testOffer is a release whose notes take more room than a short window
 // has.
 var testOffer = app.Release{Version: "9.9.9", Newer: true, Page: "https://example.invalid/notes",
-	Download: "https://example.invalid/m.deb", File: "mixmusic-9.9.9-linux-amd64.deb", Notes: longNotes}
+	Download: "https://example.invalid/m.deb", File: "mymusic-9.9.9-linux-amd64.deb", Notes: longNotes}
 
 // atTextSize sets the text size of the shell's settings.
 func atTextSize(t *testing.T, s *shell, scale float64) {
@@ -182,7 +182,7 @@ func dialogCases(s *shell) []dialogCase {
 	}
 	named, ran := "", false
 	return []dialogCase{
-		{name: "update offer", title: "mixmusic 9.9.9 is out", buttons: []string{"skip this version", "what's new", "later", act},
+		{name: "update offer", title: "mymusic 9.9.9 is out", buttons: []string{"skip this version", "what's new", "later", act},
 			open: func(t *testing.T, s *shell, tt *ui.Tester) {
 				offer := testOffer
 				s.offer = &offer
@@ -322,7 +322,7 @@ func TestDialogBodyKeys(t *testing.T) {
 	s.offer = &offer
 	tt.Frame()
 	tt.Advance(time.Second)
-	body := "more of mixmusic 9.9.9 is out"
+	body := "more of mymusic 9.9.9 is out"
 	for range 8 {
 		if tt.Focused(body) {
 			break
@@ -376,7 +376,7 @@ func TestDialogsInTallWindows(t *testing.T) {
 	for range 6 {
 		tt.Key(0, ui.KeyTab)
 		tt.Frame()
-		if tt.HasText("more of mixmusic 9.9.9 is out") {
+		if tt.HasText("more of mymusic 9.9.9 is out") {
 			t.Fatal("the body of an offer the window shows whole takes the focus")
 		}
 	}
@@ -397,7 +397,7 @@ func TestDialogOpensAtTop(t *testing.T) {
 	s.offer = &offer
 	tt.Frame()
 	tt.Advance(time.Second)
-	body, ok := tt.Find("more of mixmusic 9.9.9 is out")
+	body, ok := tt.Find("more of mymusic 9.9.9 is out")
 	if !ok {
 		t.Fatal("the offer's body doesn't scroll")
 	}

@@ -1,7 +1,7 @@
 package app
 
 // The picture of music videos, which the native interface shows on the
-// now playing page: MyGo draws no video, so a page of MixMusic's own,
+// now playing page: MyGo draws no video, so a page of MyMusic's own,
 // public/video.html, plays it in a web view there. The page fetches the
 // picture's stream from the proxy at the stream scheme, one part at a
 // time, through Media Source Extensions, and follows the engine's clock,
@@ -17,10 +17,10 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // VideoSource is the stream of the picture of a music video, for the page
@@ -99,8 +99,8 @@ func (a *App) SetVideoPage(page *mygo.Page) { a.videoPage.Store(page) }
 var callerPage = mygo.CallerPage
 
 // videoHandler serves the picture of music videos to their page, and to no
-// other: Google's sign-in, or the page of MixMusic's own Spotify device,
-// could otherwise make MixMusic find streams, and fetch them.
+// other: Google's sign-in, or the page of MyMusic's own Spotify device,
+// could otherwise make MyMusic find streams, and fetch them.
 func (a *App) videoHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if page := a.videoPage.Load(); page == nil || callerPage(r.Context()) != page {
@@ -115,7 +115,7 @@ func (a *App) videoHandler() http.Handler {
 // videos. Schemes must be handled before the windows that use them open.
 func (a *App) handleVideo() {
 	if err := mygo.Protocol.Handle(streamScheme, a.videoHandler()); err != nil {
-		log.Printf("mixmusic: the picture of music videos can't load: %v", err)
+		log.Printf("mymusic: the picture of music videos can't load: %v", err)
 	}
 }
 

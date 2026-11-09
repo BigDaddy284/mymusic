@@ -11,11 +11,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fzn0x/mixmusic/aac"
-	"github.com/fzn0x/mixmusic/flac"
-	"github.com/fzn0x/mixmusic/mp4"
-	"github.com/fzn0x/mixmusic/ogg"
-	"github.com/fzn0x/mixmusic/webm"
+	"github.com/bigdaddy284/mymusic/aac"
+	"github.com/bigdaddy284/mymusic/flac"
+	"github.com/bigdaddy284/mymusic/mp4"
+	"github.com/bigdaddy284/mymusic/ogg"
+	"github.com/bigdaddy284/mymusic/webm"
 )
 
 // Source is the file of a track, WebM or MP4, or the packed audio of a live
@@ -47,7 +47,7 @@ var (
 	errNetwork     = errors.New("the network failed while loading the audio")
 	errDecode      = errors.New("the audio could not be decoded")
 	errUnsupported = errors.New("the audio format is not supported")
-	// errFile is errNetwork of a Local source, in the words MixMusic
+	// errFile is errNetwork of a Local source, in the words MyMusic
 	// has for a file on this computer.
 	errFile = errors.New("Can't read the file")
 )

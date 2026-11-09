@@ -1,6 +1,6 @@
 name: Flathub
 
-# Builds packaging/flathub's manifest, MixMusic from source, as Flathub's
+# Builds packaging/flathub's manifest, MyMusic from source, as Flathub's
 # builder (flathub-infra/vorarbeiter) builds an app: in the image of
 # Flathub's linter, with its seccomp profile and the recipes of its
 # justfile, at the commit below. The manifest's linter runs first; the
@@ -13,7 +13,7 @@ on:
   pull_request:
     paths:
       - packaging/flathub/**
-      - packaging/flatpak/mixmusic.sh
+      - packaging/flatpak/mymusic.sh
       - tools/flathub/**
       - tools/metainfo/**
       - internal/app/flathub.go
@@ -25,7 +25,7 @@ on:
     branches: [main]
     paths:
       - packaging/flathub/**
-      - packaging/flatpak/mixmusic.sh
+      - packaging/flatpak/mymusic.sh
       - tools/flathub/**
       - tools/metainfo/**
       - internal/app/flathub.go
@@ -33,7 +33,7 @@ on:
       - go.mod
       - go.sum
       - .github/workflows/flathub.yml
-  # The rest of MixMusic, which the paths leave out, and the runtime, the
+  # The rest of MyMusic, which the paths leave out, and the runtime, the
   # SDK's extensions and Flathub's linter, which change on their own.
   schedule:
     - cron: "17 5 * * 1"
@@ -47,7 +47,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_ID: io.github.fzn0x.mixmusic
+  APP_ID: io.github.bigdaddy284.mymusic
   LINTER: ghcr.io/flathub-infra/flatpak-builder-lint:unprivileged
   VORARBEITER: https://raw.githubusercontent.com/flathub-infra/vorarbeiter/984d1f0bbeb9d1ac640681cac53940b9dee31bf8
 
@@ -96,7 +96,7 @@ jobs:
           go run ./tools/flathub -o work -commit "$COMMIT"
           git -C work init -q
           git -C work add -A
-          git -C work -c user.name=CI -c user.email=ci@localhost commit -q -m "Build MixMusic ${COMMIT::12}"
+          git -C work -c user.name=CI -c user.email=ci@localhost commit -q -m "Build MyMusic ${COMMIT::12}"
           cat "work/$APP_ID.yml"
       - name: Flathub's recipes and seccomp profile
         run: |
@@ -184,12 +184,12 @@ jobs:
             -e TMPDIR=/work/tmp \
             "$LINTER" \
             flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
-              repo "mixmusic-flathub-$BUILD_ARCH.flatpak" "$APP_ID" stable
-          ls -l "work/mixmusic-flathub-$BUILD_ARCH.flatpak"
+              repo "mymusic-flathub-$BUILD_ARCH.flatpak" "$APP_ID" stable
+          ls -l "work/mymusic-flathub-$BUILD_ARCH.flatpak"
       - uses: actions/upload-artifact@v7
         with:
           name: flathub-${{ matrix.arch }}
-          path: work/mixmusic-flathub-${{ matrix.arch }}.flatpak
+          path: work/mymusic-flathub-${{ matrix.arch }}.flatpak
           if-no-files-found: error
       - name: The linter's log
         if: ${{ !cancelled() }}
@@ -219,18 +219,18 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: flathub-${{ matrix.arch }}
-      - name: Install it, and start MixMusic in its sandbox
-        run: bash packaging/flatpak/check.sh "mixmusic-flathub-${{ matrix.arch }}.flatpak" shots
+      - name: Install it, and start MyMusic in its sandbox
+        run: bash packaging/flatpak/check.sh "mymusic-flathub-${{ matrix.arch }}.flatpak" shots
       - name: Flathub's mark and yt-dlp
         run: |
           flatpak run --user --command=sh "$APP_ID" -c '
             set -e
-            test -s /app/share/mixmusic/flathub
+            test -s /app/share/mymusic/flathub
             test -s "/app/share/licenses/$FLATPAK_ID/LICENSE-MIT"
             test -s "/app/share/licenses/$FLATPAK_ID/github.com/egoist/mygo/LICENSE"
             echo "yt-dlp $(/app/bin/yt-dlp --version)"
             python3 -c "import yt_dlp_ejs; print(\"yt-dlp-ejs\", yt_dlp_ejs.version)"
-            # As MixMusic runs it: its header, then no address to read.
+            # As MyMusic runs it: its header, then no address to read.
             header="$(yt-dlp --verbose --js-runtimes node:/app/bin/node 2>&1 || true)"
             echo "$header" | grep "^\[debug\]"
             echo "$header" | grep -q "JS runtimes: node"

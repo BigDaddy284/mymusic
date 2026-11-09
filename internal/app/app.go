@@ -1,4 +1,4 @@
-// Package app wires MixMusic together: the services its windows call, the
+// Package app wires MyMusic together: the services its windows call, the
 // player, and its place on the desktop: windows, the tray, media keys and
 // notifications.
 package app
@@ -17,28 +17,28 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/artwork"
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/cast"
-	"github.com/fzn0x/mixmusic/internal/diag"
-	"github.com/fzn0x/mixmusic/internal/downloads"
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/nowplaying"
-	"github.com/fzn0x/mixmusic/internal/online"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/internal/taskbar"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/internal/youtube"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/cast"
+	"github.com/bigdaddy284/mymusic/internal/diag"
+	"github.com/bigdaddy284/mymusic/internal/downloads"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/nowplaying"
+	"github.com/bigdaddy284/mymusic/internal/online"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/taskbar"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // artworkLimit bounds the artwork kept on disk, in bytes.
@@ -62,7 +62,7 @@ type Options struct {
 	// of the system, from the first scan on, not only once the app started:
 	// tests set it.
 	WatchMusic localfiles.WatchFolder
-	// Builtin holds the add-ons MixMusic ships with.
+	// Builtin holds the add-ons MyMusic ships with.
 	Builtin fs.FS
 	// TrayIcon is the PNG of the tray icon.
 	TrayIcon []byte
@@ -102,13 +102,13 @@ type Options struct {
 	Controls func(handle func(nowplaying.Request)) (*nowplaying.Controls, error)
 }
 
-// App is MixMusic.
+// App is MyMusic.
 type App struct {
 	opts Options
 	// lastCrash is the crash report of the run before, until the user
 	// answers about it.
 	lastCrash string
-	// memory records how MixMusic uses its memory while the user asks, in
+	// memory records how MyMusic uses its memory while the user asks, in
 	// the logs folder (memory.go): made at its first use.
 	memory     *diag.MemoryRecorder
 	memoryOnce sync.Once
@@ -157,7 +157,7 @@ type App struct {
 	// watchtime reports the listening to YouTube Music's episodes to the
 	// history there.
 	watchtime watchtime
-	// native is MixMusic's own audio engine, made at its first use.
+	// native is MyMusic's own audio engine, made at its first use.
 	native     *audio.Engine
 	nativeOnce sync.Once
 	// controls shows the engine's track in the system's media controls.
@@ -169,7 +169,7 @@ type App struct {
 	// listen hears what the player plays outside the engine, with the
 	// player.
 	listen atomic.Pointer[listener]
-	// here is MixMusic's own Spotify device, which the player plays
+	// here is MyMusic's own Spotify device, which the player plays
 	// Spotify tracks on where it can.
 	here spotifyHere
 	// cast is the cast devices found, and the one the player plays on.
@@ -188,7 +188,7 @@ type App struct {
 	onNavigate *func(target string)
 	// updates keeps the user's choices of updates.
 	updates *store.File[updatePrefs]
-	// checkUpdates has MixMusic look for a new version at once.
+	// checkUpdates has MyMusic look for a new version at once.
 	checkUpdates chan struct{}
 	// readingProfiles is set while the accounts' profiles are read in the
 	// background.
@@ -198,7 +198,7 @@ type App struct {
 	youtubeChecking atomic.Bool
 	// updating is held while an update installs.
 	updating sync.Mutex
-	// quitting is set once MixMusic starts to quit: its windows close then,
+	// quitting is set once MyMusic starts to quit: its windows close then,
 	// even with close to the tray on.
 	quitting atomic.Bool
 	// trayHide hides the main window in the tray, out of full screen first
@@ -234,9 +234,9 @@ type App struct {
 	// profileErrs is why the accounts' profiles could not be read, until
 	// they are, or the user signs in or out.
 	profileErrs profileErrors
-	// flushers save what the windows hold back, as MixMusic quits.
+	// flushers save what the windows hold back, as MyMusic quits.
 	flushers []*func()
-	// stopWatch stops the watch of settings.json, as MixMusic quits.
+	// stopWatch stops the watch of settings.json, as MyMusic quits.
 	stopWatch context.CancelFunc
 
 	// fileMu guards file, what the windows are told of settings.json;
@@ -256,7 +256,7 @@ func New(opts Options) (*App, error) {
 		return nil, fmt.Errorf("opening settings: %w", err)
 	}
 	if err := a.settings.Aside(); err != nil {
-		log.Printf("mixmusic: settings.json didn't read (%v): kept it as settings.json.broken, and started with the settings of a new install", err)
+		log.Printf("mymusic: settings.json didn't read (%v): kept it as settings.json.broken, and started with the settings of a new install", err)
 	}
 	if a.library, err = library.Open(filepath.Join(opts.DataDir, "library.json")); err != nil {
 		return nil, fmt.Errorf("opening the library: %w", err)
@@ -288,7 +288,7 @@ func New(opts Options) (*App, error) {
 	a.tokens = tokenStore{newSecretStore(opts.DataDir, tokenSecret, "spotify-token.json", "spotify-token.dpapi")}
 	a.spotify.OnToken = func(t spotify.Token) {
 		if err := a.tokens.Save(t); err != nil {
-			log.Printf("mixmusic: keeping the Spotify token: %v", err)
+			log.Printf("mymusic: keeping the Spotify token: %v", err)
 		}
 	}
 	if t, err := a.tokens.Load(); err == nil {
@@ -300,14 +300,14 @@ func New(opts Options) (*App, error) {
 	a.tools.Bundled = bundledYTDLP()
 	a.resolver = stream.NewResolver(a.tools, filepath.Join(opts.CacheDir, "yt-dlp"))
 	a.resolver.Told = a.surroundTold
-	// MIXMUSIC_YTDLP_ONLY has yt-dlp find every stream, as before MixMusic
+	// MYMUSIC_YTDLP_ONLY has yt-dlp find every stream, as before MyMusic
 	// asked YouTube's player API: to time one against the other, or to
 	// tell which fails. The API still tells how loud tracks are.
 	direct := stream.NewDirect()
-	if os.Getenv("MIXMUSIC_YTDLP_ONLY") == "" {
+	if os.Getenv("MYMUSIC_YTDLP_ONLY") == "" {
 		a.resolver.Direct = direct
 	} else {
-		log.Print("mixmusic: yt-dlp alone finds the streams (MIXMUSIC_YTDLP_ONLY)")
+		log.Print("mymusic: yt-dlp alone finds the streams (MYMUSIC_YTDLP_ONLY)")
 	}
 	a.loudness = newLoudnessBook(direct.Loudness, loudness)
 	a.cache = stream.NewCache(filepath.Join(opts.CacheDir, "audio"), 0)
@@ -321,7 +321,7 @@ func New(opts Options) (*App, error) {
 	a.proxy.Cache = a.cache
 	a.matcher = match.New(a.youtube, matches)
 	a.labels = newLabelCache(a.youtube.MadeWithAI, aiLabels, time.Now)
-	userAgent := "MixMusic/" + opts.Version + " (https://github.com/fzn0x/mixmusic)"
+	userAgent := "MyMusic/" + opts.Version + " (https://github.com/bigdaddy284/mymusic)"
 	a.lyrics = lyrics.New(userAgent)
 	a.unison = lyrics.NewUnison(userAgent)
 	a.translations = newTranslations(filepath.Join(opts.CacheDir, "lyrics-translations"))
@@ -379,7 +379,7 @@ func (a *App) apply(s settings.Settings) {
 	a.retitle()
 }
 
-// Bind registers what the page of MixMusic's own Spotify device calls, and
+// Bind registers what the page of MyMusic's own Spotify device calls, and
 // the stream scheme, at which the page of the picture of music videos
 // fetches it. It must run before mygo.App.Run.
 func (a *App) Bind() {
@@ -388,7 +388,7 @@ func (a *App) Bind() {
 }
 
 // needWebView tells why what, which takes a window showing a web page,
-// can't be done, or nil when it can: MixMusic's own windows need no
+// can't be done, or nil when it can: MyMusic's own windows need no
 // webview, so it runs on systems without one, where opening such a window
 // would panic.
 func needWebView(what string) error {

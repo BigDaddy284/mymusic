@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/egoist/mygo/ui"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // topBar holds the history arrows, the refresh button and the search box,
@@ -300,7 +300,7 @@ func (s *shell) chooseSuggested(kind string) {
 			return
 		}
 	}
-	log.Printf("mixmusic: capture: no %s among the suggestions", kind)
+	log.Printf("mymusic: capture: no %s among the suggestions", kind)
 }
 
 // openSuggested plays a song the box suggested at once, with its radio

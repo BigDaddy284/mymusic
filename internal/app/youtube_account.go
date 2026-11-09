@@ -19,9 +19,9 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // youtubeKeySecret is the key, in the system's credential store, of the
@@ -68,7 +68,7 @@ func (s *youtubeStore) sealed() string { return filepath.Join(s.dir, "youtube-se
 func (s *youtubeStore) plain() string  { return filepath.Join(s.dir, "youtube-session.json") }
 
 // youtubeSession is the YouTube session as kept: its cookies, and the
-// Google account of the session MixMusic uses, by its index among those
+// Google account of the session MyMusic uses, by its index among those
 // the session is signed in to (Client.SetAuthUser).
 type youtubeSession struct {
 	cookies  []*http.Cookie
@@ -76,7 +76,7 @@ type youtubeSession struct {
 }
 
 // sessionFile is a youtubeSession on disk. The session of the first
-// account is kept as its cookies alone, as MixMusic kept every session
+// account is kept as its cookies alone, as MyMusic kept every session
 // before it could use another account, and still reads it.
 type sessionFile struct {
 	Cookies  []youtubeCookie `json:"cookies"`
@@ -133,9 +133,9 @@ func (s *youtubeStore) load() ([]byte, error) {
 	}
 	if !unavailable(err) {
 		if err := s.save(data); err != nil {
-			log.Printf("mixmusic: moving %s: %v", filepath.Base(s.plain()), err)
+			log.Printf("mymusic: moving %s: %v", filepath.Base(s.plain()), err)
 		} else {
-			log.Printf("mixmusic: moved the YouTube Music session out of %s, in plain text", filepath.Base(s.plain()))
+			log.Printf("mymusic: moved the YouTube Music session out of %s, in plain text", filepath.Base(s.plain()))
 		}
 	}
 	return data, nil
@@ -268,7 +268,7 @@ func (a *App) watchYouTube() {
 			return
 		}
 		if err := a.youtubeStore.Save(youtubeSession{cookies, a.youtube.AuthUser()}); err != nil {
-			log.Printf("mixmusic: keeping the YouTube session: %v", err)
+			log.Printf("mymusic: keeping the YouTube session: %v", err)
 		}
 	}
 	// YouTube ended the session: the accounts say so, and ask to sign in
@@ -302,8 +302,8 @@ func (a *App) youtubeAccount(ctx context.Context) YouTubeAccount {
 }
 
 // YouTubeLogin opens a window where the user signs in to Google, and signs
-// MixMusic in to YouTube Music with that session once Google comes back to
-// YouTube Music. Nothing the user types passes through MixMusic: it reads
+// MyMusic in to YouTube Music with that session once Google comes back to
+// YouTube Music. Nothing the user types passes through MyMusic: it reads
 // the cookies of the session the window ends with.
 func (s *Accounts) YouTubeLogin(ctx context.Context) (AccountsStatus, error) {
 	if err := needWebView("signing in to YouTube Music"); err != nil {
@@ -351,7 +351,7 @@ func (s *Accounts) YouTubeLogin(ctx context.Context) (AccountsStatus, error) {
 	return s.a.youtubeSignIn(ctx, cookies)
 }
 
-// youtubeSignIn signs MixMusic in to YouTube Music with the cookies of a
+// youtubeSignIn signs MyMusic in to YouTube Music with the cookies of a
 // session, as the first Google account of it and that account itself,
 // once one signed-in request shows that YouTube Music takes them; then it
 // keeps them. Every way of signing in ends here. Nothing is kept of a
@@ -376,7 +376,7 @@ func (a *App) youtubeSignIn(ctx context.Context, cookies []*http.Cookie) (Accoun
 	// edit of settings.json may have changed since they were read.
 	if a.settings.Get().YouTubeChannel != "" {
 		if err := a.settings.Update(func(set *settings.Settings) error { set.YouTubeChannel = ""; return nil }); err != nil {
-			log.Printf("mixmusic: forgetting the YouTube Music channel: %v", err)
+			log.Printf("mymusic: forgetting the YouTube Music channel: %v", err)
 		}
 	}
 	if err := a.youtubeStore.Save(youtubeSession{cookies: a.youtube.Cookies()}); err != nil {
@@ -423,7 +423,7 @@ func windowSession() ([]*http.Cookie, error) {
 	return cookies, nil
 }
 
-// YouTubeLogout signs MixMusic out of YouTube Music, and forgets the
+// YouTubeLogout signs MyMusic out of YouTube Music, and forgets the
 // Google session of the sign-in window.
 func (s *Accounts) YouTubeLogout(ctx context.Context) error {
 	s.a.youtube.SetCookies(nil)

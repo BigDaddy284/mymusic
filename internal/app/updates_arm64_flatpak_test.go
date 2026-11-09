@@ -14,11 +14,11 @@ import (
 func TestLatestReleaseArm64Flatpak(t *testing.T) {
 	const body = `{
 		"tag_name": "v0.6.0",
-		"html_url": "https://github.com/fzn0x/mixmusic/releases/tag/v0.6.0",
+		"html_url": "https://github.com/bigdaddy284/mymusic/releases/tag/v0.6.0",
 		"assets": [
-			{"name": "mixmusic-0.6.0-linux-amd64.flatpak", "browser_download_url": "https://example.com/amd64.flatpak"},
-			{"name": "mixmusic-0.6.0-linux-arm64.flatpak", "browser_download_url": "https://example.com/arm64.flatpak"},
-			{"name": "mixmusic-0.6.0-linux-arm64.AppImage", "browser_download_url": "https://example.com/arm64.AppImage"}
+			{"name": "mymusic-0.6.0-linux-amd64.flatpak", "browser_download_url": "https://example.com/amd64.flatpak"},
+			{"name": "mymusic-0.6.0-linux-arm64.flatpak", "browser_download_url": "https://example.com/arm64.flatpak"},
+			{"name": "mymusic-0.6.0-linux-arm64.AppImage", "browser_download_url": "https://example.com/arm64.AppImage"}
 		]
 	}`
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,7 @@ func TestLatestReleaseArm64Flatpak(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !r.Newer || r.Download != want || r.File != "mixmusic-0.6.0-linux-"+arch+".flatpak" {
+		if !r.Newer || r.Download != want || r.File != "mymusic-0.6.0-linux-"+arch+".flatpak" {
 			t.Errorf("latestRelease of an %s Flatpak = %+v, want %s", arch, r, want)
 		}
 	}
@@ -47,10 +47,10 @@ func TestReleaseNotesLinkEachFlatpak(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	notes := strings.NewReplacer("{repo}", "fzn0x/mixmusic", "{tag}", "v1.2.3", "{version}", "1.2.3").Replace(string(b))
+	notes := strings.NewReplacer("{repo}", "bigdaddy284/mymusic", "{tag}", "v1.2.3", "{version}", "1.2.3").Replace(string(b))
 	for _, arch := range []string{"amd64", "arm64"} {
 		file := releaseFile("flatpak", "1.2.3", arch)
-		if !strings.Contains(notes, "(https://github.com/fzn0x/mixmusic/releases/download/v1.2.3/"+file+")") {
+		if !strings.Contains(notes, "(https://github.com/bigdaddy284/mymusic/releases/download/v1.2.3/"+file+")") {
 			t.Errorf(".github/release-notes.md links to no %s", file)
 		}
 	}

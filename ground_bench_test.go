@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // BenchmarkGround times a frame of the home page as it scrolls over the

@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // withEngine has TrackInfo see the engine play what l tells, until the
@@ -139,7 +139,7 @@ func TestTrackInfoOfADownload(t *testing.T) {
 	}
 }
 
-// TestTrackInfoOfAStream tells of the stream MixMusic found of a track,
+// TestTrackInfoOfAStream tells of the stream MyMusic found of a track,
 // which it holds, and nothing of a track it found none of.
 func TestTrackInfoOfAStream(t *testing.T) {
 	a := newQuietApp(t, nil)
@@ -162,7 +162,7 @@ func TestTrackInfoOfAStream(t *testing.T) {
 }
 
 // TestTrackInfoOfSpotify tells of a track Spotify's own player plays,
-// which MixMusic hears nothing of, as the settings ask, and as it plays.
+// which MyMusic hears nothing of, as the settings ask, and as it plays.
 func TestTrackInfoOfSpotify(t *testing.T) {
 	a := newQuietApp(t, nil)
 	st := a.settings.Get()
@@ -175,7 +175,7 @@ func TestTrackInfoOfSpotify(t *testing.T) {
 		t.Errorf("on a device: %+v", info)
 	}
 	if info := infoOf(t, a, tr, &player.Source{Mode: player.ModeSpotify, Track: tr}); info.Plays != PlaysSpotify || !info.Playing {
-		t.Errorf("in MixMusic: %+v", info)
+		t.Errorf("in MyMusic: %+v", info)
 	}
 	// Played from YouTube Music, as when no device answers.
 	rec := ytTrack("fffffffffff")

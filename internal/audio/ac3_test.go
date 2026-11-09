@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/ac3"
-	"github.com/fzn0x/mixmusic/mp4"
+	"github.com/bigdaddy284/mymusic/ac3"
+	"github.com/bigdaddy284/mymusic/mp4"
 )
 
 // Test files of 5.1 surround, from mp4's testdata, where the commands that

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestEpisodeDetails reads an episode's details: its show, day and length,

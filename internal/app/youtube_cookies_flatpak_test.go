@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // flatpakFolder makes the folder where a browser's Flatpak keeps its

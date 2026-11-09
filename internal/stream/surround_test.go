@@ -16,7 +16,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // surroundInfo is what yt-dlp prints of a video of stereo and 5.1 audio,

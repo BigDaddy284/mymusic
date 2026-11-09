@@ -15,7 +15,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // ytdlpCalls keeps the arguments of each run of a fake yt-dlp, and has it
@@ -225,7 +225,7 @@ func TestYTDLPSkipsTheQuickRunTheDirectRouteRulesOut(t *testing.T) {
 			t.Errorf("%s: yt-dlp ran %q; want the quick run %v", name, all, c.quick)
 		}
 	}
-	// Without the direct route, as with MIXMUSIC_YTDLP_ONLY, quickly first.
+	// Without the direct route, as with MYMUSIC_YTDLP_ONLY, quickly first.
 	if !quickHelps(nil) || !quickHelps(errDirectPaused) || !quickHelps(context.DeadlineExceeded) {
 		t.Error("no quick run without the direct route's answer")
 	}

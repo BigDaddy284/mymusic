@@ -8,7 +8,7 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // notes is an app with notifications on, the main window, the mini player
@@ -107,7 +107,7 @@ func TestNoNotificationInFront(t *testing.T) {
 }
 
 // TestNotificationBehind tells of the track that starts, and of a like or
-// a dislike, while no window of MixMusic's has the keyboard, open or not.
+// a dislike, while no window of MyMusic's has the keyboard, open or not.
 func TestNotificationBehind(t *testing.T) {
 	n := newNotes(t)
 	n.start()

@@ -14,9 +14,9 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // pywalFile is a colors.json of pywal's, whose background is bg.
@@ -164,7 +164,7 @@ func (c *colorTest) watch() *fakeWatch {
 
 func groundIn(st ColorFileStatus) string { return st.Colors.Mode("dark")["background"] }
 
-// TestColorFileFollows reads the file as MixMusic opens, before its first
+// TestColorFileFollows reads the file as MyMusic opens, before its first
 // frame, then again each time it changes, telling the windows once for
 // each change, and not at all for a write of the same colours.
 func TestColorFileFollows(t *testing.T) {

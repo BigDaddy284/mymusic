@@ -1,4 +1,4 @@
-// Command mixmusic is a desktop music player that brings Spotify and
+// Command mymusic is a desktop music player that brings Spotify and
 // YouTube Music together in one customizable interface.
 package main
 
@@ -12,17 +12,17 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/diag"
-	"github.com/fzn0x/mixmusic/internal/sysproxy"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/diag"
+	"github.com/bigdaddy284/mymusic/internal/sysproxy"
 )
 
 //go:embed brand/tray.png
 var trayIcon []byte
 
 // allowAudio lets pages play sound no click started: the hidden page of
-// MixMusic's own Spotify device gets none. WebView2 takes the arguments of
+// MyMusic's own Spotify device gets none. WebView2 takes the arguments of
 // its browser from this variable, which must be set before its first page.
 func allowAudio() {
 	const name, arg = "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required"
@@ -36,9 +36,9 @@ func allowAudio() {
 const version = "0.5.10"
 
 func main() {
-	// MIXMUSIC_DATA_DIR keeps everything in one folder: a portable copy,
+	// MYMUSIC_DATA_DIR keeps everything in one folder: a portable copy,
 	// or a test run apart from the user's own data.
-	portable := os.Getenv("MIXMUSIC_DATA_DIR")
+	portable := os.Getenv("MYMUSIC_DATA_DIR")
 	if dir := portable; dir != "" {
 		mygo.App.SetPath(mygo.PathUserData, filepath.Join(dir, "data"))
 		mygo.App.SetPath(mygo.PathCache, filepath.Join(dir, "cache"))
@@ -59,7 +59,7 @@ func main() {
 	}
 	logs, lastCrash, err := diag.Start(logsDir, running)
 	if err != nil {
-		log.Printf("mixmusic: writing the log: %v", err)
+		log.Printf("mymusic: writing the log: %v", err)
 		logsDir = ""
 	} else {
 		defer logs.Close()
@@ -106,9 +106,9 @@ func main() {
 // keeps, never its cache, whose files may go, nor the Windows folder that
 // roams. A portable copy keeps them in its own folder.
 //
-//   - Windows: %LocalAppData%\MixMusic\downloads, beside the cache
-//   - macOS: ~/Library/Application Support/MixMusic/downloads
-//   - Linux and others: $XDG_DATA_HOME/MixMusic/downloads, of
+//   - Windows: %LocalAppData%\MyMusic\downloads, beside the cache
+//   - macOS: ~/Library/Application Support/MyMusic/downloads
+//   - Linux and others: $XDG_DATA_HOME/MyMusic/downloads, of
 //     ~/.local/share without it; a relative XDG_DATA_HOME doesn't count,
 //     as the XDG specification says.
 func defaultDownloadsDir(goos, portable, dataDir, cacheDir, home, xdgDataHome string) string {

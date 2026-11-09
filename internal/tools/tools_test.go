@@ -143,7 +143,7 @@ func TestLatestYTDLP(t *testing.T) {
 	if v, err := m.LatestYTDLP(context.Background()); err != nil || v != "2026.09.01" {
 		t.Errorf("LatestYTDLP() = %q, %v", v, err)
 	}
-	// Nothing MixMusic installed: nothing to update.
+	// Nothing MyMusic installed: nothing to update.
 	if updated, err := m.UpdateYTDLP(context.Background()); updated || err != nil {
 		t.Errorf("UpdateYTDLP() = %v, %v without a managed yt-dlp", updated, err)
 	}
@@ -224,7 +224,7 @@ func TestYTDLPToolTellsANewerRelease(t *testing.T) {
 		t.Errorf("a current yt-dlp: %+v", got)
 	}
 	if got := m.ytdlpTool(ctx, m.managedPath(), "2025.01.15"); got.Latest != "2026.09.01" || got.UpdateCommand != "" || !got.Managed {
-		t.Errorf("an old yt-dlp of MixMusic's: %+v", got)
+		t.Errorf("an old yt-dlp of MyMusic's: %+v", got)
 	}
 	if n := asked.Load(); n != 1 {
 		t.Errorf("GitHub was asked %d times, want once", n)
@@ -295,10 +295,10 @@ func TestVersionKept(t *testing.T) {
 }
 
 // TestLiveInstall downloads yt-dlp and runs it. It runs with
-// MIXMUSIC_LIVE=1.
+// MYMUSIC_LIVE=1.
 func TestLiveInstall(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to download yt-dlp")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to download yt-dlp")
 	}
 	m := New(t.TempDir())
 	var last int64

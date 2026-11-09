@@ -1,11 +1,11 @@
 // Spectrum: a radial spectrum of what plays, as a widget of the now playing
-// page. It reads MixMusic's analyser, so it moves for what MixMusic hears:
-// tracks that play in MixMusic, and on Windows Spotify in the Spotify app on
+// page. It reads MyMusic's analyser, so it moves for what MyMusic hears:
+// tracks that play in MyMusic, and on Windows Spotify in the Spotify app on
 // this computer, not on other devices.
 
-import type { MixMusicAPI } from "../../../sdk";
+import type { MyMusicAPI } from "../../../sdk";
 
-export default function activate(api: MixMusicAPI) {
+export default function activate(api: MyMusicAPI) {
   let data = new Uint8Array(0);
 
   api.ui.addWidget({

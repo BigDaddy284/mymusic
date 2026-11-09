@@ -14,7 +14,7 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
 // errNoStore is the credential store's error where there is none.
@@ -235,7 +235,7 @@ func TestSecretSealed(t *testing.T) {
 	// Where sealing fails too, the user hears why in words of their own.
 	k = unavailableKeeper()
 	s = testSecret(t, k, fakeSealer{fail: errors.New("dpapi: Access is denied.")})
-	if err := s.Save(secret); err == nil || !strings.HasPrefix(err.Error(), "Windows did not let MixMusic keep your sign-in: ") {
+	if err := s.Save(secret); err == nil || !strings.HasPrefix(err.Error(), "Windows did not let MyMusic keep your sign-in: ") {
 		t.Errorf("saving gave %v", err)
 	}
 }

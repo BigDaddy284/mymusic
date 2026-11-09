@@ -9,7 +9,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/app"
 )
 
 func init() { addSettings("desktop", 10, (*shell).desktopSettings) }
@@ -28,13 +28,13 @@ func (s *shell) desktopSettings(c *ui.Context) {
 			}, words...)
 		}
 		toggle("tray", "Close to the tray", "Closing the window keeps the music playing; quit from the tray icon.", &s.set.CloseToTray, "minimize background")
-		toggle("media-keys", "Media keys", "The keyboard's play, next and previous keys control MixMusic. Keys of your own that work everywhere are in Settings › Shortcuts.", &s.set.MediaKeys)
-		toggle("notifications", "Notifications", "Tell what starts playing while MixMusic is in the background.", &s.set.Notifications)
+		toggle("media-keys", "Media keys", "The keyboard's play, next and previous keys control MyMusic. Keys of your own that work everywhere are in Settings › Shortcuts.", &s.set.MediaKeys)
+		toggle("notifications", "Notifications", "Tell what starts playing while MyMusic is in the background.", &s.set.Notifications)
 		toggle("title", "Show what plays in the window title", "The window's title names the track that plays, for the taskbar, the window switcher and screen readers.", &s.set.ShowInTitle)
 		toggle("discord", "Show what plays on Discord", "While Discord runs, your profile says what you listen to: you choose its lines, cover, time and button.", &s.set.DiscordPresence)
 		if s.set.DiscordPresence {
 			describe := func() {
-				ui.Text(c, "Discord shows the name of MixMusic's application. To show another, create one in the ")
+				ui.Text(c, "Discord shows the name of MyMusic's application. To show another, create one in the ")
 				s.linkOf(c, "developer portal", "https://discord.com/developers/applications")
 				ui.Text(c, " and paste its application ID.")
 			}
@@ -43,8 +43,8 @@ func (s *shell) desktopSettings(c *ui.Context) {
 					s.set.DiscordAppID = id
 					s.save()
 				})
-				in.Placeholder("MixMusic's").Width(260).Label("Discord application ID")
-			}, "Discord shows the name of MixMusic's application. To show another, create one in the developer portal and paste its application ID.")
+				in.Placeholder("MyMusic's").Width(260).Label("Discord application ID")
+			}, "Discord shows the name of MyMusic's application. To show another, create one in the developer portal and paste its application ID.")
 		}
 		s.settingsOf(c, desktopRows)
 		s.row(c, "Start at login", "", func() {
@@ -64,7 +64,7 @@ func (s *shell) desktopSettings(c *ui.Context) {
 				}()
 			}
 		}, "startup launch")
-		s.row(c, "Settings file", "Your settings, as settings.json in your data folder. Save it while MixMusic runs, and they apply at once.", func() {
+		s.row(c, "Settings file", "Your settings, as settings.json in your data folder. Save it while MyMusic runs, and they apply at once.", func() {
 			if s.button(c, "settings-file-open", "open", false).Clicked() {
 				s.openSettingsFile()
 			}
@@ -270,10 +270,10 @@ var buildNames = map[string]string{
 
 // releaseRow tells whether a newer version is out, and installs it, or
 // offers its download where this copy can't replace itself; once one is
-// installed, it restarts MixMusic.
+// installed, it restarts MyMusic.
 func (s *shell) releaseRow(c *ui.Context, u app.UpdateStatus) {
 	if installed := cmp.Or(s.updated, u.Installed); installed != "" {
-		s.row(c, "MixMusic "+installed+" is installed", "It runs once MixMusic restarts.", func() {
+		s.row(c, "MyMusic "+installed+" is installed", "It runs once MyMusic restarts.", func() {
 			if s.button(c, "restart", "restart now", true).Clicked() {
 				go s.svc.System.Restart()
 			}
@@ -305,7 +305,7 @@ func (s *shell) releaseRow(c *ui.Context, u app.UpdateStatus) {
 		if !u.Enabled {
 			describe = append(describe, replacing(u.Kind, rel.File))
 		}
-		s.row(c, "MixMusic "+rel.Version+" is out", strings.Join(describe, " "), func() {
+		s.row(c, "MyMusic "+rel.Version+" is out", strings.Join(describe, " "), func() {
 			again()
 			if rel.Page != "" && s.button(c, "release-notes", "what's new", false).Clicked() {
 				go s.svc.System.OpenExternal(rel.Page)
@@ -358,7 +358,7 @@ func replacing(kind, file string) string {
 	case "rpm":
 		return "Open " + file + " with your software center, or run sudo dnf install ./" + file + ". Your library and settings stay."
 	case "pacman":
-		// The AUR's mixmusic-bin updates with the system, as pacman's
+		// The AUR's mymusic-bin updates with the system, as pacman's
 		// packages do: no download of the release replaces it.
 		return "Update it as you update your system, with your AUR helper, such as yay -Syu, or with makepkg -si in its AUR folder. Your library and settings stay."
 	case "appimage":
@@ -380,7 +380,7 @@ func replacing(kind, file string) string {
 	if file == "" {
 		return ""
 	}
-	return "MixMusic can't write where it is installed, so it can't replace itself: run " + file + ". Your library and settings stay."
+	return "MyMusic can't write where it is installed, so it can't replace itself: run " + file + ". Your library and settings stay."
 }
 
 // updateOffer offers a new version: to install it, where this copy
@@ -395,7 +395,7 @@ func (s *shell) updateOffer(c *ui.Context) {
 	open := true
 	body := func() {
 		if s.updated != "" {
-			ui.Text(c, "MixMusic "+s.updated+" is installed. It runs once MixMusic restarts.").FontSize(k.bodySize())
+			ui.Text(c, "MyMusic "+s.updated+" is installed. It runs once MyMusic restarts.").FontSize(k.bodySize())
 		} else {
 			if offer.Notes != "" {
 				ui.Text(c, offer.Notes).FontSize(k.bodySize()).MaxLines(8).MaxWidth(520)
@@ -453,7 +453,7 @@ func (s *shell) updateOffer(c *ui.Context) {
 	if s.updating {
 		actions = nil
 	}
-	s.dialog(c, &open, dialogOptions{key: "offer", title: "mixmusic " + offer.Version + " is out", width: 560}, body, actions)
+	s.dialog(c, &open, dialogOptions{key: "offer", title: "mymusic " + offer.Version + " is out", width: 560}, body, actions)
 	if !open && !s.updating {
 		s.dismissOffer(false)
 	}

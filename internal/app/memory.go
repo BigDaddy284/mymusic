@@ -1,9 +1,9 @@
 package app
 
 // Recording memory use (#384): Settings › About › Record memory use has
-// MixMusic write how it uses its memory to memory.log in the logs folder
+// MyMusic write how it uses its memory to memory.log in the logs folder
 // each minute, and save heap profiles there (internal/diag), until it's
-// turned off or MixMusic quits. It is off at each start: nothing keeps it.
+// turned off or MyMusic quits. It is off at each start: nothing keeps it.
 
 import (
 	"errors"
@@ -12,14 +12,14 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/diag"
+	"github.com/bigdaddy284/mymusic/internal/diag"
 )
 
-// errNoLogs is returned where MixMusic keeps no log.
-var errNoLogs = errors.New("MixMusic keeps no log here")
+// errNoLogs is returned where MyMusic keeps no log.
+var errNoLogs = errors.New("MyMusic keeps no log here")
 
 // memoryRecorder returns the recorder of the logs folder, made at its
-// first use, or nil where MixMusic keeps no log.
+// first use, or nil where MyMusic keeps no log.
 func (a *App) memoryRecorder() *diag.MemoryRecorder {
 	if a.opts.LogsDir == "" {
 		return nil
@@ -28,7 +28,7 @@ func (a *App) memoryRecorder() *diag.MemoryRecorder {
 	return a.memory
 }
 
-// RecordMemory turns recording MixMusic's memory use on or off: while on,
+// RecordMemory turns recording MyMusic's memory use on or off: while on,
 // memory.log in the logs folder gets a line of it each minute, and a heap
 // profile once it passes diag.MemoryThreshold.
 func (s *System) RecordMemory(on bool) error {
@@ -39,22 +39,22 @@ func (s *System) RecordMemory(on bool) error {
 	if !on {
 		if r.On() {
 			r.Stop()
-			log.Print("mixmusic: stopped recording memory use")
+			log.Print("mymusic: stopped recording memory use")
 		}
 		return nil
 	}
 	if r.On() {
 		return nil
 	}
-	head := fmt.Sprintf("Recording, MixMusic %s on %s/%s", s.a.version(), runtime.GOOS, runtime.GOARCH)
+	head := fmt.Sprintf("Recording, MyMusic %s on %s/%s", s.a.version(), runtime.GOOS, runtime.GOARCH)
 	if err := r.Start(head); err != nil {
 		return fmt.Errorf("can't record memory use: %w", err)
 	}
-	log.Print("mixmusic: recording memory use in memory.log")
+	log.Print("mymusic: recording memory use in memory.log")
 	return nil
 }
 
-// RecordingMemory reports whether MixMusic records its memory use.
+// RecordingMemory reports whether MyMusic records its memory use.
 func (s *System) RecordingMemory() bool {
 	r := s.a.memoryRecorder()
 	return r != nil && r.On()
@@ -71,7 +71,7 @@ func (s *System) SaveHeapProfile() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("can't save a heap profile: %w", err)
 	}
-	log.Printf("mixmusic: saved a heap profile, %s", name)
+	log.Printf("mymusic: saved a heap profile, %s", name)
 	return name, nil
 }
 
@@ -92,7 +92,7 @@ func (s *System) memoryNote() string {
 		return ""
 	}
 	return "Recording memory use left " + strings.Join(files, ", ") +
-		" in the same folder: they hold only how MixMusic uses its memory, nothing of your music or accounts. Attach them too.\n"
+		" in the same folder: they hold only how MyMusic uses its memory, nothing of your music or accounts. Attach them too.\n"
 }
 
 // stopMemory stops recording memory use, as the app closes.

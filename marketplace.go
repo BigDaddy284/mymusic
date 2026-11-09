@@ -7,7 +7,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/addons"
 )
 
 var marketTabs = []string{"themes", "plugins"}
@@ -36,7 +36,7 @@ func (s *shell) marketplacePage(c *ui.Context, tab string) {
 		}
 		ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 24).Children(func() {
 			ui.Text(c, "Made by the community, reviewed in the open. ")
-			s.linkOf(c, "Share yours", "https://github.com/fzn0x/mixmusic/blob/main/community/README.md")
+			s.linkOf(c, "Share yours", "https://github.com/bigdaddy284/mymusic/blob/main/community/README.md")
 			ui.Text(c, ".")
 		})
 		switch {
@@ -149,7 +149,7 @@ func (s *shell) marketCard(c *ui.Context, kind addons.Kind, e addons.Entry, base
 						s.uninstall(kind, e)
 					}
 				case kind == addons.KindPlugin && e.API != addons.PluginAPI:
-					ui.Text(c, k.sentence("made for an older MixMusic")).FontSize(k.smallSize()).TextColor(k.muted)
+					ui.Text(c, k.sentence("made for an older MyMusic")).FontSize(k.smallSize()).TextColor(k.muted)
 				default:
 					label := "install"
 					switch {

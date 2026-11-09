@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/nowplaying"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/nowplaying"
 )
 
 // TestControlsRateOfEpisode keeps the rate the system's controls ask, while

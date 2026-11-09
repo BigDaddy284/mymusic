@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // moodsBrowseID is the browse ID of the page of one mood or genre, which

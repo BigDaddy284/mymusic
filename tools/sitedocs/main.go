@@ -60,11 +60,11 @@ import (
 type group struct{ id, title string }
 
 // groups are the docs' groups, in the site's order: what a user starts
-// with, what MixMusic does, how it does it, what to make for it, and the
+// with, what MyMusic does, how it does it, what to make for it, and the
 // project.
 var groups = []group{
 	{"start", "Getting started"},
-	{"using", "Using MixMusic"},
+	{"using", "Using MyMusic"},
 	{"inside", "How it works"},
 	{"make", "Make your own"},
 	{"project", "Project"},
@@ -126,7 +126,7 @@ func main() {
 	var o options
 	flag.StringVar(&o.root, "root", ".", "the repository's root")
 	flag.StringVar(&o.out, "out", filepath.Join("site", "content", "docs"), "the folder of the site's docs section, under the root")
-	flag.StringVar(&o.repo, "repo", "https://github.com/fzn0x/mixmusic", "the repository on GitHub")
+	flag.StringVar(&o.repo, "repo", "https://github.com/bigdaddy284/mymusic", "the repository on GitHub")
 	flag.StringVar(&o.branch, "branch", "main", "the branch links to GitHub point at")
 	flag.Parse()
 	docs, err := run(o)

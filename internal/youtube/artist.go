@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Artist returns an artist's page: their top songs, albums, singles and

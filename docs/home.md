@@ -1,7 +1,7 @@
 # Home
 <!-- docs: group=using order=15 -->
 
-Home is where MixMusic opens: your own tiles first, then shelves of what you played and made, and those of YouTube Music and Spotify. You choose which shelves it shows, in which order, and add shelves of your own.
+Home is where MyMusic opens: your own tiles first, then shelves of what you played and made, and those of YouTube Music and Spotify. You choose which shelves it shows, in which order, and add shelves of your own.
 
 ## What it shows
 
@@ -31,7 +31,7 @@ The pivots at the top keep Everything, only Yours, only Spotify's or only YouTub
 
 ## How Home keeps your order
 
-- **Shelves keep their places as the services change theirs.** YouTube Music and Spotify change their shelves from day to day, and name them in your language. MixMusic tells a shelf of YouTube Music by the page its title or its More button opens, Spotify's and your own by what they hold, and only a shelf that opens no page, as Quick picks, by its title, so that a shelf renamed is a new one.
+- **Shelves keep their places as the services change theirs.** YouTube Music and Spotify change their shelves from day to day, and name them in your language. MyMusic tells a shelf of YouTube Music by the page its title or its More button opens, Spotify's and your own by what they hold, and only a shelf that opens no page, as Quick picks, by its title, so that a shelf renamed is a new one.
 - **A service's new shelves** come after the ones you placed, in the service's order.
 - **A shelf the service no longer has** shows nothing, and leaves your order the next time you edit Home. One you hid stays hidden, in case it comes back.
 - **It's kept in settings.json,** as `homeShelves`: each shelf's key, its title as you last arranged Home, and whether you hid it. It goes where your settings go, as when you [bring them to another copy](data-and-privacy.md#clear-move-or-reset).

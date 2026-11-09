@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // fakeYTDLP returns a Run function printing what yt-dlp prints for a

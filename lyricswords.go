@@ -9,8 +9,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // The line sung now of lyrics synced word by word lights up word by word:

@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/discord"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/discord"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The tracks of the Discord status's tests: a song of YouTube Music, with
@@ -25,7 +25,7 @@ var (
 		Artwork: []media.Image{{URL: "https://i.scdn.co/image/ab67", Width: 640}}}
 	statusFile = media.Track{ID: "file:a1b2", Source: media.SourceFile, Title: "Demo",
 		Artists: []media.Ref{{Name: "Me"}}, Album: &media.Ref{Name: "Tapes"}, DurationMs: 120000,
-		Artwork: []media.Image{{URL: "mixmusic-art://local/a1b2"}}}
+		Artwork: []media.Image{{URL: "mymusic-art://local/a1b2"}}}
 )
 
 // statusNow is the clock of the Discord status's tests.

@@ -16,11 +16,11 @@ type Episode struct {
 	// service tells.
 	Released string `json:"released,omitempty"`
 	// ResumeMs is where the user left the episode on its service: only
-	// a sign-in tells, and Spotify's one that lets MixMusic read it.
+	// a sign-in tells, and Spotify's one that lets MyMusic read it.
 	ResumeMs int `json:"resumeMs,omitempty"`
 	// ToldAt is when YouTube Music told ResumeMs and Played, as the
 	// episode was read: zero when it told nothing, as signed out, and for
-	// Spotify's, which a place MixMusic keeps of its own always outranks.
+	// Spotify's, which a place MyMusic keeps of its own always outranks.
 	ToldAt time.Time `json:"toldAt,omitzero"`
 	// Played is set once the user heard the episode to its end, as its
 	// service tells.

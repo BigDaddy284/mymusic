@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // fakeNet is the network as the app tells the player of it: it answers
@@ -116,7 +116,7 @@ func waiting(id string, willPlay bool) func(*Player) bool {
 	}
 }
 
-const offlineNotice = "No network. MixMusic plays on from here once it's back"
+const offlineNotice = "No network. MyMusic plays on from here once it's back"
 
 // TestWaitForTheNetwork has a track that can't be found for want of the
 // network wait for it, without skipping on, and play once it's back.
@@ -346,7 +346,7 @@ func TestWokeRetries(t *testing.T) {
 	useRetries(t, h, "a", len(retryWaits))
 }
 
-// TestSleeping pauses what MixMusic plays itself as the computer goes to
+// TestSleeping pauses what MyMusic plays itself as the computer goes to
 // sleep, but not a Spotify Connect device elsewhere.
 func TestSleeping(t *testing.T) {
 	t.Run("stream", func(t *testing.T) {

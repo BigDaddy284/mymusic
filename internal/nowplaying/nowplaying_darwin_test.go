@@ -37,7 +37,7 @@ func setUp(t *testing.T) {
 		purego.RegisterFunc(&msgString, msgSend)
 		purego.RegisterFunc(&msgImageSized, msgSend)
 		var err error
-		positionEvent, err = objc.RegisterClass("MixMusicTestPositionEvent", objc.GetClass("NSObject"), nil, nil, []objc.MethodDef{{
+		positionEvent, err = objc.RegisterClass("MyMusicTestPositionEvent", objc.GetClass("NSObject"), nil, nil, []objc.MethodDef{{
 			Cmd: sel("positionTime"),
 			Fn:  func(objc.ID, objc.SEL) double { return double{42.5} },
 		}})
@@ -181,7 +181,7 @@ func TestNowPlaying(t *testing.T) {
 	if s.artwork {
 		t.Error("another track kept the artwork of the one before")
 	}
-	// Its cover comes after it, once MixMusic has it.
+	// Its cover comes after it, once MyMusic has it.
 	other.Artwork, other.Cover = "https://example.com/other.png", testCover()
 	c.Show(&other)
 	eventually(t, "Now Playing showing the other track's cover", func() bool { return nowPlaying().artwork })

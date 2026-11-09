@@ -18,8 +18,8 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 const (
@@ -167,7 +167,7 @@ func (t *translations) resume() {
 // language to, a code of ISO 639-1, with their romanization: the one kept
 // on disk when there is one, else Unison's, which it then keeps. Unison
 // gets the lines of the lyrics, their language when known, and the
-// track's video ID when MixMusic knows it.
+// track's video ID when MyMusic knows it.
 //
 // After Unison said its translation was rate limited, it isn't asked
 // again for a while, from 30 seconds to 10 minutes, unless TranslateAgain
@@ -187,11 +187,11 @@ func (c *Catalog) TranslateLyrics(ctx context.Context, track media.Track, l lyri
 	tr, err := c.a.unison.Translate(ctx, lines, to, l.Language, c.videoID(track))
 	c.a.translations.answered(err)
 	if err != nil {
-		log.Printf("mixmusic: the translation of the lyrics of %s: %v", track.ID, err)
+		log.Printf("mymusic: the translation of the lyrics of %s: %v", track.ID, err)
 		return lyrics.Translation{}, translationError{err}
 	}
 	if err := c.a.translations.put(key, tr); err != nil {
-		log.Printf("mixmusic: keeping the translation of the lyrics of %s: %v", track.ID, err)
+		log.Printf("mymusic: keeping the translation of the lyrics of %s: %v", track.ID, err)
 	}
 	return tr, nil
 }
@@ -209,7 +209,7 @@ func (e translationError) Unwrap() error { return e.err }
 
 // Language returns the language the user reads, which lyrics translate to
 // unless they chose another: the system's first preferred language, as a
-// code to translate into, as "en" or "zh-Hant"; English before MixMusic
+// code to translate into, as "en" or "zh-Hant"; English before MyMusic
 // runs.
 func (s *System) Language() string {
 	if !mygo.App.IsReady() {

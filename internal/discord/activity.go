@@ -35,7 +35,7 @@ const (
 )
 
 // Activity is what the user's Discord profile shows them doing: for
-// MixMusic, the track playing.
+// MyMusic, the track playing.
 //
 // Discord takes texts of 2 to 128 characters. The client pads a text of
 // one character with a space, cuts a longer text with an ellipsis, and

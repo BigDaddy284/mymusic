@@ -3,7 +3,7 @@ package youtube
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 func TestParseShelves(t *testing.T) {

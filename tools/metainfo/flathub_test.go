@@ -10,7 +10,7 @@ import (
 
 // flathubTemplate is the metadata of Flathub's build, which its build.sh
 // fills with -template.
-const flathubTemplate = "packaging/flathub/io.github.fzn0x.mixmusic.metainfo.xml"
+const flathubTemplate = "packaging/flathub/io.github.bigdaddy284.mymusic.metainfo.xml"
 
 // Flathub's metadata fills as the release's Flatpak's does, with what
 // Flathub asks for besides: brand colours for light and dark, and
@@ -45,7 +45,7 @@ func TestFlathubMetainfo(t *testing.T) {
 	if err := xml.Unmarshal([]byte(meta), &c); err != nil {
 		t.Fatalf("the metadata isn't XML: %v", err)
 	}
-	const id = "io.github.fzn0x.mixmusic"
+	const id = "io.github.bigdaddy284.mymusic"
 	if c.ID != id || c.Launchable != id+".desktop" || c.Developer == "" || len(c.Releases) == 0 || c.Rating == "" {
 		t.Errorf("id %q, launchable %q, developer %q, %d releases, rating %q", c.ID, c.Launchable, c.Developer, len(c.Releases), c.Rating)
 	}
@@ -59,7 +59,7 @@ func TestFlathubMetainfo(t *testing.T) {
 		t.Errorf("brand colours %+v, want one for light and one for dark", c.Colors)
 	}
 	// A commit of the repository, not a branch.
-	pinned := regexp.MustCompile(`^https://raw\.githubusercontent\.com/fzn0x/mixmusic/[0-9a-f]{40}/docs/shots/[a-z-]+\.(png|webp)$`)
+	pinned := regexp.MustCompile(`^https://raw\.githubusercontent\.com/bigdaddy284/mymusic/[0-9a-f]{40}/docs/shots/[a-z-]+\.(png|webp)$`)
 	if len(c.Shots) == 0 || c.Shots[0].Type != "default" {
 		t.Errorf("screenshots %+v, want the default first", c.Shots)
 	}

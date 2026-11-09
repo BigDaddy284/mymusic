@@ -3,12 +3,12 @@
 - **`internal/player`** plays the queue: one goroutine owns the queue and
   what plays, and the network calls run beside it. It plays YouTube Music,
   and Spotify tracks matched to their recording, through the engine, and
-  Spotify tracks on a Spotify device: a Spotify Connect device, or MixMusic
+  Spotify tracks on a Spotify device: a Spotify Connect device, or MyMusic
   itself, as below. It shuffles, repeats, crossfades, starts radios when the
   queue runs out, or at once after a suggested song (`PlayWithRadio`),
   passes over the songs the user dislikes but those they
   pick, counts plays and keeps up to 500 tracks of the queue,
-  around the one playing, in `queue.json`, as it changes and as MixMusic
+  around the one playing, in `queue.json`, as it changes and as MyMusic
   quits. A track that can't play for want of the network gives way at once
   to the next that plays without it, a download or a track the offline
   cache holds, as the app tells; once none is left, it waits for the
@@ -26,11 +26,11 @@
   asks what the device plays, and waits for its reports, which lag the
   commands, to settle. A track ends when the device stops on it, goes back
   to its start, plays another track, or tells it plays on well past the
-  track's end: MixMusic's own device, given a track with nothing after it,
+  track's end: MyMusic's own device, given a track with nothing after it,
   may stay on it once it ended, its position counting on (#373). The time
   shown never passes the track's end.
 - **Failures** (`failures.go`): the player keeps the last 10 tracks that
-  couldn't play, until MixMusic quits (`Failures`, `FailureOf`), and the
+  couldn't play, until MyMusic quits (`Failures`, `FailureOf`), and the
   notice of each names its own (`Notice.Failure`). Each holds the steps
   tried of the track since it loaded, in turn, with why each failed: the
   Spotify device it fell back from (`fellBack`), the 5.1 audio it gave

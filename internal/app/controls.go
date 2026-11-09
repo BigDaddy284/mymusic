@@ -1,6 +1,6 @@
 package app
 
-// The system's media controls show what MixMusic's own audio engine plays,
+// The system's media controls show what MyMusic's own audio engine plays,
 // which they control: a Spotify device shows there what it plays itself.
 
 import (
@@ -11,16 +11,16 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/nowplaying"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/nowplaying"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
-// controls shows what MixMusic's own audio engine plays in the system's
+// controls shows what MyMusic's own audio engine plays in the system's
 // media controls, and passes on what they ask, as the media keys do.
 type controls struct {
 	mu sync.Mutex
 	c  *nowplaying.Controls
-	// tried is set once MixMusic reached for the system's controls.
+	// tried is set once MyMusic reached for the system's controls.
 	tried bool
 	// native is set while the engine has the player's track.
 	native bool
@@ -41,7 +41,7 @@ var controlCommands = map[nowplaying.Command]Command{
 	nowplaying.Previous: CommandPrevious,
 }
 
-// setNative tells whether MixMusic's own audio engine has the player's
+// setNative tells whether MyMusic's own audio engine has the player's
 // track, from its load to its stop.
 func (a *App) setNative(on bool) {
 	a.controls.mu.Lock()
@@ -81,7 +81,7 @@ func (a *App) showControls() {
 			c.c = ctl
 			c.covers = a.newControlsCovers(a.showControls)
 		case !errors.Is(err, nowplaying.ErrUnsupported):
-			log.Printf("mixmusic: the system's media controls: %v", err)
+			log.Printf("mymusic: the system's media controls: %v", err)
 		}
 	}
 	if c.c == nil {
@@ -151,7 +151,7 @@ func (a *App) setSpeed(speed float64) {
 	}
 	*kept = speed
 	if _, err := (&Preferences{a}).Set(st); err != nil {
-		log.Printf("mixmusic: keeping the speed: %v", err)
+		log.Printf("mymusic: keeping the speed: %v", err)
 	}
 }
 

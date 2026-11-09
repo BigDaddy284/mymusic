@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // The queue's slice is never changed in place: State shares it.

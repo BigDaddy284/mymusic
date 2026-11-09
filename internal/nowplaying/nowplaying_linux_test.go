@@ -265,12 +265,12 @@ func TestMPRIS(t *testing.T) {
 		Playing:  true,
 		Volume:   0.5,
 		// Desktops read the cover from its file, never from the network.
-		CoverFile: "/home/ann/.cache/MixMusic/now-playing/a b#1.jpg",
+		CoverFile: "/home/ann/.cache/MyMusic/now-playing/a b#1.jpg",
 	}
 	c.Show(&info)
 	eventually(t, "the player on the bus", func() bool { return b.hasOwner(busName) })
 
-	if got := b.getString(busName, rootInterface, "Identity"); got != "MixMusic" {
+	if got := b.getString(busName, rootInterface, "Identity"); got != "MyMusic" {
 		t.Errorf("Identity %q", got)
 	}
 	if got := b.getString(busName, rootInterface, "DesktopEntry"); got != desktopEntry {
@@ -313,7 +313,7 @@ func TestMPRIS(t *testing.T) {
 	if got := str("xesam:album"); got != "Album" {
 		t.Errorf("xesam:album %q", got)
 	}
-	if got := str("mpris:artUrl"); got != "file:///home/ann/.cache/MixMusic/now-playing/a%20b%231.jpg" {
+	if got := str("mpris:artUrl"); got != "file:///home/ann/.cache/MyMusic/now-playing/a%20b%231.jpg" {
 		t.Errorf("mpris:artUrl %q", got)
 	}
 	if v := gVariantLookupValue(md, "mpris:length", 0); v == 0 || gVariantGetInt64(v) != 200e6 {

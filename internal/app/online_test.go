@@ -11,12 +11,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/online"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/online"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // ytdlpUnreachable is how yt-dlp 2026.10.26 fails when it can't open a

@@ -6,8 +6,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // librarySections are the library's pivots, by their paths' last part.

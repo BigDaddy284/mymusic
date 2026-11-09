@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // longPlaylist answers YouTube Music's requests for a playlist with the
@@ -160,7 +160,7 @@ func TestPlaylistReadOn(t *testing.T) {
 		t.Errorf("the playlist's count is %d, not its header's", p.TrackCount)
 	}
 
-	// A mix of MixMusic's own has no pages.
+	// A mix of MyMusic's own has no pages.
 	local := media.Playlist{ID: "mx:1", Source: media.SourceLocal, Tracks: []media.Track{{ID: "yt:1"}}}
 	if got, err := c.ReadOn(ctx, local, nil); err != nil || len(got.Tracks) != 1 {
 		t.Errorf("a mix: %+v, %v", got, err)

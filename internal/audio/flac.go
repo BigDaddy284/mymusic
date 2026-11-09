@@ -3,7 +3,7 @@ package audio
 import (
 	"io"
 
-	"github.com/fzn0x/mixmusic/flac"
+	"github.com/bigdaddy284/mymusic/flac"
 )
 
 // flacCodec decodes the FLAC of a file kept on a computer.

@@ -17,9 +17,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/fzn0x/mixmusic/internal/artwork"
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 const (
@@ -31,7 +31,7 @@ const (
 	maxCoverPixels = 80_000_000
 )
 
-// errNotCover is an image file MixMusic doesn't make covers of.
+// errNotCover is an image file MyMusic doesn't make covers of.
 var errNotCover = errors.New("a cover is a PNG, JPEG or WebP image")
 
 // mixCovers is the folder of the covers chosen for mixes.

@@ -13,10 +13,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // releaseDay is the day the release tests run on.
@@ -217,7 +217,7 @@ func TestNewReleasesBounded(t *testing.T) {
 }
 
 // TestNewReleasesUnfollowed forgets the releases of an artist the user
-// stops following, at once in MixMusic, and at the next look on a
+// stops following, at once in MyMusic, and at the next look on a
 // service.
 func TestNewReleasesUnfollowed(t *testing.T) {
 	now := releaseDay
@@ -252,7 +252,7 @@ func TestNewReleasesUnfollowed(t *testing.T) {
 	}
 }
 
-// TestFollowedArtists gathers the artists followed in MixMusic, then on
+// TestFollowedArtists gathers the artists followed in MyMusic, then on
 // Spotify, each once, and keeps the releases of the artists of a service
 // whose list doesn't read.
 func TestFollowedArtists(t *testing.T) {

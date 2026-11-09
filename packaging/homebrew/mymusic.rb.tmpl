@@ -1,0 +1,43 @@
+# Written for each release by tools/cask of github.com/bigdaddy284/mymusic, from
+# packaging/homebrew/mymusic.rb.tmpl: change that, not this.
+cask "mymusic" do
+  version "{{.Version}}"
+  sha256 "{{.SHA256}}"
+
+  url "https://github.com/bigdaddy284/mymusic/releases/download/v#{version}/mymusic-#{version}-macos-universal.dmg",
+      verified: "github.com/bigdaddy284/mymusic/"
+  name "MyMusic"
+  desc "Spotify and YouTube Music in one customizable player"
+  homepage "https://bigdaddy284.github.io/mymusic/"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  # No auto_updates, though MyMusic updates itself: `brew upgrade` updates
+  # it too.
+  depends_on macos: ">= :monterey"
+
+  app "MyMusic.app"
+
+  zap trash: [
+    "~/Library/Application Support/MyMusic",
+    "~/Library/Caches/app.mymusic.desktop",
+    "~/Library/Caches/MyMusic",
+    "~/Library/HTTPStorages/app.mymusic.desktop",
+    "~/Library/Logs/MyMusic",
+    "~/Library/Preferences/app.mymusic.desktop.plist",
+    "~/Library/Saved Application State/app.mymusic.desktop.savedState",
+    "~/Library/WebKit/app.mymusic.desktop",
+  ]
+{{- if not .Notarized}}
+
+  caveats <<~EOS
+    MyMusic is not notarized by Apple yet, so macOS can't check it and
+    blocks it the first time you open it. Allow it once in System Settings ›
+    Privacy & Security › Open Anyway, or run:
+      xattr -dr com.apple.quarantine #{appdir}/MyMusic.app
+  EOS
+{{- end}}
+end

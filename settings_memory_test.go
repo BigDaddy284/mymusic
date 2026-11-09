@@ -10,8 +10,8 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-// TestRecordMemoryRow records MixMusic's memory use from Settings › About:
-// a switch under the MixMusic group, off at first, which the keyboard
+// TestRecordMemoryRow records MyMusic's memory use from Settings › About:
+// a switch under the MyMusic group, off at first, which the keyboard
 // reaches; while it's on, Save a heap profile saves one in the logs
 // folder, which a toast names. A search for "memory" or "heap" finds it.
 func TestRecordMemoryRow(t *testing.T) {

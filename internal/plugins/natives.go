@@ -8,8 +8,8 @@ import (
 
 	"github.com/grafana/sobek"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // nameRe matches the names of pages, which are parts of their paths, and
@@ -228,7 +228,7 @@ func themeJSON(t Theme) map[string]any {
 	}
 }
 
-// analyserObject is the analyser of MixMusic's own player, for
+// analyserObject is the analyser of MyMusic's own player, for
 // visualizers: an object with the reading methods and properties of Web
 // Audio's AnalyserNode, of fftSize 256.
 func (pl *plugin) analyserObject() sobek.Value {

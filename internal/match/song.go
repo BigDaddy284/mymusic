@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // Song returns the song of a music video: the one of YouTube Music's songs

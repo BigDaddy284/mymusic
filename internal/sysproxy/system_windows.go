@@ -29,7 +29,7 @@ var (
 	procRegNotifyChangeKeyValue = advapi32.NewProc("RegNotifyChangeKeyValue")
 
 	// winhttp.dll is loaded from System32 by its full path: the syscall
-	// package looks for a library it doesn't load itself in MixMusic's
+	// package looks for a library it doesn't load itself in MyMusic's
 	// folder too.
 	winhttp                                   = syscall.NewLazyDLL(filepath.Join(systemDirectory(), "winhttp.dll"))
 	procWinHttpGetIEProxyConfigForCurrentUser = winhttp.NewProc("WinHttpGetIEProxyConfigForCurrentUser")
@@ -102,7 +102,7 @@ var setupFailures = map[syscall.Errno]string{
 func install() {
 	s, err := readSettings()
 	if err != nil {
-		logf("mixmusic: reading the proxy settings: %v", err)
+		logf("mymusic: reading the proxy settings: %v", err)
 	}
 	use(s)
 	go watch()
@@ -116,7 +116,7 @@ func use(s Settings) {
 	p := NewPicker(s)
 	p.auto = func(target string) (string, string, bool, error) { return askWinHTTP(s, target) }
 	current.Store(p)
-	logf("mixmusic: the proxy settings: %s", s)
+	logf("mymusic: the proxy settings: %s", s)
 }
 
 // readSettings reads the proxy setup of Windows' settings for the user.
@@ -148,7 +148,7 @@ func takeString(p *uint16) string {
 
 // session is the WinHTTP session automatic setup asks with, opened once.
 var session = sync.OnceValues(func() (uintptr, error) {
-	agent, _ := syscall.UTF16PtrFromString("MixMusic")
+	agent, _ := syscall.UTF16PtrFromString("MyMusic")
 	h, _, err := procWinHttpOpen.Call(uintptr(unsafe.Pointer(agent)), winhttpAccessTypeNoProxy, 0, 0, 0)
 	if h == 0 {
 		return 0, err
@@ -207,7 +207,7 @@ func askWinHTTP(s Settings, target string) (proxy, bypass string, global bool, e
 }
 
 // watch reads the settings again each time they change: proxy and VPN
-// apps turn the proxy on and off while MixMusic runs.
+// apps turn the proxy on and off while MyMusic runs.
 func watch() {
 	// The change is told to the thread that asked, on Windows before 8:
 	// this goroutine keeps its thread, and never ends.
@@ -215,18 +215,18 @@ func watch() {
 	path, _ := syscall.UTF16PtrFromString(`Software\Microsoft\Windows\CurrentVersion\Internet Settings`)
 	var key syscall.Handle
 	if err := syscall.RegOpenKeyEx(syscall.HKEY_CURRENT_USER, path, 0, syscall.KEY_NOTIFY, &key); err != nil {
-		logf("mixmusic: following the proxy settings: %v", err)
+		logf("mymusic: following the proxy settings: %v", err)
 		return
 	}
 	event, _, err := procCreateEventW.Call(0, 0, 0, 0)
 	if event == 0 {
-		logf("mixmusic: following the proxy settings: %v", err)
+		logf("mymusic: following the proxy settings: %v", err)
 		return
 	}
 	for {
 		// Listen first, then read: a change while reading is heard.
 		if r, _, _ := procRegNotifyChangeKeyValue.Call(uintptr(key), 1, regNotify, event, 1); r != 0 {
-			logf("mixmusic: following the proxy settings: %v", syscall.Errno(r))
+			logf("mymusic: following the proxy settings: %v", syscall.Errno(r))
 			return
 		}
 		if s, err := readSettings(); err == nil {

@@ -207,7 +207,7 @@ func pulseQuery(start func(c uintptr) uintptr) ([]pulseSink, bool) {
 		return nil, false
 	}
 	defer paMainloopFree(m)
-	c := paContextNew(paMainloopGetAPI(m), cstr("MixMusic"))
+	c := paContextNew(paMainloopGetAPI(m), cstr("MyMusic"))
 	if c == 0 {
 		return nil, false
 	}
@@ -448,7 +448,7 @@ func openPulse(sink string, channels int) (*pulseDevice, error) {
 		dev = cstr(sink)
 	}
 	var code int32
-	s := paSimpleNew(nil, cstr("MixMusic"), paStreamPlayback, dev, cstr("Music"), &spec, chmap, unsafe.Pointer(&attr), &code)
+	s := paSimpleNew(nil, cstr("MyMusic"), paStreamPlayback, dev, cstr("Music"), &spec, chmap, unsafe.Pointer(&attr), &code)
 	if s == 0 {
 		if ch == Surround {
 			return openPulse(sink, 2)

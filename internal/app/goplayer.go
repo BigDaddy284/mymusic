@@ -1,7 +1,7 @@
 package app
 
 // The player: the queue played in Go (internal/player), through
-// MixMusic's own audio engine and Spotify's devices, with the services of
+// MyMusic's own audio engine and Spotify's devices, with the services of
 // Player.
 
 import (
@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // GoPlayer returns the native interface's player, or nil while the web
@@ -57,7 +57,7 @@ func (a *App) applyEngine(s settings.Settings) {
 	if e == nil {
 		return
 	}
-	// The volume's curve, on which Spotify in MixMusic plays too
+	// The volume's curve, on which Spotify in MyMusic plays too
 	// (hereDevice.gain).
 	e.SetVolumeCurve(s.VolumeCurve)
 	var gains [len(audio.Bands)]float64
@@ -104,7 +104,7 @@ func (a *App) commandGoPlayer(p *player.Player, cmd PlayerCommand) {
 			}
 			go func() {
 				if err := (&Collection{a}).SetLiked(context.Background(), cur.Track, !liked); err != nil {
-					log.Printf("mixmusic: liking %s: %v", cur.Track.ID, err)
+					log.Printf("mymusic: liking %s: %v", cur.Track.ID, err)
 					return
 				}
 				a.notifyLiked(cur.Track, !liked)
@@ -127,7 +127,7 @@ func (a *App) dislikeGoPlayer(p *player.Player, t media.Track, disliked bool) {
 	p.Disliked(t.ID, disliked)
 	go func() {
 		if err := (&Collection{a}).SetDisliked(context.Background(), t, disliked); err != nil {
-			log.Printf("mixmusic: disliking %s: %v", t.ID, err)
+			log.Printf("mymusic: disliking %s: %v", t.ID, err)
 			p.Disliked(t.ID, !disliked)
 			return
 		}
@@ -157,7 +157,7 @@ func (s playerServices) StreamFailure(t media.Track) string { return (&Player{s.
 
 func (s playerServices) RecordPlay(t media.Track) {
 	if err := (&Collection{s.a}).RecordPlay(t); err != nil {
-		log.Printf("mixmusic: counting a play of %s: %v", t.ID, err)
+		log.Printf("mymusic: counting a play of %s: %v", t.ID, err)
 	}
 }
 
@@ -194,7 +194,7 @@ func (s playerServices) Settings() settings.Settings { return s.a.settings.Get()
 
 func (s playerServices) SaveVolume(v float64) {
 	if _, err := (&Preferences{s.a}).Update(func(st *settings.Settings) { st.Volume = v }); err != nil {
-		log.Printf("mixmusic: keeping the volume: %v", err)
+		log.Printf("mymusic: keeping the volume: %v", err)
 	}
 }
 
@@ -222,7 +222,7 @@ func (s playerServices) SaveQueue(saved player.Saved) {
 		*v = saved
 		return nil
 	}); err != nil {
-		log.Printf("mixmusic: keeping the queue: %v", err)
+		log.Printf("mymusic: keeping the queue: %v", err)
 	}
 }
 
@@ -343,7 +343,7 @@ func (a *App) InstallYTDLP(ctx context.Context, progress func(done, total int64)
 
 // InstallUpdate downloads the newest version, checks its signature and
 // puts it in place of this one, telling progress how far its download
-// went. It returns the version installed, which runs once MixMusic
+// went. It returns the version installed, which runs once MyMusic
 // restarts.
 func (a *App) InstallUpdate(ctx context.Context, progress func(done, total int64)) (string, error) {
 	return a.installUpdate(ctx, progress)

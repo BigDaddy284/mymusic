@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // TestLyricsRomaji writes Japanese lyrics in romaji on the computer: the

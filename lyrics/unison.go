@@ -97,7 +97,7 @@ func (u *Unison) Get(ctx context.Context, t Query) (Lyrics, error) {
 	}
 	l, err := readUnison(ans.Data.Lyrics, ans.Data.Format)
 	if err != nil {
-		// Lyrics MixMusic can't read are as good as none.
+		// Lyrics MyMusic can't read are as good as none.
 		return Lyrics{}, fmt.Errorf("%w: %w", ErrNotFound, err)
 	}
 	if len(l.Lines) == 0 {

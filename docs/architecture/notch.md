@@ -1,6 +1,6 @@
 # The player around the notch
 
-On a MacBook whose screen has a notch, MixMusic widens the camera housing
+On a MacBook whose screen has a notch, MyMusic widens the camera housing
 with what plays, and a panel grows down from it with the player and the
 lyrics (#46). It is a window of its own, as the mini player is: `notch.go`
 opens it with a `shell` of its own, and keeps its state in a `notch`.
@@ -12,7 +12,7 @@ opens it with a `shell` of its own, and keeps its state in a `notch`.
   follows the player's events, the settings (from settings.json too) and
   `mygo.Screen.OnDisplaysChanged`, which closes it and opens it again at
   the housing's new place. It closes with the main window, so it alone
-  never keeps MixMusic running. `System.OpenMainWindow` shows the main
+  never keeps MyMusic running. `System.OpenMainWindow` shows the main
   window, at a page through `navigateTo`, and leaves the other windows
   open.
 - **The housing** (`notchplace.go`, `notch_darwin.go`): each `NSScreen`
@@ -29,7 +29,7 @@ opens it with a `shell` of its own, and keeps its state in a `notch`.
   `canHide` off; no animation of its own; and `becomesKeyOnlyIfNeeded`
   while compact, so that a click on it leaves the keyboard where it was.
   MyGo tracks the pointer only while the app is active, which the panel
-  never makes MixMusic: `notch_darwin.go` adds a tracking area that is
+  never makes MyMusic: `notch_darwin.go` adds a tracking area that is
   always on, for hover and the close countdown.
 - **Motion**: the window keeps the open size while the panel moves, and
   the root's `Draw` paints the black, whose size `AnimateTo` moves; the

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestFollowArtists keeps the artists followed, without the sections of

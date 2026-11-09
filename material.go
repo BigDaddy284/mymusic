@@ -3,17 +3,17 @@ package main
 // The Material themes' colours: the scheme of Material's core palettes of
 // a seed colour, made in HCT (internal/hct). The seed is the artwork's colour
 // while it plays, as Material's dynamic colour takes the wallpaper's, the
-// accent the user chose, or MixMusic's pink.
+// accent the user chose, or MyMusic's pink.
 
 import (
 	"image/color"
 	"sync"
 
-	"github.com/fzn0x/mixmusic/internal/hct"
+	"github.com/bigdaddy284/mymusic/internal/hct"
 )
 
 // materialSeed is the seed of the Material themes' own scheme: the pink of
-// MixMusic's mark.
+// MyMusic's mark.
 var materialSeed = color.NRGBA{R: 0xe6, G: 0x00, B: 0x7e, A: 0xff}
 
 // materialColors are the colours of a Material scheme: the theme's

@@ -7,9 +7,9 @@
   builds of the workflows do before flatpak-builder.
 -->
 <component type="desktop-application">
-  <id>io.github.fzn0x.mixmusic</id>
+  <id>io.github.bigdaddy284.mymusic</id>
 
-  <name>MixMusic</name>
+  <name>MyMusic</name>
   <summary>Play YouTube Music and Spotify</summary>
 
   <metadata_license>CC0-1.0</metadata_license>
@@ -21,7 +21,7 @@
 
   <description>
     <p>
-      MixMusic plays YouTube Music and Spotify in one player, with one
+      MyMusic plays YouTube Music and Spotify in one player, with one
       search, one queue and one library for both.
     </p>
     <ul>
@@ -33,34 +33,34 @@
       <li>Media keys, the desktop's media controls, Last.fm and Discord</li>
     </ul>
     <p>
-      MixMusic has no account, server, analytics or telemetry of its own.
+      MyMusic has no account, server, analytics or telemetry of its own.
       It is not affiliated with, endorsed by or sponsored by Spotify or
       Google.
     </p>
   </description>
 
-  <launchable type="desktop-id">io.github.fzn0x.mixmusic.desktop</launchable>
+  <launchable type="desktop-id">io.github.bigdaddy284.mymusic.desktop</launchable>
 
-  <url type="homepage">https://fzn0x.github.io/mixmusic/</url>
-  <url type="bugtracker">https://github.com/fzn0x/mixmusic/issues</url>
-  <url type="vcs-browser">https://github.com/fzn0x/mixmusic</url>
-  <url type="contribute">https://github.com/fzn0x/mixmusic/blob/main/CONTRIBUTING.md</url>
+  <url type="homepage">https://bigdaddy284.github.io/mymusic/</url>
+  <url type="bugtracker">https://github.com/bigdaddy284/mymusic/issues</url>
+  <url type="vcs-browser">https://github.com/bigdaddy284/mymusic</url>
+  <url type="contribute">https://github.com/bigdaddy284/mymusic/blob/main/CONTRIBUTING.md</url>
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/main/packaging/flatpak/screenshots/now-playing.png</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/main/packaging/flatpak/screenshots/now-playing.png</image>
       <caption>Now playing, with synced lyrics and the queue</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/main/packaging/flatpak/screenshots/home.png</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/main/packaging/flatpak/screenshots/home.png</image>
       <caption>Home</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/main/packaging/flatpak/screenshots/search.png</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/main/packaging/flatpak/screenshots/search.png</image>
       <caption>One search across both services</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/main/packaging/flatpak/screenshots/themes.png</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/main/packaging/flatpak/screenshots/themes.png</image>
       <caption>Themes</caption>
     </screenshot>
   </screenshots>

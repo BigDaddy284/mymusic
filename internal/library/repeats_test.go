@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestAddNewToPlaylist adds the tracks a mix doesn't hold, and tells which

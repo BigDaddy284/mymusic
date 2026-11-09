@@ -22,7 +22,7 @@ const changelog = `# Changelog
 ## [1.2.0] - 2026-11-30
 
 A **new** [About page](https://example.com) for <kbd>Ctrl</kbd> K, and
-` + "`flatpak install`" + ` that works: R&D <done>. MixMusic 0.3.0 and later
+` + "`flatpak install`" + ` that works: R&D <done>. MyMusic 0.3.0 and later
 offer this version in Settings › About.
 
 ### Fixed
@@ -35,8 +35,8 @@ offer this version in Settings › About.
 
 - No summary above.
 
-[Unreleased]: https://github.com/fzn0x/mixmusic/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/fzn0x/mixmusic/compare/v1.1.0...v1.2.0
+[Unreleased]: https://github.com/bigdaddy284/mymusic/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/bigdaddy284/mymusic/compare/v1.1.0...v1.2.0
 `
 
 func TestReleases(t *testing.T) {
@@ -65,13 +65,13 @@ func TestMetainfo(t *testing.T) {
   <id>x</id>
   <releases>
     <release version="1.2.0" date="2026-11-30">
-      <url type="details">https://github.com/fzn0x/mixmusic/releases/tag/v1.2.0</url>
+      <url type="details">https://github.com/bigdaddy284/mymusic/releases/tag/v1.2.0</url>
       <description>
         <p>A new About page for Ctrl K, and flatpak install that works: R&amp;D .</p>
       </description>
     </release>
     <release version="1.1.0" date="2026-10-01">
-      <url type="details">https://github.com/fzn0x/mixmusic/releases/tag/v1.1.0</url>
+      <url type="details">https://github.com/bigdaddy284/mymusic/releases/tag/v1.1.0</url>
     </release>
   </releases>
 </component>
@@ -120,7 +120,7 @@ func TestFlatpakFiles(t *testing.T) {
 	if err := xml.Unmarshal([]byte(meta), &c); err != nil {
 		t.Fatalf("the metadata isn't XML: %v", err)
 	}
-	const id = "io.github.fzn0x.mixmusic"
+	const id = "io.github.bigdaddy284.mymusic"
 	if c.ID != id || c.Launchable != id+".desktop" {
 		t.Errorf("id %q, launchable %q", c.ID, c.Launchable)
 	}
@@ -148,7 +148,7 @@ func TestFlatpakFiles(t *testing.T) {
 	}
 
 	manifest := read("packaging/flatpak/" + id + ".yml")
-	for _, want := range []string{"\nid: " + id + "\n", "\ncommand: mixmusic\n", "/app/share/applications/" + id + ".desktop"} {
+	for _, want := range []string{"\nid: " + id + "\n", "\ncommand: mymusic\n", "/app/share/applications/" + id + ".desktop"} {
 		if !strings.Contains(manifest, want) {
 			t.Errorf("the manifest lacks %q", strings.TrimSpace(want))
 		}

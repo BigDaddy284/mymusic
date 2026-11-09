@@ -1,6 +1,6 @@
-// Command flathub writes what the manifest of Flathub's build of MixMusic
+// Command flathub writes what the manifest of Flathub's build of MyMusic
 // (packaging/flathub) needs beside it: go-modules.json, the sources of the
-// Go modules MixMusic is built with, which flatpak-builder downloads from
+// Go modules MyMusic is built with, which flatpak-builder downloads from
 // the Go module proxy into vendor/ before the build, which runs without
 // the network, with vendor/modules.txt as go mod vendor writes it. It
 // downloads each module once and checks it against go.sum.
@@ -10,7 +10,7 @@
 //
 // With -o, it writes the folder of a Flathub repository instead: the
 // manifest, go-modules.json, and Flathub's shared modules, of the git
-// submodule of packaging/flatpak. The manifest's MixMusic is this checkout,
+// submodule of packaging/flatpak. The manifest's MyMusic is this checkout,
 // in that folder too, unless -commit or -tag names a commit of GitHub's
 // repository, as Flathub builds; -tag adds the check of Flathub's bot for
 // the next release. The flathub workflow builds such a folder.
@@ -46,14 +46,14 @@ const (
 	// dir is the folder of Flathub's manifest, from the root.
 	dir = "packaging/flathub"
 	// manifest is its name, the app's ID.
-	manifest = "io.github.fzn0x.mixmusic.yml"
+	manifest = "io.github.bigdaddy284.mymusic.yml"
 	// sourcesFile is the file of the Go modules' sources, beside it.
 	sourcesFile = "go-modules.json"
 	// sharedModules is the folder of Flathub's shared modules, the git
 	// submodule the release's Flatpak takes the tray's library from.
 	sharedModules = "packaging/flatpak/shared-modules"
-	// repository is MixMusic's, which Flathub's copy builds a commit of.
-	repository = "https://github.com/fzn0x/mixmusic.git"
+	// repository is MyMusic's, which Flathub's copy builds a commit of.
+	repository = "https://github.com/bigdaddy284/mymusic.git"
 	// proxy serves the modules' zip files, as go.sum hashes them.
 	proxy = "https://proxy.golang.org/"
 )
@@ -122,7 +122,7 @@ func sources(root string, fetch func(url string) ([]byte, error)) ([]byte, error
 // vendorModules returns the modules.txt of go mod vendor, written into a
 // folder of its own.
 func vendorModules(root string) ([]byte, error) {
-	tmp, err := os.MkdirTemp("", "mixmusic-vendor-")
+	tmp, err := os.MkdirTemp("", "mymusic-vendor-")
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +360,7 @@ func writeRepo(root, out, commit, tag string) error {
 	return copyTree(shared, filepath.Join(out, "shared-modules"))
 }
 
-// gitSource is the source of MixMusic at commit of GitHub's repository,
+// gitSource is the source of MyMusic at commit of GitHub's repository,
 // without the git submodule of the release's Flatpak, which the build
 // doesn't read. With tag, Flathub's bot proposes the next release's.
 func gitSource(commit, tag string) []string {

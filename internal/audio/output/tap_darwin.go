@@ -9,10 +9,10 @@ package output
 // an IOProc of the device reads on Core Audio's I/O thread and hands to the
 // capture's goroutine.
 //
-// A tap hears only once the user allowed MixMusic to record what other
+// A tap hears only once the user allowed MyMusic to record what other
 // apps play, which macOS asks once, with the reason Info.plist gives
 // (NSAudioCaptureUsageDescription). Until they answer, and once they
-// refuse, it hears silence, and no call fails. So MixMusic asks first,
+// refuse, it hears silence, and no call fails. So MyMusic asks first,
 // through TCC's private TCCAccessRequest, and taps once they allowed it:
 // a tap that has macOS ask itself starts only 90 s later, though the user
 // answered at once, and TCCAccessPreflight goes on telling the process
@@ -30,7 +30,7 @@ import (
 	"github.com/ebitengine/purego"
 	"github.com/ebitengine/purego/objc"
 
-	"github.com/fzn0x/mixmusic/resample"
+	"github.com/bigdaddy284/mymusic/resample"
 )
 
 const (
@@ -75,7 +75,7 @@ var (
 	// aren't there.
 	tccAccessPreflight func(service, options objc.ID) int32
 	tccAccessRequest   func(service, options objc.ID, answer objc.Block)
-	// allowed is set once the user allowed MixMusic to record what other
+	// allowed is set once the user allowed MyMusic to record what other
 	// apps play, as TCCAccessRequest answered.
 	allowed atomic.Bool
 
@@ -187,7 +187,7 @@ func nsDictionary(kv ...any) objc.ID {
 }
 
 // permission returns what the user answered when macOS asked whether
-// MixMusic may record what other apps play: tccAllowed, tccRefused, or
+// MyMusic may record what other apps play: tccAllowed, tccRefused, or
 // another answer before macOS asked, and where TCC doesn't tell. A process
 // that asked goes on being told it didn't.
 func permission() int32 {
@@ -199,7 +199,7 @@ func permission() int32 {
 	return st
 }
 
-// ask has macOS ask the user whether MixMusic may record what other apps
+// ask has macOS ask the user whether MyMusic may record what other apps
 // play, unless they answered already, and waits for their answer: true
 // once they allowed it, and where TCC can't ask, as Core Audio then asks
 // at the tap.
@@ -345,7 +345,7 @@ func (t *tap) open(process uint32, mute int) error {
 	t.rate = f.sampleRate
 	// The device of the tap alone, which starts the tap as it starts.
 	desc := nsDictionary(
-		"name", nsString("MixMusic's visualizer"),
+		"name", nsString("MyMusic's visualizer"),
 		"uid", class("NSUUID").Send(sel("UUID")).Send(sel("UUIDString")),
 		"private", nsNumber(1),
 		"stacked", nsNumber(0),
@@ -415,7 +415,7 @@ type Capture struct {
 // it plays nothing, write is given silence at the same pace, so that what
 // it feeds hears the sound stop. It returns once the capture runs, or why
 // it can't: ErrNoLoopback before macOS 14.2, and ErrRefused once the user
-// refused MixMusic to record what other apps play. The first capture has
+// refused MyMusic to record what other apps play. The first capture has
 // macOS ask them, and waits for their answer.
 func CaptureProcess(pid uint32, write func([]float32)) (*Capture, error) {
 	if err := loadTaps(); err != nil {

@@ -4,8 +4,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // TestSyncCollection downloads the tracks added to a playlist downloaded

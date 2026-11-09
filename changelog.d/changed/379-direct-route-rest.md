@@ -1,4 +1,4 @@
-- When YouTube's player API refuses three tracks in a row, MixMusic asks
+- When YouTube's player API refuses three tracks in a row, MyMusic asks
   for the third once more with a new visitor ID, then leaves it alone for
   2 minutes rather than 30, and twice as long each time it's refused
   again, up to 30 minutes: tracks found by the slower yt-dlp meanwhile

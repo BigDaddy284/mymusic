@@ -9,16 +9,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestLive checks the parsers against YouTube Music itself, which changes
-// its responses from time to time. It runs with MIXMUSIC_LIVE=1:
+// its responses from time to time. It runs with MYMUSIC_LIVE=1:
 //
-//	MIXMUSIC_LIVE=1 go test ./internal/youtube -run Live -v
+//	MYMUSIC_LIVE=1 go test ./internal/youtube -run Live -v
 func TestLive(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube Music")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube Music")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
@@ -76,11 +76,11 @@ func TestLive(t *testing.T) {
 }
 
 // TestLiveLabels reads the label of AI of videos YouTube labels, an upload
-// and an art track, and of one it doesn't. It runs with MIXMUSIC_LIVE=1. A
+// and an art track, and of one it doesn't. It runs with MYMUSIC_LIVE=1. A
 // video YouTube no longer has is passed over.
 func TestLiveLabels(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
@@ -102,11 +102,11 @@ func TestLiveLabels(t *testing.T) {
 // Cookie header of a signed-in music.youtube.com tab, from the browser's
 // developer tools:
 //
-//	MIXMUSIC_LIVE=1 MIXMUSIC_YT_COOKIES='SAPISID=…; …' go test ./internal/youtube -run LiveSignedIn -v
+//	MYMUSIC_LIVE=1 MYMUSIC_YT_COOKIES='SAPISID=…; …' go test ./internal/youtube -run LiveSignedIn -v
 func TestLiveSignedIn(t *testing.T) {
-	header := os.Getenv("MIXMUSIC_YT_COOKIES")
-	if os.Getenv("MIXMUSIC_LIVE") == "" || header == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 and MIXMUSIC_YT_COOKIES to test a signed-in account")
+	header := os.Getenv("MYMUSIC_YT_COOKIES")
+	if os.Getenv("MYMUSIC_LIVE") == "" || header == "" {
+		t.Skip("set MYMUSIC_LIVE=1 and MYMUSIC_YT_COOKIES to test a signed-in account")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
@@ -146,18 +146,18 @@ func TestLiveSignedIn(t *testing.T) {
 
 // TestLiveDeletePlaylist makes a playlist on a real account, finds YouTube
 // offering to delete it, on its page and in the library, and deletes it.
-// It changes the account, so it runs only with MIXMUSIC_YT_WRITE=1 too,
+// It changes the account, so it runs only with MYMUSIC_YT_WRITE=1 too,
 // best with an account kept for tests:
 //
-//	MIXMUSIC_LIVE=1 MIXMUSIC_YT_WRITE=1 MIXMUSIC_YT_COOKIES='SAPISID=…; …' go test ./internal/youtube -run LiveDeletePlaylist -v
+//	MYMUSIC_LIVE=1 MYMUSIC_YT_WRITE=1 MYMUSIC_YT_COOKIES='SAPISID=…; …' go test ./internal/youtube -run LiveDeletePlaylist -v
 //
 // It logs what the tests here can't know from answers read signed out:
 // where the delete endpoint sits, what YouTube answers a delete, and a
 // delete of a playlist that's gone.
 func TestLiveDeletePlaylist(t *testing.T) {
-	header := os.Getenv("MIXMUSIC_YT_COOKIES")
-	if os.Getenv("MIXMUSIC_LIVE") == "" || os.Getenv("MIXMUSIC_YT_WRITE") == "" || header == "" {
-		t.Skip("set MIXMUSIC_LIVE=1, MIXMUSIC_YT_WRITE=1 and MIXMUSIC_YT_COOKIES to delete a playlist of a signed-in account")
+	header := os.Getenv("MYMUSIC_YT_COOKIES")
+	if os.Getenv("MYMUSIC_LIVE") == "" || os.Getenv("MYMUSIC_YT_WRITE") == "" || header == "" {
+		t.Skip("set MYMUSIC_LIVE=1, MYMUSIC_YT_WRITE=1 and MYMUSIC_YT_COOKIES to delete a playlist of a signed-in account")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
@@ -167,7 +167,7 @@ func TestLiveDeletePlaylist(t *testing.T) {
 		t.Fatal(err)
 	}
 	c.SetCookies(cookies)
-	id, err := c.CreatePlaylist(ctx, "MixMusic live test "+time.Now().Format("2006-01-02 15:04:05"), nil)
+	id, err := c.CreatePlaylist(ctx, "MyMusic live test "+time.Now().Format("2006-01-02 15:04:05"), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -256,10 +256,10 @@ func TestLiveDeletePlaylist(t *testing.T) {
 
 // TestLiveDislike dislikes a song on a real account, reads its rating back
 // as YouTube Music's player does, and takes the dislike back. It changes
-// the account, so it runs only with MIXMUSIC_YT_WRITE=1 too, best with an
+// the account, so it runs only with MYMUSIC_YT_WRITE=1 too, best with an
 // account kept for tests:
 //
-//	MIXMUSIC_LIVE=1 MIXMUSIC_YT_WRITE=1 MIXMUSIC_YT_COOKIES='SAPISID=…; …' go test ./internal/youtube -run LiveDislike -v
+//	MYMUSIC_LIVE=1 MYMUSIC_YT_WRITE=1 MYMUSIC_YT_COOKIES='SAPISID=…; …' go test ./internal/youtube -run LiveDislike -v
 //
 // It rates only a song the account neither likes nor dislikes, and leaves
 // it so: liking a song again would move it to the top of the account's
@@ -267,9 +267,9 @@ func TestLiveDeletePlaylist(t *testing.T) {
 // YouTube takes a dislike without the website's dislikeParams, and that
 // like/removelike takes it back.
 func TestLiveDislike(t *testing.T) {
-	header := os.Getenv("MIXMUSIC_YT_COOKIES")
-	if os.Getenv("MIXMUSIC_LIVE") == "" || os.Getenv("MIXMUSIC_YT_WRITE") == "" || header == "" {
-		t.Skip("set MIXMUSIC_LIVE=1, MIXMUSIC_YT_WRITE=1 and MIXMUSIC_YT_COOKIES to dislike a song of a signed-in account")
+	header := os.Getenv("MYMUSIC_YT_COOKIES")
+	if os.Getenv("MYMUSIC_LIVE") == "" || os.Getenv("MYMUSIC_YT_WRITE") == "" || header == "" {
+		t.Skip("set MYMUSIC_LIVE=1, MYMUSIC_YT_WRITE=1 and MYMUSIC_YT_COOKIES to dislike a song of a signed-in account")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

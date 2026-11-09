@@ -9,9 +9,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // lanterns are made-up lyrics synced word by word, and lanternLines the
@@ -259,7 +259,7 @@ func TestSungWordsAsLines(t *testing.T) {
 // TestSungWordsRomanized lights a line shown in Unison's Latin letters in
 // their place as a whole, as their words aren't those sung, and the line
 // as written word by word with them under it: Arabic's, which Unison
-// romanizes better than MixMusic. Those MixMusic makes light word by word
+// romanizes better than MyMusic. Those MyMusic makes light word by word
 // (lyricsromanize_test.go).
 func TestSungWordsRomanized(t *testing.T) {
 	lines := []lyrics.Line{

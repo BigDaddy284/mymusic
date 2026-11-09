@@ -1,6 +1,6 @@
 name: Linux app
 
-# MixMusic started as Linux users start it, and checked from outside as a
+# MyMusic started as Linux users start it, and checked from outside as a
 # desktop sees it (#146): the build from flake.nix, and the release's
 # linux/amd64 archive on plain Ubuntu, each on a virtual X display and a
 # session bus of its own. .github/scripts/linux-app.py checks that it
@@ -38,13 +38,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # `nix build`, as PR #133 has Linux users build MixMusic from source,
+  # `nix build`, as PR #133 has Linux users build MyMusic from source,
   # started on Ubuntu, outside NixOS, with Nix's libraries.
   #
   # A Nix build finds no OpenGL driver outside NixOS: its libglvnd looks in
-  # /run/opengl-driver, which only NixOS has. MixMusic needs none here:
+  # /run/opengl-driver, which only NixOS has. MyMusic needs none here:
   # MyGo draws the windows on the CPU when the machine has no GPU device,
-  # as runners have none, and MixMusic opens no WebKitGTK page until the
+  # as runners have none, and MyMusic opens no WebKitGTK page until the
   # user signs in or watches a music video.
   nix:
     name: The Nix build
@@ -59,7 +59,7 @@ jobs:
       - uses: ./.github/actions/install-nix
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: MixMusic, from source
+      - name: MyMusic, from source
         run: bash .github/scripts/nix-retry.sh nix build --print-build-logs
       # FFmpeg grabs the display's frames and makes the tone the checks
       # play. It comes from Nix's binary cache, in nixpkgs' full build, the
@@ -85,7 +85,7 @@ jobs:
       - name: Start it, and check it
         run: |
           xvfb-run -a -s "-screen 0 1600x1000x24" dbus-run-session -- \
-            /usr/bin/python3 .github/scripts/linux-app.py --libs nix result/bin/mixmusic linux-app
+            /usr/bin/python3 .github/scripts/linux-app.py --libs nix result/bin/mymusic linux-app
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
@@ -115,7 +115,7 @@ jobs:
       - name: Unpack the archive
         run: |
           mkdir app
-          tar -xzf build/linux-amd64/mixmusic-*-linux-amd64.tar.gz -C app
+          tar -xzf build/linux-amd64/mymusic-*-linux-amd64.tar.gz -C app
           find app -type f | head -n 20
       # FFmpeg as the Nix build's job gets it.
       - name: FFmpeg
@@ -137,7 +137,7 @@ jobs:
           pulseaudio --start --exit-idle-time=-1
       - name: Start it, and check it
         run: |
-          app="$(find app -type f -name mixmusic -perm -u+x | head -n 1)"
+          app="$(find app -type f -name mymusic -perm -u+x | head -n 1)"
           xvfb-run -a -s "-screen 0 1600x1000x24" dbus-run-session -- \
             /usr/bin/python3 .github/scripts/linux-app.py --libs system "$app" linux-app
       - uses: actions/upload-artifact@v7
@@ -147,7 +147,7 @@ jobs:
           path: linux-app/
           if-no-files-found: error
 
-  # The yt-dlp MixMusic installs on Linux, and how long it takes to start
+  # The yt-dlp MyMusic installs on Linux, and how long it takes to start
   # (#245). yt-dlp_linux, the single file, unpacks Python into a new folder
   # at each start, as yt-dlp_macos did in 8 s, which made macOS install the
   # unpacked build (#250). On Linux it starts in under a second, about 0.4 s
@@ -162,9 +162,9 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
-      - name: MixMusic installs yt-dlp, checks it, and runs it
+      - name: MyMusic installs yt-dlp, checks it, and runs it
         env:
-          MIXMUSIC_LIVE: "1"
+          MYMUSIC_LIVE: "1"
         run: go test ./internal/tools/ -run '^TestLiveInstall$' -count=1 -v
       - name: Time yt-dlp_linux and yt-dlp_linux.zip
         run: |

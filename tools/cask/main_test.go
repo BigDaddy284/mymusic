@@ -31,10 +31,10 @@ func TestCask(t *testing.T) {
 			t.Fatal(err)
 		}
 		for _, want := range []string{
-			"\ncask \"mixmusic\" do\n",
+			"\ncask \"mymusic\" do\n",
 			"\n  version \"1.2.3\"\n",
 			"\n  sha256 \"" + sum + "\"\n",
-			"\n  app \"MixMusic.app\"\n",
+			"\n  app \"MyMusic.app\"\n",
 		} {
 			if !strings.Contains(got, want) {
 				t.Errorf("notarized %v: no %q in\n%s", notarized, want, got)
@@ -94,7 +94,7 @@ func TestURLNamesTheDownload(t *testing.T) {
 	if link == nil {
 		t.Fatal(".github/release-notes.md links to no -macos-universal.dmg")
 	}
-	want := strings.NewReplacer("{repo}", "fzn0x/mixmusic", "{tag}", "v1.2.3", "{version}", "1.2.3").Replace(link[1])
+	want := strings.NewReplacer("{repo}", "bigdaddy284/mymusic", "{tag}", "v1.2.3", "{version}", "1.2.3").Replace(link[1])
 	if url != want {
 		t.Errorf("the cask downloads\n%s\nthe release notes link to\n%s", url, want)
 	}
@@ -102,7 +102,7 @@ func TestURLNamesTheDownload(t *testing.T) {
 
 func TestReleaseOf(t *testing.T) {
 	dir := t.TempDir()
-	dmg := filepath.Join(dir, "mixmusic-1.2.3-macos-universal.dmg")
+	dmg := filepath.Join(dir, "mymusic-1.2.3-macos-universal.dmg")
 	if err := os.WriteFile(dmg, []byte("a disk image"), 0o644); err != nil {
 		t.Fatal(err)
 	}

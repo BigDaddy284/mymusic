@@ -11,8 +11,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 const (
@@ -67,7 +67,7 @@ func (m *Manager) keepArtSoon(id string) {
 			p, err := m.fetchArt(dir, w.images)
 			if err != nil {
 				if !errors.Is(err, context.Canceled) {
-					log.Printf("mixmusic: keeping a cover of the downloads: %v", err)
+					log.Printf("mymusic: keeping a cover of the downloads: %v", err)
 				}
 				continue
 			}

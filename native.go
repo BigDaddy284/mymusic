@@ -1,4 +1,4 @@
-// Package native draws MixMusic's native interface, a beta beside the web
+// Package native draws MyMusic's native interface, a beta beside the web
 // one: windows MyGo draws itself with its ui package, without a webview.
 // They show what the web interface shows, from the same services, and play
 // through the queue in Go (internal/player).
@@ -16,14 +16,14 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/downloads"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/plugins"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/downloads"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/plugins"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // Open opens the native interface's main window, hidden when asked.
@@ -36,7 +36,7 @@ func Open(a *app.App, hidden bool) *mygo.Window {
 	size := fitIn(mygo.Rectangle{X: work.X, Y: work.Y, Width: 1280, Height: 820}, work)
 	least := fitIn(mygo.Rectangle{X: work.X, Y: work.Y, Width: 940, Height: 600}, work)
 	s.attach(mygo.NewWindow(mygo.WindowOptions{
-		Title:           "MixMusic",
+		Title:           "MyMusic",
 		Width:           size.Width,
 		Height:          size.Height,
 		MinWidth:        least.Width,
@@ -174,7 +174,7 @@ type shell struct {
 	// folds the rail; narrowFold is the fold the user gave it there.
 	narrow     bool
 	narrowFold *bool
-	// wordmark is the size of MixMusic's name in the rail (wordmarkSize).
+	// wordmark is the size of MyMusic's name in the rail (wordmarkSize).
 	wordmark wordmarkFit
 	// zoom is the zoom the window shows, zoomRoom the largest it has room
 	// for, and zoomToast set when the next frame tells of a new zoom.
@@ -401,9 +401,9 @@ func shownPanel(panel string) string {
 
 // start follows the player and the app, until the window closes, and
 // shows the player's notices and the pages that deep links ask for, and
-// takes MixMusic's global keys as the user records keys. The colours the
+// takes MyMusic's global keys as the user records keys. The colours the
 // settings' wells hold back are saved as the window closes, and as
-// MixMusic quits, as Windows ending the session doesn't close it.
+// MyMusic quits, as Windows ending the session doesn't close it.
 func (s *shell) start() {
 	s.follow(
 		s.p.Notices(func(n player.Notice) { s.update(func() { s.notes = append(s.notes, n) }) }),
@@ -675,7 +675,7 @@ func (s *shell) promptDialog(c *ui.Context) {
 	}
 }
 
-// offerCrashReport asks, when MixMusic crashed the time before, to report
+// offerCrashReport asks, when MyMusic crashed the time before, to report
 // it on GitHub; either way, it doesn't ask again.
 func (s *shell) offerCrashReport() {
 	report := s.svc.System.LastCrash()
@@ -683,7 +683,7 @@ func (s *shell) offerCrashReport() {
 		return
 	}
 	s.asking = &question{
-		title:   "mixmusic quit unexpectedly",
+		title:   "mymusic quit unexpectedly",
 		message: "It kept a report of what happened, " + report + ", in its logs folder. Reporting it on GitHub, with that file attached, helps fix it.",
 		ok:      "report it",
 		run: func() {

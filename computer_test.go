@@ -12,10 +12,10 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The songs of these tests are made up, as their tones are.
@@ -225,12 +225,12 @@ func TestComputerPages(t *testing.T) {
 
 // TestRenderComputer draws Library › On this computer, its songs, albums
 // and artists, a search that finds it, an album of it, and its group of
-// Settings, in each layout, in Mix and Daylight, to MIXMUSIC_RENDER, for a
+// Settings, in each layout, in Mix and Daylight, to MYMUSIC_RENDER, for a
 // look.
 func TestRenderComputer(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	for _, layout := range settings.Layouts {
 		for _, theme := range []string{"mix", "daylight"} {

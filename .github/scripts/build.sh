@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds MixMusic for each platform given, as `bun run build -- -platform`
+# Builds MyMusic for each platform given, as `bun run build -- -platform`
 # does, one platform at a time.
 #
 #   .github/scripts/build.sh linux/amd64,linux/arm64

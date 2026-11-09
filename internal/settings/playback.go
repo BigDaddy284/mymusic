@@ -4,20 +4,20 @@ import (
 	"math"
 	"runtime"
 
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // SpotifyPlayback chooses how Spotify tracks play.
 type SpotifyPlayback string
 
 const (
-	// SpotifyPlaybackMatch plays Spotify tracks through MixMusic's own
+	// SpotifyPlaybackMatch plays Spotify tracks through MyMusic's own
 	// player, from their recording on YouTube Music.
 	SpotifyPlaybackMatch SpotifyPlayback = "match"
 	// SpotifyPlaybackConnect plays Spotify tracks on a Spotify Connect
 	// device, which needs Spotify Premium.
 	SpotifyPlaybackConnect SpotifyPlayback = "connect"
-	// SpotifyPlaybackHere plays Spotify tracks in MixMusic, which Spotify's
+	// SpotifyPlaybackHere plays Spotify tracks in MyMusic, which Spotify's
 	// Web Playback SDK makes a Spotify Connect device of its own. It needs
 	// Spotify Premium, and no Spotify app.
 	SpotifyPlaybackHere SpotifyPlayback = "here"
@@ -31,7 +31,7 @@ const (
 	QualitySaver Quality = "saver"
 )
 
-// Playback is how MixMusic plays: the Spotify tracks, the sound, the speed,
+// Playback is how MyMusic plays: the Spotify tracks, the sound, the speed,
 // the music videos and the equalizer of Settings › Playback, and the
 // volume.
 type Playback struct {
@@ -55,14 +55,14 @@ type Playback struct {
 	// in place of its stereo audio: on six speakers where the output device
 	// has them, else mixed down to stereo as the track's stream asks.
 	Surround bool `json:"surround"`
-	// OutputDevice is the device MixMusic's own player plays on: the
+	// OutputDevice is the device MyMusic's own player plays on: the
 	// system's default when its ID is empty.
 	OutputDevice OutputDevice `json:"outputDevice"`
 	// Autoplay continues with similar tracks when the queue ends.
 	Autoplay bool `json:"autoplay"`
 	// SongSpeed plays songs faster or slower, at their own pitch, from
 	// MinSpeed to MaxSpeed by SpeedStep: 1 is their own speed. Only what
-	// MixMusic's own player plays takes it; Spotify plays its own tracks
+	// MyMusic's own player plays takes it; Spotify plays its own tracks
 	// at their own speed.
 	SongSpeed float64 `json:"songSpeed"`
 	// PodcastSpeed plays podcasts' episodes faster or slower, as SongSpeed
@@ -79,10 +79,10 @@ type Playback struct {
 	// page, in place of their cover. It is off at first: it fetches more
 	// than the sound, and shows a web page there.
 	MusicVideos bool `json:"musicVideos"`
-	// Equalizer shapes the sound of MixMusic's own player.
+	// Equalizer shapes the sound of MyMusic's own player.
 	Equalizer Equalizer `json:"equalizer"`
 	// VolumeCurve is how the positions of the volume slider sound, in
-	// MixMusic's own player and in Spotify's alike (#383): Natural at first.
+	// MyMusic's own player and in Spotify's alike (#383): Natural at first.
 	VolumeCurve volume.Curve `json:"volumeCurve"`
 	// Volume is from 0 to 1.
 	Volume float64 `json:"volume"`
@@ -105,7 +105,7 @@ func defaultPlayback() Playback {
 }
 
 // defaultSpotifyPlayback is how Spotify tracks play in a new install on
-// goos: in MixMusic on Windows and macOS, whose webviews decrypt Spotify's
+// goos: in MyMusic on Windows and macOS, whose webviews decrypt Spotify's
 // audio (WebView2 with Widevine, WKWebView with FairPlay, #295), else on
 // Spotify Connect.
 func defaultSpotifyPlayback(goos string) SpotifyPlayback {
@@ -136,7 +136,7 @@ func (p Playback) clean(d Playback) Playback {
 	return p
 }
 
-// The speeds MixMusic's own player plays at: from half a track's own speed
+// The speeds MyMusic's own player plays at: from half a track's own speed
 // to three times it, by twentieths.
 const (
 	MinSpeed  = 0.5

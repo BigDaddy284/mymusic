@@ -16,7 +16,7 @@ the user left them.
   are `musicMultiRowListItemRenderer` rows, which play a video of the type
   `MUSIC_VIDEO_TYPE_PODCAST_EPISODE`. Their days ("8h ago", "Oct 26",
   "Dec 29, 2025") and lengths ("2 hr 18 min") are read in English, as
-  MixMusic always asks. Pages of about a hundred more come from browse's
+  MyMusic always asks. Pages of about a hundred more come from browse's
   continuation. An episode plays as any video, through the resolver. The
   shows the user saved are `FEmusic_library_non_music_audio_list`, and
   saving one likes its playlist, as for a playlist.
@@ -35,11 +35,11 @@ the user left them.
 - **Where episodes were left (`internal/library/positions.go`).** The
   player's reports, each second, keep the place of the episode that
   plays, in memory, written to `positions.json` once they rest 10 seconds
-  and as MixMusic quits, for the latest 500 episodes. Under 15 seconds in,
+  and as MyMusic quits, for the latest 500 episodes. Under 15 seconds in,
   nothing is kept; within 2 minutes of the end, or 3% of a short episode,
   it counts as played. An episode that becomes current plays from 5
   seconds before its place, through the player's optional `Resumer`, or
-  from its service's while MixMusic has none: Spotify's `resume_point`,
+  from its service's while MyMusic has none: Spotify's `resume_point`,
   or YouTube Music's, as below. Moving within the current episode, as
   Previous does, never resumes.
 - **Where YouTube Music saw them (`internal/youtube/progress.go`,
@@ -48,10 +48,10 @@ the user left them.
   `playbackProgressPercentage` of its length, and "Played" in its
   `playbackProgressText` once they finished it: the episode keeps it as
   `ResumeMs` and `Played`, with `ToldAt`, when it was read. That place
-  outranks MixMusic's own when it is newer: it changed since MixMusic kept
+  outranks MyMusic's own when it is newer: it changed since MyMusic kept
   its own, whose track keeps the place YouTube Music told then, and was
-  read after. When MixMusic never saw it, the place further along wins.
-  One within 30 seconds and a percent of MixMusic's own keeps MixMusic's,
+  read after. When MyMusic never saw it, the place further along wins.
+  One within 30 seconds and a percent of MyMusic's own keeps MyMusic's,
   exact to the second. Once an episode's play counts, the play goes to
   the history with a `youtube.Watch`, which reports the listening to the
   player response's `videostatsWatchtimeUrl` as YouTube's player does,

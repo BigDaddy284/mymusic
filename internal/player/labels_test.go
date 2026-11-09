@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // labeled is the fake app knowing YouTube's labels: it labels the tracks

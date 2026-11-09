@@ -85,10 +85,10 @@ func TestProbeDistrustsCertificates(t *testing.T) {
 	}
 }
 
-// TestLiveProbe asks YouTube and Spotify. It runs with MIXMUSIC_LIVE=1.
+// TestLiveProbe asks YouTube and Spotify. It runs with MYMUSIC_LIVE=1.
 func TestLiveProbe(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to ask YouTube and Spotify")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to ask YouTube and Spotify")
 	}
 	if err := Probe(context.Background()); err != nil {
 		t.Errorf("Probe = %v", err)

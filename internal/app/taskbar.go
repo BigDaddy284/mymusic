@@ -9,7 +9,7 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/taskbar"
+	"github.com/bigdaddy284/mymusic/internal/taskbar"
 )
 
 // taskbarCommands are the player's commands for the thumbnail's buttons.
@@ -31,7 +31,7 @@ func (a *App) attachTaskbar(win *mygo.Window) {
 	})
 	if err != nil {
 		if !errors.Is(err, taskbar.ErrUnsupported) {
-			log.Printf("mixmusic: the taskbar's buttons: %v", err)
+			log.Printf("mymusic: the taskbar's buttons: %v", err)
 		}
 		return
 	}

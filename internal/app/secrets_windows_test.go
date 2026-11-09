@@ -11,7 +11,7 @@ import (
 )
 
 // errInvalidParameter is ERROR_INVALID_PARAMETER, DPAPI's answer to a call
-// MixMusic got wrong.
+// MyMusic got wrong.
 const errInvalidParameter = syscall.Errno(87)
 
 // sealOrSkip seals data with DPAPI, and skips the test where the session
@@ -32,7 +32,7 @@ func sealOrSkip(t *testing.T, data, purpose []byte) []byte {
 // TestDPAPI seals a secret for the user: it opens for its purpose alone,
 // and not once damaged.
 func TestDPAPI(t *testing.T) {
-	purpose := []byte("MixMusic " + tokenSecret)
+	purpose := []byte("MyMusic " + tokenSecret)
 	sealed := sealOrSkip(t, secret, purpose)
 	if bytes.Contains(sealed, []byte("apiKey")) {
 		t.Fatal("the secret is readable in what DPAPI sealed")
@@ -41,7 +41,7 @@ func TestDPAPI(t *testing.T) {
 	if err != nil || !bytes.Equal(got, secret) {
 		t.Fatalf("unprotect = %q, %v", got, err)
 	}
-	if _, err := (dpapi{}).unprotect(sealed, []byte("MixMusic "+lastfmSecret)); err == nil {
+	if _, err := (dpapi{}).unprotect(sealed, []byte("MyMusic "+lastfmSecret)); err == nil {
 		t.Error("another purpose opened it")
 	}
 	damaged := bytes.Clone(sealed)

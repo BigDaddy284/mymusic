@@ -8,19 +8,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/cast"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/cast"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // TestRenderMiniPanel draws the mini player with each of its panels, below
 // it in the window it opens in and above it in its narrowest at the
-// screen's foot, in Mix and Daylight, to MIXMUSIC_RENDER, for a look.
+// screen's foot, in Mix and Daylight, to MYMUSIC_RENDER, for a look.
 func TestRenderMiniPanel(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	for _, theme := range []string{"mix", "daylight"} {
 		for _, place := range []struct {

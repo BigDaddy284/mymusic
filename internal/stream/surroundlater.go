@@ -41,7 +41,7 @@ func (r *Resolver) hear(videoID string, res *resolution, later *toldLater) {
 		return
 	}
 	if s.URL == "" && !r.findsSurround() {
-		log.Printf("mixmusic: YouTube has 5.1 surround audio of %s, which takes yt-dlp and a JavaScript runtime to play", videoID)
+		log.Printf("mymusic: YouTube has 5.1 surround audio of %s, which takes yt-dlp and a JavaScript runtime to play", videoID)
 		return
 	}
 	r.mu.Lock()

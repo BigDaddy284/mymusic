@@ -3,7 +3,7 @@ package audio
 import (
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Cue is how Load and Crossfade start a track, beside its URL. Its zero

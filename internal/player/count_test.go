@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // noLength is the tracks of ids as a shelf of YouTube Music's home lists

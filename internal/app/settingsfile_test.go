@@ -11,13 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/volume"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // fileApp is an app of a folder of its own, whose settings.json holds
@@ -113,7 +113,7 @@ func TestReloadSettingsIgnoresOwnSave(t *testing.T) {
 	n := told(t, a)
 	a.ReloadSettings()
 	if n.Load() != 0 || prefs.File().Seq != 0 {
-		t.Errorf("MixMusic's own save told the windows %d times, File %+v", n.Load(), prefs.File())
+		t.Errorf("MyMusic's own save told the windows %d times, File %+v", n.Load(), prefs.File())
 	}
 }
 
@@ -137,7 +137,7 @@ func TestReloadSettingsBroken(t *testing.T) {
 	if got := prefs.Get().Theme; got != "aurora" {
 		t.Errorf("the theme is %q, want the one it had", got)
 	}
-	// MixMusic's own changes apply, and wait to be saved.
+	// MyMusic's own changes apply, and wait to be saved.
 	if _, err := prefs.Update(func(s *settings.Settings) { s.Crossfade = 5 }); err != nil {
 		t.Fatal(err)
 	}
@@ -356,7 +356,7 @@ func TestTellStart(t *testing.T) {
 	})
 }
 
-// TestWatchSettingsFile edits settings.json while MixMusic watches it, as
+// TestWatchSettingsFile edits settings.json while MyMusic watches it, as
 // it does once it started.
 func TestWatchSettingsFile(t *testing.T) {
 	if testing.Short() {
@@ -419,7 +419,7 @@ func TestWatchFollowsALink(t *testing.T) {
 
 	writeSettings(t, first, `{"theme": "mochi"}`)
 	until(t, "an edit of the first file", func() bool { return a.settings.Get().Theme == "mochi" })
-	// The link goes to the second file now; MixMusic saves through it.
+	// The link goes to the second file now; MyMusic saves through it.
 	w := a.watcher.Load()
 	if err := os.Remove(a.settings.Path()); err != nil {
 		t.Fatal(err)

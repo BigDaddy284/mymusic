@@ -4,7 +4,7 @@ package app
 // own, in ~/.var/app, where yt-dlp doesn't look for those of the browsers
 // made from Chromium. On Linux, each is a browser of its own, "Chrome
 // (Flatpak)", listed once its folder is there, so that a browser installed
-// both ways shows twice, each saying where it's from. MixMusic's own
+// both ways shows twice, each saying where it's from. MyMusic's own
 // Flatpak may read those folders (packaging/flatpak).
 
 import "path/filepath"
@@ -30,7 +30,7 @@ var browserFlatpaks = []browserFlatpak{
 	{"brave", "com.brave.Browser", []string{"config/BraveSoftware/Brave-Browser"}},
 }
 
-// browsersOn returns the browsers whose cookies MixMusic imports on goos:
+// browsersOn returns the browsers whose cookies MyMusic imports on goos:
 // on Linux, each that has an app on Flathub is followed by its Flatpak.
 func browsersOn(goos string) []cookieBrowser {
 	var list []cookieBrowser

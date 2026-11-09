@@ -6,9 +6,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // romajiTip is the tip of the romaji switch above Japanese lyrics, which
@@ -28,9 +28,9 @@ type romajiView struct {
 	again   string
 }
 
-// japanese tells whether lyrics are in Japanese, whose romaji MixMusic
+// japanese tells whether lyrics are in Japanese, whose romaji MyMusic
 // makes: lines in kana or kanji, of lyrics in Japanese, or of a language
-// MixMusic couldn't tell, with kana among them. It looks at their lines
+// MyMusic couldn't tell, with kana among them. It looks at their lines
 // once, while the views show the same lyrics.
 func (s *shell) japanese(ly lyrics.Lyrics) bool {
 	if ly.Language != "ja" && ly.Language != "" || len(ly.Lines) == 0 {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // clock writes a duration as 3:28 or 1:02:03.
@@ -94,7 +94,7 @@ func sourceName(s media.Source) string {
 	case media.SourceFile:
 		return "this computer"
 	}
-	return "MixMusic"
+	return "MyMusic"
 }
 
 // trackLine is "Title - Artist", for notices.

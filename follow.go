@@ -1,7 +1,7 @@
 package main
 
 // Following artists: on their service where the user signed in, else in
-// MixMusic's own library, from the artist's page, its More menu and the
+// MyMusic's own library, from the artist's page, its More menu and the
 // menus of artists' tiles; and Library › Artists, which lists them.
 
 import (
@@ -11,7 +11,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // followOnService follows an artist on their service, or stops; tests
@@ -21,7 +21,7 @@ var followOnService = func(s *shell, ctx context.Context, id string, on bool) er
 }
 
 // followsArtist reports whether the user follows the artist a: in
-// MixMusic, or on their service (followsOn).
+// MyMusic, or on their service (followsOn).
 func (s *shell) followsArtist(a media.Artist) bool {
 	return s.svc.Collection.FollowsArtist(a.ID) || s.followsOn(a)
 }
@@ -41,7 +41,7 @@ func (s *shell) followsOn(a media.Artist) bool {
 }
 
 // followArtist follows the artist a, or stops. Signed in to their service,
-// the user follows them there; signed out, in MixMusic, which never
+// the user follows them there; signed out, in MyMusic, which never
 // follows them on the service on its own, even once the user signs in.
 // Stopping stops in both, where the user follows them. The page of a
 // says so at once, and goes back if the service refuses.
@@ -55,7 +55,7 @@ func (s *shell) followArtist(a media.Artist, on bool) {
 		s.releasesFollowed(a, on)
 		if !there {
 			if on {
-				s.notes = append(s.notes, notice(a.Name+": following in MixMusic"))
+				s.notes = append(s.notes, notice(a.Name+": following in MyMusic"))
 			} else {
 				s.notes = append(s.notes, notice(a.Name+": no longer following"))
 			}
@@ -134,8 +134,8 @@ func (s *shell) followItem(m *ui.Menu, a media.Artist) {
 }
 
 // artistLibrary is Library › Artists: the new releases of the artists the
-// user follows, then the artists they follow in MixMusic, then those they
-// follow on each service they signed in to, past those of MixMusic.
+// user follows, then the artists they follow in MyMusic, then those they
+// follow on each service they signed in to, past those of MyMusic.
 func (s *shell) artistLibrary(c *ui.Context) {
 	k := &s.lk
 	col := s.svc.Collection
@@ -150,14 +150,14 @@ func (s *shell) artistLibrary(c *ui.Context) {
 	here := col.FollowedArtists()
 	if len(here) == 0 && len(services) == 0 {
 		ui.Text(c, k.words("Nothing followed yet")).FontSize(k.bigSize()).FontWeight(k.displayWeight()).Font(k.display).TextColor(k.accent)
-		ui.Text(c, "Follow an artist from their page or their menu, and they wait here, kept in MixMusic: "+
+		ui.Text(c, "Follow an artist from their page or their menu, and they wait here, kept in MyMusic: "+
 			"their new albums and singles show here and on Home. Signed in to their service, you follow them there.").
 			FontSize(k.subtitleSize()).FontWeight(k.leadWeight()).MaxWidth(640).Margin(0, 0, 48)
 		return
 	}
 	s.releasesShelf(c, "library-releases", "")
 	if len(here) > 0 {
-		s.sectionTitle(c, "Followed in MixMusic")
+		s.sectionTitle(c, "Followed in MyMusic")
 		ui.Column(c).Margin(0, 0, 48).Children(func() {
 			s.tileWrap(c, func() {
 				for i, a := range here {
@@ -183,7 +183,7 @@ type serviceArtists struct {
 }
 
 // serviceArtistShelf is a shelf of the artists followed on a service,
-// past those followed in MixMusic, which show above. It returns how many
+// past those followed in MyMusic, which show above. It returns how many
 // it shows.
 func (s *shell) serviceArtistShelf(c *ui.Context, sv serviceArtists) int {
 	switch l := sv.artists; {

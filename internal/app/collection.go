@@ -5,9 +5,9 @@ import (
 	"errors"
 	"log"
 
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
 var errSpotifyOnly = errors.New("only Spotify tracks can be added to a Spotify playlist")
@@ -60,14 +60,14 @@ func (a *App) syncSpotifyLike(ctx context.Context, track media.Track, liked bool
 		err = a.spotify.Remove(ctx, uri)
 	}
 	if err != nil {
-		log.Printf("mixmusic: syncing a like with Spotify: %v", err)
+		log.Printf("mymusic: syncing a like with Spotify: %v", err)
 	}
 }
 
 // Disliked returns the disliked tracks, the last disliked first.
 func (c *Collection) Disliked() []media.Track { return c.a.library.Disliked() }
 
-// SetDisliked dislikes a track, or takes the dislike back, in MixMusic's
+// SetDisliked dislikes a track, or takes the dislike back, in MyMusic's
 // library, and on YouTube Music for its tracks when the user signed in.
 // Spotify takes no dislikes: a Spotify track the dislike unliked leaves
 // the user's Spotify library, as an unlike does. The player hears of the
@@ -84,10 +84,10 @@ func (c *Collection) SetDisliked(ctx context.Context, track media.Track, dislike
 	return nil
 }
 
-// Playlists returns the playlists made in MixMusic, without their tracks.
+// Playlists returns the playlists made in MyMusic, without their tracks.
 func (c *Collection) Playlists() []media.Playlist { return c.a.library.Playlists() }
 
-// localID returns the library's ID of a playlist made in MixMusic.
+// localID returns the library's ID of a playlist made in MyMusic.
 func localID(id string) (string, error) {
 	source, native, err := media.ParseID(id)
 	if err != nil || source != media.SourceLocal {
@@ -125,7 +125,7 @@ func (c *Collection) DeletePlaylist(id string) error {
 	return nil
 }
 
-// AddToPlaylist appends tracks to a playlist made in MixMusic, or to a
+// AddToPlaylist appends tracks to a playlist made in MyMusic, or to a
 // Spotify playlist the user may edit.
 func (c *Collection) AddToPlaylist(ctx context.Context, id string, tracks []media.Track) error {
 	source, native, err := media.ParseID(id)
@@ -171,7 +171,7 @@ func (c *Collection) MoveInPlaylist(id string, from, to int) error {
 }
 
 // ImportPlaylist copies a playlist of a service into a playlist of
-// MixMusic, where tracks of other services can join it.
+// MyMusic, where tracks of other services can join it.
 func (c *Collection) ImportPlaylist(ctx context.Context, id string) (media.Playlist, error) {
 	p, err := c.a.wholePlaylist(ctx, id)
 	if err != nil {

@@ -3,7 +3,7 @@ package youtube
 import (
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // readProgress keeps on an episode where YouTube Music says the user left

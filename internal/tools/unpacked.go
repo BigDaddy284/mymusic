@@ -13,14 +13,14 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/proc"
+	"github.com/bigdaddy284/mymusic/internal/proc"
 )
 
 // goos and goarch are the platform yt-dlp is installed for. They are
 // variables for tests.
 var goos, goarch = runtime.GOOS, runtime.GOARCH
 
-// On macOS, MixMusic installs yt-dlp unpacked, from yt-dlp_macos.zip: the
+// On macOS, MyMusic installs yt-dlp unpacked, from yt-dlp_macos.zip: the
 // single file yt-dlp_macos unpacks Python into a new folder at each start,
 // and starts in 8 s, where the unpacked build starts in 0.2 s (#245).
 // macFolder is the folder it goes in, under Dir, and macProgram the
@@ -34,7 +34,7 @@ const (
 // build of 2026.10 is 123 MB.
 const maxUnpacked = 1 << 30
 
-// unpackedPath is the yt-dlp MixMusic installed on macOS: the unpacked
+// unpackedPath is the yt-dlp MyMusic installed on macOS: the unpacked
 // build's program, or the single file installed before, until an update
 // replaces it.
 func (m *Manager) unpackedPath() string {
@@ -45,10 +45,10 @@ func (m *Manager) unpackedPath() string {
 	return p
 }
 
-// singlePath is where MixMusic put the single file of yt-dlp for macOS.
+// singlePath is where MyMusic put the single file of yt-dlp for macOS.
 func (m *Manager) singlePath() string { return filepath.Join(m.Dir, "yt-dlp") }
 
-// singleOnMac tells whether the yt-dlp MixMusic installed is macOS's
+// singleOnMac tells whether the yt-dlp MyMusic installed is macOS's
 // single file of before.
 func (m *Manager) singleOnMac() bool {
 	return goos == "darwin" && m.managedPath() == m.singlePath()

@@ -3,8 +3,8 @@ package app
 import (
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 // Preferences reads and changes the user's settings.
@@ -87,9 +87,9 @@ func (p *Preferences) Reset() (settings.Settings, error) {
 	return d, nil
 }
 
-// OpenAtLogin reports whether MixMusic starts when the user logs in.
+// OpenAtLogin reports whether MyMusic starts when the user logs in.
 func (p *Preferences) OpenAtLogin() bool { return mygo.App.OpenAtLogin() }
 
-// SetOpenAtLogin makes MixMusic start when the user logs in, or not. In a
+// SetOpenAtLogin makes MyMusic start when the user logs in, or not. In a
 // Flatpak, it waits for the desktop's answer, which may be the user's.
 func (p *Preferences) SetOpenAtLogin(open bool) error { return setLogin(open) }

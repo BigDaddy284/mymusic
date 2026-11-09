@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/cast"
-	"github.com/fzn0x/mixmusic/internal/cast/casttest"
+	"github.com/bigdaddy284/mymusic/internal/cast"
+	"github.com/bigdaddy284/mymusic/internal/cast/casttest"
 )
 
 func browse(t *testing.T, r *casttest.Responder) []cast.Device {

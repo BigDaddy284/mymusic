@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // ErrSignedOut is returned for what needs the user signed in.

@@ -5,7 +5,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // nowPlayingPage gives the track playing the whole pane: its sleeve under
@@ -90,7 +90,7 @@ func (s *shell) related(c *ui.Context, t media.Track) {
 }
 
 // visualizer draws the spectrum of what plays over the foot of the sleeve,
-// in the accent, at every frame while it plays. Where MixMusic hears
+// in the accent, at every frame while it plays. Where MyMusic hears
 // nothing, as of a Spotify device elsewhere, it draws nothing.
 func (s *shell) visualizer(c *ui.Context, size float32) {
 	k := &s.lk

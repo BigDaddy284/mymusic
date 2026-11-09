@@ -17,8 +17,8 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // coverPNG is a PNG w by h, red at its sides and blue in its middle.

@@ -15,9 +15,9 @@ import (
 // TestCaptureProcessChildren hears a tone that a child plays, as WebView2's
 // audio service is a child of its browser process: the child runs this
 // test again, which plays. Windows hears a process's children, but not
-// theirs. It opens the audio device, so it runs only with MIXMUSIC_AUDIO=1.
+// theirs. It opens the audio device, so it runs only with MYMUSIC_AUDIO=1.
 func TestCaptureProcessChildren(t *testing.T) {
-	if os.Getenv("MIXMUSIC_TONE_CHILD") != "" {
+	if os.Getenv("MYMUSIC_TONE_CHILD") != "" {
 		// The child: it plays.
 		phase := 0
 		s, err := Start(2, func(out []float32, _ int) {
@@ -34,8 +34,8 @@ func TestCaptureProcessChildren(t *testing.T) {
 		s.Stop()
 		return
 	}
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	var mu sync.Mutex
 	peak := 0.0
@@ -54,7 +54,7 @@ func TestCaptureProcessChildren(t *testing.T) {
 	}
 	defer c.Stop()
 	cmd := exec.Command(os.Args[0], "-test.run=^TestCaptureProcessChildren$")
-	cmd.Env = append(os.Environ(), "MIXMUSIC_TONE_CHILD=1")
+	cmd.Env = append(os.Environ(), "MYMUSIC_TONE_CHILD=1")
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("the child: %v\n%s", err, out)
 	}
@@ -67,10 +67,10 @@ func TestCaptureProcessChildren(t *testing.T) {
 
 // TestCaptureProcess hears a tone this process plays, at -100 dB, which no
 // one hears, at the level it plays, then silence once it stops. It opens
-// the audio device, so it runs only with MIXMUSIC_AUDIO=1.
+// the audio device, so it runs only with MYMUSIC_AUDIO=1.
 func TestCaptureProcess(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	var mu sync.Mutex
 	var heard []float32

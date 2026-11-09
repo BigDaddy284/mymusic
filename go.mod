@@ -1,4 +1,4 @@
-module github.com/fzn0x/mixmusic
+module github.com/bigdaddy284/mymusic
 
 go 1.27.3
 

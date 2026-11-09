@@ -5,14 +5,14 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // TestVolumeCurveInBoth plays the volume on the curve of the settings in
-// MixMusic's own engine and in Spotify's player in MixMusic alike (#383),
+// MyMusic's own engine and in Spotify's player in MyMusic alike (#383),
 // as the curve changes, and leaves the volume's position where it was.
 func TestVolumeCurveInBoth(t *testing.T) {
 	a := newQuietApp(t, nil)
@@ -35,10 +35,10 @@ func TestVolumeCurveInBoth(t *testing.T) {
 		}
 		want := strconv.FormatFloat(c.Gain(0.5), 'f', -1, 64)
 		if got := here.level(); got != want {
-			t.Errorf("on %q, Spotify in MixMusic plays the volume at %s, not %s", c, got, want)
+			t.Errorf("on %q, Spotify in MyMusic plays the volume at %s, not %s", c, got, want)
 		}
 		if got := here.gain(0.5); got != want {
-			t.Errorf("on %q, Spotify in MixMusic is sent %s for the middle, not %s", c, got, want)
+			t.Errorf("on %q, Spotify in MyMusic is sent %s for the middle, not %s", c, got, want)
 		}
 		if v := p.State().Volume; v != 0.5 {
 			t.Errorf("on %q, the volume moved to %v", c, v)
@@ -64,12 +64,12 @@ func TestVolumeCurveInBoth(t *testing.T) {
 	a.command(PlayerCommand{Command: CommandVolumeBy, Value: 0.05})
 	waitPlayer(t, p, "a step up", func(s player.State) bool { return math.Abs(s.Volume-0.55) < 1e-9 })
 	if got, want := here.level(), strconv.FormatFloat(volume.Linear.Gain(p.State().Volume), 'f', -1, 64); got != want {
-		t.Errorf("a step up on Linear plays Spotify in MixMusic at %s, not %s", got, want)
+		t.Errorf("a step up on Linear plays Spotify in MyMusic at %s, not %s", got, want)
 	}
 }
 
 // TestConnectPercent sends a Spotify Connect device the share of its
-// volume for the loudness MixMusic plays the volume at, on each curve.
+// volume for the loudness MyMusic plays the volume at, on each curve.
 func TestConnectPercent(t *testing.T) {
 	for _, c := range []struct {
 		curve volume.Curve

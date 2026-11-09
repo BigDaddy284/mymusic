@@ -7,9 +7,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // ErrNoEpisodeDetails is why an episode has no details to show: its
@@ -44,7 +44,7 @@ func (c *Catalog) EpisodeDetails(ctx context.Context, t media.Track) (media.Epis
 	case noDetails(err):
 		return media.EpisodeDetails{}, detailsError{"No details found for this episode.", errors.Join(ErrNoEpisodeDetails, err)}
 	case err != nil:
-		log.Printf("mixmusic: the details of %s: %v", t.ID, err)
+		log.Printf("mymusic: the details of %s: %v", t.ID, err)
 		return media.EpisodeDetails{}, detailsError{"The episode's details can't be loaded right now. Check your connection, or try again in a moment.", err}
 	}
 	d.Chapters = media.ChaptersOf(d.Description)

@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // localApp is an app in a folder of its own, with a folder of music,
@@ -185,7 +185,7 @@ func TestLocalCatalog(t *testing.T) {
 }
 
 // TestLocalNotices shows the licenses of the decoders of the music on this
-// computer that MixMusic didn't write: go-mp3's and jfreymuth/vorbis's.
+// computer that MyMusic didn't write: go-mp3's and jfreymuth/vorbis's.
 func TestLocalNotices(t *testing.T) {
 	for _, want := range []struct{ name, text string }{
 		{"go-mp3", "Apache License"},

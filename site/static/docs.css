@@ -4,7 +4,7 @@
  * site's type, and "On this page" beside it on wide screens. Light or dark
  * as the system is, or as the theme button chose (partials/theme.html):
  * dark keeps the home page's near-black greys and pink, and light takes
- * the scheme MixMusic's Material theme makes of the same pink
+ * the scheme MyMusic's Material theme makes of the same pink
  * (builtin/themes/material), as the home page's light does. Nothing loads
  * from elsewhere.
  */
@@ -64,7 +64,7 @@
   --radius-m: 12px;
 }
 
-/* Light: the scheme of MixMusic's Material theme, made of its pink, as the
+/* Light: the scheme of MyMusic's Material theme, made of its pink, as the
    system has it unless the visitor chose dark, or as the visitor chose. The
    two blocks are the same: keep them so. */
 @media (prefers-color-scheme: light) {

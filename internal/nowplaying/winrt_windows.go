@@ -72,7 +72,7 @@ type iInspectableVtbl struct {
 	getIids, getRuntimeClassName, getTrustLevel uintptr
 }
 
-// iInspectable is a runtime object MixMusic only passes on.
+// iInspectable is a runtime object MyMusic only passes on.
 type iInspectable struct{ vtbl *iInspectableVtbl }
 
 // release releases the object p points to, if any.

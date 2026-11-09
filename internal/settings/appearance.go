@@ -30,7 +30,7 @@ const (
 	// LayoutCrate is restrained: dense rows, big covers in cards and bold
 	// tight headings, so that the covers do the work.
 	LayoutCrate Layout = "crate"
-	// LayoutTiles is MixMusic's first layout: flat tiles, giant light
+	// LayoutTiles is MyMusic's first layout: flat tiles, giant light
 	// lowercase words and outlined boxes.
 	LayoutTiles Layout = "tiles"
 )
@@ -48,7 +48,7 @@ const (
 	// ColorsPywal reads pywal's colors.json, in pywal's cache folder.
 	ColorsPywal ColorSource = "pywal"
 	// ColorsMatugen reads matugen.json in the data folder, which
-	// MixMusic's matugen template writes.
+	// MyMusic's matugen template writes.
 	ColorsMatugen ColorSource = "matugen"
 	// ColorsFile reads the file of Settings.ColorFile.
 	ColorsFile ColorSource = "file"

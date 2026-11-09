@@ -1,60 +1,60 @@
 # Your data and privacy
 <!-- docs: group=inside order=50 -->
 
-MixMusic has no account, server, analytics or telemetry of its own. This page tells where it keeps your data and what each feature sends where.
+MyMusic has no account, server, analytics or telemetry of its own. This page tells where it keeps your data and what each feature sends where.
 
-Everything MixMusic knows of you stays in folders on your computer and in
+Everything MyMusic knows of you stays in folders on your computer and in
 your system's credential store, apart from what you keep on YouTube Music,
 Spotify and Last.fm themselves. For the code, read
 [the data's part of the architecture](architecture/data.md).
 
-## Where MixMusic keeps its data
+## Where MyMusic keeps its data
 
-MixMusic keeps its data in four folders, and your sign-ins in the
+MyMusic keeps its data in four folders, and your sign-ins in the
 system's credential store. Settings › About names the data folder, and
 opens the logs folder. A development copy, run with `bun run dev`, uses
-`MixMusic Dev` in place of `MixMusic` in these names, so it never touches
+`MyMusic Dev` in place of `MyMusic` in these names, so it never touches
 an installed copy's data.
 
 ### Windows
 
-- Data (settings, library, add-ons, yt-dlp): `%AppData%\MixMusic`
-- Cache: `%LocalAppData%\MixMusic`
-- Logs: `%AppData%\MixMusic\logs`
-- Downloads: `%LocalAppData%\MixMusic\downloads`
+- Data (settings, library, add-ons, yt-dlp): `%AppData%\MyMusic`
+- Cache: `%LocalAppData%\MyMusic`
+- Logs: `%AppData%\MyMusic\logs`
+- Downloads: `%LocalAppData%\MyMusic\downloads`
 - Sign-ins: the Credential Manager
 
 ### macOS
 
-- Data: `~/Library/Application Support/MixMusic`
-- Cache: `~/Library/Caches/MixMusic`
-- Logs: `~/Library/Logs/MixMusic`
-- Downloads: `~/Library/Application Support/MixMusic/downloads`
+- Data: `~/Library/Application Support/MyMusic`
+- Cache: `~/Library/Caches/MyMusic`
+- Logs: `~/Library/Logs/MyMusic`
+- Downloads: `~/Library/Application Support/MyMusic/downloads`
 - Sign-ins: the login Keychain
 
 ### Linux
 
-- Data: `~/.config/MixMusic`
-- Cache: `~/.cache/MixMusic`
-- Logs: `~/.config/MixMusic/logs`
-- Downloads: `~/.local/share/MixMusic/downloads`
+- Data: `~/.config/MyMusic`
+- Cache: `~/.cache/MyMusic`
+- Logs: `~/.config/MyMusic/logs`
+- Downloads: `~/.local/share/MyMusic/downloads`
 - Sign-ins: the Secret Service, as GNOME Keyring, KWallet or KeePassXC
 
 `$XDG_CONFIG_HOME`, `$XDG_CACHE_HOME` and `$XDG_DATA_HOME` take the place
 of `~/.config`, `~/.cache` and `~/.local/share` when you set them. The
-Flatpak keeps all of it under `~/.var/app/io.github.fzn0x.mixmusic`: the
-data in `config/MixMusic`, the cache in `cache/MixMusic`, and the
-downloads in `data/MixMusic/downloads`, apart from a `.deb`, `.rpm`,
+Flatpak keeps all of it under `~/.var/app/io.github.bigdaddy284.mymusic`: the
+data in `config/MyMusic`, the cache in `cache/MyMusic`, and the
+downloads in `data/MyMusic/downloads`, apart from a `.deb`, `.rpm`,
 AppImage or archive copy's.
 
 ### The data folder
 
-- `settings.json`: your settings. You can edit it while MixMusic runs, and
+- `settings.json`: your settings. You can edit it while MyMusic runs, and
   what you save applies at once.
 - `library.json`: your liked and disliked songs, your mixes, the last
   1,000 tracks you played, which the history and the stats read, your
   last 20 searches, the shows you follow, and the artists you follow
-  in MixMusic.
+  in MyMusic.
 - `mix-covers/`: the covers you chose for your mixes, cut to a square.
 - `local-files.json`: the index of the [music on this computer](local-music.md):
   the path, size, time of change and tags of each music file of the
@@ -67,7 +67,7 @@ AppImage or archive copy's.
 - `updater.json`: your choices of updates.
 - `addons/`: the themes and plugins you installed, and what plugins keep
   in `addons/.storage`.
-- `bin/`: MixMusic's own yt-dlp.
+- `bin/`: MyMusic's own yt-dlp.
 - `youtube-session.bin`: your YouTube Music session, encrypted with a key
   that the credential store keeps.
 - `matugen.json`, when you follow the colours that matugen writes there.
@@ -95,7 +95,7 @@ AppImage or archive copy's.
 
 ### The logs folder
 
-- `mixmusic.log`: what went wrong, started anew at a megabyte, with the
+- `mymusic.log`: what went wrong, started anew at a megabyte, with the
   three before it kept. It leaves out the cookies, hashes, keys and
   tokens a line may hold, and the addresses of streams, which carry your
   IP address.
@@ -104,10 +104,10 @@ AppImage or archive copy's.
   yourself.
 - `memory.log` and `heap-<time>.pprof`, only while you
   [record memory use](settings.md#about): a line each minute of how much
-  memory MixMusic uses, its Go heap's and the whole app's as the system
+  memory MyMusic uses, its Go heap's and the whole app's as the system
   tells it, and profiles of the Go heap, the last five kept, which tell
-  where in MixMusic's code its memory was taken, and how much. They hold
-  only how MixMusic uses its memory: nothing of your music, your
+  where in MyMusic's code its memory was taken, and how much. They hold
+  only how MyMusic uses its memory: nothing of your music, your
   library or your accounts. Report a problem tells of them, for you to
   attach.
 
@@ -115,7 +115,7 @@ AppImage or archive copy's.
 
 Your Spotify sign-in, your Last.fm connection and the key of your YouTube
 Music session are in the system's credential store, which encrypts them
-for your account. MixMusic never sees your passwords: you sign in on
+for your account. MyMusic never sees your passwords: you sign in on
 Google's, Spotify's and Last.fm's own pages.
 
 Where the credential store can't keep a secret:
@@ -127,7 +127,7 @@ Where the credential store can't keep a secret:
 - **On Linux without a Secret Service**, the secrets are in files only
   your user can read: `spotify-token.json`, `lastfm.json` and
   `youtube-session.json`.
-- Once the store can keep them, MixMusic moves them into it, and deletes
+- Once the store can keep them, MyMusic moves them into it, and deletes
   the files.
 
 ## What each feature sends where
@@ -142,7 +142,7 @@ Where the credential store can't keep a secret:
 | Skip songs made with AI, while it's on | YouTube (`www.youtube.com`), signed out | the video's ID, once a video |
 | Covers | the image servers of YouTube, Google and Spotify | the image asked for |
 | Spotify, once you sign in | Spotify (`accounts.spotify.com`, `api.spotify.com`) | what you search and open, your library's changes, and the commands of what plays |
-| Spotify in MixMusic | Spotify's player, loaded from `sdk.scdn.co` | what Spotify's own player sends |
+| Spotify in MyMusic | Spotify's player, loaded from `sdk.scdn.co` | what Spotify's own player sends |
 | Lyrics | Unison (`unison.boidu.dev`) | the video ID of the track that plays, or, without one, its title, artists, album and length |
 | Lyrics, when Unison has none | LRCLIB (`lrclib.net`) | the title, artists, album and length of the track that plays |
 | Lyrics of a track on this computer | Unison, then LRCLIB | its title, artists, album and length, as its tags tell, unless they name no artist; never its file |
@@ -150,14 +150,14 @@ Where the credential store can't keep a secret:
 | Romaji, the first time you turn it on | GitHub | a download of the dictionary of kanji readings; the lyrics stay on your computer |
 | Last.fm, once you connect it | Last.fm | the title, artists, album and length of what you play, and when |
 | Discord, unless you turn it off in Settings › Desktop | the Discord app on your computer | the title, artists, album and cover address of what plays, and its times, as you choose them; with the Listen button, the track's link on its service |
-| Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MixMusic while you cast |
+| Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyMusic while you cast |
 | Checks for updates, unless you turn them off in Settings › About | GitHub | a request for the newest release, and its download when you install it |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
 | The marketplace, when you open it | GitHub | a download of the registry, and of the add-ons you install |
 | Knowing whether the network answers | YouTube and Spotify | a request over HTTPS for an empty answer |
 
 - **Plugins** can send what they like: a plugin's permissions are shown
-  to you, not enforced, which is why MixMusic asks you to trust a plugin
+  to you, not enforced, which is why MyMusic asks you to trust a plugin
   before it enables it.
 - **Report a problem**, in Settings › About, opens a new GitHub issue in
   your browser, with your version, system, tools, theme and plugins
@@ -166,17 +166,17 @@ Where the credential store can't keep a secret:
 ## What stays on your computer
 
 - Your settings, your library, your history and your searches.
-- The [music on this computer](local-music.md#privacy): MixMusic plays it
+- The [music on this computer](local-music.md#privacy): MyMusic plays it
   from its files, and sends no file anywhere. Last.fm and Discord hear of
   what plays as of any track, as their settings say.
-- Latin letters for lyrics, Japanese romaji included: MixMusic makes them
+- Latin letters for lyrics, Japanese romaji included: MyMusic makes them
   itself, and sends no lyrics for them. Only Arabic's come from Unison,
   while romanize is on.
 - The audio: the offline cache, the downloads, and on Windows what the
   visualizer hears of Spotify through Windows' process loopback, which
-  hears only Spotify's app. On macOS it hears Spotify in MixMusic through
-  a process tap of MixMusic's own web views, which macOS lets it do once
-  you allowed it to record what other apps play. MixMusic analyzes that
+  hears only Spotify's app. On macOS it hears Spotify in MyMusic through
+  a process tap of MyMusic's own web views, which macOS lets it do once
+  you allowed it to record what other apps play. MyMusic analyzes that
   audio in memory, and never records or sends it.
 - The log and the crash reports, until you choose to send one.
 
@@ -191,7 +191,7 @@ Where the credential store can't keep a secret:
   settings of a new install. Your accounts, library and add-ons stay.
 - **The downloads:** Settings › Playback › Downloads › Folder moves them
   to another folder, with what they hold.
-- **Everything:** sign out of each service, quit MixMusic, then delete
+- **Everything:** sign out of each service, quit MyMusic, then delete
   the data, cache, logs and downloads folders above.
 
 **To bring your data to another copy**, as to another computer or into
@@ -202,6 +202,6 @@ there: sign-ins stay in the credential store of the computer they were
 made on.
 
 **To keep everything in one folder**, as for a portable copy or a test
-run, start MixMusic with the environment variable
-`MIXMUSIC_DATA_DIR` set to a folder: it keeps its data, cache, logs and
+run, start MyMusic with the environment variable
+`MYMUSIC_DATA_DIR` set to a folder: it keeps its data, cache, logs and
 downloads in the `data`, `cache`, `logs` and `downloads` folders inside.

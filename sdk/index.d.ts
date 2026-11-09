@@ -1,24 +1,24 @@
-// Types of the MixMusic plugin API, version 2, for plugin authors: that of
-// MixMusic's own interface, which a plugin declares with "api": 2 in its
+// Types of the MyMusic plugin API, version 2, for plugin authors: that of
+// MyMusic's own interface, which a plugin declares with "api": 2 in its
 // plugin.json.
 //
-// A plugin's module exports a default function that MixMusic calls with the
+// A plugin's module exports a default function that MyMusic calls with the
 // API when the user enables the plugin. It may return a function, which
-// MixMusic calls when the plugin is disabled, updated or removed:
+// MyMusic calls when the plugin is disabled, updated or removed:
 //
-//   import type { MixMusicAPI } from "./sdk";
+//   import type { MyMusicAPI } from "./sdk";
 //
-//   export default function activate(api: MixMusicAPI) {
+//   export default function activate(api: MyMusicAPI) {
 //     const off = api.player.on("trackchange", () => console.log(api.player.state().track?.title));
 //     return off;
 //   }
 //
-// MixMusic runs the JavaScript a plugin's TypeScript compiles to.
+// MyMusic runs the JavaScript a plugin's TypeScript compiles to.
 // Everything a plugin adds through the API (sidebar items, pages, track
 // actions, widgets, commands and listeners) is removed for it when it
 // stops, and its timers stop. See docs/plugins.md.
 
-/** A service tracks come from; "local" is a mix made in MixMusic. */
+/** A service tracks come from; "local" is a mix made in MyMusic. */
 export type Source = "youtube" | "spotify" | "local";
 
 export interface Image {
@@ -224,7 +224,7 @@ export interface Context2D {
   clearRect(x: number, y: number, width: number, height: number): void;
 }
 
-/** The reading methods and properties of the web's AnalyserNode, of what MixMusic's own player plays. */
+/** The reading methods and properties of the web's AnalyserNode, of what MyMusic's own player plays. */
 export interface Analyser {
   readonly fftSize: number;
   readonly frequencyBinCount: number;
@@ -250,8 +250,8 @@ export interface Theme {
   dark: boolean;
 }
 
-export interface MixMusicAPI {
-  /** MixMusic's version. */
+export interface MyMusicAPI {
+  /** MyMusic's version. */
   readonly version: string;
   /** The plugin's own id. */
   readonly plugin: string;
@@ -275,7 +275,7 @@ export interface MixMusicAPI {
     enqueue(tracks: Track[]): void;
     /** Listens to the player; returns the function that stops listening. */
     on(event: PlayerEvent, listener: () => void): () => void;
-    /** The analyser of MixMusic's own player, of fftSize 256: silence while it plays nothing. Spotify's audio, played on a Spotify Connect device, does not reach it. */
+    /** The analyser of MyMusic's own player, of fftSize 256: silence while it plays nothing. Spotify's audio, played on a Spotify Connect device, does not reach it. */
     analyser(): Analyser;
   };
 
@@ -295,9 +295,9 @@ export interface MixMusicAPI {
     /** Liking a disliked track takes the dislike back. */
     setLiked(track: Track, liked: boolean): Promise<void>;
     isDisliked(trackId: string): boolean;
-    /** Dislikes a track, or takes the dislike back: a track is liked or disliked, not both. MixMusic keeps the dislike, and sends a YouTube Music track's there when the user signed in. While Settings › Playback skips the songs the user dislikes, the queue passes over the track, and moves on from it at once when it plays. */
+    /** Dislikes a track, or takes the dislike back: a track is liked or disliked, not both. MyMusic keeps the dislike, and sends a YouTube Music track's there when the user signed in. While Settings › Playback skips the songs the user dislikes, the queue passes over the track, and moves on from it at once when it plays. */
     setDisliked(track: Track, disliked: boolean): Promise<void>;
-    /** The playlists made in MixMusic. */
+    /** The playlists made in MyMusic. */
     mixes(): Playlist[];
     createMix(title: string, tracks?: Track[]): Promise<Playlist>;
   };
@@ -360,4 +360,4 @@ export interface MixMusicAPI {
 }
 
 /** The function a plugin's module exports by default. */
-export type Activate = (api: MixMusicAPI) => void | (() => void) | Promise<void | (() => void)>;
+export type Activate = (api: MyMusicAPI) => void | (() => void) | Promise<void | (() => void)>;

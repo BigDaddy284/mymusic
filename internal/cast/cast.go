@@ -35,7 +35,7 @@ func (d Device) Addr() string { return net.JoinHostPort(d.Host, strconv.Itoa(d.P
 // devices with a screen.
 const DefaultMediaReceiver = "CC1AD845"
 
-// The namespaces of the protocol MixMusic speaks.
+// The namespaces of the protocol MyMusic speaks.
 const (
 	nsConnection = "urn:x-cast:com.google.cast.tp.connection"
 	nsHeartbeat  = "urn:x-cast:com.google.cast.tp.heartbeat"

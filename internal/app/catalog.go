@@ -10,13 +10,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/youtube"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // shelfTimeout bounds how long the home page waits for each service.
@@ -176,7 +176,7 @@ func (c *Catalog) Artist(ctx context.Context, id string) (media.Artist, error) {
 }
 
 // Playlist returns a playlist with its tracks, of any service or made in
-// MixMusic: all of them, up to media.MaxTracks, past which it's Cut. A page
+// MyMusic: all of them, up to media.MaxTracks, past which it's Cut. A page
 // of them that still fails after a few tries fails it.
 func (c *Catalog) Playlist(ctx context.Context, id string) (media.Playlist, error) {
 	return c.a.wholePlaylist(ctx, id)
@@ -342,7 +342,7 @@ func (c *Catalog) songOf(ctx context.Context, video media.Track) (media.Track, e
 	defer cancel()
 	song, err := c.a.matcher.Song(ctx, video)
 	if err != nil && !errors.Is(err, match.ErrNoMatch) && !errors.Is(err, context.Canceled) {
-		log.Printf("mixmusic: the song of %s: %v", video.ID, err)
+		log.Printf("mymusic: the song of %s: %v", video.ID, err)
 	}
 	return song, err
 }
@@ -416,7 +416,7 @@ func (c *Catalog) Lyrics(ctx context.Context, track media.Track) (lyrics.Lyrics,
 	q.VideoID = c.videoID(track)
 	l, err := c.a.unison.Get(ctx, q)
 	if errors.Is(err, lyrics.ErrUnavailable) {
-		log.Printf("mixmusic: the lyrics of %s, on Unison: %v", track.ID, err)
+		log.Printf("mymusic: the lyrics of %s, on Unison: %v", track.ID, err)
 	}
 	// LRCLIB fills in when Unison has nothing, or is down, and when it
 	// has synchronized lyrics where Unison has plain ones. Unison looks a
@@ -459,7 +459,7 @@ func (c *Catalog) Lyrics(ctx context.Context, track media.Track) (lyrics.Lyrics,
 		if errors.Is(err, lyrics.ErrNotFound) || errors.Is(err, lyrics.ErrNotFoundYet) {
 			return lyrics.Lyrics{}, lyricsError{"No lyrics found for this track.", err}
 		}
-		log.Printf("mixmusic: the lyrics of %s: %v", track.ID, err)
+		log.Printf("mymusic: the lyrics of %s: %v", track.ID, err)
 		return lyrics.Lyrics{}, lyricsError{"Lyrics can't be loaded right now. Check your connection, or try again in a moment.", err}
 	}
 	if l.Language == "" {

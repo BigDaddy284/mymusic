@@ -13,16 +13,16 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/player/playertest"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/internal/youtube"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/player/playertest"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 func TestMain(m *testing.M) {
@@ -204,11 +204,11 @@ func renderTo(t *testing.T, s *shell, tt *ui.Tester, dir, name string) {
 	}
 }
 
-// TestRender draws the main window's pages to MIXMUSIC_RENDER, for a look.
+// TestRender draws the main window's pages to MYMUSIC_RENDER, for a look.
 func TestRender(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShellOf(t, func(o *app.Options) { o.ProblemWait = -1 })
 	album := media.Album{ID: "al-1", Source: media.SourceYouTube, Title: "Hurry Up, We're Dreaming", Artists: []media.Ref{{ID: "ar-m83", Name: "M83"}},
@@ -324,11 +324,11 @@ func TestRender(t *testing.T) {
 }
 
 // TestRenderThemes draws the home page and the mini player in each
-// built-in theme to MIXMUSIC_RENDER, for a look at their effects.
+// built-in theme to MYMUSIC_RENDER, for a look at their effects.
 func TestRenderThemes(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	var items []media.Item
@@ -366,12 +366,12 @@ func TestRenderThemes(t *testing.T) {
 }
 
 // TestRenderColorFiles draws the home page and the mini player of themes
-// in the colours of pywal's and matugen's files to MIXMUSIC_RENDER, and the
+// in the colours of pywal's and matugen's files to MYMUSIC_RENDER, and the
 // appearance settings that read them.
 func TestRenderColorFiles(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	var items []media.Item
@@ -407,13 +407,13 @@ func TestRenderColorFiles(t *testing.T) {
 	}
 }
 
-// TestRenderDialogs draws the dialogs to MIXMUSIC_RENDER, in a window as
+// TestRenderDialogs draws the dialogs to MYMUSIC_RENDER, in a window as
 // tall as usual and in one too short for them, at the largest text size,
 // and the update offer in the themes whose panels differ.
 func TestRenderDialogs(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	shell := func(theme string, scale float64) *shell {
 		s := newTestShell(t)

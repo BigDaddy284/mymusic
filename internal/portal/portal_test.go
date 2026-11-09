@@ -6,7 +6,7 @@ import (
 )
 
 func TestRequestPath(t *testing.T) {
-	if got, want := requestPath(":1.42", "mixmusic3"), "/org/freedesktop/portal/desktop/request/1_42/mixmusic3"; got != want {
+	if got, want := requestPath(":1.42", "mymusic3"), "/org/freedesktop/portal/desktop/request/1_42/mymusic3"; got != want {
 		t.Errorf("requestPath = %q, want %q", got, want)
 	}
 }

@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio/output"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestOutputDevicesListed lists the output devices the system tells of.
@@ -90,13 +90,13 @@ func TestOutputNotes(t *testing.T) {
 
 // TestStartNativeOnAGoneDevice starts the engine's output on a device that
 // isn't there, which plays silence on the default device and says so. It
-// opens the audio device, so it runs only with MIXMUSIC_AUDIO=1.
+// opens the audio device, so it runs only with MYMUSIC_AUDIO=1.
 func TestStartNativeOnAGoneDevice(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	a := newQuietApp(t, nil)
-	gone := settings.OutputDevice{ID: "mixmusic-test-no-such-device", Name: "Gone"}
+	gone := settings.OutputDevice{ID: "mymusic-test-no-such-device", Name: "Gone"}
 	a.output.chosen = gone
 	notes := make(chan string, 4)
 	defer a.OnOutputDevice(func(note string) { notes <- note })()

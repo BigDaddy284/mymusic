@@ -7,7 +7,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestViewTracksByPlays puts the most played first; tracks played as
@@ -55,7 +55,7 @@ func titlesShown(t *testing.T, tt *ui.Tester, tracks []media.Track) []string {
 	return out
 }
 
-// TestSortByPlays sorts the liked songs by how often MixMusic played
+// TestSortByPlays sorts the liked songs by how often MyMusic played
 // them, from Sort by's Plays, and follows the plays counted after.
 func TestSortByPlays(t *testing.T) {
 	s := newTestShell(t)

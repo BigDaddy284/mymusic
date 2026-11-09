@@ -8,7 +8,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/addons"
 )
 
 // settingsTabs are the settings' sections, by their paths' last part.

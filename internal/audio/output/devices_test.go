@@ -36,7 +36,7 @@ func TestCoreAudioDevices(t *testing.T) {
 		{id: 48, uid: "BuiltInSpeakerDevice", name: "MacBook Pro Speakers", outputs: 2},
 		{id: 90, uid: "BlackHole2ch_UID", name: "BlackHole 2ch", outputs: 2},
 		{id: 95, uid: "F2-8C-1E-AA-00-01:output", name: "AirPods Pro", outputs: 2},
-		{id: 120, uid: "AggregateTap-1", name: "MixMusic's visualizer", outputs: 2, hidden: true},
+		{id: 120, uid: "AggregateTap-1", name: "MyMusic's visualizer", outputs: 2, hidden: true},
 		{id: 130, name: "No UID", outputs: 2},
 		{id: 140, uid: "Unnamed_UID", outputs: 6},
 	}, 48)

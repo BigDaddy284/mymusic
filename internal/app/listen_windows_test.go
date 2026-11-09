@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/audio/output"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // TestProcesses finds this process among those that run, by its name.
@@ -34,12 +34,12 @@ func TestProcesses(t *testing.T) {
 }
 
 // TestListenerHears has the listener hear this process, in the place of
-// MixMusic's webview, play a tone at -100 dB, which no one hears, into its
+// MyMusic's webview, play a tone at -100 dB, which no one hears, into its
 // tap, and stop when it hears nothing. It opens the audio device, so it
-// runs only with MIXMUSIC_AUDIO=1.
+// runs only with MYMUSIC_AUDIO=1.
 func TestListenerHears(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	phase := 0
 	s, err := output.Start(2, func(out []float32, _ int) {
@@ -57,7 +57,7 @@ func TestListenerHears(t *testing.T) {
 	}
 	defer s.Stop()
 	l := listenFinding(func(h hearing) uint32 {
-		if h == hearMixMusic {
+		if h == hearMyMusic {
 			return uint32(os.Getpid())
 		}
 		return 0

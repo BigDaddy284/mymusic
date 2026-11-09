@@ -5,8 +5,8 @@ import (
 	"math"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/opus/internal/opustest"
-	"github.com/fzn0x/mixmusic/opus/internal/rangedec"
+	"github.com/bigdaddy284/mymusic/opus/internal/opustest"
+	"github.com/bigdaddy284/mymusic/opus/internal/rangedec"
 )
 
 // The SILK-only test vectors of RFC 8251: every packet has a TOC config of

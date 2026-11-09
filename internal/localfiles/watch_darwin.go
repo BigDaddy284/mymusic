@@ -5,7 +5,7 @@ package localfiles
 // On macOS, FSEvents tells of the changes to a folder and the folders in
 // it, file by file (kFSEventStreamCreateFlagFileEvents), and of the folder
 // itself renamed or removed (kFSEventStreamCreateFlagWatchRoot), through
-// CoreServices, which MixMusic reaches through purego, as it does Core
+// CoreServices, which MyMusic reaches through purego, as it does Core
 // Audio. FSEvents, not kqueue: a kqueue watch takes an open file for each
 // folder, and tells only that a folder's list of files changed, not which
 // file, nor of a file written in place; FSEvents watches a whole tree in

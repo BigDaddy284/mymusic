@@ -13,19 +13,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // TestLiveDirect finds the stream of a song through YouTube's player API
 // itself, and reads all of it as the proxy does, after a seek: YouTube
-// changes what it answers from time to time. It runs with MIXMUSIC_LIVE=1:
+// changes what it answers from time to time. It runs with MYMUSIC_LIVE=1:
 //
-//	MIXMUSIC_LIVE=1 go test ./internal/stream -run Live -v
+//	MYMUSIC_LIVE=1 go test ./internal/stream -run Live -v
 func TestLiveDirect(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
@@ -118,10 +118,10 @@ func readRange(t *testing.T, s Stream, start, end int64) int64 {
 // TestLivePicture finds the picture of a music video as the now playing
 // page does, through YouTube's player API and through yt-dlp when there is
 // one, reads its index, and fetches a part of it from the middle through
-// the proxy, as the page fetches them. It runs with MIXMUSIC_LIVE=1.
+// the proxy, as the page fetches them. It runs with MYMUSIC_LIVE=1.
 func TestLivePicture(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
@@ -150,11 +150,11 @@ func TestLivePicture(t *testing.T) {
 // TestLiveSurround finds the stereo audio of a video YouTube has a 5.1 mix
 // of through YouTube's player API, which tells the TV client of the 5.1
 // audio, and of a song in stereo alone, which has none. With the yt-dlp
-// MixMusic installed and a JavaScript runtime, yt-dlp finds the 5.1 audio,
-// whose start the proxy serves: AC-3 in MP4. It runs with MIXMUSIC_LIVE=1.
+// MyMusic installed and a JavaScript runtime, yt-dlp finds the 5.1 audio,
+// whose start the proxy serves: AC-3 in MP4. It runs with MYMUSIC_LIVE=1.
 func TestLiveSurround(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
@@ -174,7 +174,7 @@ func TestLiveSurround(t *testing.T) {
 	}
 
 	config, _ := os.UserConfigDir()
-	tm := tools.New(filepath.Join(config, "MixMusic", "bin"))
+	tm := tools.New(filepath.Join(config, "MyMusic", "bin"))
 	if _, err := tm.YTDLP(); err != nil {
 		t.Skip("no yt-dlp to find the 5.1 audio")
 	}

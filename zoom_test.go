@@ -10,7 +10,7 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // newZoomShell is a test shell that plays Spotify tracks from their
@@ -99,7 +99,7 @@ func TestZoomRoom(t *testing.T) {
 	s.drain()
 	tt.Frame()
 	tt.Frame()
-	// The window MixMusic first opens has room for about 140%.
+	// The window MyMusic first opens has room for about 140%.
 	if got := percent(s.zoom); got != "139%" {
 		t.Errorf("1280×820 at 200%% shows %s, want 139%%", got)
 	}
@@ -233,11 +233,11 @@ func TestMiniZoomToldOnce(t *testing.T) {
 }
 
 // TestRenderZoom draws Settings › Appearance and the mini player zoomed
-// to MIXMUSIC_RENDER, for a look.
+// to MYMUSIC_RENDER, for a look.
 func TestRenderZoom(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newZoomShell(t)
 	s.p.PlayTracks(testTracks, 0)

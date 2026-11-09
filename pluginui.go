@@ -5,13 +5,13 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/plugins"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/plugins"
 )
 
 // hosts are the plugin hosts of the apps, one each: plugins run as long as
-// MixMusic does, whatever windows come and go.
+// MyMusic does, whatever windows come and go.
 var hosts struct {
 	sync.Mutex
 	m map[*app.App]*plugins.Host

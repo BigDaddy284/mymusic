@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // toldServices prepare each YouTube track as its stream, which tells of no

@@ -1,7 +1,7 @@
 # The library and downloads
 
 - **`internal/library`** keeps liked and disliked songs, mixes, the history
-  and stats, and the artists followed in MixMusic
+  and stats, and the artists followed in MyMusic
   ([Following artists](follows.md)), in `library.json`. A mix's cover
   that the user chose is a file of `mix-covers/` in the data folder,
   which the mix names (`Playlist.Cover`): its centre square, at most 600
@@ -32,7 +32,7 @@
   refuses it (`match.ErrLocal`), no radio starts from it, and a cast
   device isn't handed it. One whose file is gone is missing until a scan.
 - **The watch of the folders** (`internal/localfiles/watch*.go`): from
-  MixMusic's start (`startLocalFiles`), a `localfiles.Watcher` watches
+  MyMusic's start (`startLocalFiles`), a `localfiles.Watcher` watches
   the folders scanned, each through its system's own API:
   ReadDirectoryChangesW on Windows, through an I/O completion port;
   FSEvents on macOS, through purego, one stream of a whole tree, file by
@@ -71,7 +71,7 @@
   the index keeps the videos playback or a download found live, whose
   tracks it leaves out of their collections and refuses, until one plays
   as a video again. A collection downloaded keeps the tracks taken out of
-  it since, until its download is removed: MixMusic can't tell them from
+  it since, until its download is removed: MyMusic can't tell them from
   those a service stopped listing, as a video made private. Its page
   brings it up to date (`syncDownload` in `downloadsync.go`), once for
   each of the page's answers: `SyncCollection` downloads the tracks its

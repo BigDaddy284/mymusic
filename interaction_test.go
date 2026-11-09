@@ -15,12 +15,12 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // tester is a window of the shell, without one.
@@ -274,16 +274,16 @@ func TestAlbumPlayPastAI(t *testing.T) {
 // it or download what replaces it, and what's new.
 func TestUpdateOffer(t *testing.T) {
 	s := newTestShell(t)
-	s.offer = &app.Release{Version: "9.9.9", Newer: true, Page: "https://github.com/fzn0x/mixmusic/releases/tag/v9.9.9",
-		Download: "https://github.com/fzn0x/mixmusic/releases/download/v9.9.9/mixmusic-9.9.9-linux-amd64.deb",
-		File:     "mixmusic-9.9.9-linux-amd64.deb"}
+	s.offer = &app.Release{Version: "9.9.9", Newer: true, Page: "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
+		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-linux-amd64.deb",
+		File:     "mymusic-9.9.9-linux-amd64.deb"}
 	tt := tester(t, s)
 	u := s.svc.System.Updates()
 	act := downloadLabel(u.Kind)
 	if u.Enabled {
 		act = "install 9.9.9"
 	}
-	for _, text := range []string{"mixmusic 9.9.9 is out", "what's new", "later", "skip this version", act} {
+	for _, text := range []string{"mymusic 9.9.9 is out", "what's new", "later", "skip this version", act} {
 		if !tt.HasText(text) {
 			t.Errorf("the offer doesn't show %q: %q", text, tt.Texts())
 		}
@@ -337,7 +337,7 @@ func TestToolsInFlatpak(t *testing.T) {
 	if got := jsRuntimeHelp(node, true); !strings.HasPrefix(got, "node v24.22.2 · ") {
 		t.Errorf("in a Flatpak, with its Node.js: %q", got)
 	}
-	if got := ownYTDLPHelp(true); !strings.Contains(got, "~/.var/app/io.github.fzn0x.mixmusic") {
+	if got := ownYTDLPHelp(true); !strings.Contains(got, "~/.var/app/io.github.bigdaddy284.mymusic") {
 		t.Errorf("in a Flatpak, Own yt-dlp says %q", got)
 	}
 	if got := ownYTDLPHelp(false); strings.Contains(got, "Flatpak") {
@@ -1296,7 +1296,7 @@ func TestYTDLPNotNow(t *testing.T) {
 	}
 }
 
-// TestYTDLPMissing offers yt-dlp for the tracks MixMusic can't find
+// TestYTDLPMissing offers yt-dlp for the tracks MyMusic can't find
 // itself, without saying nothing plays.
 func TestYTDLPMissing(t *testing.T) {
 	s := newTestShell(t)
@@ -1405,7 +1405,7 @@ func TestSearchBox(t *testing.T) {
 }
 
 // TestSettingsKeep shows the settings without changing them: Spotify
-// tracks played inside MixMusic, which the native interface's choices
+// tracks played inside MyMusic, which the native interface's choices
 // don't name, stay so.
 func TestSettingsKeep(t *testing.T) {
 	s := newTestShell(t)
@@ -1426,7 +1426,7 @@ func TestSettingsKeep(t *testing.T) {
 		t.Errorf("showing the settings made Spotify playback %q", got)
 	}
 	click(t, s, tt, "playback")
-	click(t, s, tt, "in mixmusic, from youtube music")
+	click(t, s, tt, "in mymusic, from youtube music")
 	if got := s.svc.Preferences.Get().SpotifyPlayback; got != settings.SpotifyPlaybackMatch {
 		t.Errorf("choosing YouTube Music made Spotify playback %q", got)
 	}
@@ -1639,9 +1639,9 @@ func TestShortcutName(t *testing.T) {
 func TestAboutRelease(t *testing.T) {
 	s := newTestShell(t)
 	s.loads["release"] = &loaded[app.Release]{done: true, value: app.Release{Version: "9.9.9", Newer: true, Date: "2026-10-12T09:00:00Z",
-		Page:     "https://github.com/fzn0x/mixmusic/releases/tag/v9.9.9",
-		Download: "https://github.com/fzn0x/mixmusic/releases/download/v9.9.9/mixmusic-9.9.9-linux-amd64.deb",
-		File:     "mixmusic-9.9.9-linux-amd64.deb"}}
+		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
+		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-linux-amd64.deb",
+		File:     "mymusic-9.9.9-linux-amd64.deb"}}
 	tt := testerOf(t, s, 1280, 2400)
 	show(s, tt, "/settings/about")
 	u := s.svc.System.Updates()
@@ -1649,7 +1649,7 @@ func TestAboutRelease(t *testing.T) {
 	if u.Enabled {
 		act = "install 9.9.9"
 	}
-	for _, text := range []string{"MixMusic 9.9.9 is out", "Out since 12 Oct 2026.", "what's new", "check again", act, "contribute"} {
+	for _, text := range []string{"MyMusic 9.9.9 is out", "Out since 12 Oct 2026.", "what's new", "check again", act, "contribute"} {
 		if !tt.HasText(text) {
 			t.Errorf("About doesn't show %q: %q", text, tt.Texts())
 		}

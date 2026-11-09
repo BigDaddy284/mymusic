@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/discord"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/discord"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The Discord status shows what plays as Settings › Desktop chooses (#352):
@@ -23,7 +23,7 @@ var DiscordPlaceholders = []string{"title", "artist", "album", "service"}
 // discordBadges is where the badges of the Discord status are, which
 // Discord reads: brand/discord's images, from GitHub, so that they show
 // whatever the Discord application, the user's own too.
-const discordBadges = "https://raw.githubusercontent.com/fzn0x/mixmusic/main/brand/discord/"
+const discordBadges = "https://raw.githubusercontent.com/bigdaddy284/mymusic/main/brand/discord/"
 
 // The badges of the Discord status, by the names of their files: the
 // services' and the one of a paused track.
@@ -66,7 +66,7 @@ func DiscordActivity(d settings.Desktop, np NowPlaying, now time.Time) *discord.
 		Type:    discord.Listening,
 		Details: ExpandDiscordLine(d.DiscordFirstLine, t),
 		State:   ExpandDiscordLine(d.DiscordSecondLine, t),
-		// The member list says "Listening to MixMusic", whether the track
+		// The member list says "Listening to MyMusic", whether the track
 		// is Spotify's or YouTube Music's.
 		StatusDisplay: discord.ShowName,
 	}
@@ -223,7 +223,7 @@ func discordServiceName(t media.Track) string {
 	case media.SourceFile:
 		return "my computer"
 	}
-	return "MixMusic"
+	return "MyMusic"
 }
 
 // discordBadgeText is what the badge of t's service tells as it is

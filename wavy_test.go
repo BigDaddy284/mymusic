@@ -13,8 +13,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // setWavy turns the wavy progress bar on or off, as Settings does.
@@ -223,14 +223,14 @@ func TestWavePoints(t *testing.T) {
 
 // TestRenderWavyProgress draws the player bar and the now playing page
 // with the wavy progress bar in each layout, in Mix, Daylight, Aurora and
-// Terminal, to MIXMUSIC_RENDER, for a look; MIXMUSIC_THEMES lists others.
+// Terminal, to MYMUSIC_RENDER, for a look; MYMUSIC_THEMES lists others.
 func TestRenderWavyProgress(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	themes := []string{"mix", "daylight", "aurora", "terminal"}
-	if only := os.Getenv("MIXMUSIC_THEMES"); only != "" {
+	if only := os.Getenv("MYMUSIC_THEMES"); only != "" {
 		themes = strings.Split(only, ",")
 	}
 	s := playingAt(t)

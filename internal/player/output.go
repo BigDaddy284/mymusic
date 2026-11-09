@@ -11,7 +11,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/audio"
 )
 
 // Output is where the player's streams play, as the app tells it. The zero

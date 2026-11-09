@@ -12,13 +12,13 @@ import (
 )
 
 // MP3License is the license of go-mp3, the MP3 decoder of Hajime Hoshi
-// and its authors, which MixMusic is built with, and whose binary copies
+// and its authors, which MyMusic is built with, and whose binary copies
 // must give it.
 //
 //go:embed LICENSE.go-mp3
 var MP3License string
 
-// errMP3 is wrapped by the errors of an MP3 file MixMusic can't read.
+// errMP3 is wrapped by the errors of an MP3 file MyMusic can't read.
 var errMP3 = errors.New("mp3: invalid data")
 
 // mp3Bytes is the bytes of the 16-bit stereo an MP3 track reads at a
@@ -214,7 +214,7 @@ func (h mp3Header) length(rate int) (time.Duration, bool) {
 	return time.Duration(n) * time.Second / time.Duration(rate), true
 }
 
-// guard runs fn, which runs a decoder MixMusic didn't write: a panic of
+// guard runs fn, which runs a decoder MyMusic didn't write: a panic of
 // it, as at a file made to break it, is an error of the file.
 func guard(fn func() error) (err error) {
 	defer func() {

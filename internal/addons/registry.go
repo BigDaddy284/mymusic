@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 const (
@@ -45,7 +45,7 @@ type Entry struct {
 // CommunityFilesURL is where the community's add-ons are downloaded from,
 // the baseUrl of its registries: the registry branch, where the Registry
 // workflow publishes them, with the plugins compiled from their TypeScript.
-const CommunityFilesURL = "https://raw.githubusercontent.com/fzn0x/mixmusic/registry/"
+const CommunityFilesURL = "https://raw.githubusercontent.com/bigdaddy284/mymusic/registry/"
 
 // Registry is the community registry of themes and plugins.
 type Registry struct {

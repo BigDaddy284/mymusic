@@ -1,7 +1,7 @@
 # Music on this computer
 <!-- docs: group=using order=25 -->
 
-MixMusic plays the music files on your computer beside Spotify and YouTube Music: in one library, one search and one queue. It plays them from their files, and uploads nothing.
+MyMusic plays the music files on your computer beside Spotify and YouTube Music: in one library, one search and one queue. It plays them from their files, and uploads nothing.
 
 Your own recordings, the albums you bought, a folder of live sets: add the
 folders they're in, or open the files, and they play as any track does,
@@ -11,22 +11,22 @@ with the equalizer, crossfade, speed and the visualizer of
 ## Add a folder
 
 Settings › Playback › Music on this computer, or the add a folder button of
-Library › On this computer, opens your system's folder picker. MixMusic
+Library › On this computer, opens your system's folder picker. MyMusic
 reads the folder and the folders in it, and keeps what it finds:
 
 - **Folders** lists each folder with how many tracks it holds, how many
   files it skipped, files of kinds it can't play or broken, and how many
-  folders in it can't be read, as one MixMusic isn't allowed to read.
+  folders in it can't be read, as one MyMusic isn't allowed to read.
 - **Remove** takes a folder out of the library. Its files stay where they
   are, and its tracks stay in your mixes, greyed.
-- **Rescan** reads the folders again now. MixMusic also reads them as it
+- **Rescan** reads the folders again now. MyMusic also reads them as it
   starts, quietly, and when you add or remove one.
 
 A scan reads only what changed: a file new to it, or one whose size or
 time of change differs from the last scan. A library of thousands of
 files is read whole once, then in moments.
 
-While MixMusic runs, it watches the folders: a file you add, change,
+While MyMusic runs, it watches the folders: a file you add, change,
 rename or remove in them shows in the library within a few seconds,
 without a scan, and a folder you copy in is read once, as the copy
 settles. Where it can't watch a folder, Settings says why, under the
@@ -34,10 +34,10 @@ folders: one on a network drive, whose server may not tell of what other
 computers change; on Windows, one on a removable drive, which a watch
 would keep from being ejected; on Linux, one past the system's limit on
 watched folders, `fs.inotify.max_user_watches`. For such a folder,
-rescan, or start MixMusic again, to see what
+rescan, or start MyMusic again, to see what
 you added. Hidden folders, whose names start with a dot, are passed
 over. Files and folders play whatever their names hold, even names that
-aren't valid UTF-8, as on some Linux drives: MixMusic keeps their paths
+aren't valid UTF-8, as on some Linux drives: MyMusic keeps their paths
 in base64, so that they name the same files after a restart.
 
 ## Open files without a folder
@@ -46,7 +46,7 @@ Open music files…, in the [command palette](settings.md#the-command-palette)
 or with Ctrl+O (⌘O on macOS), and open files in Library › On this
 computer, choose files to play now, as a queue. Drop files on the window,
 or a folder, and they play the same way, in the order of their names.
-MixMusic keeps none of them in the library: they play as long as their
+MyMusic keeps none of them in the library: they play as long as their
 files are where they were, from the queue, your mixes or your liked
 songs.
 
@@ -88,19 +88,19 @@ of case and accents, and shows even without the network.
 | Vorbis | `.ogg`, `.oga` | in Ogg |
 
 Files of more than two channels play mixed down to stereo. Files of
-other kinds, as `.wma` or `.aac` alone, aren't read. A file MixMusic can't
+other kinds, as `.wma` or `.aac` alone, aren't read. A file MyMusic can't
 play counts as skipped in Settings, and never stops a scan.
 
 ## Tags and covers
 
-MixMusic reads the title, artists, album, album artists, track and disc
+MyMusic reads the title, artists, album, album artists, track and disc
 numbers and year your files' tags tell: ID3v2 and ID3v1 of MP3, MP4's
 tags, the Vorbis comments of FLAC, Opus and Vorbis, and WAV's INFO list.
 
 - **A file without tags** shows by its file's name, by Unknown artist.
 - **Covers:** the cover a file holds, the front cover when it holds
   several, else an image beside it named cover, folder, front or album
-  (`.jpg`, `.png` or `.webp`). MixMusic keeps a copy of each in its cache
+  (`.jpg`, `.png` or `.webp`). MyMusic keeps a copy of each in its cache
   folder, never beside your music, and never changes your files.
 
 ## When a file is gone
@@ -115,7 +115,7 @@ try at once, also while you're offline.
   folder that can't be read stay until a scan reads it again: those of a
   folder of music on a drive unplugged, even partway through the scan,
   greyed until it's back, and those of a folder in it that can't be
-  read, as one MixMusic isn't allowed to read, as they were, greyed only
+  read, as one MyMusic isn't allowed to read, as they were, greyed only
   if their own files can't be reached.
 - **Your mixes and liked songs** keep the track, greyed, and it plays
   again once its file is back where it was.
@@ -143,7 +143,7 @@ a service doesn't apply to them:
 
 ## Privacy
 
-Nothing of your music files leaves your computer. MixMusic keeps an index
+Nothing of your music files leaves your computer. MyMusic keeps an index
 of what your folders hold, their paths and tags, in `local-files.json` in
 your [data folder](data-and-privacy.md#the-data-folder), and their covers
 in the cache folder's `local-art`.

@@ -8,7 +8,7 @@ import (
 
 func init() { addSettings(soundRows, 5, (*shell).outputDeviceRow) }
 
-// outputDeviceRow chooses the device MixMusic's own player plays on, in
+// outputDeviceRow chooses the device MyMusic's own player plays on, in
 // Settings › Playback › Sound: the system's default, or a device by name.
 func (s *shell) outputDeviceRow(c *ui.Context) {
 	description := outputDescription
@@ -39,5 +39,5 @@ func (s *shell) outputDeviceRow(c *ui.Context) {
 
 // outputDescription tells what the output device does, in Settings ›
 // Playback.
-const outputDescription = "The speakers or headphones MixMusic plays on. System default follows the device your system plays on; " +
+const outputDescription = "The speakers or headphones MyMusic plays on. System default follows the device your system plays on; " +
 	"a device that's unplugged gives way to it until it's back."

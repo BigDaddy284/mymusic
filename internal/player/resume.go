@@ -3,7 +3,7 @@ package player
 import (
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Resumer is what the player asks of the app of where a podcast's episode

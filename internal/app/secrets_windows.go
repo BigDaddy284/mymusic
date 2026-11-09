@@ -20,7 +20,7 @@ var userSealer sealer = dpapi{}
 const errNoLogonSession = syscall.Errno(1312)
 
 // unavailable reports whether err means the Credential Manager isn't
-// available to MixMusic: not to this logon session, or not at all.
+// available to MyMusic: not to this logon session, or not at all.
 func unavailable(err error) bool {
 	return errors.Is(err, errors.ErrUnsupported) || errors.Is(err, errNoLogonSession)
 }
@@ -34,7 +34,7 @@ var (
 )
 
 // cryptprotectUIForbidden is CRYPTPROTECT_UI_FORBIDDEN: DPAPI fails rather
-// than ask the user anything. MixMusic never passes
+// than ask the user anything. MyMusic never passes
 // CRYPTPROTECT_LOCAL_MACHINE, with which every account of the computer
 // could open the files.
 const cryptprotectUIForbidden = 0x1

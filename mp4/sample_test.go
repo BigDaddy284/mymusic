@@ -17,18 +17,18 @@ import (
 
 // TestSample checks the Reader against ffprobe on a file the repository
 // does not hold, such as the AAC audio of a YouTube video, and logs how
-// the file is laid out. It runs when MIXMUSIC_MP4_SAMPLE names the file,
+// the file is laid out. It runs when MYMUSIC_MP4_SAMPLE names the file,
 // with ffprobe on the PATH:
 //
 //	yt-dlp -f 140 --fixup never -o zoo.m4a -- jNQXAC9IVRw
-//	MIXMUSIC_MP4_SAMPLE=zoo.m4a go test ./mp4 -run Sample -v
+//	MYMUSIC_MP4_SAMPLE=zoo.m4a go test ./mp4 -run Sample -v
 //
 // yt-dlp's --fixup never keeps the file as YouTube serves it, which it
 // would otherwise remux.
 func TestSample(t *testing.T) {
-	path := os.Getenv("MIXMUSIC_MP4_SAMPLE")
+	path := os.Getenv("MYMUSIC_MP4_SAMPLE")
 	if path == "" {
-		t.Skip("set MIXMUSIC_MP4_SAMPLE to an MP4 file to test against ffprobe")
+		t.Skip("set MYMUSIC_MP4_SAMPLE to an MP4 file to test against ffprobe")
 	}
 	p := runProbe(t, path)
 	if desc, err := describe(path); err != nil {

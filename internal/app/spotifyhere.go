@@ -13,27 +13,27 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
-// hereLoad is how long the page of MixMusic's own Spotify device may take
+// hereLoad is how long the page of MyMusic's own Spotify device may take
 // to load.
 const hereLoad = 20 * time.Second
 
-// hereSounds is how long a track that MixMusic's own Spotify device took
+// hereSounds is how long a track that MyMusic's own Spotify device took
 // may load before the player has it play all the same.
 const hereSounds = 10 * time.Second
 
-// spotifyPlaysHere tells whether MixMusic plays Spotify itself here.
+// spotifyPlaysHere tells whether MyMusic plays Spotify itself here.
 var spotifyPlaysHere = playsSpotifyOn(runtime.GOOS)
 
-// SpotifyPlaysHere tells whether MixMusic plays Spotify itself on this
+// SpotifyPlaysHere tells whether MyMusic plays Spotify itself on this
 // system, for the settings to offer it.
 func SpotifyPlaysHere() bool { return spotifyPlaysHere }
 
-// playsSpotifyOn tells whether MixMusic plays Spotify itself on goos: where
+// playsSpotifyOn tells whether MyMusic plays Spotify itself on goos: where
 // its webview decrypts Spotify's audio, WebView2 with Widevine on Windows,
 // WKWebView with FairPlay on macOS. WebKitGTK has no EME (#295).
 func playsSpotifyOn(goos string) bool { return goos == "windows" || goos == "darwin" }
@@ -50,12 +50,12 @@ func herePage(goos string) mygo.PageOptions {
 	return mygo.PageOptions{}
 }
 
-// spotifyHere is MixMusic's own Spotify device for the native interface:
+// spotifyHere is MyMusic's own Spotify device for the native interface:
 // Spotify's Web Playback SDK, which plays Spotify's protected audio, in the
 // page of a hidden window, public/spotify.html, as the web interface played
 // it in its own page. Tracks play on it through the Web API, as on Spotify
 // Connect, and the player follows it by asking the page. The window opens
-// at the first Spotify track that plays in MixMusic, and closes when the
+// at the first Spotify track that plays in MyMusic, and closes when the
 // sign-in or the settings change: a WebView2 takes memory.
 type spotifyHere struct {
 	a *App
@@ -68,13 +68,13 @@ type spotifyHere struct {
 
 // page returns the page of the device, opening its window if need be.
 func (h *spotifyHere) page(ctx context.Context) (*mygo.Page, error) {
-	if err := needWebView("playing Spotify in MixMusic"); err != nil {
+	if err := needWebView("playing Spotify in MyMusic"); err != nil {
 		return nil, err
 	}
 	h.mu.Lock()
 	if h.win == nil {
 		win := mygo.NewWindow(mygo.WindowOptions{
-			Title:       "MixMusic's Spotify player",
+			Title:       "MyMusic's Spotify player",
 			Width:       320,
 			Height:      240,
 			Hidden:      true,
@@ -101,7 +101,7 @@ func (h *spotifyHere) page(ctx context.Context) (*mygo.Page, error) {
 	case <-loaded:
 		return win.Page(), nil
 	case <-ctx.Done():
-		return nil, errors.New("MixMusic's Spotify player didn't load")
+		return nil, errors.New("MyMusic's Spotify player didn't load")
 	}
 }
 
@@ -131,7 +131,7 @@ func (h *spotifyHere) open() *mygo.Page {
 	}
 }
 
-// close closes the window: MixMusic leaves the user's Spotify devices.
+// close closes the window: MyMusic leaves the user's Spotify devices.
 func (h *spotifyHere) close() {
 	h.mu.Lock()
 	win := h.win
@@ -161,7 +161,7 @@ func eval[T any](ctx context.Context, page *mygo.Page, code string) (T, error) {
 	return out, err
 }
 
-// SpotifyPage is what the page of MixMusic's own Spotify device calls.
+// SpotifyPage is what the page of MyMusic's own Spotify device calls.
 type SpotifyPage struct{ a *App }
 
 // Token returns the access token of the user's Spotify sign-in, with which
@@ -178,7 +178,7 @@ func (s *SpotifyPage) Changed(context.Context) error {
 	return nil
 }
 
-// SpotifyHereCheck tells, for development, whether MixMusic's own
+// SpotifyHereCheck tells, for development, whether MyMusic's own
 // Spotify device could play: its page loads, its webview decrypts
 // Spotify's audio, and it reaches the app for a token, which it gets once
 // the user signed in.
@@ -194,7 +194,7 @@ func (a *App) SpotifyHereCheck(ctx context.Context) (string, error) {
 		return "decrypts Spotify's audio: " + supported + ", " + token;`)
 }
 
-// hereDevice is the player's view of MixMusic's own Spotify device.
+// hereDevice is the player's view of MyMusic's own Spotify device.
 type hereDevice struct{ h *spotifyHere }
 
 func (d hereDevice) Play(ctx context.Context, t media.Track, at time.Duration) error {
@@ -208,7 +208,7 @@ func (d hereDevice) PlayAhead(ctx context.Context, t media.Track, at time.Durati
 	case !a.spotify.SignedIn():
 		return errors.New("sign in to Spotify in Settings › Accounts to play it")
 	case !a.spotify.Granted("streaming"):
-		return errors.New("sign in to Spotify again in Settings › Accounts, for MixMusic to play it itself")
+		return errors.New("sign in to Spotify again in Settings › Accounts, for MyMusic to play it itself")
 	}
 	page, err := d.h.page(ctx)
 	if err != nil {
@@ -264,12 +264,12 @@ func (d hereDevice) inOrder(page *mygo.Page, deviceID string) {
 	}
 	if order.Shuffle {
 		if err := d.h.a.spotify.Shuffle(ctx, deviceID, false); err != nil {
-			log.Printf("mixmusic: Spotify's player shuffles: %v", err)
+			log.Printf("mymusic: Spotify's player shuffles: %v", err)
 		}
 	}
 	if order.Repeat != 0 {
 		if err := d.h.a.spotify.Repeat(ctx, deviceID, "off"); err != nil {
-			log.Printf("mixmusic: Spotify's player repeats: %v", err)
+			log.Printf("mymusic: Spotify's player repeats: %v", err)
 		}
 	}
 }
@@ -296,7 +296,7 @@ func (d hereDevice) level() string {
 	return d.gain(v)
 }
 
-// gain is the gain of the volume v for the page, the gain MixMusic's own
+// gain is the gain of the volume v for the page, the gain MyMusic's own
 // player plays it at, on the curve of the settings, so that both sound
 // alike.
 func (d hereDevice) gain(v float64) string {

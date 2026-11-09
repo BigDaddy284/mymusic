@@ -12,9 +12,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/keypad"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/keypad"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The room the main window needs at 100%, in DIPs of the window: the rail
@@ -224,7 +224,7 @@ func (s *shell) zoomRow(c *ui.Context) {
 }
 
 // useMenuBar gives macOS's menu bar the system's menus, but a View menu
-// whose items refresh the page and zoom MixMusic, and a Window menu with
+// whose items refresh the page and zoom MyMusic, and a Window menu with
 // Keep on Top (windowMenu). It leaves out Reload
 // and Force Reload, which do nothing in a window of native interface and
 // took ⌘R from Repeat and ⇧⌘R from Refresh this page. The items have no
@@ -308,7 +308,7 @@ func (s *shell) useKeypad() {
 		})
 	})
 	if err != nil {
-		log.Printf("mixmusic: the keypad's +: %v", err)
+		log.Printf("mymusic: the keypad's +: %v", err)
 		return
 	}
 	s.stop = append(s.stop, stop)

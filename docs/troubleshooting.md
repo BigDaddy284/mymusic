@@ -1,34 +1,34 @@
 # Troubleshooting
 <!-- docs: group=start order=90 -->
 
-MixMusic writes what goes wrong to `mixmusic.log`, without your sign-ins:
+MyMusic writes what goes wrong to `mymusic.log`, without your sign-ins:
 [Settings › About](settings.md#about) › open logs folder shows it, beside
 the reports of any crash, in
 [the logs folder](data-and-privacy.md#the-logs-folder). Settings › About ›
 report a problem opens a new issue on GitHub with your version, system,
 tools, theme and plugins filled in; attach the log after reading it. After
-a crash, MixMusic offers to report it the next time it starts.
+a crash, MyMusic offers to report it the next time it starts.
 
-![Settings › About: the version of MixMusic and whether it's the newest, with the Report a problem and Open logs folder buttons under it, and the Updates group below](shots/about.webp)
+![Settings › About: the version of MyMusic and whether it's the newest, with the Report a problem and Open logs folder buttons under it, and the Updates group below](shots/about.webp)
 
 ## Tracks that fail to play
 
-When a track can't play, a toast says why, and MixMusic moves on to the
-next one. Its **details** shows what MixMusic tried, in turn, and why each
+When a track can't play, a toast says why, and MyMusic moves on to the
+next one. Its **details** shows what MyMusic tried, in turn, and why each
 try failed, with the time:
 
-- Spotify Connect, or Spotify in MixMusic, before a Spotify track plays
+- Spotify Connect, or Spotify in MyMusic, before a Spotify track plays
   from YouTube Music;
 - YouTube's player API, then yt-dlp, which find a track's stream;
-- the stream itself, as many times as MixMusic tried it again;
+- the stream itself, as many times as MyMusic tried it again;
 - a download or the offline cache, or a file on this computer.
 
 **copy** puts it all on the clipboard, as text ready for an issue, with
-MixMusic's version and your system. It leaves out the names of your
+MyMusic's version and your system. It leaves out the names of your
 accounts, cookies and tokens, your computer's addresses, and the name of
 your home folder, which a path shows as `~`.
 
-The last 10 stay until MixMusic closes, in
+The last 10 stay until MyMusic closes, in
 [Settings › About](settings.md#about) › Recent playback errors, each with
 its **details**. The keyboard reaches **details** in the toast with
 <kbd>Tab</kbd>, and **copy** has the focus as the details open.
@@ -37,14 +37,14 @@ its **details**. The keyboard reaches **details** in the toast with
 
 - **A YouTube Music track doesn't play.** It says why: some are not
   available in your country, or only to signed-in adults on YouTube's own
-  website. The tracks MixMusic can't find the audio of itself, such as those
+  website. The tracks MyMusic can't find the audio of itself, such as those
   made for children, [need yt-dlp](streams.md#when-yt-dlp-is-needed): check
-  Settings › Playback that it is installed, and a JavaScript runtime found. MixMusic updates the yt-dlp it
+  Settings › Playback that it is installed, and a JavaScript runtime found. MyMusic updates the yt-dlp it
   installed every day, as an old one stops finding streams; one of your
   own, chosen there, you keep up to date yourself (`yt-dlp -U`, or your
   package manager).
 - **The JavaScript runtime is not found.** Opened from the Finder, the Dock
-  or a desktop menu, MixMusic does not get the `PATH` of your terminal. It
+  or a desktop menu, MyMusic does not get the `PATH` of your terminal. It
   also looks where Homebrew, Deno, Bun, Volta, Scoop and WinGet install;
   elsewhere, choose the runtime in Settings › Playback.
 - **YouTube Music signed you out.** Settings › Accounts says so when YouTube
@@ -62,19 +62,19 @@ its **details**. The keyboard reaches **details** in the toast with
   it runs, it may hold its cookies, or not have saved a new sign-in yet.
   Recent Chrome on Windows seals its cookies against other programs:
   import from Firefox there, or paste a cookie header. On macOS, reading
-  Safari's cookies takes Full Disk Access for MixMusic, in System
+  Safari's cookies takes Full Disk Access for MyMusic, in System
   Settings › Privacy & Security. Zen and Helium are read from their
-  profile folders: give the folder when MixMusic doesn't find it. On
+  profile folders: give the folder when MyMusic doesn't find it. On
   Linux, a browser installed from Flathub is in the list as "Chrome
   (Flatpak)", and so on, read from its folder in `~/.var/app`: Firefox,
   Chrome, Chromium, Edge and Brave.
-- **Spotify plays from YouTube Music, not in MixMusic.** Spotify
-  [plays in MixMusic](spotify.md#how-spotify-tracks-play) on Windows and
-  macOS, with Premium, and with a sign-in made since MixMusic played
+- **Spotify plays from YouTube Music, not in MyMusic.** Spotify
+  [plays in MyMusic](spotify.md#how-spotify-tracks-play) on Windows and
+  macOS, with Premium, and with a sign-in made since MyMusic played
   Spotify itself: Settings › Playback asks you to sign in again when yours
   is older.
 - **The visualizer stays flat for Spotify on a Mac.** It hears Spotify in
-  MixMusic from macOS 14.2 on, once you allowed MixMusic to record what
+  MyMusic from macOS 14.2 on, once you allowed MyMusic to record what
   other apps play, as macOS asks the first time. Allow it in System
   Settings › Privacy & Security › Screen & System Audio Recording, then
   play the track again. The log says why it can't hear.
@@ -83,24 +83,24 @@ its **details**. The keyboard reaches **details** in the toast with
   Management in its settings, by their Spotify email. Settings › Accounts
   says which it was: see
   [Spotify](spotify.md#when-spotify-refuses-the-sign-in).
-- **settings.json has a mistake.** MixMusic tells where, as "line 4,
+- **settings.json has a mistake.** MyMusic tells where, as "line 4,
   column 1: a comma before } has nothing after it", and goes on with the
   settings it had, without saving to the file, until you fix it. If it
   quits first, it keeps your text as `settings.json.broken` beside it, and
-  saves its settings in its place. A file that doesn't read as MixMusic
-  starts is kept the same way, and MixMusic starts with the settings of a
+  saves its settings in its place. A file that doesn't read as MyMusic
+  starts is kept the same way, and MyMusic starts with the settings of a
   new install: see [Settings](settings.md#when-it-has-a-mistake).
-- **MixMusic takes too much memory.** Turn on Settings › About › Record
-  memory use, and use MixMusic as when it grew: it writes how it uses its
+- **MyMusic takes too much memory.** Turn on Settings › About › Record
+  memory use, and use MyMusic as when it grew: it writes how it uses its
   memory to `memory.log` each minute, and saves a heap profile once it
   passes 1 GB, or when you press save a heap profile. Report a problem
   then tells of them: attach them to the issue. They hold only how
-  MixMusic uses its memory ([the logs folder](data-and-privacy.md#the-logs-folder)).
+  MyMusic uses its memory ([the logs folder](data-and-privacy.md#the-logs-folder)).
   It's off again at the next start.
 - **No tray icon on Linux.** The [tray](desktop.md#the-tray) needs
   `libayatana-appindicator3` and a desktop that shows AppIndicator icons;
   GNOME needs its AppIndicator extension. Without it, closing the window
-  quits MixMusic.
+  quits MyMusic.
 - **Linux does not start it.** Install GTK 3, as
   [Getting started](getting-started.md#the-first-launch) says.
 - **macOS cannot check the app,** as it is not notarized yet: open it from
@@ -109,14 +109,14 @@ its **details**. The keyboard reaches **details** in the toast with
 
 ## Known issues
 
-- MixMusic reads YouTube Music through the interfaces of its own website,
+- MyMusic reads YouTube Music through the interfaces of its own website,
   and plays it through YouTube's player API and yt-dlp. When YouTube
   changes them, searching, playing or signing in can stop working until
-  MixMusic or yt-dlp catches up.
-- YouTube Music has no sign-in for other apps: MixMusic signs in with a
+  MyMusic or yt-dlp catches up.
+- YouTube Music has no sign-in for other apps: MyMusic signs in with a
   browser session, which can do with your account what YouTube Music can.
   Treat it like a password; sign out in Settings › Accounts to delete it.
-- Spotify plays in MixMusic itself only on Windows and macOS, whose
+- Spotify plays in MyMusic itself only on Windows and macOS, whose
   webviews play Spotify's protected audio: WebKitGTK on Linux does not, so
   Spotify Connect plays it there.
 - Spotify allows apps in development mode up to five users, while their
@@ -127,14 +127,14 @@ its **details**. The keyboard reaches **details** in the toast with
 - The macOS app is not notarized and the Windows installer is not signed
   yet, so the first launch asks you to allow it.
 - The portable zip does not register
-  [`mixmusic://` links](desktop.md#mixmusic-links), and Windows on Arm is
+  [`mymusic://` links](desktop.md#mymusic-links), and Windows on Arm is
   less tested than the rest.
 - The Flatpak is new: it sees none of your home folder but the profiles
   of the browsers installed from Flathub, read-only. So a
-  yt-dlp of your own must be in `~/.var/app/io.github.fzn0x.mixmusic`, a
+  yt-dlp of your own must be in `~/.var/app/io.github.bigdaddy284.mymusic`, a
   YouTube Music sign-in imports only from a browser that is a Flatpak too,
   and a Discord app that isn't a Flatpak shows what plays only if it was
-  running when MixMusic started. Its settings and library are apart from
+  running when MyMusic started. Its settings and library are apart from
   another copy's: the
-  [README](https://github.com/fzn0x/mixmusic#the-flatpak) tells how to
+  [README](https://github.com/bigdaddy284/mymusic#the-flatpak) tells how to
   bring them over.

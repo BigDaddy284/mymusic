@@ -1,6 +1,6 @@
-// Package player plays MixMusic's queue: one queue of tracks of every
-// service, played by MixMusic's own audio engine, or on a Spotify device,
-// a Spotify Connect device or MixMusic itself, as each track needs. It
+// Package player plays MyMusic's queue: one queue of tracks of every
+// service, played by MyMusic's own audio engine, or on a Spotify device,
+// a Spotify Connect device or MyMusic itself, as each track needs. It
 // plays as the web interface's player did, of which it is the port.
 //
 // One goroutine owns the player's state: commands and the engines' events
@@ -16,10 +16,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // Repeat is how the queue repeats.
@@ -35,11 +35,11 @@ const (
 type Mode string
 
 const (
-	// ModeStream plays a track's audio in MixMusic's own engine.
+	// ModeStream plays a track's audio in MyMusic's own engine.
 	ModeStream Mode = "stream"
 	// ModeConnect plays a Spotify track on a Spotify Connect device.
 	ModeConnect Mode = "connect"
-	// ModeSpotify plays a Spotify track in MixMusic, as a Spotify device of
+	// ModeSpotify plays a Spotify track in MyMusic, as a Spotify device of
 	// its own, which needs a web page: the native interface plays it from
 	// YouTube Music instead.
 	ModeSpotify Mode = "spotify"
@@ -129,7 +129,7 @@ type State struct {
 	// ends of itself, but when its broadcast does.
 	Live bool
 	// Speed is the speed the current track plays at, at its own pitch: 1 is
-	// its own speed. What MixMusic's own engine plays takes the settings'
+	// its own speed. What MyMusic's own engine plays takes the settings'
 	// speed of its kind; Spotify plays its own tracks at their own.
 	Speed float64
 	// Remote is set while the streams play on a device away from the
@@ -299,7 +299,7 @@ type Services interface {
 	SaveQueue(saved Saved)
 }
 
-// Stream is MixMusic's own audio engine, as *audio.Engine, whose events
+// Stream is MyMusic's own audio engine, as *audio.Engine, whose events
 // the player takes as an audio.Events. Its speeds keep the pitch: 1 plays
 // a track at its own speed.
 type Stream interface {
@@ -408,7 +408,7 @@ type Player struct {
 	stream  Stream
 	connect *connectEngine
 	// remote is the Spotify Connect device Spotify tracks play on, and
-	// here MixMusic's own Spotify device, nil where it can't play Spotify
+	// here MyMusic's own Spotify device, nil where it can't play Spotify
 	// itself; connect plays on one of them.
 	remote, here Device
 	ctx          context.Context
@@ -594,7 +594,7 @@ func New(svc Services, stream Stream, device Device, saved Saved) *Player {
 }
 
 // SpotifyHere has the player play the Spotify tracks that play in
-// MixMusic itself on d, MixMusic's own Spotify device; nil, as at first,
+// MyMusic itself on d, MyMusic's own Spotify device; nil, as at first,
 // has them play from YouTube Music.
 func (p *Player) SpotifyHere(d Device) {
 	p.do(func() {
@@ -605,7 +605,7 @@ func (p *Player) SpotifyHere(d Device) {
 	})
 }
 
-// HereChanged takes in MixMusic's own Spotify device telling that what it
+// HereChanged takes in MyMusic's own Spotify device telling that what it
 // plays changed, as its track ended or it went on to the next: the player
 // asks it at once, rather than at its next report.
 func (p *Player) HereChanged() {

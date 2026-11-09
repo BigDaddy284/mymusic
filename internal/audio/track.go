@@ -4,8 +4,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/fzn0x/mixmusic/opus"
-	"github.com/fzn0x/mixmusic/webm"
+	"github.com/bigdaddy284/mymusic/opus"
+	"github.com/bigdaddy284/mymusic/webm"
 )
 
 // track is the audio track of a file as a deck plays it: the packets its

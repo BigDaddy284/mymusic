@@ -3,12 +3,12 @@ package settings
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // TestVolumeCurve plays the volume on the Natural curve in new installs,
 // in the settings of earlier versions, which don't have the key, and for
-// a curve MixMusic doesn't know, until the user chooses Linear (#383). The
+// a curve MyMusic doesn't know, until the user chooses Linear (#383). The
 // volume stays the position it was, whatever the curve.
 func TestVolumeCurve(t *testing.T) {
 	for file, want := range map[string]volume.Curve{

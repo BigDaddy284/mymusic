@@ -11,14 +11,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // requestLog notes the requests a fake service took, as "METHOD path?query".
@@ -140,7 +140,7 @@ func TestSetDisliked(t *testing.T) {
 		t.Error("liking a disliked track left it disliked")
 	}
 
-	// Signed out of YouTube Music, a dislike stays in MixMusic.
+	// Signed out of YouTube Music, a dislike stays in MyMusic.
 	a.youtube.SetCookies(nil)
 	if err := c.SetDisliked(ctx, song, true); err != nil {
 		t.Fatal(err)

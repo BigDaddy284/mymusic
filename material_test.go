@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // builtinTheme is the built-in theme id.

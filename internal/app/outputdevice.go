@@ -1,6 +1,6 @@
 package app
 
-// The output device: which of this computer's audio devices MixMusic's own
+// The output device: which of this computer's audio devices MyMusic's own
 // player plays on, as Settings › Playback, the player bar and the mini
 // player choose it, and what the windows hear when the device chosen goes
 // away and comes back.
@@ -10,9 +10,9 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/audio/output"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // OutputDevice is an audio output device of this computer.
@@ -38,8 +38,8 @@ type outputState struct {
 }
 
 // errNoOutputs is why no output device can be listed: the system has no
-// audio output MixMusic can play on.
-var errNoOutputs = errors.New("MixMusic can't play sound on this system")
+// audio output MyMusic can play on.
+var errNoOutputs = errors.New("MyMusic can't play sound on this system")
 
 // OutputDevices lists this computer's audio output devices, sorted by
 // name, the default one marked.
@@ -68,7 +68,7 @@ func systemOutputs() ([]OutputDevice, error) {
 	return devices, nil
 }
 
-// OutputFallback reports whether MixMusic plays on the system's default
+// OutputFallback reports whether MyMusic plays on the system's default
 // device in place of the one chosen, which isn't there or can't play, as
 // the engine found when it last played.
 func (p *Player) OutputFallback() bool {

@@ -313,7 +313,7 @@ func (c *converter) node(val sobek.Value) []Node {
 	case "input":
 		n.Text, n.Value, n.Handler = str("placeholder"), str("value"), handler("onSubmit")
 	default:
-		panic(c.vm.NewTypeError(fmt.Sprintf("MixMusic shows no element of type %q", n.Kind)))
+		panic(c.vm.NewTypeError(fmt.Sprintf("MyMusic shows no element of type %q", n.Kind)))
 	}
 	return []Node{n}
 }

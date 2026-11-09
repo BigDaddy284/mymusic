@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // at sets the day the tests read "8h ago" from: 3 November 2026, at noon.

@@ -163,7 +163,7 @@ func nsNumber(v float64) objc.ID {
 	return msgFloatID(class("NSNumber"), sel("numberWithDouble:"), v)
 }
 
-// commands are the commands of MPRemoteCommandCenter MixMusic handles, but
+// commands are the commands of MPRemoteCommandCenter MyMusic handles, but
 // changePlaybackPositionCommand's seek.
 var commands = []struct {
 	name string

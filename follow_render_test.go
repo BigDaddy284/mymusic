@@ -7,17 +7,17 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestRenderFollows draws an artist's page, Library › Artists and Home
 // with the new releases of the artists followed, in each layout design,
-// in Mix and Daylight, to MIXMUSIC_RENDER, for a look.
+// in Mix and Daylight, to MYMUSIC_RENDER, for a look.
 func TestRenderFollows(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	for _, layout := range settings.Layouts {
 		for _, theme := range []string{"mix", "daylight"} {

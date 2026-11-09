@@ -4,11 +4,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // opened tells what the tests asked of settings.json: "open" or "show".
@@ -32,7 +32,7 @@ func fileShell(t *testing.T) *shell {
 
 // editSettings saves text to settings.json, as an editor does, and has the
 // app read it, as its watch does. The window hears of it as it refreshes,
-// which the app has it do once MixMusic runs.
+// which the app has it do once MyMusic runs.
 func editSettings(t *testing.T, s *shell, text string) {
 	t.Helper()
 	if err := store.WriteFile(s.svc.Preferences.File().Path, []byte(text)); err != nil {
@@ -78,12 +78,12 @@ func TestSettingsFileProblem(t *testing.T) {
 	show(s, tt, "/settings/appearance")
 	brokenSettings(t, s, "{\n  \"theme\": \"aurora\",\n}")
 	tt.Frame()
-	for _, text := range []string{"settings.json has a mistake", "Line 3, column 1: a comma before } has nothing after it. MixMusic keeps the settings it had until you fix it."} {
+	for _, text := range []string{"settings.json has a mistake", "Line 3, column 1: a comma before } has nothing after it. MyMusic keeps the settings it had until you fix it."} {
 		if !tt.HasText(text) {
 			t.Errorf("no %q: %q", text, tt.Texts())
 		}
 	}
-	if !tt.HasText("Line 3, column 1: a comma before } has nothing after it. MixMusic goes on with the settings it had, and saves what you change here once the file reads again.") {
+	if !tt.HasText("Line 3, column 1: a comma before } has nothing after it. MyMusic goes on with the settings it had, and saves what you change here once the file reads again.") {
 		t.Errorf("no problem panel: %q", tt.Texts())
 	}
 	// The other pages of the settings show it too.
@@ -106,14 +106,14 @@ func TestSettingsFileProblem(t *testing.T) {
 }
 
 // TestSettingsFileApplied tells of an edit that applied, and of what of it
-// MixMusic didn't take as it was.
+// MyMusic didn't take as it was.
 func TestSettingsFileApplied(t *testing.T) {
 	s := fileShell(t)
 	tt := tester(t, s)
 	editSettings(t, s, `{"theme": "aurora", "crosfade": 6, "fontScale": 3}`)
 	s.refresh()
 	tt.Frame()
-	for _, text := range []string{"Applied settings.json", "MixMusic doesn't know crosfade: its next save drops it. Put fontScale back in range."} {
+	for _, text := range []string{"Applied settings.json", "MyMusic doesn't know crosfade: its next save drops it. Put fontScale back in range."} {
 		if !tt.HasText(text) {
 			t.Errorf("no %q: %q", text, tt.Texts())
 		}
@@ -130,7 +130,7 @@ func TestFileNotes(t *testing.T) {
 		want string
 	}{
 		{settings.Report{}, ""},
-		{settings.Report{Unknown: []string{"a", "b", "c"}}, "MixMusic doesn't know a, b and c: its next save drops them."},
+		{settings.Report{Unknown: []string{"a", "b", "c"}}, "MyMusic doesn't know a, b and c: its next save drops them."},
 		{settings.Report{NotUTF8: true, Adjusted: []string{"zoom"}}, "It isn't UTF-8, so letters outside ASCII read as � in it: save it as UTF-8. Put zoom back in range."},
 	} {
 		if got := fileNotes(c.r); got != c.want {

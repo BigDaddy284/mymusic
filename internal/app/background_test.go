@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/portal"
+	"github.com/bigdaddy284/mymusic/internal/portal"
 )
 
 // fakeDesktop stands in for MyGo's autostart entry and the desktop's
@@ -42,7 +42,7 @@ func useFakeDesktop(t *testing.T, flatpak bool) *fakeDesktop {
 	return d
 }
 
-// Outside a Flatpak, MyGo's autostart entry starts MixMusic at login.
+// Outside a Flatpak, MyGo's autostart entry starts MyMusic at login.
 func TestStartAtLoginOutsideFlatpak(t *testing.T) {
 	d := useFakeDesktop(t, false)
 	if err := setLogin(true); err != nil {
@@ -72,10 +72,10 @@ func TestStartAtLoginInFlatpak(t *testing.T) {
 		t.Errorf("asked the portal %v, wrote %v, want %v both", d.asked, d.written, want)
 	}
 
-	// The user refused, or forbade MixMusic to run in the background.
+	// The user refused, or forbade MyMusic to run in the background.
 	d.asked, d.written = nil, nil
 	d.answer = portal.Answer{}
-	if err := setLogin(true); err == nil || !strings.Contains(err.Error(), "didn't let MixMusic start at login") {
+	if err := setLogin(true); err == nil || !strings.Contains(err.Error(), "didn't let MyMusic start at login") {
 		t.Errorf("refused: %v", err)
 	}
 	if len(d.written) != 0 {
@@ -91,7 +91,7 @@ func TestStartAtLoginInFlatpak(t *testing.T) {
 		t.Errorf("failed, MyGo's entry was written: %v", d.written)
 	}
 
-	// A desktop without the portal can't start MixMusic, and has nothing
+	// A desktop without the portal can't start MyMusic, and has nothing
 	// to stop.
 	d.err = portal.ErrNoBackground
 	if err := setLogin(true); err == nil || !strings.Contains(err.Error(), "no Background portal") {

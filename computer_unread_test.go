@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/localfiles/localfilestest"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/localfiles/localfilestest"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // rescanned reads the folders of music again, and waits for the scan.

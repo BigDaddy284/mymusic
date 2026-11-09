@@ -8,13 +8,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/discord"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/discord"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // presenceSkew is how far the position may drift from what Discord was
-// told before MixMusic tells it again, as after a seek.
+// told before MyMusic tells it again, as after a seek.
 const presenceSkew = 3 * time.Second
 
 // presence shows what plays on the user's Discord profile.
@@ -98,7 +98,7 @@ func (p *presence) update(d settings.Desktop, np NowPlaying) {
 			p.trackID, p.playing = "", false
 			if !errors.Is(err, discord.ErrNotRunning) && !p.warned {
 				p.warned = true
-				log.Printf("mixmusic: Discord presence: %v", err)
+				log.Printf("mymusic: Discord presence: %v", err)
 			}
 		}
 	}()

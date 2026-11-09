@@ -5,7 +5,7 @@ package silk
 import (
 	"errors"
 
-	"github.com/fzn0x/mixmusic/opus/internal/rangedec"
+	"github.com/bigdaddy284/mymusic/opus/internal/rangedec"
 )
 
 // Errors of misuse, where the C code has undefined behaviour.

@@ -1,6 +1,6 @@
 // Package romaji writes Japanese in Latin letters, as Hepburn romaji: kana
 // by a table, and kanji by the readings the morphological analyser kagome
-// finds in the IPA dictionary, which MixMusic downloads the first time
+// finds in the IPA dictionary, which MyMusic downloads the first time
 // romaji is turned on (Dictionary).
 package romaji
 

@@ -6,14 +6,14 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The groups of Settings › Playback: the Spotify tracks and the sound
 // here, the others in their features' files.
 
-// spotifyPlaysHere tells whether MixMusic plays Spotify itself: on Windows
+// spotifyPlaysHere tells whether MyMusic plays Spotify itself: on Windows
 // and macOS, whose webviews decrypt Spotify's audio.
 var spotifyPlaysHere = app.SpotifyPlaysHere()
 
@@ -25,16 +25,16 @@ func (s *shell) spotifyTrackSettings(c *ui.Context) {
 	sp := s.accounts().Spotify
 	signedIn := sp.SignedIn
 	s.group(c, "Spotify tracks", func() {
-		here := "MixMusic plays them itself, at Spotify's own quality, and shows among your Spotify devices. Needs Spotify Premium, and no Spotify app."
+		here := "MyMusic plays them itself, at Spotify's own quality, and shows among your Spotify devices. Needs Spotify Premium, and no Spotify app."
 		if !spotifyPlaysHere {
-			here = "This computer's webview, WebKitGTK, can't play Spotify's protected audio, so MixMusic can't play Spotify itself."
+			here = "This computer's webview, WebKitGTK, can't play Spotify's protected audio, so MyMusic can't play Spotify itself."
 		}
 		modes := []settings.SpotifyPlayback{settings.SpotifyPlaybackHere, settings.SpotifyPlaybackConnect, settings.SpotifyPlaybackMatch}
 		mode := slices.Index(modes, s.set.SpotifyPlayback)
 		if s.choices(c, "spotify-mode", "How Spotify tracks play", &mode, []choice{
-			{k.words("In MixMusic, from Spotify"), here, !spotifyPlaysHere},
+			{k.words("In MyMusic, from Spotify"), here, !spotifyPlaysHere},
 			{k.words("On Spotify Connect"), "Your Spotify app, or another Spotify device, plays them, at Spotify's own quality. Needs Spotify Premium and a device with Spotify open.", false},
-			{k.words("In MixMusic, from YouTube Music"), "MixMusic plays their recording on YouTube Music, with the equalizer, crossfade and visualizer. Works without Premium.", false},
+			{k.words("In MyMusic, from YouTube Music"), "MyMusic plays their recording on YouTube Music, with the equalizer, crossfade and visualizer. Works without Premium.", false},
 		}) {
 			s.set.SpotifyPlayback = modes[mode]
 			s.save()
@@ -54,7 +54,7 @@ func (s *shell) spotifyTrackSettings(c *ui.Context) {
 			if busy {
 				label = "waiting for the browser…"
 			}
-			const title, again = "Sign in to Spotify again", "You signed in before MixMusic played Spotify itself, which your sign-in doesn't allow yet. Until you sign in again, Spotify tracks play from YouTube Music."
+			const title, again = "Sign in to Spotify again", "You signed in before MyMusic played Spotify itself, which your sign-in doesn't allow yet. Until you sign in again, Spotify tracks play from YouTube Music."
 			s.found(c, title, again, func() {
 				s.alert(c, title, again, func() {
 					if s.button(c, "spotify-again", label, true).Disabled(busy).Clicked() {

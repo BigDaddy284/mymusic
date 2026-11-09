@@ -5,14 +5,14 @@ package app
 // while the setting is on, the main window is open, in the tray too, and a
 // track is loaded; and only where the built-in screen has a camera
 // housing, which Options.Notch finds. It closes with the main window, so
-// it alone never keeps MixMusic running.
+// it alone never keeps MyMusic running.
 
 import (
 	"sync"
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // notchPlayer is the player around the notch: its window while it shows.
@@ -130,7 +130,7 @@ func (a *App) notchDisplaysChanged() {
 
 // OpenMainWindow shows the main window, opening it again if it was
 // closed, at the page of path unless it is "", and leaves the other
-// windows as they are, as the player around the notch opens MixMusic.
+// windows as they are, as the player around the notch opens MyMusic.
 func (s *System) OpenMainWindow(path string) {
 	mygo.App.WhenReady(func() {
 		s.a.showMain()

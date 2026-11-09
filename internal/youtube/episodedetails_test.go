@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestParseEpisodeDetails reads the details of an episode, made up: its
@@ -67,10 +67,10 @@ func TestEpisodeDetails(t *testing.T) {
 }
 
 // TestLiveEpisodeDetails reads the details of an episode a search finds
-// on YouTube Music itself, with MIXMUSIC_LIVE=1.
+// on YouTube Music itself, with MYMUSIC_LIVE=1.
 func TestLiveEpisodeDetails(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube Music")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube Music")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

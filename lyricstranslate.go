@@ -7,9 +7,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // translateLanguages are the languages Settings › Playback offers to
@@ -62,10 +62,10 @@ func (s *shell) systemLanguage() string {
 // romanizedFirst are the languages whose lyrics Unison romanizes: Korean,
 // Chinese, Russian and Arabic lines came back romanized on 2026-11-02, as
 // Google's translation of lyrics romanizes them, and Japanese, Thai,
-// Hebrew, Hindi, Greek and Ukrainian ones didn't. MixMusic romanizes all
+// Hebrew, Hindi, Greek and Ukrainian ones didn't. MyMusic romanizes all
 // of these itself (lyricsromaji.go, lyricsromanize.go): Unison is asked
 // only for Arabic's, which are better (unisonFirst), and, for lyrics in
-// a script MixMusic doesn't romanize, its switch shows once a translation
+// a script MyMusic doesn't romanize, its switch shows once a translation
 // of them brought some Latin letters.
 var romanizedFirst = map[string]bool{"ar": true}
 
@@ -136,13 +136,13 @@ func (x lyricsExtra) line(i int, words string) (text, roman, meaning string) {
 // lines show besides their words.
 func (s *shell) lyricsChoices(c *ui.Context, t media.Track, ly lyrics.Lyrics, where string) lyricsExtra {
 	lang, to := ly.Language, s.translateTarget()
-	// Lyrics of a language MixMusic can't tell may be in another.
+	// Lyrics of a language MyMusic can't tell may be in another.
 	canTranslate := lang != to
 	x := lyricsExtra{translate: canTranslate && slices.Contains(s.set.LyricsTranslate, lang), ja: s.japanese(ly), local: s.romanizeLanguage(ly)}
 	// Lyrics in another script show in Latin letters made on the computer,
 	// which asks Unison for nothing: Japanese in romaji, and the others
 	// as their scripts are romanized, but Arabic, as Unison has it once it
-	// came. Lyrics in a script MixMusic doesn't romanize show as Unison
+	// came. Lyrics in a script MyMusic doesn't romanize show as Unison
 	// has them, with their translation, if it brought them so.
 	romanize := ""
 	switch {
@@ -255,7 +255,7 @@ func (s *shell) lyricsSwitches(c *ui.Context, ly lyrics.Lyrics, lang, where stri
 			return
 		}
 		// The switch and its ways go on one line. Japanese is romaji, kept
-		// as "ja" though MixMusic couldn't tell the lyrics' language.
+		// as "ja" though MyMusic couldn't tell the lyrics' language.
 		ui.Row(c).Gap(16).AlignItems(ui.Center).Shrink(0).Children(func() {
 			as, tip := lang, romanizeTip
 			switch {

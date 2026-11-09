@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/proc"
+	"github.com/bigdaddy284/mymusic/internal/proc"
 )
 
 // NetscapeHeader begins a cookies file of the Netscape format, which yt-dlp
@@ -29,9 +29,9 @@ var (
 	// elsewhere.
 	ErrNoBrowserCookies = errors.New("no cookies of the browser were found")
 	// ErrCookiesDenied is returned when the system keeps the browser's
-	// cookies from MixMusic, as macOS keeps Safari's without Full Disk
+	// cookies from MyMusic, as macOS keeps Safari's without Full Disk
 	// Access.
-	ErrCookiesDenied = errors.New("the system keeps the browser's cookies from MixMusic")
+	ErrCookiesDenied = errors.New("the system keeps the browser's cookies from MyMusic")
 )
 
 // cookieErrors tell the reason of an error line of yt-dlp, by a part of it,

@@ -128,12 +128,12 @@ func TestMemoryRecorder(t *testing.T) {
 	if f.On() {
 		t.Fatal("on before it started")
 	}
-	if err := f.Start("Recording, MixMusic 9.9.9 on test"); err != nil {
+	if err := f.Start("Recording, MyMusic 9.9.9 on test"); err != nil {
 		t.Fatal(err)
 	}
 	lines := f.lines(t, 2)
 	want := []string{
-		"2026-11-08T15:30:00Z Recording, MixMusic 9.9.9 on test",
+		"2026-11-08T15:30:00Z Recording, MyMusic 9.9.9 on test",
 		"2026-11-08T15:30:00Z Go heap 100 MB in use, 200 MB from the system, 3 GCs; resident 300 MB",
 	}
 	if !f.On() || !slices.Equal(lines, want) {

@@ -69,7 +69,7 @@ jobs:
         run: go test ./...
         env:
           OPUS_TESTVECTORS: ${{ runner.os == 'Linux' && format('{0}/opus-vectors/opus_newvectors', runner.temp) || '' }}
-      # MixMusic takes keys MyGo has none for from its GTK window: these
+      # MyMusic takes keys MyGo has none for from its GTK window: these
       # press them in one, on a virtual display. A test that skips found no
       # display, GTK or xdotool: here, that fails.
       - name: Keys in a GTK window
@@ -93,7 +93,7 @@ jobs:
       - name: Changelog fragments
         run: go run ./tools/changelog -check
 
-  # MixMusic's own audio engine plays through each system's audio output:
+  # MyMusic's own audio engine plays through each system's audio output:
   # these play silence, and a track at volume 0, on Linux and macOS, whose
   # runners have no sound card: a PulseAudio null sink, which keeps time as
   # one does, and BlackHole, a virtual device, stand in for one.
@@ -134,7 +134,7 @@ jobs:
       - name: Play through the device
         shell: bash
         env:
-          MIXMUSIC_AUDIO: "1"
+          MYMUSIC_AUDIO: "1"
         run: |
           if [ "$RUNNER_OS" = Linux ]; then
             # An idle null sink wakes every 2 seconds, and starts a new
@@ -253,7 +253,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.archive }}
-          path: build/${{ matrix.archive }}/mixmusic-*-${{ matrix.archive }}.tar.gz
+          path: build/${{ matrix.archive }}/mymusic-*-${{ matrix.archive }}.tar.gz
           if-no-files-found: error
           retention-days: 3
 
@@ -292,22 +292,22 @@ jobs:
       - name: The app and its metadata
         run: |
           mkdir -p packaging/flatpak/dist
-          cp linux/mixmusic-*-linux-${{ matrix.arch }}.tar.gz packaging/flatpak/dist/mixmusic-linux-${{ matrix.arch }}.tar.gz
-          go run ./tools/metainfo -o packaging/flatpak/dist/io.github.fzn0x.mixmusic.metainfo.xml
-          appstreamcli validate --no-net --explain packaging/flatpak/dist/io.github.fzn0x.mixmusic.metainfo.xml
+          cp linux/mymusic-*-linux-${{ matrix.arch }}.tar.gz packaging/flatpak/dist/mymusic-linux-${{ matrix.arch }}.tar.gz
+          go run ./tools/metainfo -o packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
+          appstreamcli validate --no-net --explain packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
         with:
-          manifest-path: packaging/flatpak/io.github.fzn0x.mixmusic.yml
-          bundle: mixmusic-linux-${{ matrix.arch }}.flatpak
+          manifest-path: packaging/flatpak/io.github.bigdaddy284.mymusic.yml
+          bundle: mymusic-linux-${{ matrix.arch }}.flatpak
           arch: ${{ matrix.flatpak }}
           branch: stable
           upload-artifact: false
-      - name: Install it, and start MixMusic in its sandbox
-        run: bash packaging/flatpak/check.sh mixmusic-linux-${{ matrix.arch }}.flatpak shots
+      - name: Install it, and start MyMusic in its sandbox
+        run: bash packaging/flatpak/check.sh mymusic-linux-${{ matrix.arch }}.flatpak shots
       - uses: actions/upload-artifact@v7
         with:
           name: flatpak-${{ matrix.arch }}
-          path: mixmusic-linux-${{ matrix.arch }}.flatpak
+          path: mymusic-linux-${{ matrix.arch }}.flatpak
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
@@ -316,7 +316,7 @@ jobs:
           path: shots/
           if-no-files-found: ignore
 
-  # flake.nix: its lock, MixMusic for Linux built from source, and the
+  # flake.nix: its lock, MyMusic for Linux built from source, and the
   # configuration GoReleaser publishes releases with.
   nix:
     name: Nix
@@ -338,7 +338,7 @@ jobs:
       - name: The Nix shell
         run: bash .github/scripts/nix-retry.sh nix develop --command true
       - run: bash .github/scripts/nix-retry.sh nix flake check --print-build-logs
-      - name: MixMusic for Linux, from source
+      - name: MyMusic for Linux, from source
         run: bash .github/scripts/nix-retry.sh nix build --print-build-logs
       - name: GoReleaser's configuration
         run: nix develop --command goreleaser check

@@ -15,8 +15,8 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // registryTTL is how long a fetched registry is reused.

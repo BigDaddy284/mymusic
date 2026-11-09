@@ -4,7 +4,7 @@ import (
 	"slices"
 	"sync"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Repeat is the repeat mode of the queue.

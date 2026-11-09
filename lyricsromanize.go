@@ -6,11 +6,11 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/internal/romanize"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/internal/romanize"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // Lyrics in the other scripts than Latin letters, but Japanese's, are
@@ -40,7 +40,7 @@ type romanizeView struct {
 	lang string
 }
 
-// romanizeLanguage returns the language of lyrics that MixMusic romanizes
+// romanizeLanguage returns the language of lyrics that MyMusic romanizes
 // on the computer, which keeps the user's choice: theirs, when their
 // lines are in its script, else that of the script of their lines, as
 // Korean for lyrics in English with lines in Hangul; "" for lyrics it

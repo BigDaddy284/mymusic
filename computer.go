@@ -13,10 +13,10 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // computerViews are the sections of Library › On this computer.
@@ -53,7 +53,7 @@ func (s *shell) computerLibrary(c *ui.Context) {
 		case st.Scanning:
 			title, text = "Looking through your music", scanLine(st)
 		case len(s.set.MusicFolders) > 0:
-			title, text = "No music found", "The folders hold no files MixMusic plays: MP3, FLAC, WAV, M4A, Opus or Vorbis."
+			title, text = "No music found", "The folders hold no files MyMusic plays: MP3, FLAC, WAV, M4A, Opus or Vorbis."
 		}
 		ui.Text(c, k.words(title)).FontSize(k.bigSize()).FontWeight(k.displayWeight()).Font(k.display).TextColor(k.accent)
 		ui.Text(c, text).FontSize(k.subtitleSize()).FontWeight(k.leadWeight()).MaxWidth(640).Margin(0, 0, 24)
@@ -189,13 +189,13 @@ func init() { addSettings("playback", 85, (*shell).computerSettings) }
 
 // computerSettings are Settings › Playback › Music on this computer: the
 // folders of music the library holds, with how many tracks each holds, how
-// many files MixMusic skipped and how many of the folders in it can't be
+// many files MyMusic skipped and how many of the folders in it can't be
 // read, a way to add one, to remove one, and to read them again.
 func (s *shell) computerSettings(c *ui.Context) {
 	k := &s.lk
 	st := s.svc.LocalFiles.Status()
 	s.group(c, "Music on this computer", func() {
-		about := "Folders of music files MixMusic plays from your computer: MP3, FLAC, WAV, M4A, Opus and Vorbis. Nothing of them is uploaded."
+		about := "Folders of music files MyMusic plays from your computer: MP3, FLAC, WAV, M4A, Opus and Vorbis. Nothing of them is uploaded."
 		if st.Scanning {
 			about = scanLine(st)
 		}
@@ -219,7 +219,7 @@ func (s *shell) computerSettings(c *ui.Context) {
 				default:
 					line := plural(f.Tracks, "track")
 					if f.Skipped > 0 {
-						line += fmt.Sprintf(" · %d skipped, of kinds MixMusic can't play or broken", f.Skipped)
+						line += fmt.Sprintf(" · %d skipped, of kinds MyMusic can't play or broken", f.Skipped)
 					}
 					ui.Text(c, line)
 					if len(f.Unread) > 0 {
@@ -328,10 +328,10 @@ func (s *shell) playFiles(paths []string) {
 func (s *shell) playOpened(o app.Opened) {
 	switch {
 	case len(o.Tracks) == 0 && o.Skipped == 1:
-		s.notes = append(s.notes, noticeOf(errors.New("MixMusic can't play this file")))
+		s.notes = append(s.notes, noticeOf(errors.New("MyMusic can't play this file")))
 		return
 	case len(o.Tracks) == 0 && o.Skipped > 1:
-		s.notes = append(s.notes, noticeOf(errors.New("MixMusic can't play these files")))
+		s.notes = append(s.notes, noticeOf(errors.New("MyMusic can't play these files")))
 		return
 	case len(o.Tracks) == 0:
 		return
@@ -342,7 +342,7 @@ func (s *shell) playOpened(o app.Opened) {
 		msg = fmt.Sprintf("Playing %s", plural(len(o.Tracks), "file"))
 	}
 	if o.Skipped > 0 {
-		msg += fmt.Sprintf(" · %d skipped, which MixMusic can't play", o.Skipped)
+		msg += fmt.Sprintf(" · %d skipped, which MyMusic can't play", o.Skipped)
 	}
 	s.notes = append(s.notes, notice(msg))
 }

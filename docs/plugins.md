@@ -1,18 +1,18 @@
 # Plugins
 <!-- docs: group=make order=20 -->
 
-A plugin adds to MixMusic: a page, a command, an item in the menu of every
+A plugin adds to MyMusic: a page, a command, an item in the menu of every
 track, a widget on the
 [now playing page](getting-started.md#up-next-lyrics-and-now-playing). It
 is a folder holding a manifest
 and an ES module, written in TypeScript and compiled to the JavaScript
-MixMusic runs:
+MyMusic runs:
 
 ```
 my-plugin/
 ├── plugin.json
 ├── index.ts    the plugin
-└── index.js    what it compiles to, which MixMusic runs
+└── index.js    what it compiles to, which MyMusic runs
 ```
 
 ```json
@@ -30,26 +30,26 @@ my-plugin/
 ```
 
 `api` is the version of the plugin API the plugin is written for: 2, that
-of MixMusic's own interface. MixMusic runs plugins of `api` 2 only: those
-written for the web interface of MixMusic 0.4 and before need their
+of MyMusic's own interface. MyMusic runs plugins of `api` 2 only: those
+written for the web interface of MyMusic 0.4 and before need their
 author to move them to the API of this page.
 
 `permissions` tell users what the plugin does that they should know of
 before they enable it: `playback` (controls the player), `network` (talks to
 the internet), `notifications` (shows desktop notifications), `storage`
 (keeps values). They are shown, not enforced: every plugin can use the
-whole API, which is why MixMusic asks the user to trust a plugin before
+whole API, which is why MyMusic asks the user to trust a plugin before
 enabling it.
 
 ## The module
 
 The module's default export is called with the API when the user enables
-the plugin, and may return a function MixMusic calls when it stops it:
+the plugin, and may return a function MyMusic calls when it stops it:
 
 ```ts
-import type { MixMusicAPI } from "./sdk"; // sdk/index.d.ts, copied beside it
+import type { MyMusicAPI } from "./sdk"; // sdk/index.d.ts, copied beside it
 
-export default function activate(api: MixMusicAPI) {
+export default function activate(api: MyMusicAPI) {
   api.commands.register({
     id: "shout",
     title: "Shout what plays",
@@ -72,17 +72,17 @@ Everything a plugin adds through the API (pages, sidebar items, commands,
 track actions, widgets and listeners) is removed for it when it stops, and
 its timers stop: return a function only for what else you started.
 
-A plugin runs in a JavaScript engine of MixMusic's own, not in a browser:
+A plugin runs in a JavaScript engine of MyMusic's own, not in a browser:
 the language is all there, with `async` functions, classes and the rest, as
 are `console`, `setTimeout`, `setInterval`, `queueMicrotask`,
 `performance.now()` and `fetch`, but not the DOM, `localStorage` or
 `window`. The module may import the plugin's own files, as
 `import { helper } from "./helper.js"`, and nothing else. `console.log`
-writes to MixMusic's log, `mixmusic.log` in its logs folder.
+writes to MyMusic's log, `mymusic.log` in its logs folder.
 
 ### From TypeScript to JavaScript
 
-MixMusic runs JavaScript, so a plugin ships what its TypeScript compiles
+MyMusic runs JavaScript, so a plugin ships what its TypeScript compiles
 to: `"main"` and `"files"` name `index.js`, and `index.ts` stays with its
 source, as the registry leaves it out. Any compiler that keeps the module an
 ES module does; with TypeScript's own:
@@ -102,13 +102,13 @@ JavaScript straight away too: the same module, without the types.
 
 [sdk/index.d.ts](../sdk/index.d.ts) types the whole API; copy it next to your
 plugin and import its types, as above, or in a JavaScript plugin point your
-editor at it with a JSDoc `@param {import("./sdk").MixMusicAPI} api`.
+editor at it with a JSDoc `@param {import("./sdk").MyMusicAPI} api`.
 A track that is a podcast's episode has an `episode`, with its show, and
 its artists name the show.
 
 | | |
 |---|---|
-| `api.player` | the state of the player (`state()`, with the `speed` the track plays at), the transport, the queue (`playTracks`, `playNext`, `enqueue`), events (`on("trackchange" \| "statechange" \| "progress" \| "queuechange")`) and the `analyser()` of what plays, which has the reading methods of the web's AnalyserNode: MixMusic's own player, and on Windows Spotify too, in MixMusic or the Spotify app on this computer, and on macOS 14.2 and later Spotify in MixMusic, once macOS allowed it. While Settings › Playback skips the songs YouTube labels as made with AI, the player passes over them in what plugins queue too, but the track `playTracks` starts from, and one queued by itself |
+| `api.player` | the state of the player (`state()`, with the `speed` the track plays at), the transport, the queue (`playTracks`, `playNext`, `enqueue`), events (`on("trackchange" \| "statechange" \| "progress" \| "queuechange")`) and the `analyser()` of what plays, which has the reading methods of the web's AnalyserNode: MyMusic's own player, and on Windows Spotify too, in MyMusic or the Spotify app on this computer, and on macOS 14.2 and later Spotify in MyMusic, once macOS allowed it. While Settings › Playback skips the songs YouTube labels as made with AI, the player passes over them in what plugins queue too, but the track `playTracks` starts from, and one queued by itself |
 | `api.catalog` | search both services, and read albums, artists, playlists, radios and lyrics; while Settings › Playback skips the songs the user dislikes, radios leave them out |
 | `api.library` | liked and disliked songs (`isLiked`, `setLiked`, `isDisliked`, `setDisliked`), and the user's mixes; while Settings › Playback skips disliked songs, `api.player.next()` passes over them as Next does, and they never fire `trackchange` |
 | `api.ui` | `toast`, `navigate`, `theme`, `addSidebarItem`, `addPage`, `addTrackAction`, `addWidget`, and the elements pages show |
@@ -121,7 +121,7 @@ its artists name the show.
 
 A page and a widget show elements, which their `render` function sets on
 the view it gets, and sets again when they change; it may return a
-function MixMusic calls when the page closes, or before it renders the
+function MyMusic calls when the page closes, or before it renders the
 page again:
 
 ```js
@@ -143,12 +143,12 @@ api.ui.addPage({
 });
 ```
 
-The page lives at `/plugin/<plugin id>/<name>` and gets MixMusic's giant
+The page lives at `/plugin/<plugin id>/<name>` and gets MyMusic's giant
 title; a widget shows on the now playing page, under the lyrics, with its
 title. Refreshing the page (F5, or ⇧⌘R on macOS) renders it again, and
 the widgets shown: the function `render` returned runs, then `render`,
 as when the user leaves the page and comes back, but what the view
-showed stays until `render` sets it anew. Elements take the theme's colours and type, as MixMusic's own pages
+showed stays until `render` sets it anew. Elements take the theme's colours and type, as MyMusic's own pages
 do. `icon` is the SVG of a 24×24 icon drawn in `currentColor`.
 
 | element | |

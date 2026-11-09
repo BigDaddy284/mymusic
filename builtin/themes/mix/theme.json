@@ -2,7 +2,7 @@
   "id": "mix",
   "name": "Mix",
   "version": "1.0.0",
-  "author": "MixMusic",
+  "author": "MyMusic",
   "description": "The default: flat colour tiles and giant lowercase on true black, with cyan for everything live.",
   "scheme": "dark",
   "colors": {

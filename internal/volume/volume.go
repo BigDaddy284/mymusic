@@ -1,8 +1,8 @@
-// Package volume is the curves of MixMusic's volume: what a position of
+// Package volume is the curves of MyMusic's volume: what a position of
 // the slider, from 0 to 1, sounds like on each, and how settings.json
 // keeps it.
 //
-// On Natural, MixMusic's own curve, a position p plays at the gain
+// On Natural, MyMusic's own curve, a position p plays at the gain
 // (1000^p - 1) / 999. Each tenth of the slider is 6 dB, down to -40 dB,
 // and below that the curve bends down to silence at 0; the middle is
 // -30 dB. On Linear, p plays at the gain p: the middle is -6 dB.
@@ -44,7 +44,7 @@ func (c Curve) Gain(p float64) float64 {
 
 // Share is the share of a Spotify Connect device's volume the position p
 // is sent as on c: the square root of its gain, for a device that plays a
-// share at its square, as MixMusic once did, plays it as loud as MixMusic
+// share at its square, as MyMusic once did, plays it as loud as MyMusic
 // plays p.
 func (c Curve) Share(p float64) float64 { return math.Sqrt(c.Gain(p)) }
 

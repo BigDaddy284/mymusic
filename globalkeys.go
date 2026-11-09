@@ -9,8 +9,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // globalRecording starts recording, before a command's ID, while the user
@@ -20,7 +20,7 @@ const globalRecording = "global:"
 
 // globalHint is the first line of the group of global shortcuts on goos.
 func globalHint(goos string) string {
-	hint := "These keys control MixMusic whichever window is in front, and while it runs they do nothing else."
+	hint := "These keys control MyMusic whichever window is in front, and while it runs they do nothing else."
 	switch goos {
 	case "linux":
 		hint += " On Wayland your desktop asks you to confirm them, and its keyboard settings can change them."
@@ -148,7 +148,7 @@ func (s *shell) takeGlobalKeys(gc app.GlobalCommand, keys string) {
 
 // setGlobalShortcut gives a command the keys of a global shortcut, "" for
 // none. Another command that had them gives them up, a command of the
-// window too: the global shortcut takes them in MixMusic's window as well.
+// window too: the global shortcut takes them in MyMusic's window as well.
 func (s *shell) setGlobalShortcut(gc app.GlobalCommand, keys string) {
 	s.recording = ""
 	if s.set.GlobalShortcuts == nil {
@@ -188,7 +188,7 @@ func (s *shell) giveUpGlobal(id, keys string) {
 	}
 }
 
-// globalPress takes the press of one of MixMusic's own global shortcuts,
+// globalPress takes the press of one of MyMusic's own global shortcuts,
 // whose keys never reach the window, as the user records the keys of a
 // shortcut in Settings › Shortcuts, or in a search of the settings that
 // found it: on the main thread, while the window has the focus. Then too,

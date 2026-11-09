@@ -17,7 +17,7 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestSettingsViewed shows every section of the settings, and searched, in
@@ -183,7 +183,7 @@ func TestCacheOff(t *testing.T) {
 	if got := s.svc.Preferences.Get().CacheSizeMB; got != 0 {
 		t.Errorf("the cache keeps %d MB, not none", got)
 	}
-	if !tt.HasText("Off: MixMusic keeps no tracks.") {
+	if !tt.HasText("Off: MyMusic keeps no tracks.") {
 		t.Errorf("the cache doesn't say it's off: %q", tt.Texts())
 	}
 }
@@ -313,7 +313,7 @@ func TestCacheSizeLabel(t *testing.T) {
 	}
 }
 
-// TestThemeCards says who made each theme: MixMusic, or its author.
+// TestThemeCards says who made each theme: MyMusic, or its author.
 func TestThemeCards(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 1600)

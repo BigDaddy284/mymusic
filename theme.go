@@ -8,9 +8,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // look is how the interface looks: a theme's tokens, which themes keep in
@@ -231,7 +231,7 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	t.Border, t.Text, t.TextMuted = k.border, k.text, k.muted
 	t.Accent, t.AccentText = k.accent, k.accentText
 	// The sliders and switches keep the accent while another window is in
-	// front, as the rest of MixMusic does: MyGo fades its widgets' to gray
+	// front, as the rest of MyMusic does: MyGo fades its widgets' to gray
 	// there.
 	t.InactiveAccent = t.Accent
 	t.AccentHover = col(mix(accent, text, 0.14))
@@ -281,7 +281,7 @@ func cssLength(s string) float32 {
 	return float32(v * unit)
 }
 
-// fontFamily picks the first family of a CSS font stack that MixMusic or
+// fontFamily picks the first family of a CSS font stack that MyMusic or
 // the system has, or the system's font.
 func fontFamily(stack string) string {
 	have := map[string]bool{}

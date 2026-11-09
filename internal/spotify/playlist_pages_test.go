@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestPlaylistFirstPage reads the first page of a playlist Spotify gives

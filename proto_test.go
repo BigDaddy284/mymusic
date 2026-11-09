@@ -10,11 +10,11 @@ import (
 )
 
 // TestProto draws Selawik and the icons, for a look at how MyGo renders
-// them, when MIXMUSIC_RENDER names a folder.
+// them, when MYMUSIC_RENDER names a folder.
 func TestProto(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	registerFonts()
 	bg, ink, accent := ui.Hex("#000000"), ui.Hex("#ffffff"), ui.Hex("#00bde3")

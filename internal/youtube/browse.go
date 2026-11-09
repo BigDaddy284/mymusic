@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 var countRe = regexp.MustCompile(`^([\d,]+) (?:songs?|tracks?|episodes?)`)

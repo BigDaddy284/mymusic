@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // by is a YouTube Music track of a title by artists, of length seconds.

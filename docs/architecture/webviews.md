@@ -2,12 +2,12 @@
 
 Three web pages still show, and only while they're needed:
 
-- **Spotify in MixMusic itself** (`internal/app/spotifyhere.go`): Spotify's
+- **Spotify in MyMusic itself** (`internal/app/spotifyhere.go`): Spotify's
   Web Playback SDK, which decrypts Spotify's protected audio, in the hidden
   window of `public/spotify.html`, one of the app's two pages, which it
   embeds.
-  It opens at the first Spotify track that plays in MixMusic, and makes
-  MixMusic a Spotify device of its own, which the player plays tracks on
+  It opens at the first Spotify track that plays in MyMusic, and makes
+  MyMusic a Spotify device of its own, which the player plays tracks on
   through the Web API and follows by asking the page (`Page.Eval`); the page
   gets its token from `SpotifyPage.Token`, and tells `SpotifyPage.Changed`
   when what it plays changes, for the player to ask at once. A track plays
@@ -19,9 +19,9 @@ Three web pages still show, and only while they're needed:
   next. WebView2 decrypts Spotify's audio with Widevine, and macOS's
   WKWebView with FairPlay, where the window keeps its page running while
   hidden (`herePage`). WebKitGTK has no EME:
-  [Spotify in MixMusic on each system](spotify-here.md) tells what each web
+  [Spotify in MyMusic on each system](spotify-here.md) tells what each web
   view gives the SDK.
-- **Google's sign-in to YouTube Music**, whose cookies MixMusic keeps.
+- **Google's sign-in to YouTube Music**, whose cookies MyMusic keeps.
 - **The picture of music videos** (`video.go`, `internal/app/video.go`),
   with "Show the video of music videos" on in Settings › Playback: a web
   view of the main window, on the now playing page, in place of the

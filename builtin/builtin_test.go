@@ -3,7 +3,7 @@ package builtin
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/addons"
 )
 
 // TestThemesAreValid loads the built-in themes as the app does.

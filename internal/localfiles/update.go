@@ -11,7 +11,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The watch of the folders (watch.go) tells which paths changed, and
@@ -155,7 +155,7 @@ func (x *Index) update(ctx context.Context, changed map[string]bool) (rescan boo
 	x.version++
 	x.mu.Unlock()
 	if err := x.save(); err != nil {
-		log.Printf("mixmusic: keeping the index of the music on this computer: %v", err)
+		log.Printf("mymusic: keeping the index of the music on this computer: %v", err)
 	}
 	x.changed()
 	return rescan

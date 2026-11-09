@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/opus"
-	"github.com/fzn0x/mixmusic/webm"
+	"github.com/bigdaddy284/mymusic/opus"
+	"github.com/bigdaddy284/mymusic/webm"
 )
 
 // Test files: Opus in WebM, as ffmpeg and libopus make them. stereo-cues-

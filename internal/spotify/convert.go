@@ -4,10 +4,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// The objects of the Web API, as far as MixMusic reads them.
+// The objects of the Web API, as far as MyMusic reads them.
 
 type image struct {
 	URL    string `json:"url"`

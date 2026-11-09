@@ -155,7 +155,7 @@ var (
 	// taskbar button exists, msgShow the bars' own, which has a bar show
 	// what Show asked.
 	msgButtonCreated = sync.OnceValue(func() uint32 { return registerMessage("TaskbarButtonCreated") })
-	msgShow          = sync.OnceValue(func() uint32 { return registerMessage("MixMusicTaskbarButtons") })
+	msgShow          = sync.OnceValue(func() uint32 { return registerMessage("MyMusicTaskbarButtons") })
 )
 
 func registerMessage(name string) uint32 {

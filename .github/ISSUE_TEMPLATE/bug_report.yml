@@ -1,5 +1,5 @@
 name: Something does not work
-description: Tell us what went wrong in MixMusic.
+description: Tell us what went wrong in MyMusic.
 labels: [bug]
 body:
   - type: textarea
@@ -19,7 +19,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: MixMusic version
+      label: MyMusic version
       description: Settings › About shows it.
     validations:
       required: true

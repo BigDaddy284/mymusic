@@ -25,7 +25,7 @@ import (
 type message struct {
 	Source, Destination, Namespace string
 	// Binary is set for a payload of bytes, else Payload is a string: JSON,
-	// in every namespace MixMusic speaks.
+	// in every namespace MyMusic speaks.
 	Binary  bool
 	Payload []byte
 }

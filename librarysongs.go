@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/egoist/mygo/ui"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // saveOnYouTube saves a song to the user's library on YouTube Music, or

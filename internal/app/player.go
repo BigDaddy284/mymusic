@@ -11,23 +11,23 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // PlaybackMode is how a track plays.
 type PlaybackMode string
 
 const (
-	// PlaybackStream plays the track in MixMusic's audio engine, from Url.
+	// PlaybackStream plays the track in MyMusic's audio engine, from Url.
 	PlaybackStream PlaybackMode = "stream"
 	// PlaybackConnect plays the track on a Spotify Connect device.
 	PlaybackConnect PlaybackMode = "connect"
-	// PlaybackSpotify plays the track in MixMusic, as a Spotify device of
+	// PlaybackSpotify plays the track in MyMusic, as a Spotify device of
 	// its own, with Spotify's Web Playback SDK.
 	PlaybackSpotify PlaybackMode = "spotify"
 )
@@ -59,7 +59,7 @@ type Player struct{ a *App }
 
 // Prepare finds how to play a track: the URL of its audio, found ahead so
 // that errors such as YouTube refusing it show before playback starts, a
-// Spotify Connect device, or Spotify in MixMusic.
+// Spotify Connect device, or Spotify in MyMusic.
 //
 // While the network is known to be gone, a Spotify track that plays
 // through Spotify plays from its download, or the offline cache, instead,
@@ -157,7 +157,7 @@ func (p *Player) PrepareStream(ctx context.Context, track media.Track) (Playback
 		} else {
 			src.Cached = stereo
 		}
-		// A track cached before MixMusic kept measures gets one now.
+		// A track cached before MyMusic kept measures gets one now.
 		p.learnLoudness(videoID)
 		return src, nil
 	}
@@ -213,7 +213,7 @@ func liveSource(src PlaybackSource, videoID string) PlaybackSource {
 	return src
 }
 
-// learnLoudness asks YouTube how loud a video MixMusic holds the audio of
+// learnLoudness asks YouTube how loud a video MyMusic holds the audio of
 // is, unless the book knows, or the network is gone: the engine would wait
 // for an answer that can't come.
 func (p *Player) learnLoudness(videoID string) {
@@ -317,24 +317,24 @@ func (a *App) command(cmd PlayerCommand) {
 func trayTip(np NowPlaying) string { return cut(playingLine(np), 120) }
 
 // windowTitle is the main window's title: what plays, unless the settings
-// keep it to MixMusic's name.
+// keep it to MyMusic's name.
 func windowTitle(np NowPlaying, show bool) string {
 	if !show {
-		return "MixMusic"
+		return "MyMusic"
 	}
 	return cut(playingLine(np), 256)
 }
 
 // playingLine names what plays, as the tray's tooltip and the main
 // window's title show it: "One More Time - Daft Punk", after "Paused: "
-// while it's paused, or "MixMusic" with nothing to play.
+// while it's paused, or "MyMusic" with nothing to play.
 func playingLine(np NowPlaying) string {
 	if np.Track == nil {
-		return "MixMusic"
+		return "MyMusic"
 	}
 	line := oneLine(np.Track.Title)
 	if line == "" {
-		return "MixMusic"
+		return "MyMusic"
 	}
 	if artists := oneLine(np.Track.ArtistNames()); artists != "" {
 		line += " - " + artists
@@ -386,7 +386,7 @@ func (a *App) notifyTrack(t media.Track) {
 	n := mygo.NewNotification(opts)
 	n.OnClick(a.showMain)
 	if err := showNote(n); err != nil && !errors.Is(err, mygo.ErrNotificationsDenied) {
-		log.Printf("mixmusic: notification: %v", err)
+		log.Printf("mymusic: notification: %v", err)
 	}
 }
 
@@ -408,7 +408,7 @@ func (a *App) notifyDisliked(t media.Track, disliked bool) {
 }
 
 // notifyRated shows the notification id of a track liked or disliked from
-// outside MixMusic's windows, unless one that shows it is in front.
+// outside MyMusic's windows, unless one that shows it is in front.
 func (a *App) notifyRated(id, title, body string) {
 	if !a.settings.Get().Notifications || a.inFront() {
 		return
@@ -416,7 +416,7 @@ func (a *App) notifyRated(id, title, body string) {
 	n := mygo.NewNotification(mygo.NotificationOptions{ID: id, Title: title, Body: body, Silent: true})
 	n.OnClick(a.showMain)
 	if err := showNote(n); err != nil && !errors.Is(err, mygo.ErrNotificationsDenied) {
-		log.Printf("mixmusic: notification: %v", err)
+		log.Printf("mymusic: notification: %v", err)
 	}
 }
 
@@ -484,7 +484,7 @@ func (p *Player) ConnectPlay(ctx context.Context, track media.Track, positionMs 
 var playHereRetry = time.Second
 
 // PlayHere plays a Spotify track, or a podcast's episode, from positionMs
-// on the device of the Web Playback SDK, MixMusic's own, by its ID, and
+// on the device of the Web Playback SDK, MyMusic's own, by its ID, and
 // the Spotify tracks and episodes ahead after it, which the device goes
 // on to by itself: up to the first that isn't one, so that it plays none
 // but those, in their order. Spotify may not know a device that just
@@ -532,7 +532,7 @@ func (p *Player) ConnectSeek(ctx context.Context, positionMs int) error {
 
 // ConnectVolume sets the volume of the Spotify Connect device to the
 // player's volume v, from 0 to 1: the percentage earlier versions sent for
-// the same loudness of MixMusic's own player, on the curve of the settings,
+// the same loudness of MyMusic's own player, on the curve of the settings,
 // so that a Spotify track on a device keeps its balance against a YouTube
 // Music one.
 func (p *Player) ConnectVolume(ctx context.Context, v float64) error {

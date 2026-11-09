@@ -14,13 +14,13 @@ import (
 
 // TestCaptureProcess hears a tone this process plays, at -100 dB, which no
 // one hears, through a muted tap, then silence once it stops, as a stream
-// would. It opens the audio device, so it runs only with MIXMUSIC_AUDIO=1.
+// would. It opens the audio device, so it runs only with MYMUSIC_AUDIO=1.
 // The tap hears the tone only once the user allowed the test to record
 // what apps play: until then, as where macOS can't ask, as over SSH, it
 // hears silence at the same pace.
 func TestCaptureProcess(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	const amplitude = 1e-5 // -100 dB
 	phase := 0
@@ -110,10 +110,10 @@ func TestCaptureNoProcess(t *testing.T) {
 // TestAsk has TCC ask whether this process may record what other apps
 // play, and waits for its answer, which comes at once where macOS can't
 // ask, as over SSH, and is remembered once it allows it. It may show
-// macOS's question, so it runs only with MIXMUSIC_TCC_ASK=1.
+// macOS's question, so it runs only with MYMUSIC_TCC_ASK=1.
 func TestAsk(t *testing.T) {
-	if os.Getenv("MIXMUSIC_TCC_ASK") != "1" {
-		t.Skip("MIXMUSIC_TCC_ASK=1 has macOS ask")
+	if os.Getenv("MYMUSIC_TCC_ASK") != "1" {
+		t.Skip("MYMUSIC_TCC_ASK=1 has macOS ask")
 	}
 	if err := loadTaps(); err != nil {
 		t.Skip(err)

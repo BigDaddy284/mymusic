@@ -6,10 +6,10 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/discord"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/discord"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // What the Discord status shows is chosen under Show what plays on Discord
@@ -139,7 +139,7 @@ func (s *shell) discordPreview(c *ui.Context, d settings.Desktop) {
 	if a == nil {
 		return
 	}
-	name := "MixMusic"
+	name := "MyMusic"
 	if d.DiscordAppID != "" {
 		name = "your application"
 	}

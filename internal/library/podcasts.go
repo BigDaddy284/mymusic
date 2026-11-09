@@ -3,7 +3,7 @@ package library
 import (
 	"slices"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Podcasts returns the podcasts the user follows, the last followed first.
