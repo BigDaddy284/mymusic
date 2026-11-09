@@ -41,11 +41,7 @@ an installed copy's data.
 - Sign-ins: the Secret Service, as GNOME Keyring, KWallet or KeePassXC
 
 `$XDG_CONFIG_HOME`, `$XDG_CACHE_HOME` and `$XDG_DATA_HOME` take the place
-of `~/.config`, `~/.cache` and `~/.local/share` when you set them. The
-Flatpak keeps all of it under `~/.var/app/io.github.bigdaddy284.mymusic`: the
-data in `config/MyMusic`, the cache in `cache/MyMusic`, and the
-downloads in `data/MyMusic/downloads`, apart from a `.deb`, `.rpm`,
-AppImage or archive copy's.
+of `~/.config`, `~/.cache` and `~/.local/share` when you set them.
 
 ### The data folder
 
@@ -194,8 +190,7 @@ Where the credential store can't keep a secret:
 - **Everything:** sign out of each service, quit MyMusic, then delete
   the data, cache, logs and downloads folders above.
 
-**To bring your data to another copy**, as to another computer or into
-the Flatpak, quit both copies, copy `settings.json`, `library.json`,
+**To bring your data to another copy**, as to another computer, quit both copies, copy `settings.json`, `library.json`,
 `queue.json`, `positions.json` and the `addons` and `mix-covers` folders
 into the other copy's data folder, and sign in to your accounts again
 there: sign-ins stay in the credential store of the computer they were

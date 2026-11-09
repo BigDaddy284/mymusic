@@ -8,7 +8,7 @@
 
 <p align="center"><strong>One player for YouTube Music and Spotify.</strong></p>
 
-<p align="center">YouTube Music and Spotify client for macOS, Windows and Linux. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
+<p align="center">YouTube Music and Spotify client for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
 
 <p align="center"><sub>MyMusic is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
 
@@ -19,7 +19,7 @@
   <a href="https://github.com/bigdaddy284/mymusic/releases"><img src="https://img.shields.io/github/downloads/bigdaddy284/mymusic/total" alt="Downloads" /></a>
   <a href="https://pkg.go.dev/github.com/bigdaddy284/mymusic"><img src="https://pkg.go.dev/badge/github.com/bigdaddy284/mymusic.svg" alt="Go Reference" /></a>
   <a href="go.mod"><img src="https://img.shields.io/github/go-mod/go-version/bigdaddy284/mymusic" alt="Go version" /></a>
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey" alt="macOS, Windows and Linux" />
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey" alt="Windows" />
   <a href="#license"><img src="https://img.shields.io/badge/license-MIT%20or%20GPL--3.0-blue" alt="MIT or GPL-3.0" /></a>
 </p>
 
@@ -87,7 +87,7 @@ both services in one player:
 ### Spotify, three ways
 
 - **In MyMusic itself,** at Spotify's quality, with no Spotify app open
-  (Premium, on Windows and macOS).
+  (Premium).
 - **On Spotify Connect:** your Spotify app, your phone or a speaker.
 - **From YouTube Music:** MyMusic plays the Spotify track's recording on
   YouTube Music, which needs no Premium to play.
@@ -101,11 +101,11 @@ both services in one player:
 
 ### On your desktop
 
-- Media keys and the system's media controls on Windows, macOS and Linux.
+- Media keys and Windows' media controls.
 - Global shortcuts of your own to play, pause, skip, change the volume,
   mute, like or dislike what plays or show MyMusic, whichever window is
   in front.
-- The player's buttons on the taskbar thumbnail on Windows.
+- The player's buttons on the taskbar thumbnail.
 - Tray controls, notifications of new tracks, and start at login.
 - `mymusic://` links.
 - **Last.fm:** every track you hear joins your profile, and scrobbles made
@@ -135,9 +135,7 @@ both services in one player:
   from any app, and a command palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) for
   the rest.
 - **A settings file.** Your settings are `settings.json` in your data folder
-  (`%AppData%\MyMusic` on Windows, `~/Library/Application Support/MyMusic`
-  on macOS, `~/.config/MyMusic` on Linux), which you can keep with your
-  dotfiles. Save it while MyMusic runs, and it applies at once; Settings ›
+  (`%AppData%\MyMusic`), which you can keep with your dotfiles. Save it while MyMusic runs, and it applies at once; Settings ›
   Desktop › Settings file opens it.
 
 ## A look around
@@ -156,104 +154,41 @@ both services in one player:
 
 ## Install
 
-Download the file for your system from the
+MyMusic runs on Windows 10 and 11. Download it from the
 [latest release](https://github.com/bigdaddy284/mymusic/releases/latest):
 
-| System | Download |
+| Windows | Download |
 |---|---|
-| macOS 12 and later (Apple silicon and Intel) | [`mymusic-<version>-macos-universal.dmg`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Windows 10 and 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Windows, portable, no installation | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Debian, Ubuntu and derivatives | [`mymusic-<version>-linux-<arch>.deb`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Fedora, openSUSE and derivatives | [`mymusic-<version>-linux-<arch>.rpm`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Arch Linux and derivatives (coming soon) | [`mymusic-bin`](https://aur.archlinux.org/packages/mymusic-bin) on the AUR: `yay -S mymusic-bin` |
-| Any Linux, one file | [`mymusic-<version>-linux-<arch>.AppImage`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Any Linux, sandboxed (Flatpak) | [`mymusic-<version>-linux-<arch>.flatpak`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Any Linux, in your home folder | [`mymusic-<version>-linux-<arch>.tar.gz`](https://github.com/bigdaddy284/mymusic/releases/latest), with `install.sh` |
+| 10 and 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Portable, no installation | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists
 `SHA256SUMS` to check the downloads with. You don't need the files named
-`update-…`, `….delta`, `mymusic-<version>-macos-…` or
-`-windows-<arch>.tar.gz`: installed apps update from them.
+`update-…`, `….delta` or `-windows-<arch>.tar.gz`: installed apps update
+from them.
 
-The installers, the portable zip and the Linux archive update themselves.
-The `.deb`, the `.rpm`, the AppImage and the Flatpak can't replace their
-own files, so MyMusic tells you when a new version is out and downloads
-it for you. The AUR's `mymusic-bin` updates with the rest of your
-system. For the portable zip, unpack it anywhere and open
-`MyMusic.exe`. For the AppImage, make it executable (`chmod +x`) and open
-it. For the Flatpak, open it with your software center, or run
-`flatpak install ./mymusic-<version>-linux-<arch>.flatpak`; the first time,
-Flatpak fetches the GNOME runtime from Flathub.
-
-Coming soon, once its tap is up: on a Mac, [Homebrew](https://brew.sh)
-installs MyMusic, and `brew upgrade` updates it.
-
-```sh
-brew install --cask fzn0x/tap/mymusic
-```
+The installer and the portable zip update themselves. For the portable
+zip, unpack it anywhere and open `MyMusic.exe`.
 
 ### The first launch
 
-- **macOS:** the app isn't notarized by Apple yet, so the first time you
-  open it, macOS says it can't check it. Open it anyway from System
-  Settings › Privacy & Security › Open Anyway, or run this once in
-  Terminal:
-
-  ```sh
-  xattr -dr com.apple.quarantine /Applications/MyMusic.app
-  ```
-- **Windows:** the installer isn't signed yet, so SmartScreen may warn
-  about it: choose More info, then Run anyway. Signing in to YouTube Music
-  and playing Spotify in MyMusic need the WebView2 Runtime, which Windows
-  11 includes.
-- **Linux:** MyMusic needs GTK 3, and PulseAudio (PipeWire serves it too)
-  or ALSA. Signing in to YouTube Music needs WebKitGTK 4.1, the tray icon
-  needs `libayatana-appindicator3`, and keeping your sign-ins in the
-  system's keyring needs `libsecret`. The `.deb` and the `.rpm` install
-  them, and the Flatpak brings them with it; for the AppImage and the
-  archive:
-
-  ```sh
-  # Debian and Ubuntu
-  sudo apt install libgtk-3-0 libpulse0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 libsecret-1-0
-  # Fedora
-  sudo dnf install gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
-  ```
-- **Every system:** MyMusic finds the audio of most YouTube Music tracks
-  itself. For the rest, such as tracks made for children, it uses
+- The installer isn't signed yet, so SmartScreen may warn about it:
+  choose More info, then Run anyway.
+- Signing in to YouTube Music and playing Spotify in MyMusic need the
+  WebView2 Runtime, which Windows 11 includes. On Windows 10, install it
+  from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
+- MyMusic finds the audio of most YouTube Music tracks itself. For the
+  rest, such as tracks made for children, it uses
   [yt-dlp](https://github.com/yt-dlp/yt-dlp), which it installs for you
   from Settings › Playback and keeps up to date. yt-dlp needs a JavaScript
-  runtime: [Deno](https://deno.com), Node.js, Bun or QuickJS. The Flatpak
-  has Node.js.
-
-### The Flatpak
-
-The Flatpak runs MyMusic in a sandbox, which sees the network, the sound
-server, the display and the GPU, and none of your home folder. MyMusic
-keeps its settings and library in `~/.var/app/io.github.bigdaddy284.mymusic`,
-apart from a `.deb`, `.rpm`, AppImage or archive copy, and both can run at
-once. To bring a copy's settings and library over, quit both, copy
-`settings.json`, `library.json`, `queue.json` and the `addons` folder from
-`~/.config/MyMusic` into `~/.var/app/io.github.bigdaddy284.mymusic/config/MyMusic`,
-and sign in to your accounts again: sign-ins stay in the other copy's
-keyring.
-
-In the Flatpak, start at login goes through your desktop, which may ask
-you first, and a yt-dlp of your own must be in
-`~/.var/app/io.github.bigdaddy284.mymusic`, as the sandbox sees no other
-folder. A Discord app that isn't a Flatpak shows what plays only if it
-was running when MyMusic started, until it restarts; Discord as a
-Flatpak works either way. The Flatpak is new: tell us in an
-[issue](https://github.com/bigdaddy284/mymusic/issues) how it runs on your
-desktop.
+  runtime: [Deno](https://deno.com), Node.js, Bun or QuickJS.
 
 ### Accounts (all optional)
 
 - **YouTube Music:** choose Sign in to YouTube Music in Settings › Accounts
   and sign in to Google in the window that opens. What you type goes to
-  Google only. MyMusic keeps the session encrypted, with a key in your
-  system's keyring where there is one. Where that window can't open, or
+  Google only. MyMusic keeps the session encrypted, with a key in
+  Windows' Credential Manager. Where that window can't open, or
   Google refuses it, import the session of a browser you signed in with
   (MyMusic reads it with its yt-dlp, and keeps YouTube's cookies alone),
   or paste the Cookie header of a signed-in music.youtube.com tab.
@@ -275,9 +210,7 @@ covers the common problems and the known issues.
 
 You need [Go](https://go.dev/dl/) 1.27.3 or later, [Bun](https://bun.sh)
 1.2 or later, which runs MyGo's command line, and Git. MyGo needs no C
-compiler, so any system builds MyMusic for every system.
-
-### Windows
+compiler, so Linux can cross-compile the Windows app too, as releases do.
 
 ```powershell
 winget install GoLang.Go
@@ -298,46 +231,11 @@ Signing in and Spotify playback need the WebView2 Runtime, which Windows 11
 includes. On Windows 10, install it from
 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-### macOS
-
-With [Homebrew](https://brew.sh):
-
-```sh
-brew install go oven-sh/bun/bun
-git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
-bun install
-bun run dev
-```
-
-### Linux
-
-Install Go from [go.dev/dl](https://go.dev/dl/) (distribution packages are
-often older than 1.27.3), then Bun and the libraries MyMusic runs with:
-
-```sh
-curl -fsSL https://bun.sh/install | bash
-# Debian and Ubuntu
-sudo apt install git libgtk-3-0 libpulse0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 libsecret-1-0
-# Fedora
-sudo dnf install git gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
-```
-
-Then:
-
-```sh
-git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
-bun install
-bun run dev
-```
-
 ### Nix
 
-With [Nix](https://nixos.org), `nix develop` gives you the tools releases
-are built with, at the versions `flake.lock` pins: Go, Bun, NSIS,
-GoReleaser and Zola. `nix build` builds MyMusic for Linux from source,
-into `result/`.
+With [Nix](https://nixos.org) on Linux, `nix develop` gives you the tools
+releases are built with, at the versions `flake.lock` pins: Go, Bun, NSIS,
+osslsigncode, GoReleaser and Zola.
 
 ### Develop
 
@@ -350,15 +248,13 @@ bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
 bun run typecheck              # the plugin SDK and the community's plugins
 go run ./tools/registry -check # the community registry
-bun run build                  # the packaged app for this system, in build/
-bun run build -- -platform windows/amd64,linux/amd64,linux/arm64
+bun run build                  # the installer and the app, in build/
+bun run build -- -platform windows/amd64,windows/arm64
 ```
 
-In the Nix shell, build Linux downloads with
-`.github/scripts/build.sh linux/amd64,linux/arm64`, as releases do. A plain
-`bun run build` there makes a Linux program that asks for Nix's own loader,
-and it starts only on NixOS. `go run ./tools/elfloader build/linux-amd64`
-checks a build.
+In the Nix shell, `.github/scripts/build.sh windows/amd64,windows/arm64`
+builds the downloads as releases do, and `.github/scripts/package.sh`
+makes the portable zips.
 
 The [website](https://bigdaddy284.github.io/mymusic/) is in `site/`, built with
 [Zola](https://www.getzola.org), and the guides in `docs/` are its
@@ -487,22 +383,19 @@ What it keeps on your computer:
 - The covers you saw, up to 256 MB.
 - The translations of lyrics you turned on, by track and language, and
   the dictionary romaji reads kanji with, once you turned it on.
-- Your sign-ins, the YouTube Music session included, in the system's
-  keyring. On Windows, when the Credential Manager can't keep one, it goes
-  in a file encrypted for your Windows account; on Linux without a
-  keyring, in files only your user can read.
+- Your sign-ins, the YouTube Music session included, in Windows'
+  Credential Manager. When it can't keep one, it goes in a file encrypted
+  for your Windows account.
 - The log, without your sign-ins.
 
 The library's history page clears what you played, Settings › Playback
 clears the cache and the covers, and signing out of a service deletes its
 sign-in.
 
-On Windows, the visualizer hears the audio of Spotify playing on this
-computer, in MyMusic or in the Spotify app, through Windows' process
-loopback, which hears only that app. On macOS 14.2 and later, it hears
-Spotify playing in MyMusic through a process tap, once you allow it, as
-macOS asks. It analyzes the audio in memory and never records or sends
-it.
+The visualizer hears the audio of Spotify playing on this computer, in
+MyMusic or in the Spotify app, through Windows' process loopback, which
+hears only that app. It analyzes the audio in memory and never records or
+sends it.
 
 ## Credits
 
@@ -520,16 +413,14 @@ MyMusic is built on these projects:
 - **[Sobek](https://github.com/grafana/sobek)**, the JavaScript engine each
   plugin runs in.
 - **[Nix](https://nixos.org)**, which pins the tools releases are built
-  with, and builds MyMusic for Linux from source.
-- **[GoReleaser](https://goreleaser.com)**, which publishes the releases, and
-  its [nFPM](https://nfpm.goreleaser.com), which makes the RPM packages.
+  with.
+- **[GoReleaser](https://goreleaser.com)**, which publishes the releases.
 - **[Bun](https://bun.sh)**, which runs the build, and
   **[TypeScript](https://www.typescriptlang.org)**, which compiles the
   plugins and checks the plugin SDK's types.
 - **[Zola](https://www.getzola.org)**, which builds the website.
 - **[NSIS](https://nsis.sourceforge.io)**, which makes the Windows
-  installers, and [appimagetool](https://github.com/AppImage/appimagetool),
-  the AppImages.
+  installers.
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**, which finds the audio of
   the tracks MyMusic can't find itself.
 - **[Unison](https://unison.boidu.dev)**, the open, crowdsourced database of

@@ -1,12 +1,11 @@
 # On the desktop
 <!-- docs: group=using order=60 -->
 
-MyMusic on your desktop: the mini player, the MacBook notch player, the tray,
+MyMusic on your desktop: the mini player, the tray,
 media keys and media controls, global shortcuts, notifications and Discord.
 
 Most of what this page covers is in [Settings › Desktop](settings.md#desktop),
 and the global shortcuts are in [Settings › Shortcuts](settings.md#shortcuts).
-All of it works on Windows, macOS and Linux unless a section says otherwise.
 
 ## The mini player
 
@@ -14,7 +13,7 @@ The mini player is a small window that stays on top of your other
 windows, with what plays and the buttons to control it. Open it with:
 
 - the mini player button at the end of the player bar;
-- <kbd>Ctrl</kbd> <kbd>M</kbd> (<kbd>⌘</kbd> <kbd>M</kbd> on macOS), or
+- <kbd>Ctrl</kbd> <kbd>M</kbd>, or
   **Mini player** in the command palette;
 - **Mini player** in the tray icon's menu.
 
@@ -78,43 +77,12 @@ mini player staying where it is. Its button again, the × at the panel's
 top, or <kbd>Escape</kbd> closes it. The mini player opens with the panel
 it showed as it closed, but the warning sign's.
 
-## The player around the notch
-
-On a MacBook whose screen has a notch, MyMusic widens the black around the
-camera while a track is loaded: the cover on the left, and bars that move
-while it plays on the right.
-
-- **Click either side** for a panel that grows down from the notch, with
-  the player, the progress bar, and the line of the [lyrics](lyrics.md)
-  sung now, with the lines before and after it. For a podcast's episode,
-  it shows the [chapter](podcasts.md#episode-details-and-chapters) that
-  plays instead. The panel shows the lyrics in
-  [Latin letters](lyrics.md#other-scripts-in-latin-letters) when the lyrics
-  panel does.
-- **The cover** in the panel opens MyMusic on the now playing page.
-- **To close it**, press <kbd>Escape</kbd>, click either side of the notch
-  again, or move the pointer away for two seconds.
-
-The player shows over every app and on every Space, in full screen too,
-and stays while MyMusic is in the tray. It leaves the keyboard in the app
-you were using until you open the panel, and gives it back when the panel
-closes. It is black with white text whatever your theme, as it extends the
-notch.
-
-It is on by default. Turn it off with **Player around the notch** in
-Settings › Desktop, a switch that shows only on Macs with a notch, or with
-`"notchPlayer": false` in `settings.json`. Other Macs, external displays, a
-MacBook with its lid closed, Windows and Linux show nothing of it.
-[The notch's part of the architecture](architecture/notch.md) tells how
-it's drawn.
-
 ## The tray
 
-MyMusic puts an icon in the tray (the menu bar on macOS). Its menu has
-**Play / Pause**, **Next**, **Previous**, **Show MyMusic**, **Mini player**,
-and the item that quits MyMusic. On Windows and macOS, a click on the icon
-shows the main window and a right click opens the menu; on Linux, a click
-opens the menu.
+MyMusic puts an icon in the tray. Its menu has **Play / Pause**, **Next**,
+**Previous**, **Show MyMusic**, **Mini player**, and the item that quits
+MyMusic. A click on the icon shows the main window and a right click opens
+the menu.
 
 ![The tray icon's menu on Windows: Play / Pause, Next and Previous, then Show MyMusic and Mini player, then Exit](shots/tray-menu.webp)
 
@@ -127,30 +95,14 @@ shortcut of your own for **Show MyMusic**. It is off on a new install, so
 closing the window quits MyMusic.
 
 - To quit with Close to the tray on, choose the quit item of the tray
-  icon's menu, or <kbd>⌘</kbd> <kbd>Q</kbd> on macOS.
-- On macOS, a click on MyMusic's icon in the Dock shows the window again.
-  A window closed in full screen leaves full screen first, then hides, and
-  comes back in full screen.
-- In the Flatpak, MyMusic asks your desktop's background portal to let it
-  play on with the window closed.
-- On Linux, the tray needs `libayatana-appindicator3` and a desktop that
-  shows AppIndicator icons; GNOME needs its AppIndicator extension. Without
-  a tray icon, closing the window quits MyMusic.
+  icon's menu.
 
 ## Media keys and the system's media controls
 
-MyMusic shows what plays in your system's own media controls, with the
-cover, the title and the artists, and takes their buttons:
-
-- **Windows**: the media flyout, which shows with the volume keys and in
-  Quick Settings, with the cover, play or pause, previous, next and a seek
-  bar.
-- **macOS**: Now Playing, in Control Center, which the media keys and the
-  buttons of headphones reach too.
-- **Linux**: an MPRIS player, which your desktop shows in its media
-  controls and passes its media keys to. In the Flatpak, it shows under the
-  Flatpak's name. Setting the speed (rate) over MPRIS sets MyMusic's
-  [speed](playing-music.md#speed).
+MyMusic shows what plays in Windows' media flyout, which shows with the
+volume keys and in Quick Settings, with the cover, the title and the
+artists, play or pause, previous, next and a seek bar, and takes its
+buttons.
 
 The covers there come from the
 [covers MyMusic keeps](library.md#the-offline-cache) on disk, so a cover
@@ -186,12 +138,9 @@ MyMusic remembers it between starts. Turn it on or off with:
 - **Keep the window on top, or not** in the command palette, which has no
   keys at first: Settings › Shortcuts can give it some. A toast says
   which it did;
-- **Keep on Top** in macOS's Window menu, checked while it's on;
 - `"keepOnTop": true` in `settings.json`.
 
-The [mini player](#the-mini-player) stays on top either way. On Linux,
-your desktop decides: one on Wayland may keep no window above the others,
-the mini player included.
+The [mini player](#the-mini-player) stays on top either way.
 
 ## Global shortcuts
 
@@ -212,18 +161,13 @@ A new install has none. To set one, choose **set** on its row and press
 the keys; <kbd>Escape</kbd> cancels and <kbd>Backspace</kbd> removes it.
 
 - A global shortcut needs <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or the Windows
-  key on Windows, <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Super</kbd> on
-  Linux, and <kbd>⌘</kbd> or <kbd>⌃</kbd> on macOS. <kbd>F1</kbd> to
-  <kbd>F12</kbd> may stand alone, but <kbd>F12</kbd> on Windows, which
-  keeps it for itself.
+  key. <kbd>F1</kbd> to <kbd>F11</kbd> may stand alone; Windows keeps
+  <kbd>F12</kbd> for itself.
 - While MyMusic runs, those keys do nothing else, in MyMusic's own window
   too: a command of the window that had them gives them up.
 - Keys the system refuses, as when another app has them, stay yours: the
   row says why, with **try again**, and MyMusic tries again at each
   start.
-- On Wayland, your desktop asks you to confirm them, and its keyboard
-  settings can change them. On macOS, a letter is the key in its place on
-  a US keyboard.
 - Liking or disliking from another window shows a notification, while
   notifications are on and neither MyMusic's window nor the mini player
   is in front.
@@ -235,15 +179,11 @@ The media keys work as they do without any global shortcut.
 With **Notifications** on, in Settings › Desktop and on by default,
 MyMusic shows a notification when a track starts while its window isn't
 in front: the title, the artists and the album, with the cover. A click
-on it shows MyMusic. None shows while the mini player is in front, or on
-a MacBook while the player around the notch is open: they show the track
-already. The tray icon's tip names what plays too.
+on it shows MyMusic. None shows while the mini player is in front: it
+shows the track already. The tray icon's tip names what plays too.
 
 - The cover is its centre square, as the player bar shows it: the middle
-  of a music video's thumbnail. On Windows it takes the place of the tray
-  icon; on macOS it is attached, a thumbnail that grows as you expand the
-  notification; on Linux it is the notification's image, where your
-  desktop shows one.
+  of a music video's thumbnail. It takes the place of the tray icon.
 - It is the cover the system's media controls show, from the covers
   MyMusic keeps: a track on this computer shows the cover its file holds,
   or the one beside it.
@@ -270,9 +210,7 @@ it off with **Show what plays on Discord** in Settings › Desktop.
 - Discord's own Spotify status comes from your Discord account's link to
   Spotify. To show only MyMusic, turn off "Display Spotify as your status"
   in Discord's Connections.
-- MyMusic finds Discord's Canary build too, and Vesktop installed with
-  Flatpak. In MyMusic's Flatpak, a Discord app that isn't a Flatpak shows
-  what plays only if it was running when MyMusic started.
+- MyMusic finds Discord's Canary build too.
 
 ### What your Discord status shows
 
@@ -296,8 +234,7 @@ application of your own shows them as MyMusic's does.
 
 **Start at login**, in Settings › Desktop, starts MyMusic when you sign in
 to your computer, with its window hidden in the tray, from where the tray
-icon shows it. In the Flatpak, it goes through your desktop's background
-portal, which may ask you first.
+icon shows it.
 
 ## Sleep
 

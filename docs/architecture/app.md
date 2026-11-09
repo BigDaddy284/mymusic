@@ -16,18 +16,6 @@
   same cover (`notecover.go`), its centre square at most 512 pixels
   across (`artwork.Square`), as the bytes MyGo's notifications take; it
   waits 2 seconds at most for it.
-- **`internal/portal`** asks the desktop's Background portal, in a
-  Flatpak, to let MyMusic run without a window and to start it at login:
-  the sandbox's own autostart folder is one the desktop never reads.
-  `internal/app` asks it for Start at login, and for close to the tray.
-  [packaging/flatpak](../../packaging/flatpak) holds the Flatpak itself,
-  which may read, read-only, the profiles of the browsers installed from
-  Flathub: the import of a YouTube Music sign-in lists each apart from the
-  same browser installed otherwise (`youtube_cookies_flatpak.go`).
-  [packaging/flathub](../../packaging/flathub) builds MyMusic from source
-  for Flathub, whose build leaves a mark that `flathub.go` tells it by:
-  Flathub updates it, so Settings › About offers no download, and it runs
-  the yt-dlp of its manifest rather than download one.
 - **`internal/taskbar`** puts previous, play or pause, and next on the
   thumbnail of the main window's taskbar button on Windows, through the
   shell's ITaskbarList3, and takes their clicks in a window procedure in

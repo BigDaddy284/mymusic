@@ -47,17 +47,13 @@
   back. The player bar's device button and `outputChoices` and
   `outputMenu` in the root package's `outputdevice.go` show the choice.
   `MYMUSIC_AUDIO=1 go test ./internal/audio/output -run TestStream`
-  plays on the default device by its ID, and on one that isn't there;
-  on Linux it moves a stream between a null sink that `pactl` adds and
-  takes away, and the default sink. On Windows it also hears
-  what a process and its children play, through WASAPI's
-  process loopback, and on macOS 14.2 and later what a process plays,
-  through a Core Audio process tap: `internal/app`'s listener hears
+  plays on the default device by its ID, and on one that isn't there.
+  It also hears what a process and its children play, through WASAPI's
+  process loopback: `internal/app`'s listener hears
   Spotify there, in MyMusic's webview, or the Spotify app on Windows,
   into a `Tap`, the analyser of the engine for audio outside it, which
   the visualizer and the plugins' analyser read while Spotify plays. It
-  hears only while they read it; on macOS, which asks the user once, the
-  tap is of WebKit's GPU process ([Spotify here](spotify-here.md#macos)).
+  hears only while they read it.
 - **`internal/volume`** has the volume's curves, which Settings › Playback
   › Volume chooses between (#383): Natural, each tenth of the slider 6 dB
   down to -40 dB, and Linear, whose gain is the slider's position. The

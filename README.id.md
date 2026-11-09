@@ -349,14 +349,12 @@ go test ./...                  # the app's tests
 bun run typecheck              # the plugin SDK and the community's plugins
 go run ./tools/registry -check # the community registry
 bun run build                  # the packaged app for this system, in build/
-bun run build -- -platform windows/amd64,linux/amd64,linux/arm64
+bun run build -- -platform windows/amd64,windows/arm64
 ```
 
-Di shell Nix, buat file unduhan untuk Linux dengan
-`.github/scripts/build.sh linux/amd64,linux/arm64`, seperti saat membuat
-rilis. `bun run build` biasa di sana menghasilkan program Linux yang meminta
-loader milik Nix sendiri, sehingga hanya bisa berjalan di NixOS.
-`go run ./tools/elfloader build/linux-amd64` memeriksa hasil build.
+Di shell Nix, buat file unduhan Windows dengan
+`.github/scripts/build.sh windows/amd64,windows/arm64`, seperti saat membuat
+rilis.
 
 [Situs web](https://bigdaddy284.github.io/mymusic/) ada di `site/`, dibangun
 dengan [Zola](https://www.getzola.org), dan panduan di `docs/` menjadi

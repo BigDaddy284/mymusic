@@ -14,9 +14,8 @@ what happens behind a click. The pages after it go deeper: the
 
 MyMusic is one Go program. [MyGo](https://github.com/egoist/mygo), the
 desktop framework it is built with, draws every window in Go, on the GPU:
-the pages, the player bar, the queue, the lyrics, the mini player, the
-command palette and, on a MacBook with a notch, the player around the
-camera. There is no browser engine inside MyMusic drawing its interface,
+the pages, the player bar, the queue, the lyrics, the mini player and the
+command palette. There is no browser engine inside MyMusic drawing its interface,
 as there is in an Electron app, and no web page behind the windows.
 
 A web view of the system (WebView2 on Windows, WebKit on macOS, WebKitGTK
@@ -158,7 +157,7 @@ what each of these gets.
   into the app: a file whose signature doesn't match is never installed.
   The new version runs once MyMusic restarts.
 - **Copies that can't replace their own files**, the `.deb`, the `.rpm`,
-  the AppImage and the Flatpak, still look for new versions, and offer the
+  and the AppImage, still look for new versions, and offer the
   new version's file for you to install.
 
 ### yt-dlp and the JavaScript runtime

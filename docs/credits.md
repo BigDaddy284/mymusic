@@ -156,11 +156,7 @@ of its own.
   **[TypeScript](https://www.typescriptlang.org)**, which compiles the
   plugins and checks the plugin SDK's types.
 - **[NSIS](https://nsis.sourceforge.io)**, which makes the Windows
-  installers, and [appimagetool](https://github.com/AppImage/appimagetool),
-  the AppImages.
-- **[Flatpak](https://flatpak.org)** and flatpak-builder, with
-  [Flathub](https://flathub.org)'s GNOME runtime and its shared modules,
-  which make the Flatpak.
+  installers.
 - **[Zola](https://www.getzola.org)**, which builds this website.
 
 ## The music on this website

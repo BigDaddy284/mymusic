@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
-	"runtime"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -81,11 +80,7 @@ func TestJSRuntimeFromDir(t *testing.T) {
 	if _, _, ok := m.JSRuntime(); ok {
 		t.Fatal("found a runtime in an empty PATH")
 	}
-	name := "deno"
-	if runtime.GOOS == "windows" {
-		name += ".exe"
-	}
-	if err := os.WriteFile(filepath.Join(dir, name), []byte("x"), 0o755); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, exe("deno")), []byte("x"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	if got, _, ok := m.JSRuntime(); !ok || got != "deno" {

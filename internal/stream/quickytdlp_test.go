@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -45,11 +44,7 @@ func (c *ytdlpCalls) all() [][]string {
 func toolsWithRuntime(t *testing.T) *tools.Manager {
 	t.Helper()
 	dir := t.TempDir()
-	deno := "deno"
-	if runtime.GOOS == "windows" {
-		deno += ".exe"
-	}
-	if err := os.WriteFile(filepath.Join(dir, deno), []byte("deno"), 0o755); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "deno.exe"), []byte("deno"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	m := tools.New(dir)

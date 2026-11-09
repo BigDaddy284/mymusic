@@ -75,7 +75,7 @@ Where a song shows its lyrics, an episode shows its details: in the [side panel]
 - **What they show:** the show, which opens its page, the views, the day the episode came out and its length, then its whole description.
 - **Times** in the description, as 12:34 or 1:02:03, play the episode from there.
 - **Links** open in your browser.
-- **Chapters:** lines that start or end with a time are chapters, and the chapter that plays lights up as the episode goes on. On a MacBook with a notch, the [notch player](desktop.md#the-player-around-the-notch) shows it, with the chapters before and after it.
+- **Chapters:** lines that start or end with a time are chapters, and the chapter that plays lights up as the episode goes on.
 - **Where they come from:** YouTube Music's Details tab, or Spotify, asked for the first time they show, and kept: a refresh doesn't ask again.
 
 ![Now playing an episode of the Lex Fridman Podcast, at 1:09 of 3:34:26: its cover with the visualizer on the left, and under the player its details: the show, 1.3M views, Oct 26 and 3 hr 34 min, then its description with its links](shots/episode.webp)
