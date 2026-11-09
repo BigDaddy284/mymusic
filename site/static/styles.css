@@ -518,26 +518,6 @@ kbd {
 .tile-art-chip { display: grid; place-items: center; height: 92px; background: #0b0b0b; }
 .tile-art-chip span { padding: 6px 14px; border-radius: 999px; background: #272727; color: #ff8cc6; font: 700 1.125rem/1 var(--font); font-variant-numeric: tabular-nums; }
 
-/* The notch: the black around a MacBook's camera, with the cover and bars
-   that move while it plays. */
-.tile-art-notch { display: grid; place-items: start center; height: 92px; background: linear-gradient(#1b1b2b, #2a2340); }
-.notch { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 12px 0 8px; border-radius: 0 0 16px 16px; background: #000; }
-.notch img { width: 22px; height: 22px; border-radius: 6px; }
-.notch i { width: 110px; }
-.notch b { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
-.notch s { display: block; width: 3px; height: 40%; border-radius: 2px; background: #51b4ec; }
-.notch s:nth-child(2) { height: 90%; }
-.notch s:nth-child(3) { height: 60%; }
-.notch s:nth-child(4) { height: 75%; }
-@media (prefers-reduced-motion: no-preference) {
-  .notch s { animation: bar 900ms ease-in-out infinite alternate; }
-  .notch s:nth-child(2) { animation-delay: -300ms; }
-  .notch s:nth-child(3) { animation-delay: -600ms; }
-  .notch s:nth-child(4) { animation-delay: -150ms; }
-}
-@keyframes bar { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
-.notch b s { transform-origin: bottom; }
-
 /* Walkthrough. */
 
 .video { margin: 0; border-radius: var(--radius-card); overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--outline); }

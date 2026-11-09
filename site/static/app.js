@@ -11,7 +11,6 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const ua = navigator.userAgent;
   const platform = navigator.userAgentData?.platform || navigator.platform || ua;
-  const mac = /Mac/.test(platform) && !/iPhone|iPad/.test(ua);
 
   // The app bar rises once the page scrolls under it.
   const appbar = $("[data-appbar]");
@@ -676,23 +675,11 @@
   // Sections ease in as they scroll into the window (styles.css).
   $$(".section .section-head").forEach((el) => el.classList.add("reveal"));
 
-  // The visitor's system names the download buttons and marks its card.
-  // The buttons all open the latest release, where every file is.
-  const os = mac
-    ? "mac"
-    : /Win/.test(platform)
-      ? "windows"
-      : /Linux|X11/.test(platform) && !/Android/.test(ua)
-        ? "linux"
-        : "other";
-  const names = { mac: "macOS", windows: "Windows", linux: "Linux" };
-  if (names[os]) {
-    $$("[data-download-label]").forEach((label) => (label.textContent = `Download for ${names[os]}`));
-    $(`.system[data-os="${os}"]`)?.classList.add("is-yours");
-  }
-  if (mac) {
-    $$("kbd[data-mod]").forEach((k) => (k.textContent = "⌘"));
-    $$("[data-mod-hint]").forEach((k) => (k.textContent = "⌘K"));
+  // On Windows, the download buttons name it and its card is marked. The
+  // buttons all open the latest release, where every file is.
+  if (/Win/.test(platform)) {
+    $$("[data-download-label]").forEach((label) => (label.textContent = "Download for Windows"));
+    $('.system[data-os="windows"]')?.classList.add("is-yours");
   }
 
   // The latest release's version, when it is newer than the page's.
