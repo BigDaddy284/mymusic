@@ -1,9 +1,9 @@
 package output
 
 // The output devices: Devices lists them, and a Stream plays on the one
-// its Options name, or on the system's default device. What each system
-// tells of its devices is put together here, apart from the calls that
-// ask it, so that tests give it what a system would.
+// its Options name, or on the system's default device. What WASAPI tells
+// of its devices is put together here, apart from the calls that ask it,
+// so that tests give it what WASAPI would.
 
 import (
 	"cmp"
@@ -15,8 +15,7 @@ import (
 // Device is an audio output device of the system, as Devices lists it.
 type Device struct {
 	// ID tells the device from the others, from one run to the next: its
-	// endpoint ID on Windows, its UID on macOS, and on Linux the name of
-	// its sink in PulseAudio, or "alsa:" and its name in ALSA.
+	// WASAPI endpoint ID.
 	ID string
 	// Name is what the system calls it, as its sound settings show.
 	Name string
@@ -103,12 +102,6 @@ func (a *avoid) failed(now time.Time) { a.until = now.Add(avoidFor) }
 // may reports whether the stream may try the device it asks for.
 func (a *avoid) may(now time.Time) bool { return !now.Before(a.until) }
 
-// cstr returns s as a string of C, which ends in a 0.
-func cstr(s string) *byte {
-	b := append([]byte(s), 0)
-	return &b[0]
-}
-
 // sortDevices sorts devices by name, as people read them, then by ID.
 func sortDevices(devices []Device) []Device {
 	slices.SortStableFunc(devices, func(a, b Device) int {
@@ -133,110 +126,4 @@ func endpointDevices(endpoints []Device, defaultID string) []Device {
 		out = append(out, d)
 	}
 	return sortDevices(out)
-}
-
-// coreAudioDevice is what Core Audio tells of one of its devices.
-type coreAudioDevice struct {
-	id        uint32
-	uid, name string
-	// outputs is the device's output channels, hidden whether it's hidden
-	// from the system's settings, as a private aggregate device is.
-	outputs int
-	hidden  bool
-}
-
-// coreAudioDevices returns the output devices of Core Audio's devices:
-// those with output channels and a UID, which aren't hidden, the default
-// output device marked.
-func coreAudioDevices(devices []coreAudioDevice, defaultID uint32) []Device {
-	var out []Device
-	for _, d := range devices {
-		if d.outputs <= 0 || d.uid == "" || d.hidden {
-			continue
-		}
-		name := d.name
-		if name == "" {
-			name = d.uid
-		}
-		out = append(out, Device{ID: d.uid, Name: name, Default: d.id == defaultID})
-	}
-	return sortDevices(out)
-}
-
-// pulseSink is what PulseAudio tells of a sink: its name, its description
-// and the positions of its channels.
-type pulseSink struct {
-	name, description string
-	positions         []int32
-}
-
-// pulseDevices returns the devices of PulseAudio's sinks, the default sink,
-// named def, marked.
-func pulseDevices(sinks []pulseSink, def string) []Device {
-	var out []Device
-	for _, s := range sinks {
-		if s.name == "" {
-			continue
-		}
-		name := s.description
-		if name == "" {
-			name = s.name
-		}
-		out = append(out, Device{ID: s.name, Name: name, Default: s.name == def})
-	}
-	return sortDevices(out)
-}
-
-// alsaPrefix starts the IDs of ALSA's devices, which tells them apart from
-// PulseAudio's sinks.
-const alsaPrefix = "alsa:"
-
-// alsaHint is a device of ALSA's configuration, as snd_device_name_hint
-// tells it: its name, its description, of a line or two, and "Input" or
-// "Output" for a device of one direction, "" for one of both.
-type alsaHint struct{ name, desc, ioid string }
-
-// alsaSkipped are the starts of the names of ALSA's devices that aren't
-// listed: the raw devices of the cards, which take no float32 audio at
-// 48 kHz but those that convert it; each card's devices for its channels,
-// which play one card's speakers as its default device does; and the
-// mixing and recording plugins.
-var alsaSkipped = []string{"hw:", "plughw:", "dmix:", "dsnoop:", "front:", "rear:", "center_lfe:", "side:", "surround", "usbstream:"}
-
-// alsaDevices returns the output devices of ALSA's hints: each card's
-// default device, its HDMI and S/PDIF outputs, and the devices of the
-// user's own configuration, but for "null" and "default", which plays as
-// the system's default does. Of two names of the same device, as
-// default:CARD= and sysdefault:CARD= are, the first stays.
-func alsaDevices(hints []alsaHint) []Device {
-	var out []Device
-	seen := map[string]bool{}
-	for _, h := range hints {
-		if h.name == "" || h.name == "null" || h.name == "default" || h.ioid == "Input" ||
-			slices.ContainsFunc(alsaSkipped, func(p string) bool { return strings.HasPrefix(h.name, p) }) {
-			continue
-		}
-		name := alsaName(h)
-		if seen[name] {
-			continue
-		}
-		seen[name] = true
-		out = append(out, Device{ID: alsaPrefix + h.name, Name: name})
-	}
-	return sortDevices(out)
-}
-
-// alsaName is the name of an ALSA device: its description, of the card and
-// then the kind of output, on one line, else its name.
-func alsaName(h alsaHint) string {
-	var lines []string
-	for line := range strings.SplitSeq(h.desc, "\n") {
-		if line = strings.TrimSpace(line); line != "" {
-			lines = append(lines, line)
-		}
-	}
-	if len(lines) == 0 {
-		return h.name
-	}
-	return strings.Join(lines, " · ")
 }

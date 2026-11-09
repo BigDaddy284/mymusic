@@ -359,8 +359,8 @@ func (keptAudio) Serve(w http.ResponseWriter, r *http.Request, videoID string) b
 	return true
 }
 
-// noControls stands for a system without media controls, for tests: they
-// run no event loop, which macOS's controls would wait for.
+// noControls stands for a system without media controls, for tests, which
+// run no event loop.
 func noControls(func(nowplaying.Request)) (*nowplaying.Controls, error) {
 	return nil, nowplaying.ErrUnsupported
 }

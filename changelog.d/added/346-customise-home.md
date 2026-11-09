@@ -1,6 +1,5 @@
 - Arrange Home: Edit home, at its top, lists its shelves, which you drag
-  into the order you like, or move with Alt+Up and Alt+Down (⌥↑ and ⌥↓
-  on macOS). Hide the ones you don't want, and bring them back from the
+  into the order you like, or move with Alt+Up and Alt+Down. Hide the ones you don't want, and bring them back from the
   hidden ones' list. Add a shelf adds one of your mixes, a playlist of
   your library on YouTube Music or Spotify, an artist's new releases,
   Most played this month or your downloads. Your shelves keep their

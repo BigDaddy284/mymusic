@@ -3,7 +3,6 @@ package main
 import (
 	"net/url"
 	"strconv"
-	"strings"
 
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/egoist/mygo/ui"
@@ -189,6 +188,3 @@ func itemPath(it media.Item) string {
 
 // count writes n, small, as a pivot's count.
 func count(n int) string { return strconv.Itoa(n) }
-
-// lower is s in lower case, as the interface's own words are.
-func lower(s string) string { return strings.ToLower(s) }

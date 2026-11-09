@@ -7,7 +7,7 @@ import (
 )
 
 // A path is text in a JSON file, which encoding/json writes as UTF-8:
-// the bytes of one that aren't, as a file's name on Linux may hold, are
+// the bytes of one that aren't are
 // written as replacement characters, and the path read back names no
 // file. Such a path is kept in base64, after pathPrefix, which no
 // absolute path starts with; one that is UTF-8 is kept as it is, so that

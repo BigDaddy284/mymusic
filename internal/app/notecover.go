@@ -19,9 +19,8 @@ import (
 // which shows without one past it; tests shorten it.
 var noteCoverWait = 2 * time.Second
 
-// noteCoverSize is the most pixels across of a notification's cover: macOS
-// shows it that large as the notification expands. MyGo shrinks it for
-// Windows' balloons and Linux's notification servers.
+// noteCoverSize is the most pixels across of a notification's cover, which
+// MyGo shrinks for Windows' notifications.
 const noteCoverSize = 512
 
 // trackNote is the notification of t, which started: its title, its

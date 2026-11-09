@@ -17,12 +17,12 @@ Spotify refuses the sign-in. For the code, read
 | Who plays the audio | Spotify's player, inside MyMusic | a Spotify app or device | MyMusic's own engine |
 | The audio | Spotify's, at Spotify's quality | Spotify's, at Spotify's quality | the track's recording on YouTube Music |
 | Needs Premium | yes | yes | no |
-| Systems | Windows and macOS | every system, with a device that has Spotify open | every system |
+| Needs | nothing more | a device that has Spotify open | nothing more |
 | Equalizer, crossfade, speed, Even loudness | no | no | yes |
-| Visualizer | on Windows, and macOS 14.2 and later | on Windows, for the Spotify app on this computer | yes |
+| Visualizer | yes | for the Spotify app on this computer | yes |
 | Cast, 5.1 | no | no | yes |
 | Podcast episodes | yes | yes | no |
-| Default | on Windows and macOS | on Linux | no |
+| Default | yes | no | no |
 | In settings.json | `"spotifyPlayback": "here"` | `"connect"` | `"match"` |
 
 When the way you chose can't play a track, as when no device answers or
@@ -67,8 +67,7 @@ downloads again as its new match.
 ## In MyMusic, from Spotify
 
 MyMusic plays the track itself, with Spotify's own player, at Spotify's
-quality, with no Spotify app open. It needs Spotify Premium, and Windows
-or macOS.
+quality, with no Spotify app open. It needs Spotify Premium.
 
 - **How.** Spotify's Web Playback SDK, which MyMusic loads from
   `sdk.scdn.co`, plays Spotify's protected audio in a hidden window of a
@@ -92,9 +91,7 @@ or macOS.
   does. The equalizer, crossfade, Even loudness and speed don't reach it
   either: Spotify keeps its own loudness and speed. On Windows 10
   build 20348 and later, the visualizer hears it through Windows' process
-  loopback, and on macOS 14.2 and later through a process tap, once you
-  allowed MyMusic to record what other apps play, as macOS asks the first
-  time ([the visualizer](audio-engine.md#the-visualizer)). Where it can't
+  loopback ([the visualizer](audio-engine.md#the-visualizer)). Where it can't
   hear it, it draws nothing.
 
 ### What 0.5.9 changed

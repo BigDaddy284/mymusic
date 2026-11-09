@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"sync/atomic"
@@ -206,9 +205,6 @@ func fakeExport(t *testing.T, jar string, undecrypted bool, fail error) *[]strin
 		browsers = append(browsers, browser)
 		if data, err := os.ReadFile(file); err != nil || string(data) != tools.NetscapeHeader {
 			t.Errorf("yt-dlp got %q, %v", data, err)
-		}
-		if info, err := os.Stat(file); runtime.GOOS != "windows" && (err != nil || info.Mode().Perm() != 0o600) {
-			t.Errorf("the file of the cookies is %v, %v", info.Mode(), err)
 		}
 		if fail != nil {
 			return false, fail

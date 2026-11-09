@@ -6,9 +6,9 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-// TestSelawikSemilight sets the nav labels' family in Selawik Semilight,
-// on every system: 2.7% narrower than Regular, where Light, which Windows
-// and Linux took before MyGo 0.8, is 5.4% narrower.
+// TestSelawikSemilight sets the nav labels' family in Selawik Semilight:
+// 2.7% narrower than Regular, where Light, which Windows took before MyGo
+// 0.8, is 5.4% narrower.
 func TestSelawikSemilight(t *testing.T) {
 	registerFonts()
 	const line = "The quick brown fox jumps over the lazy dog 0123456789"

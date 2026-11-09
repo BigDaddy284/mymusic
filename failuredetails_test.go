@@ -4,7 +4,6 @@ import (
 	"context"
 	"iter"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"testing"
@@ -172,10 +171,7 @@ func TestRecentPlaybackErrors(t *testing.T) {
 // without the names of the accounts signed in, the home folder, URLs'
 // queries, cookies, tokens or addresses.
 func TestFailureReport(t *testing.T) {
-	home := "/home/Robin Example"
-	if runtime.GOOS == "windows" {
-		home = `C:\Users\Robin Example`
-	}
+	home := `C:\Users\Robin Example`
 	path := filepath.Join(home, "Music", "Song.mp3")
 	inHome := strings.Replace(path, home, "~", 1)
 	pr := privacyOf(app.AccountsStatus{

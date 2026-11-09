@@ -8,8 +8,7 @@
 // The picture comes through Media Source Extensions, a part of the stream
 // at a time, from MyMusic's proxy at the stream scheme: a <video> can't
 // play the stream scheme itself, as WebView2 gets a scheme's responses
-// only once they are whole, and WebKitGTK plays no media of a custom
-// scheme. The page holds about AHEAD seconds of the picture ahead of what
+// only once they are whole. The page holds about AHEAD seconds of the picture ahead of what
 // shows, and fetches nothing while the sound is paused or the page isn't
 // shown.
 //

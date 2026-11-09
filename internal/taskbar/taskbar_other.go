@@ -2,8 +2,7 @@
 
 package taskbar
 
-// Other systems have no buttons on their taskbar's thumbnails, nor 32-bit
-// Windows here.
+// 32-bit Windows has no buttons on its taskbar's thumbnails here.
 type bar struct{}
 
 func attach(uintptr, func(Button)) (*bar, error) { return nil, ErrUnsupported }

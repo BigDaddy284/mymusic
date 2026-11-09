@@ -640,9 +640,8 @@ func (s *shell) closeVideoLater() {
 	})
 }
 
-// closeVideo closes the web view and its page, from a goroutine: closed
-// from the view, a web view crashes GTK, as a window does (#37). The next
-// picture makes another.
+// closeVideo closes the web view and its page, from a goroutine, not
+// from the view itself (#37). The next picture makes another.
 func (s *shell) closeVideo() {
 	v := &s.video
 	if v.keep != nil {

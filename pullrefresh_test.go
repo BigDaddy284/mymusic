@@ -159,7 +159,7 @@ func TestPullWheel(t *testing.T) {
 
 // TestPullMomentum never pulls the page with scrolling that came up to
 // its top, as a fling's momentum does on Windows, where nothing tells it
-// apart, until it stopped; nor with momentum macOS marks.
+// apart, until it stopped; nor with momentum MyGo marks.
 func TestPullMomentum(t *testing.T) {
 	s := newTestShell(t)
 	tt := tester(t, s)
@@ -195,8 +195,8 @@ func TestPullMomentum(t *testing.T) {
 	}
 	waitRefreshed(t, s, tt)
 
-	// macOS marks momentum: it never pulls, and lets go of the fingers'
-	// pull, once.
+	// Momentum MyGo marks never pulls, and lets go of the fingers' pull,
+	// once.
 	clock := time.Unix(1, 0)
 	ev := func(dy float32, momentum bool) ui.InputEvent {
 		clock = clock.Add(16 * time.Millisecond)

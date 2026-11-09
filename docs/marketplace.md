@@ -14,8 +14,7 @@ MyMusic's repository on GitHub.
 - **Marketplace** in the sidebar, the store icon;
 - **get more themes** in [Settings › Appearance](look-and-feel.md#themes) ›
   Theme, or **get plugins** in [Settings › Plugins](settings.md#plugins);
-- **Marketplace** in the [command palette](settings.md#the-command-palette)
-  (<kbd>Ctrl</kbd> <kbd>K</kbd>, <kbd>⌘</kbd> <kbd>K</kbd> on macOS).
+- **Marketplace** in the [command palette](settings.md#the-command-palette).
 
 Its two pivots, **themes** and **plugins**, say how many of each there
 are. Each add-on has a card: a preview (a theme's own ground and tile
@@ -25,8 +24,7 @@ sentence, and for a plugin, what it asks for.
 ![The marketplace's themes: the Themes and Plugins pivots, "Made by the community, reviewed in the open", and the cards of Neon Nights and Paper Mint, each with its tile colours, its version and author, a line on what it is, and Install](shots/marketplace.webp)
 
 The marketplace reads the community registry from GitHub when you open it,
-and keeps it for ten minutes. Refresh the page (<kbd>F5</kbd>,
-<kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>R</kbd> on macOS) to read it again sooner.
+and keeps it for ten minutes. Refresh the page to read it again sooner.
 
 ## Install a theme
 

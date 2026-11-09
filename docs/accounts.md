@@ -8,9 +8,9 @@ MyMusic needs no account: YouTube Music's search, artists, albums,
 playlists and radios work signed out, as soon as you open it. Sign in for
 your own library and recommendations. All three accounts are in Settings ›
 Accounts, and MyMusic keeps each sign-in in your system's
-[credential store](data-and-privacy.md#sign-ins) (the keyring on Linux): on
-Windows, one the Credential Manager can't keep goes in a file encrypted for
-your Windows account.
+[credential store](data-and-privacy.md#sign-ins), the Credential Manager:
+one the Credential Manager can't keep goes in a file encrypted for your
+Windows account.
 
 ## YouTube Music
 
@@ -27,8 +27,8 @@ own sign-in page: sign in there as you would in a browser. What you type
 goes to Google only, so MyMusic never sees your password, and it keeps
 the session encrypted on your computer. The window closes once you're in.
 
-The window needs the system's web view: WebView2 on Windows, which Windows
-11 includes, and WebKitGTK 4.1 on Linux. Google sometimes refuses it with
+The window needs the system's web view, WebView2, which Windows 11
+includes. Google sometimes refuses it with
 "This browser or app may not be secure". That's Google's decision: try
 again later or from another network, or use one of the two ways below.
 
@@ -48,17 +48,12 @@ that session:
 MyMusic reads the browser's cookies with its yt-dlp, keeps YouTube's
 alone, encrypted on your computer, and deletes the rest at once.
 
-| System | Browsers |
-|---|---|
-| Windows | Firefox, Chrome, Chromium, Edge, Brave, Opera, Vivaldi, Helium, Zen |
-| macOS | the same, and Safari |
-| Linux | the same as Windows, and Firefox, Chrome, Chromium, Edge and Brave installed from Flathub |
+It reads Firefox, Chrome, Chromium, Edge, Brave, Opera, Vivaldi, Helium
+and Zen.
 
 - **Chrome on Windows.** Recent versions of Chrome on Windows seal their
   cookies against other programs, so MyMusic can't read them. Import from
   Firefox there, or paste a cookie header.
-- **Safari** on macOS needs Full Disk Access for MyMusic, in System
-  Settings › Privacy & Security, for its cookies to be read.
 - **Zen and Helium** are read from their profile folders. When MyMusic
   doesn't find them, give the folder of a profile under Profile.
 
@@ -147,7 +142,7 @@ Spotify app of your own. It takes a few minutes, once:
 
 [Spotify](spotify.md) walks through each step, says what to do when
 Spotify refuses the sign-in, and explains the three ways Spotify tracks
-play: in MyMusic itself (Premium, on Windows and macOS), on Spotify
+play: in MyMusic itself (Premium), on Spotify
 Connect, or from their recording on YouTube Music, which needs no Premium.
 
 Signed in, MyMusic searches Spotify beside YouTube Music, and shows your

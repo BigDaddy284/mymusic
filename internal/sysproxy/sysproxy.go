@@ -5,8 +5,6 @@
 // so that every client using it, or cloning it later, picks it up. A
 // package that clones http.DefaultTransport as it initializes imports this
 // one, as internal/online does, so that its clone has it too.
-//
-// macOS and Linux keep the environment's proxy alone, as before.
 package sysproxy
 
 import (

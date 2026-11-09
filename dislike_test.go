@@ -88,7 +88,7 @@ func TestDislike(t *testing.T) {
 }
 
 // TestDislikeCommand dislikes what plays, and takes the dislike back, as
-// Ctrl+D (⌘D) does, and a like takes a dislike back from the player too.
+// Ctrl+D does, and a like takes a dislike back from the player too.
 func TestDislikeCommand(t *testing.T) {
 	s := newTestShell(t)
 	s.p.PlayTracks(testTracks[:2], 0)

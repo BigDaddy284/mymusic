@@ -14,7 +14,7 @@
   order the sections are embedded. `testdata/default.json` and
   `testdata/full.json` pin how it writes.
 - **Paths.** encoding/json writes text as UTF-8: a path whose bytes
-  aren't, as a file's name on Linux may be, would read back with
+  aren't would read back with
   replacement characters, and name no file. `store.EncodePath` keeps such
   a path in base64, after `base64:`, which no absolute path starts with;
   one that is UTF-8 stays as it is. `Settings.MarshalJSON` writes

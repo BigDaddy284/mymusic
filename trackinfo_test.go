@@ -95,7 +95,7 @@ func TestTrackInfoFromTheMenu(t *testing.T) {
 }
 
 // TestTrackInfoOfAFile shows what a file on this computer holds, where,
-// its size and tags, and Show in Explorer or Finder, which shows it; of a
+// its size and tags, and Show in Explorer, which shows it; of a
 // file gone, why.
 func TestTrackInfoOfAFile(t *testing.T) {
 	s := newTestShell(t)

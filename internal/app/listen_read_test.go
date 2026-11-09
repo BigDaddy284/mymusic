@@ -65,7 +65,7 @@ var spotifyPlays = player.State{Playing: true, Source: &player.Source{Mode: play
 
 // TestListenerHearsWhileRead hears Spotify in MyMusic only while the
 // analyser is read, as the visualizer reads it at each frame, and stops
-// once it isn't: on macOS, hearing asks the user's permission.
+// once it isn't.
 func TestListenerHearsWhileRead(t *testing.T) {
 	var f fakeCaptures
 	l := listenWith(func(h hearing) uint32 {
@@ -101,7 +101,7 @@ func TestListenerHearsWhileRead(t *testing.T) {
 }
 
 // TestListenerLooksAgain looks again for the process to hear while it
-// isn't found, as before WebKit's GPU process plays.
+// isn't found, as before Spotify plays.
 func TestListenerLooksAgain(t *testing.T) {
 	var f fakeCaptures
 	var looked atomic.Int32
@@ -141,8 +141,8 @@ func TestListenerFailsOnce(t *testing.T) {
 	}
 }
 
-// TestListenerSaysWhyItStopped stops a capture that stopped hearing, as
-// when the user refused it at macOS's question, and says why.
+// TestListenerSaysWhyItStopped stops a capture that stopped hearing, and
+// says why.
 func TestListenerSaysWhyItStopped(t *testing.T) {
 	var f fakeCaptures
 	l := listenWith(func(hearing) uint32 { return 42 }, f.start)

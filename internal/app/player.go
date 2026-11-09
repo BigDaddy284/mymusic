@@ -345,8 +345,8 @@ func playingLine(np NowPlaying) string {
 	return line
 }
 
-// oneLine is s as a title shows it, on one line: valid UTF-8, macOS taking
-// no title that isn't, with control characters, line breaks among them, as
+// oneLine is s as a title shows it, on one line: valid UTF-8, with
+// control characters, line breaks among them, as
 // spaces, and no runs of spaces. The marks that turn the direction of the
 // text after them go, so that a title can't turn its artists around.
 func oneLine(s string) string {

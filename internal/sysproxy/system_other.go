@@ -2,5 +2,5 @@
 
 package sysproxy
 
-// install does nothing: macOS and Linux keep the environment's proxy.
+// install does nothing off Windows: the environment's proxy stays.
 func install() {}

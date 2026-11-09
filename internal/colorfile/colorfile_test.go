@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -246,9 +245,6 @@ func TestExpand(t *testing.T) {
 		` "` + abs + `" `: abs,
 		filepath.Join(home, "x", "..", "colors.json"): filepath.Join(home, "colors.json"),
 	} {
-		if runtime.GOOS != "windows" && strings.Contains(in, `\`) {
-			continue // a backslash is a letter of a name there
-		}
 		got, err := Expand(in)
 		if err != nil || got != want {
 			t.Errorf("Expand(%q) = %q, %v, want %q", in, got, err, want)

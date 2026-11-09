@@ -4,12 +4,8 @@ package app
 // MyMusic, plays in the page of a webview, which the engine never hears,
 // and on Spotify Connect in a Spotify app: the listener hears them there,
 // for the visualizer and the plugins' analyser, while one of them reads it.
-// Windows hears a process and its children through process loopback, and
-// macOS from 14.2 on what a process plays through a process tap, of
-// WebKit's GPU process, which plays what MyMusic's web views play, once
-// the user allowed MyMusic to record what other apps play. It hears the
-// Spotify app only on Windows, on this computer; other devices MyMusic
-// can't hear.
+// Windows hears a process and its children through process loopback. It
+// hears the Spotify app on this computer; other devices MyMusic can't hear.
 
 import (
 	"log"
@@ -225,17 +221,15 @@ func (l *listener) run() {
 		want, closed := l.want, l.closed
 		l.mu.Unlock()
 		if l.capture != nil {
-			// As when the user refused it at macOS's question: it hears
-			// again once what it hears changes.
+			// The capture stopped hearing: it hears again once what it
+			// hears changes.
 			if err := l.capture.Err(); err != nil {
 				l.capture.Stop()
 				l.capture = nil
 				l.fail(err)
 			}
 		}
-		// While nothing reads the analyser, the listener hears nothing: on
-		// macOS, where hearing asks the user's permission, it asks only
-		// once the visualizer or a plugin would show what it hears.
+		// While nothing reads the analyser, the listener hears nothing.
 		l.unheard.Store(want != hearNothing)
 		if closed || !l.reading() {
 			want = hearNothing

@@ -73,7 +73,7 @@ func (s *shell) playingSource(t media.Track) *player.Source {
 }
 
 // trackInfoDialog shows the Track info of the track the dialog tells of,
-// over the window, with Close, and Show in Explorer or Finder for a file.
+// over the window, with Close, and Show in Explorer for a file.
 func (s *shell) trackInfoDialog(c *ui.Context) {
 	v := &s.trackInfo
 	if !v.open {

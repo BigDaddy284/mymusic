@@ -43,8 +43,6 @@ var cookieErrors = []struct {
 	{"database is locked", ErrBrowserOpen},
 	{"failed to decrypt with dpapi", ErrCookiesSealed},
 	{"keyring", ErrCookiesSealed},
-	{"keychain", ErrCookiesSealed},
-	{"kwallet", ErrCookiesSealed},
 	{"cookies database", ErrNoBrowserCookies},
 	{"local state", ErrNoBrowserCookies},
 	{"operation not permitted", ErrCookiesDenied},

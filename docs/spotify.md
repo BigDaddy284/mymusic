@@ -56,21 +56,16 @@ Then choose **sign in to spotify** again, or **sign out** to stop using
 Spotify.
 
 MyMusic never sees your password. It keeps the token Spotify gives it in
-your system's [credential store](data-and-privacy.md#sign-ins): the
-Keychain on macOS, the Credential Manager on Windows, the Secret Service
-(GNOME Keyring, KWallet…) on Linux. On Windows, where the Credential
-Manager can't keep it, it is encrypted for your Windows account in
-`spotify-token.dpapi`, in MyMusic's
-[data folder](data-and-privacy.md#the-data-folder). On Linux without a
-Secret Service, it is in a file only your user can read,
-`spotify-token.json` in the data folder; once a Secret Service is there, the
-token moves into it and the file goes.
+Windows' [credential store](data-and-privacy.md#sign-ins), the
+Credential Manager. Where the Credential Manager can't keep it, it is
+encrypted for your Windows account in `spotify-token.dpapi`, in MyMusic's
+[data folder](data-and-privacy.md#the-data-folder).
 
 ## How Spotify tracks play
 
 Settings › Playback chooses:
 
-- **In MyMusic, from Spotify** (the default on Windows and macOS). MyMusic plays the track
+- **In MyMusic, from Spotify** (the default). MyMusic plays the track
   itself, with Spotify's Web Playback SDK, at Spotify's own quality, and no
   Spotify app needs to be open: MyMusic shows among your Spotify devices
   while it plays. It needs Spotify Premium; WebView2 plays Spotify's protected audio with
@@ -80,13 +75,11 @@ Settings › Playback chooses:
   [notes](https://support.spotify.com/us/article/equalizer/) that its audio
   settings can't change while another device plays it. The
   [visualizer](audio-engine.md#the-visualizer) and the plugins' analyser
-  hear it on Windows 10 build 20348 and later, and on macOS 14.2 and
-  later once you allow MyMusic to record what other apps play, as macOS
-  asks the first time.
+  hear it on Windows 10 build 20348 and later.
   Sign-ins made before MyMusic played Spotify itself do not allow it:
   Settings › Playback asks you to sign in again. When Spotify cannot play
   here, MyMusic plays the track from YouTube Music instead, and says why.
-- **On Spotify Connect** (the default on Linux). A Spotify device plays the track: your
+- **On Spotify Connect.** A Spotify device plays the track: your
   Spotify app on this computer, your phone, a speaker. It needs Spotify
   Premium, and a device with Spotify open. The devices button of the player
   bar chooses which device plays; by default, the active one. When no device

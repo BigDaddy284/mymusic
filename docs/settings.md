@@ -5,7 +5,7 @@ MyMusic's settings page by page, finding a setting by typing, settings.json,
 the command palette, refreshing a page and the keyboard shortcuts.
 
 Open Settings with the gear in the sidebar,
-<kbd>Ctrl</kbd> <kbd>,</kbd> (<kbd>⌘</kbd> <kbd>,</kbd> on macOS), or
+<kbd>Ctrl</kbd> <kbd>,</kbd>, or
 **Settings** in the command palette. What you change applies at once:
 there's nothing to save.
 
@@ -34,7 +34,7 @@ How MyMusic plays; [Playing music](playing-music.md) tells all of it.
 
 | Group | What's there |
 |---|---|
-| [Spotify tracks](playing-music.md#how-spotify-tracks-play) | How Spotify tracks play: **In MyMusic, from Spotify** (Premium, on Windows and macOS), **On Spotify Connect**, with the **Device** that plays them, or **In MyMusic, from YouTube Music**. See [Spotify](spotify.md). |
+| [Spotify tracks](playing-music.md#how-spotify-tracks-play) | How Spotify tracks play: **In MyMusic, from Spotify** (Premium), **On Spotify Connect**, with the **Device** that plays them, or **In MyMusic, from YouTube Music**. See [Spotify](spotify.md). |
 | Sound | **[Output device](playing-music.md#the-output-device)** (System default, or a device by name), **[Quality](playing-music.md#data-saver)** (best, or data saver), **[Crossfade](playing-music.md#crossfade-and-gapless-playback)** (off, or 1 to 12 seconds), **[Even loudness](playing-music.md#even-loudness-volume-levelling-and-the-volume)**, **Volume levelling**, **Play 5.1 surround when a track has it**, **[Autoplay](playing-music.md#autoplay-and-radios)**, **[Skip songs made with AI](playing-music.md#skipping-songs-made-with-ai)** and **[Skip songs you dislike](playing-music.md#dislikes-and-skipping)**. |
 | [Speed](playing-music.md#speed) | **Songs** and **Podcasts**, each from 0.5× to 3×, at the tracks' own pitch, with **normal** to go back to 1×. |
 | [Music videos](playing-music.md#the-picture-of-music-videos) | **Show the video of music videos**, on the now playing page. |
@@ -100,8 +100,7 @@ themes and the plugins' commands. See
 
 Without Install updates without asking, a new version asks in a pop-up:
 **install** it, **later**, which asks again at the next start, or **skip
-this version**. The `.deb`, the `.rpm`, the AppImage and the Flatpak can't
-replace their own files, so they offer the new version's download instead.
+this version**.
 **report a problem** opens a new issue on GitHub with your version,
 system, theme and plugins filled in.
 
@@ -129,9 +128,6 @@ MyMusic keeps your settings in `settings.json`, in its
 | System | settings.json |
 |---|---|
 | Windows | `%AppData%\MyMusic\settings.json` |
-| macOS | `~/Library/Application Support/MyMusic/settings.json` |
-| Linux | `~/.config/MyMusic/settings.json` |
-| Linux, the Flatpak | `~/.var/app/io.github.bigdaddy284.mymusic/config/MyMusic/settings.json` |
 
 Settings › Desktop › Settings file opens it, or shows it in its folder, and
 so does **Open the settings file** in the command palette. Settings › About
@@ -155,8 +151,8 @@ tells how.
 - **Encodings.** Save it as UTF-8. A file with a byte order mark, or in
   UTF-16, as Windows PowerShell 5.1 writes it, reads too.
 - **Names that aren't UTF-8.** A folder or a file whose name isn't valid
-  UTF-8, as on some Linux drives, is written in base64 after `base64:`, as
-  `"base64:L2hvbWUvYWRhL2NhZuk="`, so that it names the same folder when
+  UTF-8 is written in base64 after `base64:`, as
+  `"base64:QzpcTXVzaWNcY2Fm6Q=="`, so that it names the same folder when
   MyMusic reads the file again. Every other path is written as it is.
 
 Its keys are short names of the settings, as `theme`, `layout`, `zoom`,
@@ -181,7 +177,7 @@ settings.json**. Meanwhile:
 
 ## The command palette
 
-<kbd>Ctrl</kbd> <kbd>K</kbd> (<kbd>⌘</kbd> <kbd>K</kbd> on macOS) opens the
+<kbd>Ctrl</kbd> <kbd>K</kbd> opens the
 command palette, which lists every command: MyMusic's, a "Theme:" command
 for each [theme](look-and-feel.md#themes), and those of your
 [plugins](marketplace.md#what-a-plugin-can-do), each with its group and its
@@ -199,9 +195,8 @@ keys.
 ## Refresh a page
 
 **Refresh this page** asks the services again for what the page shows,
-without restarting MyMusic: press <kbd>F5</kbd> (<kbd>⇧</kbd>
-<kbd>⌘</kbd> <kbd>R</kbd> on macOS), or the refresh button after the back
-and forward arrows. It's in the command palette and macOS's View menu too.
+without restarting MyMusic: press <kbd>F5</kbd>, or the refresh button after the back
+and forward arrows. It's in the command palette too.
 
 - The page keeps showing what it has until the answers come, with a spinner
   in the button meanwhile. If the refresh fails, as offline, the page keeps
@@ -214,7 +209,7 @@ and forward arrows. It's in the command palette and macOS's View menu too.
   it.
 - The button is dimmed on pages that always show what is current, as your
   liked songs and the stats.
-- <kbd>Ctrl</kbd> <kbd>R</kbd> (<kbd>⌘</kbd> <kbd>R</kbd>) stays Repeat.
+- <kbd>Ctrl</kbd> <kbd>R</kbd> stays Repeat.
 
 ### Pull to refresh
 
@@ -231,74 +226,72 @@ motion, the strip opens and closes at once.
 
 ## Keyboard shortcuts
 
-These are the keys of a new install. <kbd>Ctrl</kbd> on Windows and Linux
-is <kbd>⌘</kbd> on macOS, and <kbd>Alt</kbd> is <kbd>⌥</kbd> there. Shortcuts of
-a single key, as <kbd>Space</kbd>, <kbd>M</kbd> and the arrows, work
+These are the keys of a new install. Shortcuts of a single key, as <kbd>Space</kbd>, <kbd>M</kbd> and the arrows, work
 while you're not typing in a text field. The ID is the command's name in
 `settings.json`.
 
 ### Playback
 
-| Command | Windows and Linux | macOS | ID |
-|---|---|---|---|
-| Play or pause | <kbd>Space</kbd> | <kbd>Space</kbd> | `player.toggle` |
-| Next track | <kbd>Ctrl</kbd> <kbd>→</kbd> | <kbd>⌘</kbd> <kbd>→</kbd> | `player.next` |
-| Previous track | <kbd>Ctrl</kbd> <kbd>←</kbd> | <kbd>⌘</kbd> <kbd>←</kbd> | `player.previous` |
-| Forward 10 seconds | <kbd>→</kbd> | <kbd>→</kbd> | `player.forward` |
-| Back 10 seconds | <kbd>←</kbd> | <kbd>←</kbd> | `player.back` |
-| Volume up | <kbd>↑</kbd> | <kbd>↑</kbd> | `player.volumeUp` |
-| Volume down | <kbd>↓</kbd> | <kbd>↓</kbd> | `player.volumeDown` |
-| Mute | <kbd>M</kbd> | <kbd>M</kbd> | `player.mute` |
-| Shuffle | <kbd>Ctrl</kbd> <kbd>S</kbd> | <kbd>⌘</kbd> <kbd>S</kbd> | `player.shuffle` |
-| Repeat | <kbd>Ctrl</kbd> <kbd>R</kbd> | <kbd>⌘</kbd> <kbd>R</kbd> | `player.repeat` |
-| Like what plays | <kbd>Ctrl</kbd> <kbd>L</kbd> | <kbd>⌘</kbd> <kbd>L</kbd> | `player.like` |
-| Dislike what plays | <kbd>Ctrl</kbd> <kbd>D</kbd> | <kbd>⌘</kbd> <kbd>D</kbd> | `player.dislike` |
-| Speed up | none | none | `player.faster` |
-| Slow down | none | none | `player.slower` |
-| Normal speed | none | none | `player.normalSpeed` |
-| Start a radio of what plays | none | none | `player.radio` |
-| [Open music files…](local-music.md#open-files-without-a-folder) | <kbd>Ctrl</kbd> <kbd>O</kbd> | <kbd>⌘</kbd> <kbd>O</kbd> | `player.openFiles` |
+| Command | Keys | ID |
+|---|---|---|
+| Play or pause | <kbd>Space</kbd> | `player.toggle` |
+| Next track | <kbd>Ctrl</kbd> <kbd>→</kbd> | `player.next` |
+| Previous track | <kbd>Ctrl</kbd> <kbd>←</kbd> | `player.previous` |
+| Forward 10 seconds | <kbd>→</kbd> | `player.forward` |
+| Back 10 seconds | <kbd>←</kbd> | `player.back` |
+| Volume up | <kbd>↑</kbd> | `player.volumeUp` |
+| Volume down | <kbd>↓</kbd> | `player.volumeDown` |
+| Mute | <kbd>M</kbd> | `player.mute` |
+| Shuffle | <kbd>Ctrl</kbd> <kbd>S</kbd> | `player.shuffle` |
+| Repeat | <kbd>Ctrl</kbd> <kbd>R</kbd> | `player.repeat` |
+| Like what plays | <kbd>Ctrl</kbd> <kbd>L</kbd> | `player.like` |
+| Dislike what plays | <kbd>Ctrl</kbd> <kbd>D</kbd> | `player.dislike` |
+| Speed up | none | `player.faster` |
+| Slow down | none | `player.slower` |
+| Normal speed | none | `player.normalSpeed` |
+| Start a radio of what plays | none | `player.radio` |
+| [Open music files…](local-music.md#open-files-without-a-folder) | <kbd>Ctrl</kbd> <kbd>O</kbd> | `player.openFiles` |
 
 ### Go to
 
-| Command | Windows and Linux | macOS | ID |
-|---|---|---|---|
-| Go home | <kbd>Alt</kbd> <kbd>1</kbd> | <kbd>⌥</kbd> <kbd>1</kbd> | `go.home` |
-| Library | <kbd>Alt</kbd> <kbd>2</kbd> | <kbd>⌥</kbd> <kbd>2</kbd> | `go.library` |
-| Liked songs | <kbd>Alt</kbd> <kbd>3</kbd> | <kbd>⌥</kbd> <kbd>3</kbd> | `go.liked` |
-| Now playing | <kbd>Alt</kbd> <kbd>4</kbd> | <kbd>⌥</kbd> <kbd>4</kbd> | `go.nowPlaying` |
-| Explore | <kbd>Alt</kbd> <kbd>5</kbd> | <kbd>⌥</kbd> <kbd>5</kbd> | `go.explore` |
-| Search | <kbd>Ctrl</kbd> <kbd>F</kbd> | <kbd>⌘</kbd> <kbd>F</kbd> | `go.search` |
-| Settings | <kbd>Ctrl</kbd> <kbd>,</kbd> | <kbd>⌘</kbd> <kbd>,</kbd> | `go.settings` |
-| Downloads | none | none | `go.downloads` |
-| On this computer | none | none | `go.computer` |
-| Stats | none | none | `go.stats` |
-| Marketplace | none | none | `go.marketplace` |
-| Search the settings | none | none | `go.settingsSearch` |
+| Command | Keys | ID |
+|---|---|---|
+| Go home | <kbd>Alt</kbd> <kbd>1</kbd> | `go.home` |
+| Library | <kbd>Alt</kbd> <kbd>2</kbd> | `go.library` |
+| Liked songs | <kbd>Alt</kbd> <kbd>3</kbd> | `go.liked` |
+| Now playing | <kbd>Alt</kbd> <kbd>4</kbd> | `go.nowPlaying` |
+| Explore | <kbd>Alt</kbd> <kbd>5</kbd> | `go.explore` |
+| Search | <kbd>Ctrl</kbd> <kbd>F</kbd> | `go.search` |
+| Settings | <kbd>Ctrl</kbd> <kbd>,</kbd> | `go.settings` |
+| Downloads | none | `go.downloads` |
+| On this computer | none | `go.computer` |
+| Stats | none | `go.stats` |
+| Marketplace | none | `go.marketplace` |
+| Search the settings | none | `go.settingsSearch` |
 
 ### View
 
-| Command | Windows and Linux | macOS | ID |
-|---|---|---|---|
-| Command palette | <kbd>Ctrl</kbd> <kbd>K</kbd> | <kbd>⌘</kbd> <kbd>K</kbd> | `view.palette` |
-| Show or hide the queue | <kbd>Ctrl</kbd> <kbd>J</kbd> | <kbd>⌘</kbd> <kbd>J</kbd> | `view.queue` |
-| Show or hide the lyrics | <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>L</kbd> | <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>L</kbd> | `view.lyrics` |
-| Mini player | <kbd>Ctrl</kbd> <kbd>M</kbd> | <kbd>⌘</kbd> <kbd>M</kbd> | `view.mini` |
-| [Keep the window on top, or not](desktop.md#keep-the-window-on-top) | none | none | `view.keepOnTop` |
-| Collapse or expand the sidebar | <kbd>Ctrl</kbd> <kbd>B</kbd> | <kbd>⌘</kbd> <kbd>B</kbd> | `view.sidebar` |
-| Refresh this page | <kbd>F5</kbd> | <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>R</kbd> | `view.refresh` |
-| Zoom in | <kbd>Ctrl</kbd> <kbd>=</kbd>, also <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>=</kbd> and <kbd>Ctrl</kbd> with the keypad's <kbd>+</kbd> | <kbd>⌘</kbd> <kbd>=</kbd>, also <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>=</kbd> and <kbd>⌘</kbd> with the keypad's <kbd>+</kbd> | `view.zoomIn` |
-| Zoom out | <kbd>Ctrl</kbd> <kbd>-</kbd> | <kbd>⌘</kbd> <kbd>-</kbd> | `view.zoomOut` |
-| Reset zoom | <kbd>Ctrl</kbd> <kbd>0</kbd> | <kbd>⌘</kbd> <kbd>0</kbd> | `view.zoomReset` |
-| Show or hide the video of music videos | none | none | `view.video` |
+| Command | Keys | ID |
+|---|---|---|
+| Command palette | <kbd>Ctrl</kbd> <kbd>K</kbd> | `view.palette` |
+| Show or hide the queue | <kbd>Ctrl</kbd> <kbd>J</kbd> | `view.queue` |
+| Show or hide the lyrics | <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>L</kbd> | `view.lyrics` |
+| Mini player | <kbd>Ctrl</kbd> <kbd>M</kbd> | `view.mini` |
+| [Keep the window on top, or not](desktop.md#keep-the-window-on-top) | none | `view.keepOnTop` |
+| Collapse or expand the sidebar | <kbd>Ctrl</kbd> <kbd>B</kbd> | `view.sidebar` |
+| Refresh this page | <kbd>F5</kbd> | `view.refresh` |
+| Zoom in | <kbd>Ctrl</kbd> <kbd>=</kbd>, also <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>=</kbd> and <kbd>Ctrl</kbd> with the keypad's <kbd>+</kbd> | `view.zoomIn` |
+| Zoom out | <kbd>Ctrl</kbd> <kbd>-</kbd> | `view.zoomOut` |
+| Reset zoom | <kbd>Ctrl</kbd> <kbd>0</kbd> | `view.zoomReset` |
+| Show or hide the video of music videos | none | `view.video` |
 
 ### Add-ons and settings
 
-| Command | Windows and Linux | macOS | ID |
-|---|---|---|---|
-| Reload add-ons | none | none | `addons.reload` |
-| Open the settings file | none | none | `settings.openFile` |
-| Theme: *name*, one for each theme | none | none | `theme.<theme id>` |
+| Command | Keys | ID |
+|---|---|---|
+| Reload add-ons | none | `addons.reload` |
+| Open the settings file | none | `settings.openFile` |
+| Theme: *name*, one for each theme | none | `theme.<theme id>` |
 
 Plugins' commands follow, with the keys their plugin gives them, if any.
 
@@ -335,8 +328,7 @@ keys back, from the command you gave them to; **reset all**, at the top of
 the page, puts back every shortcut and removes every global shortcut.
 
 In `settings.json`, `shortcuts` holds the keys you changed, by the
-command's ID, written as `"Mod+Shift+M"`: `Mod` is <kbd>Ctrl</kbd>, or
-<kbd>⌘</kbd> on macOS, the other modifiers are `Ctrl`, `Alt`, `Shift` and
+command's ID, written as `"Mod+Shift+M"`: `Mod` is <kbd>Ctrl</kbd>, the other modifiers are `Ctrl`, `Alt`, `Shift` and
 `Meta`, and keys have names such as `K`, `5`, `F5`, `Space`, `Enter`,
 `ArrowLeft` and `PageDown`. An empty value, `""`, takes a command's
 shortcut away. `globalShortcuts` holds the global shortcuts the same way.

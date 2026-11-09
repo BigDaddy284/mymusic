@@ -94,7 +94,7 @@ type Options struct {
 	OutputDevices func() ([]OutputDevice, error)
 	// Controls, when set, reaches the system's media controls in place of
 	// nowplaying.Open on MyGo's main thread: tests, which run no event
-	// loop, set it, since macOS's controls would wait for one for ever.
+	// loop, set it.
 	Controls func(handle func(nowplaying.Request)) (*nowplaying.Controls, error)
 }
 

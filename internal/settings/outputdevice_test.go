@@ -7,8 +7,8 @@ import "testing"
 // as in settings from before the choice.
 func TestOutputDevice(t *testing.T) {
 	for _, c := range []struct{ in, want OutputDevice }{
-		{OutputDevice{ID: "BuiltInSpeakerDevice", Name: " MacBook Pro Speakers "}, OutputDevice{ID: "BuiltInSpeakerDevice", Name: "MacBook Pro Speakers"}},
-		{OutputDevice{ID: "alsa:hdmi:CARD=PCH,DEV=0"}, OutputDevice{ID: "alsa:hdmi:CARD=PCH,DEV=0"}},
+		{OutputDevice{ID: "{0.0.0.00000000}.{a1b2}", Name: " Speakers (Realtek(R) Audio) "}, OutputDevice{ID: "{0.0.0.00000000}.{a1b2}", Name: "Speakers (Realtek(R) Audio)"}},
+		{OutputDevice{ID: "{0.0.0.00000000}.{c3d4}"}, OutputDevice{ID: "{0.0.0.00000000}.{c3d4}"}},
 		{OutputDevice{ID: "  ", Name: "Speakers"}, OutputDevice{}},
 		{OutputDevice{}, OutputDevice{}},
 	} {

@@ -31,19 +31,18 @@ rename or remove in them shows in the library within a few seconds,
 without a scan, and a folder you copy in is read once, as the copy
 settles. Where it can't watch a folder, Settings says why, under the
 folders: one on a network drive, whose server may not tell of what other
-computers change; on Windows, one on a removable drive, which a watch
-would keep from being ejected; on Linux, one past the system's limit on
-watched folders, `fs.inotify.max_user_watches`. For such a folder,
+computers change; or one on a removable drive, which a watch would keep
+from being ejected. For such a folder,
 rescan, or start MyMusic again, to see what
 you added. Hidden folders, whose names start with a dot, are passed
 over. Files and folders play whatever their names hold, even names that
-aren't valid UTF-8, as on some Linux drives: MyMusic keeps their paths
+aren't valid UTF-8: MyMusic keeps their paths
 in base64, so that they name the same files after a restart.
 
 ## Open files without a folder
 
 Open music files…, in the [command palette](settings.md#the-command-palette)
-or with Ctrl+O (⌘O on macOS), and open files in Library › On this
+or with Ctrl+O, and open files in Library › On this
 computer, choose files to play now, as a queue. Drop files on the window,
 or a folder, and they play the same way, in the order of their names.
 MyMusic keeps none of them in the library: they play as long as their
@@ -133,7 +132,7 @@ a service doesn't apply to them:
 - They don't download: they're on your computer already.
 - They don't play on [cast devices](casting.md), which can't reach your
   files.
-- Show in Explorer, in a track's menu (Show in Finder on macOS), opens the
+- Show in Explorer, in a track's menu, opens the
   folder of its file.
 - [Track info](playing-music.md#track-info), in a track's menu, tells what
   its file holds, its format, bitrate, sample rate, bit depth, channels

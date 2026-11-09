@@ -93,7 +93,7 @@ ran in a web view, before 0.5.0. They match Chromium sample for sample, so
 MyMusic sounds as it did. Pausing and playing fade over 5 ms, so that
 they don't click.
 
-## The output on each system
+## The output
 
 The engine plays 32-bit float audio at 48 kHz on the system's default
 output device, in stereo, or in 5.1 where the device has it, and follows
@@ -110,27 +110,16 @@ dropped as the engine moves, and the track plays on from there. The
 engine asks each device for 5.1 itself, so surround plays on the device
 chosen as it does on the default one.
 
-- **Windows:** WASAPI, in shared mode, with Windows converting to the
-  device's own format. The thread that renders the audio registers with
-  Windows' multimedia scheduler, MMCSS, as Pro Audio (or runs at a higher
-  priority where MMCSS isn't there), so the music doesn't stutter while a
-  game or a browser keeps the computer busy (fixed in 0.5.2). The devices
-  are the render endpoints that are active, by their friendly names, and
-  the device chosen is its endpoint, by its ID.
-- **macOS:** an Audio Queue of Core Audio on the default output. A 5.1
-  queue tells Core Audio its channel layout, which maps the channels to
-  your speakers. The devices are Core Audio's devices with output
-  channels that Sound settings shows, and a device chosen gets a queue of
-  its own, by its UID.
-- **Linux:** PulseAudio's simple API, which PipeWire serves too, or else
-  ALSA's default device. PulseAudio and PipeWire move the stream when the
-  default device changes; ALSA's stays stereo. The devices are the sound
-  server's sinks, by their descriptions, or, without a sound server,
-  ALSA's: each card's default device, its HDMI and S/PDIF outputs, and the
-  devices of your own ALSA configuration.
+It plays through WASAPI, in shared mode, with Windows converting to the
+device's own format. The thread that renders the audio registers with
+Windows' multimedia scheduler, MMCSS, as Pro Audio (or runs at a higher
+priority where MMCSS isn't there), so the music doesn't stutter while a
+game or a browser keeps the computer busy (fixed in 0.5.2). The devices
+are the render endpoints that are active, by their friendly names, and
+the device chosen is its endpoint, by its ID.
 
 Spotify tracks that Spotify's own player plays don't go through the
-engine: in MyMusic, on Windows and macOS, its web view plays them on the
+engine: in MyMusic, its web view plays them on the
 system's default device, whatever the device chosen, and on Spotify
 Connect, the Spotify device plays them.
 
@@ -255,9 +244,8 @@ tells why.
 
 - **On a 5.1 device**, the six channels play as they are: left, right,
   centre, LFE and the two surrounds, which go to side speakers where the
-  device has them, else to rear ones. On Windows, a device whose speakers
-  have a centre, an LFE and a pair of surrounds; on macOS, a device of
-  six output channels or more; on Linux, a PulseAudio sink with them.
+  device has them, else to rear ones: a device whose speakers have a
+  centre, an LFE and a pair of surrounds.
 - **On headphones or two speakers**, the engine mixes the six channels
   down to stereo the way the track's own stream asks, by the LoRo downmix
   of ATSC A/52, section 7.8: the left output takes the left channel, the
@@ -291,20 +279,10 @@ alike either way.
 Spotify plays in Spotify's own player, which the engine never hears. On
 Windows 10 build 20348 and later, MyMusic hears it anyway, in MyMusic's
 own web view or in the Spotify app on this computer, through Windows'
-process loopback, which hears one app and its children alone. On macOS
-14.2 and later, it hears Spotify in MyMusic through a process tap of
-the part of macOS that plays MyMusic's web views. It hears only while the
+process loopback, which hears one app and its children alone. It hears
+only while the
 visualizer or a plugin shows what it hears, and analyzes that audio in
 memory: it never records or sends it.
-
-- **On a Mac, macOS asks first.** The first time the visualizer would
-  hear Spotify in MyMusic, macOS asks whether MyMusic may record what
-  other apps play: that is how macOS names hearing another app. Allow it,
-  and the visualizer moves. Refuse it, and the visualizer stays flat for
-  Spotify; allow it later in System Settings › Privacy & Security ›
-  Screen & System Audio Recording, then play the track again.
-- **Before macOS 14.2,** MyMusic can't hear Spotify, and the visualizer
-  stays flat for it.
 
 Where MyMusic can't hear what plays, as on a Spotify device elsewhere,
 the visualizer draws nothing, and the log says why.

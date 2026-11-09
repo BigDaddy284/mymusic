@@ -37,7 +37,7 @@ MyMusic's files, the resolver and the engine hold.
   once a second for 10 seconds at most, until the engine opened it or
   the track started or stopped playing. `trackFacts` words the rows, and
   tests give the dialog its answers through `trackInfoOf`. Show in
-  Explorer, Finder or its folder shows the file of a track on this
+  Explorer shows the file of a track on this
   computer, or its download, through `showInFolder`.
 - **Copies.** `trackCopies` is the place a song's copies are to show,
   side by side, the one that plays marked, once MyMusic links them

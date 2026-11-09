@@ -264,8 +264,8 @@ type Release struct {
 	// Page is the release's page: its notes and all of its downloads.
 	Page string `json:"page"`
 	// Download is the address of the release's file made for this copy,
-	// such as its .deb, which copies that do not update themselves are
-	// replaced with; "" when the release has none.
+	// such as its installer, which copies that do not update themselves
+	// are replaced with; "" when the release has none.
 	Download string `json:"download"`
 	// File is the name of that file.
 	File string `json:"file"`

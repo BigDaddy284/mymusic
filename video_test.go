@@ -523,7 +523,7 @@ func TestNowPlayingVideoReducedMotion(t *testing.T) {
 // web view, and says so in the settings.
 func TestNowPlayingVideoNoWebView(t *testing.T) {
 	saved := webViewProblem
-	webViewProblem = func(*shell) string { return "Showing music videos needs WebKitGTK" }
+	webViewProblem = func(*shell) string { return "Showing music videos needs the WebView2 Runtime" }
 	t.Cleanup(func() { webViewProblem = saved })
 	track := musicVideo()
 	_, tt, _, _ := videoShell(t, track)

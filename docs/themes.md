@@ -110,7 +110,7 @@ there MyMusic darkens or lightens yours until it reads at 4.5:1 on
 MyMusic ships Selawik, Quicksand, Mochi's round face, Roboto Flex, the
 Material themes' face, at weights 400, 500 and 700, and Archivo
 SemiCondensed at 800, the Walnut themes' headings'; other families must be
-on the user's computer, so end each list with a family every system has:
+on the user's computer, so end each list with a family Windows has:
 `system-ui` or `sans-serif` for the system's font, `monospace` for its
 monospaced one.
 
@@ -186,10 +186,7 @@ wallpaper's colours. The theme cards keep showing each theme's own colours.
 ### pywal
 
 MyMusic reads `colors.json` where pywal writes it: in `$PYWAL_CACHE_DIR`
-if it is set, else in `$XDG_CACHE_HOME/wal`, else in `~/.cache/wal`
-(`%USERPROFILE%\.cache\wal` on Windows). pywal 3.3.0 and older always
-write to `~/.cache/wal`, so MyMusic reads whichever of the two has a
-`colors.json`. There's nothing to set up: run `wal`, and MyMusic follows.
+if it is set, else in `%USERPROFILE%\.cache\wal`. There's nothing to set up: run `wal`, and MyMusic follows.
 
 If pywal writes somewhere MyMusic doesn't look, as when you set
 `PYWAL_CACHE_DIR` only in your shell, which apps started from the desktop
@@ -197,9 +194,7 @@ don't see, choose that `colors.json` as a file of your own.
 
 ### matugen
 
-MyMusic reads `matugen.json` in its data folder: `~/.config/MyMusic` on
-Linux, `~/Library/Application Support/MyMusic` on macOS, and
-`%AppData%\MyMusic` on Windows. Give matugen MyMusic's template, which
+MyMusic reads `matugen.json` in its data folder, `%AppData%\MyMusic`. Give matugen MyMusic's template, which
 writes MyMusic's colours for dark and light (**copy the template** in
 Settings copies it):
 
@@ -246,19 +241,13 @@ Settings copies it):
 
 Each brace of it is on a line of its own: two braces together are how
 matugen's expressions start and end. Save it as `templates/mymusic.json`
-beside matugen's `config.toml`, which is in `~/.config/matugen` on Linux,
-`~/Library/Application Support/com.InioX.matugen` on macOS, and
-`%AppData%\InioX\matugen\config` on Windows, and add to `config.toml`:
+beside matugen's `config.toml`, which is in
+`%AppData%\InioX\matugen\config`, and add to `config.toml`:
 
 ```toml
 [templates.mymusic]
 input_path = "templates/mymusic.json"
-# Linux
-output_path = "~/.config/MyMusic/matugen.json"
-# macOS
-# output_path = "~/Library/Application Support/MyMusic/matugen.json"
-# Windows
-# output_path = "~/AppData/Roaming/MyMusic/matugen.json"
+output_path = "~/AppData/Roaming/MyMusic/matugen.json"
 ```
 
 matugen reads `input_path` from the folder `config.toml` is in. Then run

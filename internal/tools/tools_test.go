@@ -25,12 +25,12 @@ func TestAsset(t *testing.T) {
 }
 
 func TestChecksum(t *testing.T) {
-	sums := []byte("abc123  yt-dlp\nDEF456  yt-dlp.exe\n789  yt-dlp_linux\n")
+	sums := []byte("abc123  yt-dlp\nDEF456  yt-dlp.exe\n789  yt-dlp_x86.exe\n")
 	got, err := checksum(sums, "yt-dlp.exe")
 	if err != nil || got != "def456" {
 		t.Errorf("checksum = %q, %v", got, err)
 	}
-	if _, err := checksum(sums, "yt-dlp_macos"); err == nil {
+	if _, err := checksum(sums, "yt-dlp_arm64.exe"); err == nil {
 		t.Error("a missing file has no checksum")
 	}
 }

@@ -1,7 +1,7 @@
 // Package discord shows what MyMusic plays on the user's Discord profile,
 // as Rich Presence. It talks to the Discord app running on the same
-// computer, through the app's named pipe on Windows and its Unix socket
-// elsewhere, and needs no network access of its own.
+// computer, through the app's named pipe, and needs no network access of
+// its own.
 package discord
 
 import (

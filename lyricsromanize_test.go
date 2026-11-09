@@ -223,7 +223,7 @@ func TestSungWordsRomanizedHere(t *testing.T) {
 	}
 	at := wordsAt(t, s, tt, "jongi bae", "jongi", "bae")
 	// The start of jongi is sung, as lit tells: the strokes of Selawik
-	// Light, the line's, are thinner than a pixel, and Linux smooths them
+	// Light, the line's, are thinner than a pixel, and may be smoothed
 	// in grey, with no pixel wholly in the accent.
 	sung := at[0]
 	sung.W *= 0.4

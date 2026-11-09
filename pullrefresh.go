@@ -5,14 +5,12 @@ package main
 // this page does once let go past pullFar (refresh.go).
 //
 // MyGo tells a touchpad's scrolling, which goes by pixels (Precise), from a
-// wheel's notches, and on macOS the momentum that goes on once the fingers
-// left (Momentum). Windows and Linux send their momentum, where there is
+// wheel's notches. Windows sends a touchpad's momentum, where there is
 // some, as any other scrolling. So a pull starts only on a page at rest at
 // its top: scrolling that came up to the top, a fling's momentum among
 // it, goes on to its gesture's end without pulling. A gesture ends once no
-// scrolling came for pullRest, which lets go of its pull; or as the
-// fingers leave, which macOS and Linux tell with an event that scrolls
-// nothing, and macOS with the momentum that starts.
+// scrolling came for pullRest, which lets go of its pull, or as momentum
+// that MyGo marks (Momentum) starts.
 
 import (
 	"time"
@@ -74,7 +72,7 @@ func (p *pullState) take(ev ui.InputEvent, top, off bool) (taken, refresh bool) 
 		return taken, refresh && !off
 	}
 	if ev.Time.Sub(p.last) >= pullRest || p.momentum && !ev.Momentum {
-		// A gesture starts, as the fingers come back on macOS.
+		// A gesture starts.
 		p.held = false
 	}
 	p.last, p.momentum = ev.Time, ev.Momentum

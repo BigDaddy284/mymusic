@@ -43,8 +43,7 @@ Settings › Appearance › Theme shows a card for every theme you have, drawn
 in its own colours, with its name, its four tile colours, and "built in" or
 the name of who made it. Click a card to wear its theme; the theme you wear
 has an outline in the accent. The
-[command palette](settings.md#the-command-palette)
-(<kbd>Ctrl</kbd> <kbd>K</kbd>, <kbd>⌘</kbd> <kbd>K</kbd> on macOS) lists
+[command palette](settings.md#the-command-palette) lists
 every theme too, as "Theme: Aurora" and so on.
 
 ![Settings › Appearance › Theme: Get more themes and Open themes folder beside its title, the Follow the computer switch, off, then a card for each of the fourteen built-in themes, from Anime to Walnut Light, each drawn in its own colours with its four tile colours and "built in", Mix outlined as the one worn](shots/theme-cards.webp)
@@ -162,13 +161,13 @@ The other rows of Settings › Appearance › Colour and type:
 
 The zoom has keys of its own:
 
-| | Windows and Linux | macOS |
-|---|---|---|
-| Zoom in | <kbd>Ctrl</kbd> <kbd>=</kbd>, <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>=</kbd> or <kbd>Ctrl</kbd> and the keypad's <kbd>+</kbd> | <kbd>⌘</kbd> <kbd>=</kbd>, <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>=</kbd> or <kbd>⌘</kbd> and the keypad's <kbd>+</kbd> |
-| Zoom out | <kbd>Ctrl</kbd> <kbd>-</kbd> | <kbd>⌘</kbd> <kbd>-</kbd> |
-| Back to 100% | <kbd>Ctrl</kbd> <kbd>0</kbd> | <kbd>⌘</kbd> <kbd>0</kbd> |
+|| Keys |
+|---|---|
+| Zoom in | <kbd>Ctrl</kbd> <kbd>=</kbd>, <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>=</kbd> or <kbd>Ctrl</kbd> and the keypad's <kbd>+</kbd> |
+| Zoom out | <kbd>Ctrl</kbd> <kbd>-</kbd> |
+| Back to 100% | <kbd>Ctrl</kbd> <kbd>0</kbd> |
 
-macOS's View menu has Zoom In, Zoom Out and Actual Size. Each change shows
+Each change shows
 a toast with a button that resets it. The
 [mini player](desktop.md#the-mini-player) zooms too, and its window grows
 and shrinks with it. A window too small for the zoom you chose zooms only
@@ -176,15 +175,14 @@ as far as it has room for, and Settings says so.
 [Settings › Shortcuts](settings.md#change-a-shortcut) changes these keys,
 as it does every other.
 
-<kbd>Ctrl</kbd> <kbd>B</kbd> (<kbd>⌘</kbd> <kbd>B</kbd> on macOS) folds and
+<kbd>Ctrl</kbd> <kbd>B</kbd> folds and
 unfolds the sidebar.
 
 ## Reduced motion
 
 MyMusic has no motion setting of its own: it follows your system's. While
-the system asks for less motion (Reduce motion in macOS's accessibility
-settings, Animation effects turned off in Windows' accessibility settings,
-or animations turned off on a Linux desktop), MyMusic moves less:
+the system asks for less motion (Animation effects turned off in Windows'
+accessibility settings), MyMusic moves less:
 
 - Aurora's lights, Anime's speed lines and Mochi's sparkles hold still.
 - The [wavy progress bar](#density-text-size-and-zoom) holds still, and

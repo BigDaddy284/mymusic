@@ -12,7 +12,7 @@
 # GitHub Pages' address.
 base_url = "https://bigdaddy284.github.io/mymusic"
 title = "MyMusic"
-description = "Spotify and YouTube Music in one free, open-source desktop player for macOS, Windows and Linux."
+description = "Spotify and YouTube Music in one free, open-source desktop player for Windows."
 default_language = "en"
 
 # robots.txt is only read at a domain's root: GitHub Pages' copy, under

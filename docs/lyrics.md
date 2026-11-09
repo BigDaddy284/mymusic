@@ -7,8 +7,8 @@ Lyrics come from Unison, LRCLIB and YouTube Music, for the track that plays, whi
 
 ## Where lyrics show
 
-- **The lyrics panel** opens at the right of the window, beside the page you're on, from the Lyrics button by the player (beside Queue), or with Ctrl+Shift+L (⇧⌘L on macOS). The same keys or button close it.
-- **The now playing page** shows them larger, under the player: open it from the cover in the player bar, the card at the foot of the sidebar, or Alt+4 (⌥4).
+- **The lyrics panel** opens at the right of the window, beside the page you're on, from the Lyrics button by the player (beside Queue), or with Ctrl+Shift+L. The same keys or button close it.
+- **The now playing page** shows them larger, under the player: open it from the cover in the player bar, the card at the foot of the sidebar, or Alt+4.
 
 ![The lyrics panel at the right of the window, beside Library › Liked: its Synced and Plain text choice, the Translate and Romaji switches, and the lyrics of アイドル by YOASOBI, the line sung now lighting up in the accent colour](shots/lyrics.webp)
 
@@ -21,7 +21,7 @@ The panel says what it found:
 - "Lyrics can't be loaded right now. Check your connection, or try again in a moment.", with try again, when a source is out of reach;
 - "This track is instrumental." for a track whose lyrics source says so.
 
-Refresh this page (F5, or ⇧⌘R on macOS) asks again. For a podcast episode, the panel says Details, and shows the episode's description and chapters in place of lyrics: see [Podcasts](podcasts.md#episode-details-and-chapters).
+Refresh this page asks again. For a podcast episode, the panel says Details, and shows the episode's description and chapters in place of lyrics: see [Podcasts](podcasts.md#episode-details-and-chapters).
 
 ## Where they come from
 

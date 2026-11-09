@@ -216,8 +216,7 @@ videos, or press the video button by the transport while one plays.
   nothing on another page, with the window hidden or minimized, or with
   the mini player open. The web view takes memory, and closes a minute
   after the last picture.
-- **What it needs.** WebView2 on Windows, WebKitGTK on Linux. Without
-  them, the cover stays. While your system asks for less motion, a button
+- **What it needs.** WebView2. Without it, the cover stays. While your system asks for less motion, a button
   on the cover plays it.
 
 ## Downloads and the cache
@@ -255,9 +254,9 @@ MyMusic keeps audio on disk two ways:
 MyMusic connects through a proxy when one is set, for every request it
 makes: the catalog, the streams, the covers and yt-dlp.
 
-- **On every system**, the proxy that the environment names, as
-  `HTTPS_PROXY`, `HTTP_PROXY` and `NO_PROXY`, comes first.
-- **On Windows**, failing that, MyMusic takes the proxy of Windows'
+- **The environment's proxy**, as `HTTPS_PROXY`, `HTTP_PROXY` and
+  `NO_PROXY` name it, comes first.
+- **Windows' proxy settings**: failing that, MyMusic takes the proxy of Windows'
   settings, as browsers do: automatic setup first, by detecting the
   settings or by a setup script, which Windows answers for each site and
   MyMusic remembers for 5 minutes, then the proxy server you set, unless
@@ -267,8 +266,6 @@ makes: the catalog, the streams, the covers and yt-dlp.
   through, without user names or passwords. Before 0.5.9, MyMusic
   connected directly, so on a network that lets traffic out only through
   a proxy, songs were found but didn't play.
-- **On macOS and Linux**, only the environment's proxy is used, not the
-  system's proxy settings.
 - **Never** for loopback addresses, such as `127.0.0.1`, which always
   connect directly.
 

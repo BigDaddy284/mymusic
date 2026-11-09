@@ -175,9 +175,8 @@ func Open(dir string, opts Options) *Manager {
 	m.idx = newIndex()
 	var err error
 	if opts.Exists {
-		// A drive unplugged leaves its folder's name behind it: on macOS,
-		// /Volumes/<name>, which making it again would put on the startup
-		// disk.
+		// A drive unplugged leaves its folder's name behind it, which
+		// making it again would put somewhere else.
 		var info os.FileInfo
 		if info, err = os.Stat(dir); err == nil && !info.IsDir() {
 			err = errors.New("not a folder")

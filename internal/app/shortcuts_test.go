@@ -269,10 +269,10 @@ func TestApplyGlobalShortcuts(t *testing.T) {
 	}
 
 	// The desktop's refusals.
-	hk.fail[acc(t, "Mod+Alt+V")] = fmt.Errorf("mygo: global shortcuts need an X11 session or a desktop with the GlobalShortcuts portal: %w", errors.ErrUnsupported)
+	hk.fail[acc(t, "Mod+Alt+V")] = fmt.Errorf("mygo: global shortcuts are not supported: %w", errors.ErrUnsupported)
 	setGlobal(t, a, map[string]string{"player.volumeUp": "Mod+Alt+V"})
 	if got := p.GlobalShortcutProblem("player.volumeUp"); got != "This system doesn't offer global shortcuts" {
-		t.Errorf("no portal: %q", got)
+		t.Errorf("unsupported: %q", got)
 	}
 	if p.GlobalShortcutProblem("player.like") != "" || p.GlobalShortcutProblem("player.mute") != "" {
 		t.Error("the problems of keys that went stay")

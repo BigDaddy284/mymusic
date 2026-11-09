@@ -8,13 +8,13 @@ import (
 	"testing"
 )
 
-// TestPathsNotUTF8 keeps the path of a file whose name isn't UTF-8, as a
-// name on a Linux drive may be, in the index file, so that the index
+// TestPathsNotUTF8 keeps the path of a file whose name isn't UTF-8 in the
+// index file, so that the index
 // read again, as after a restart, names the same file: in base64, while
 // a path that is UTF-8 reads as text.
 func TestPathsNotUTF8(t *testing.T) {
 	ti := newIndex(t)
-	text := filepath.Join(ti.dir, "Café", "Café Nights.mp3") // decomposed, as macOS's names are
+	text := filepath.Join(ti.dir, "Café", "Café Nights.mp3") // decomposed
 	raw := filepath.Join(ti.dir, "caf\xe9", "\xff01.mp3")
 	ti.mu.Lock()
 	for _, path := range []string{text, raw} {

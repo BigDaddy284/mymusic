@@ -16,32 +16,11 @@ opens the logs folder. A development copy, run with `bun run dev`, uses
 `MyMusic Dev` in place of `MyMusic` in these names, so it never touches
 an installed copy's data.
 
-### Windows
-
 - Data (settings, library, add-ons, yt-dlp): `%AppData%\MyMusic`
 - Cache: `%LocalAppData%\MyMusic`
 - Logs: `%AppData%\MyMusic\logs`
 - Downloads: `%LocalAppData%\MyMusic\downloads`
 - Sign-ins: the Credential Manager
-
-### macOS
-
-- Data: `~/Library/Application Support/MyMusic`
-- Cache: `~/Library/Caches/MyMusic`
-- Logs: `~/Library/Logs/MyMusic`
-- Downloads: `~/Library/Application Support/MyMusic/downloads`
-- Sign-ins: the login Keychain
-
-### Linux
-
-- Data: `~/.config/MyMusic`
-- Cache: `~/.cache/MyMusic`
-- Logs: `~/.config/MyMusic/logs`
-- Downloads: `~/.local/share/MyMusic/downloads`
-- Sign-ins: the Secret Service, as GNOME Keyring, KWallet or KeePassXC
-
-`$XDG_CONFIG_HOME`, `$XDG_CACHE_HOME` and `$XDG_DATA_HOME` take the place
-of `~/.config`, `~/.cache` and `~/.local/share` when you set them.
 
 ### The data folder
 
@@ -75,8 +54,6 @@ of `~/.config`, `~/.cache` and `~/.local/share` when you set them.
 - `artwork/`: the covers you saw, up to 256 MB.
 - `local-art/`: a copy of the covers of the music on this computer, which
   a file holds or that is beside it, by its hash.
-- `now-playing/`, on Linux: the cover of what plays, for the desktop's
-  media controls.
 - `matches.json`: the YouTube Music recordings found for Spotify tracks.
 - `loudness.json`: how loud YouTube measured the tracks you played.
 - `ai-labels.json`: the videos YouTube labels as made with AI, kept 30
@@ -116,13 +93,9 @@ Google's, Spotify's and Last.fm's own pages.
 
 Where the credential store can't keep a secret:
 
-- **On Windows**, as in a session without credentials, the secret is
-  encrypted for your Windows account with DPAPI, in
-  `spotify-token.dpapi`, `lastfm.dpapi` or `youtube-session-key.dpapi` in
-  the data folder.
-- **On Linux without a Secret Service**, the secrets are in files only
-  your user can read: `spotify-token.json`, `lastfm.json` and
-  `youtube-session.json`.
+- As in a session without credentials, the secret is encrypted for your
+  Windows account with DPAPI, in `spotify-token.dpapi`, `lastfm.dpapi` or
+  `youtube-session-key.dpapi` in the data folder.
 - Once the store can keep them, MyMusic moves them into it, and deletes
   the files.
 
@@ -168,11 +141,9 @@ Where the credential store can't keep a secret:
 - Latin letters for lyrics, Japanese romaji included: MyMusic makes them
   itself, and sends no lyrics for them. Only Arabic's come from Unison,
   while romanize is on.
-- The audio: the offline cache, the downloads, and on Windows what the
-  visualizer hears of Spotify through Windows' process loopback, which
-  hears only Spotify's app. On macOS it hears Spotify in MyMusic through
-  a process tap of MyMusic's own web views, which macOS lets it do once
-  you allowed it to record what other apps play. MyMusic analyzes that
+- The audio: the offline cache, the downloads, and what the visualizer
+  hears of Spotify through Windows' process loopback, which hears only
+  Spotify's app. MyMusic analyzes that
   audio in memory, and never records or sends it.
 - The log and the crash reports, until you choose to send one.
 

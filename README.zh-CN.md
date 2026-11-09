@@ -8,7 +8,7 @@
 
 <p align="center"><strong>一个播放器，同时播放 YouTube Music 和 Spotify。</strong></p>
 
-<p align="center">适用于 macOS、Windows 和 Linux 的 YouTube Music 与 Spotify 客户端。YouTube Music 无需账号即可使用。统一的搜索和播放队列，还有混合歌单、同步歌词、主题和插件。</p>
+<p align="center">适用于 Windows 的 YouTube Music 与 Spotify 客户端。YouTube Music 无需账号即可使用。统一的搜索和播放队列，还有混合歌单、同步歌词、主题和插件。</p>
 
 <p align="center"><sub>本文译自<a href="README.md">英文 README</a>，如有出入，以最新的英文版为准。</sub></p>
 
@@ -19,7 +19,7 @@
   <a href="https://github.com/bigdaddy284/mymusic/releases"><img src="https://img.shields.io/github/downloads/bigdaddy284/mymusic/total" alt="下载量" /></a>
   <a href="https://pkg.go.dev/github.com/bigdaddy284/mymusic"><img src="https://pkg.go.dev/badge/github.com/bigdaddy284/mymusic.svg" alt="Go 参考文档" /></a>
   <a href="go.mod"><img src="https://img.shields.io/github/go-mod/go-version/bigdaddy284/mymusic" alt="Go 版本" /></a>
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey" alt="macOS、Windows 和 Linux" />
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey" alt="Windows" />
   <a href="#许可证"><img src="https://img.shields.io/badge/license-MIT%20or%20GPL--3.0-blue" alt="MIT 或 GPL-3.0" /></a>
 </p>
 
@@ -65,7 +65,7 @@
 
 ### Spotify 的三种播放方式
 
-- **直接在 MyMusic 里播放**：音质与 Spotify 相同，无需打开 Spotify 应用（需要 Premium，仅限 Windows 和 macOS）。
+- **直接在 MyMusic 里播放**：音质与 Spotify 相同，无需打开 Spotify 应用（需要 Premium）。
 - **通过 Spotify Connect 播放**：在你的 Spotify 应用、手机或音箱上播放。
 - **通过 YouTube Music 播放**：MyMusic 播放这首 Spotify 歌曲在 YouTube Music 上的同一录音，不需要 Premium 也能播放。
 
@@ -78,7 +78,7 @@
 
 ### 桌面集成
 
-- 在 Windows、macOS 和 Linux 上支持媒体键和系统的媒体控制。
+- 支持媒体键和 Windows 的媒体控制。
 - 在 Windows 上，任务栏缩略图中带有播放器按钮。
 - 托盘控制、切换到新歌曲时的通知，以及开机自启。
 - `mymusic://` 链接。
@@ -92,7 +92,7 @@
 - **社区主题和插件**：在市场里一键安装。
 - **插件**：通过带类型的 API 添加页面、命令、歌曲操作和小组件，并按你的主题绘制。
 - **键盘优先**：常用操作都有快捷键；任何命令（包括插件的命令）都可以设置你自己的快捷键；其余操作可以用命令面板（<kbd>Ctrl</kbd> <kbd>K</kbd>）完成。
-- **设置文件**：你的设置保存在数据文件夹中的 `settings.json` 里（Windows 上是 `%AppData%\MyMusic`，macOS 上是 `~/Library/Application Support/MyMusic`，Linux 上是 `~/.config/MyMusic`），可以和你的 dotfiles 放在一起管理。在 MyMusic 运行时保存这个文件，改动会立即生效；在 Settings › Desktop › Settings file（设置 › 桌面 › 设置文件）中可以打开它。
+- **设置文件**：你的设置保存在数据文件夹中的 `settings.json` 里（`%AppData%\MyMusic`），可以和你的 dotfiles 放在一起管理。在 MyMusic 运行时保存这个文件，改动会立即生效；在 Settings › Desktop › Settings file（设置 › 桌面 › 设置文件）中可以打开它。
 
 ## 界面一览
 
@@ -110,50 +110,26 @@
 
 ## 安装
 
-从[最新版本](https://github.com/bigdaddy284/mymusic/releases/latest)中下载适合你系统的文件：
+MyMusic 可在 Windows 10 和 11 上运行。从[最新版本](https://github.com/bigdaddy284/mymusic/releases/latest)中下载：
 
-| 系统 | 下载 |
+| Windows | 下载 |
 |---|---|
-| macOS 12 及更高版本（Apple silicon 和 Intel） | [`mymusic-<version>-macos-universal.dmg`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Windows 10 和 11（x64、Arm），安装程序 | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Windows 便携版，无需安装 | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Debian、Ubuntu 及其衍生发行版 | [`mymusic-<version>-linux-<arch>.deb`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Fedora、openSUSE 及其衍生发行版 | [`mymusic-<version>-linux-<arch>.rpm`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| 任意 Linux，单个文件 | [`mymusic-<version>-linux-<arch>.AppImage`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| 任意 Linux，沙盒运行（Flatpak） | [`mymusic-<version>-linux-<arch>.flatpak`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| 任意 Linux，装在你的主文件夹中 | [`mymusic-<version>-linux-<arch>.tar.gz`](https://github.com/bigdaddy284/mymusic/releases/latest)，附带 `install.sh` |
+| 10 和 11（x64、Arm），安装程序 | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| 便携版，无需安装 | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
-`<arch>` 在 x64 上是 `amd64`，在 Arm 上是 `arm64`。每个版本都附有 `SHA256SUMS`，可以用来校验下载的文件。名为 `update-…`、`….delta`、`mymusic-<version>-macos-…` 或 `-windows-<arch>.tar.gz` 的文件不需要下载：它们是已安装的应用自动更新时用的。
+`<arch>` 在 x64 上是 `amd64`，在 Arm 上是 `arm64`。每个版本都附有 `SHA256SUMS`，可以用来校验下载的文件。名为 `update-…`、`….delta` 或 `-windows-<arch>.tar.gz` 的文件不需要下载：它们是已安装的应用自动更新时用的。
 
-安装程序、便携版 zip 和 Linux 压缩包会自行更新。`.deb`、`.rpm`、AppImage 和 Flatpak 无法替换自身的文件，所以有新版本时，MyMusic 会告诉你，并替你下载。便携版 zip 解压到任意位置，打开 `MyMusic.exe` 即可。AppImage 先加上可执行权限（`chmod +x`），再打开。Flatpak 可以用你的软件中心打开，或者运行 `flatpak install ./mymusic-<version>-linux-<arch>.flatpak`；第一次安装时，Flatpak 会从 Flathub 获取 GNOME 运行时。
+安装程序和便携版 zip 会自行更新。便携版 zip 解压到任意位置，打开 `MyMusic.exe` 即可。
 
 ### 首次启动
 
-- **macOS**：这个应用还没有经过 Apple 公证，所以第一次打开时，macOS 会提示无法检查它。你仍然可以打开它：前往 System Settings › Privacy & Security › Open Anyway（系统设置 › 隐私与安全性 › 仍要打开），或者在 Terminal（终端）中运行一次：
-
-  ```sh
-  xattr -dr com.apple.quarantine /Applications/MyMusic.app
-  ```
-- **Windows**：安装程序还没有签名，所以 SmartScreen 可能会发出警告：先选择 More info（更多信息），再选择 Run anyway（仍要运行）。在 MyMusic 中登录 YouTube Music 和播放 Spotify 需要 WebView2 Runtime，Windows 11 已自带。
-- **Linux**：MyMusic 需要 GTK 3，以及 PulseAudio（PipeWire 也能提供 PulseAudio 服务）或 ALSA。登录 YouTube Music 需要 WebKitGTK 4.1，托盘图标需要 `libayatana-appindicator3`，把登录信息保存在系统密钥环中需要 `libsecret`。`.deb` 和 `.rpm` 会安装这些依赖，Flatpak 自带它们；如果使用 AppImage 或压缩包，请运行：
-
-  ```sh
-  # Debian and Ubuntu
-  sudo apt install libgtk-3-0 libpulse0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 libsecret-1-0
-  # Fedora
-  sudo dnf install gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
-  ```
-- **所有系统**：大多数 YouTube Music 歌曲的音频，MyMusic 都能自己找到。其余的歌曲（比如面向儿童的内容），它会使用 [yt-dlp](https://github.com/yt-dlp/yt-dlp)：你可以在 Settings › Playback（设置 › 播放）中让 MyMusic 替你安装 yt-dlp，之后它也会让 yt-dlp 保持最新。yt-dlp 需要一个 JavaScript 运行时：[Deno](https://deno.com)、Node.js、Bun 或 QuickJS。Flatpak 版自带 Node.js。
-
-### Flatpak 版
-
-Flatpak 版在沙盒中运行 MyMusic。沙盒能访问网络、声音服务器、显示和 GPU，但完全看不到你的主文件夹。MyMusic 把设置和音乐库保存在 `~/.var/app/io.github.bigdaddy284.mymusic` 中，与 `.deb`、`.rpm`、AppImage 或压缩包安装的那一份分开，两者可以同时运行。如果要把另一份的设置和音乐库搬过来，先退出两者，把 `settings.json`、`library.json`、`queue.json` 和 `addons` 文件夹从 `~/.config/MyMusic` 复制到 `~/.var/app/io.github.bigdaddy284.mymusic/config/MyMusic`，然后重新登录你的账号：登录信息留在另一份所用的密钥环中，不会跟着过来。
-
-在 Flatpak 版中，开机自启要经过你的桌面环境，它可能会先征求你的同意；如果要用你自己的 yt-dlp，它必须放在 `~/.var/app/io.github.bigdaddy284.mymusic` 中，因为沙盒看不到其他文件夹。不是 Flatpak 版的 Discord 应用，只有在 MyMusic 启动时已经在运行，才会显示正在播放的内容，而且 Discord 重启后就不再显示；Flatpak 版的 Discord 则不受此限制。Flatpak 版刚推出不久：欢迎在 [issue](https://github.com/bigdaddy284/mymusic/issues) 中告诉我们它在你的桌面上运行得怎么样。
+- 安装程序还没有签名，所以 SmartScreen 可能会发出警告：选择 More info（更多信息），然后选择 Run anyway（仍要运行）。
+- 登录 YouTube Music 和在 MyMusic 中播放 Spotify 需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
+- 大多数 YouTube Music 歌曲的音频，MyMusic 都能自己找到。其余的歌曲（比如面向儿童的内容），它会使用 [yt-dlp](https://github.com/yt-dlp/yt-dlp)：你可以在 Settings › Playback（设置 › 播放）中让 MyMusic 替你安装 yt-dlp，之后它也会让 yt-dlp 保持最新。yt-dlp 需要一个 JavaScript 运行时：[Deno](https://deno.com)、Node.js、Bun 或 QuickJS。
 
 ### 账号（均为可选）
 
-- **YouTube Music**：在 Settings › Accounts（设置 › 账号）中选择 Sign in to YouTube Music（登录 YouTube Music），然后在弹出的窗口中登录 Google。你输入的内容只会发送给 Google。MyMusic 会加密保存登录会话；系统有密钥环时，密钥就存放在密钥环中。
+- **YouTube Music**：在 Settings › Accounts（设置 › 账号）中选择 Sign in to YouTube Music（登录 YouTube Music），然后在弹出的窗口中登录 Google。你输入的内容只会发送给 Google。MyMusic 会加密保存登录会话，密钥存放在 Windows 的凭据管理器（Credential Manager）中。
 - **Spotify**：Spotify 规定一个应用最多只能服务五个用户，而且只有在应用的所有者订阅了 Premium 时才行，所以你需要用自己创建的 Spotify 应用登录。只需两分钟：[docs/spotify.md](docs/spotify.md) 会一步步带你完成。
 - **Last.fm**：在 [last.fm/api/account/create](https://www.last.fm/api/account/create) 创建一个 API 账号（名称随意，不用填回调 URL），把它的 API key 和 shared secret 粘贴到 Settings › Accounts 中，然后在浏览器中授权 MyMusic。
 - **Discord**：Discord 应用运行时，你的个人资料上会显示你正在听的内容。可以在 Settings › Desktop（设置 › 桌面）中关闭。
@@ -162,9 +138,7 @@ Flatpak 版在沙盒中运行 MyMusic。沙盒能访问网络、声音服务器�
 
 ## 从源码构建
 
-你需要 [Go](https://go.dev/dl/) 1.27.3 或更高版本、[Bun](https://bun.sh) 1.2 或更高版本（用来运行 MyGo 的命令行工具），以及 Git。MyGo 不需要 C 编译器，所以在任何系统上都能为所有系统构建 MyMusic。
-
-### Windows
+你需要 [Go](https://go.dev/dl/) 1.27.3 或更高版本、[Bun](https://bun.sh) 1.2 或更高版本（用来运行 MyGo 的命令行工具），以及 Git。MyGo 不需要 C 编译器，所以也可以像正式发布那样，在 Linux 上交叉编译 Windows 版。
 
 ```powershell
 winget install GoLang.Go
@@ -183,42 +157,9 @@ bun run dev
 
 登录和 Spotify 播放需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
 
-### macOS
-
-使用 [Homebrew](https://brew.sh)：
-
-```sh
-brew install go oven-sh/bun/bun
-git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
-bun install
-bun run dev
-```
-
-### Linux
-
-从 [go.dev/dl](https://go.dev/dl/) 安装 Go（发行版的软件包往往低于 1.27.3），然后安装 Bun 和 MyMusic 运行所需的库：
-
-```sh
-curl -fsSL https://bun.sh/install | bash
-# Debian and Ubuntu
-sudo apt install git libgtk-3-0 libpulse0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 libsecret-1-0
-# Fedora
-sudo dnf install git gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
-```
-
-然后：
-
-```sh
-git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
-bun install
-bun run dev
-```
-
 ### Nix
 
-如果你用 [Nix](https://nixos.org)，`nix develop` 会提供构建正式版本所用的工具，版本由 `flake.lock` 锁定：Go、Bun、NSIS、GoReleaser 和 Zola。`nix build` 会从源码构建 Linux 版 MyMusic，输出到 `result/`。
+在 Linux 上使用 [Nix](https://nixos.org) 时，`nix develop` 会提供构建正式版本所用的工具，版本由 `flake.lock` 锁定：Go、Bun、NSIS、osslsigncode、GoReleaser 和 Zola。
 
 ### 开发
 
@@ -229,11 +170,11 @@ bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
 bun run typecheck              # the plugin SDK and the community's plugins
 go run ./tools/registry -check # the community registry
-bun run build                  # the packaged app for this system, in build/
+bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
 
-在 Nix shell 中，请像正式发布那样，用 `.github/scripts/build.sh windows/amd64,windows/arm64` 构建 Windows 下载包。
+在 Nix shell 中，请像正式发布那样，用 `.github/scripts/build.sh windows/amd64,windows/arm64` 构建下载包，并用 `.github/scripts/package.sh` 制作便携版 zip。
 
 [网站](https://bigdaddy284.github.io/mymusic/)的源码在 `site/` 中，用 [Zola](https://www.getzola.org) 构建，`docs/` 中的指南就是网站的 `/docs/` 页面。运行 `go run ./tools/sitedocs && zola --root site serve` 可以预览网站。正式版本在 Nix shell 中构建，由 [GoReleaser](https://goreleaser.com) 发布（`.goreleaser.yaml`）。
 
@@ -315,7 +256,7 @@ MyMusic 没有自己的账号体系、服务器、统计分析或遥测。它会
 - 你的设置和音乐库（喜欢的歌曲、混合歌单、播放历史和最近的搜索），保存在 Settings › About 中显示的文件夹里。
 - 你播放过的歌曲，存放在缓存中，大小以你在 Settings › Playback（设置 › 播放）中允许的为限；以及 YouTube 测得的这些歌曲的响度。
 - 你看过的封面，最多 256 MB。
-- 你的登录信息（包括 YouTube Music 会话），保存在系统密钥环中。在 Windows 上，如果凭据管理器（Credential Manager）存不下某条登录信息，它会存进一个针对你的 Windows 账户加密的文件；在没有密钥环的 Linux 上，则存进只有你的用户能读取的文件。
+- 你的登录信息（包括 YouTube Music 会话），保存在凭据管理器（Credential Manager）中。如果凭据管理器存不下某条登录信息，它会存进一个针对你的 Windows 账户加密的文件。
 - 日志，其中不含你的登录信息。
 
 在音乐库的播放历史页面可以清除播放记录，在 Settings › Playback 中可以清除缓存和封面，退出某个服务的登录会删除它的登录信息。
@@ -329,11 +270,11 @@ MyMusic 基于以下项目构建：
 - **[MyGo](https://github.com/egoist/mygo)**：MyMusic 所用的桌面框架。MyMusic 使用 MyGo 的原生 UI：从各个页面、播放栏到迷你播放器，每个窗口都由 MyGo 用 Go 自己绘制，不使用 webview。它的命令行工具负责打包应用，包括安装程序，以及应用自我更新所用的签名更新包。
 - **[Go](https://go.dev)**：应用使用的语言；以及 [purego](https://github.com/ebitengine/purego)（无需 cgo 即可调用系统库）、[golang.org/x/image](https://pkg.go.dev/golang.org/x/image) 和 [golang.org/x/text](https://pkg.go.dev/golang.org/x/text)。
 - **[Sobek](https://github.com/grafana/sobek)**：每个插件运行所在的 JavaScript 引擎。
-- **[Nix](https://nixos.org)**：锁定构建正式版本所用的工具，并从源码构建 Linux 版 MyMusic。
-- **[GoReleaser](https://goreleaser.com)**：发布正式版本；以及它的 [nFPM](https://nfpm.goreleaser.com)，用来制作 RPM 包。
+- **[Nix](https://nixos.org)**：锁定构建正式版本所用的工具。
+- **[GoReleaser](https://goreleaser.com)**：发布正式版本。
 - **[Bun](https://bun.sh)**：运行构建流程。**[TypeScript](https://www.typescriptlang.org)**：编译插件，并检查插件 SDK 的类型。
 - **[Zola](https://www.getzola.org)**：构建网站。
-- **[NSIS](https://nsis.sourceforge.io)**：制作 Windows 安装程序；[appimagetool](https://github.com/AppImage/appimagetool) 则用来制作 AppImage。
+- **[NSIS](https://nsis.sourceforge.io)**：制作 Windows 安装程序。
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**：为 MyMusic 自己找不到音频的歌曲找到音频。
 - **[LRCLIB](https://lrclib.net)**：开放的同步歌词数据库。
 - **[libopus](https://opus-codec.org)**：MyMusic 的 Opus 解码器移植自它的解码器。**[SharpJaad](https://github.com/jimm98y/SharpJaad)**：[JAAD](https://sourceforge.net/projects/jaadec/) 的 C# 移植版，MyMusic 的 AAC 解码器就源自它。

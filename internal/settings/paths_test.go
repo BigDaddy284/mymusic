@@ -12,8 +12,7 @@ import (
 )
 
 // pathSettings are settings of each path setting, of a folder of dir:
-// one name of each is UTF-8, decomposed as macOS's names are, and one
-// isn't, as a name on a Linux drive may be.
+// one name of each is UTF-8, decomposed, and one isn't.
 func pathSettings(dir string) Settings {
 	s := Default()
 	s.ColorFile = filepath.Join(dir, "colo\xefrs.json")

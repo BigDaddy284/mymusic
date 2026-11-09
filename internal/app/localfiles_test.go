@@ -204,8 +204,7 @@ func TestLocalNotices(t *testing.T) {
 }
 
 // TestLocalControlsCover hands the system's media controls the cover of a
-// track on this computer, from the cover the index keeps: its bytes, for
-// Windows and macOS, and a file of them, for MPRIS.
+// track on this computer, from the cover the index keeps: its bytes.
 func TestLocalControlsCover(t *testing.T) {
 	a, music := localApp(t)
 	cover := pngCover(16)

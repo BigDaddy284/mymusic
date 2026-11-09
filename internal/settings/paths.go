@@ -7,8 +7,8 @@ import (
 )
 
 // The settings that name files and folders are kept in settings.json as
-// store.EncodePath writes them: a path that isn't UTF-8, as a name on a
-// Linux drive may be, in base64, so that it names the same file when the
+// store.EncodePath writes them: a path that isn't UTF-8 in
+// base64, so that it names the same file when the
 // file is read back, after a restart, and when the store copies the
 // settings through JSON. A path that is UTF-8 reads as it is.
 

@@ -1,11 +1,9 @@
 package app
 
 import (
-	"path/filepath"
 	"testing"
 	"time"
 
-	"github.com/bigdaddy284/mymusic/builtin"
 	"github.com/bigdaddy284/mymusic/internal/audio"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/nowplaying"
@@ -22,8 +20,7 @@ func TestSpeedRanges(t *testing.T) {
 	}
 }
 
-// TestControlsRate tells the system's controls the speed, and keeps the
-// one they ask as the songs' speed.
+// TestControlsRate tells the system's controls the speed.
 func TestControlsRate(t *testing.T) {
 	np := NowPlaying{Track: &media.Track{ID: "yt:1", Title: "Song"}, Playing: true, Speed: 1.5}
 	if info := controlsInfo(np, time.Now()); info.Rate != 1.5 {
@@ -32,17 +29,5 @@ func TestControlsRate(t *testing.T) {
 	np.Speed = 0
 	if info := controlsInfo(np, time.Now()); info.Rate != 1 {
 		t.Errorf("rate %v without a speed", info.Rate)
-	}
-
-	dir := t.TempDir()
-	a, err := New(Options{DataDir: filepath.Join(dir, "data"), CacheDir: filepath.Join(dir, "cache"), Builtin: builtin.FS, Version: "test"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, c := range []struct{ rate, want float64 }{{1.33, 1.35}, {0.5, 0.5}, {7, 3}} {
-		a.controlsAsked(nowplaying.Request{Command: nowplaying.SetRate, Rate: c.rate})
-		if got := a.settings.Get().SongSpeed; got != c.want {
-			t.Errorf("a rate of %v keeps the speed %v, want %v", c.rate, got, c.want)
-		}
 	}
 }

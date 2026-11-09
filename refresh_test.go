@@ -53,8 +53,7 @@ func refreshToasts(tt *ui.Tester) []string {
 	return out
 }
 
-// pressRefresh presses the keys of Refresh this page on this system: F5,
-// or ⇧⌘R on macOS.
+// pressRefresh presses the keys of Refresh this page: F5.
 func pressRefresh(t *testing.T, tt *ui.Tester) {
 	t.Helper()
 	mods, key, ok := parseShortcut(refreshKeys)
@@ -229,7 +228,7 @@ func TestRefreshKeys(t *testing.T) {
 	}
 }
 
-// TestRefreshYieldsKeys leaves Refresh's keys (F5, ⇧⌘R on macOS) to the
+// TestRefreshYieldsKeys leaves Refresh's keys (F5) to the
 // command the user gave them before Refresh this page had them: that
 // command keeps them, and Refresh has none.
 func TestRefreshYieldsKeys(t *testing.T) {

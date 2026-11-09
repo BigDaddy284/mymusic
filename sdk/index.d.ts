@@ -335,7 +335,7 @@ export interface MyMusicAPI {
   };
 
   commands: {
-    /** Adds a command to the command palette, with an optional shortcut as "Mod+Shift+P" (Mod is Ctrl, or Cmd on macOS). */
+    /** Adds a command to the command palette, with an optional shortcut as "Mod+Shift+P" (Mod is Ctrl). */
     register(command: { id: string; title: string; shortcut?: string; run(): void }): () => void;
   };
 
