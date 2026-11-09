@@ -106,7 +106,7 @@ func TestEpisodeDetailsSeek(t *testing.T) {
 	tt.Frame()
 	// The accent's ink of the lines of the first two chapters: a line lit
 	// is all of it, one that isn't only its time. Each line is measured
-	// against itself, as glyphs draw apart on each system.
+	// against itself, as glyphs may draw apart from one machine to the next.
 	accent := func() (dusk, barn int) {
 		img := tt.Image()
 		for _, l := range []struct {

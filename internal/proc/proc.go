@@ -10,8 +10,8 @@ import (
 
 // waitDelay is how long Wait waits for the output of a program to close
 // once the program exited, or was killed as its context ended: a program
-// it started may hold it, as yt-dlp for macOS's Python does, and would
-// keep Wait until that one ends too (#246).
+// it started may hold it, and would keep Wait until that one ends too
+// (#246).
 const waitDelay = time.Second
 
 // Command returns a command that runs name with args, killed when ctx is

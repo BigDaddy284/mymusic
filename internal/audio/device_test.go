@@ -12,8 +12,7 @@ import (
 // TestEngineOnTheDevice plays a 3-second track through the device, at
 // volume 0, so silently: the time must pass as the clock's, and the track
 // end when it should, 3 seconds after it started to play. It opens the
-// device, so it runs only with MYMUSIC_AUDIO=1, as CI's audio jobs on
-// Linux and macOS set it.
+// device, so it runs only with MYMUSIC_AUDIO=1.
 func TestEngineOnTheDevice(t *testing.T) {
 	if os.Getenv("MYMUSIC_AUDIO") != "1" {
 		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
@@ -34,7 +33,7 @@ func TestEngineOnTheDevice(t *testing.T) {
 		t.Fatal(err)
 	}
 	// The track plays once Load returns, which starts the device first: on
-	// a slow machine, as CI's macOS runners, that alone took 0.7 seconds,
+	// a slow machine, that alone took 0.7 seconds,
 	// which aren't the track's.
 	began := time.Now()
 	time.Sleep(time.Second)
@@ -63,8 +62,8 @@ func TestEngineOnTheDevice(t *testing.T) {
 // device, silently: its time moves on at twice the clock's, what waits in
 // the device included, and it ends 1.5 seconds after it started. The track
 // plays once the deck has it: after the test before, the output starts at
-// once, which on macOS asks for its first buffers before the deck decoded
-// a frame, at any speed.
+// once, and may ask for its first buffers before the deck decoded a frame,
+// at any speed.
 func TestEngineOnTheDeviceAtSpeed(t *testing.T) {
 	if os.Getenv("MYMUSIC_AUDIO") != "1" {
 		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")

@@ -31,8 +31,8 @@ type sealer interface {
 
 // secretStore keeps a secret in the system's credential store. Where the
 // store isn't available, it keeps it in a file: sealed for the user where
-// the system can (DPAPI on Windows, userSealer), else readable by the user
-// alone, as on Linux without a Secret Service. A secret it finds in a file
+// the system can (DPAPI, userSealer), else readable by the user alone. A
+// secret it finds in a file
 // moves into the store once the store can keep it, and a save that
 // reaches the store removes the files left (#104).
 type secretStore struct {

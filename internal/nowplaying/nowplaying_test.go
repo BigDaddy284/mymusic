@@ -53,7 +53,7 @@ func TestDiffAtRate(t *testing.T) {
 	base := &Info{ID: "yt:a", Title: "A", Duration: time.Minute, Position: 10 * time.Second, At: at, Playing: true, Rate: 2}
 	next := *base
 	next.Position, next.At = 12*time.Second, at.Add(time.Second)
-	if c := diff(base, &next); c.any() {
+	if c := diff(base, &next); c != (change{}) {
 		t.Errorf("a second on at 2×: %+v", c)
 	}
 	next.Position = 11 * time.Second
@@ -71,7 +71,7 @@ func TestDiffAtRate(t *testing.T) {
 	}
 	own := *base
 	own.Rate = 0
-	if c := diff(&own, &Info{ID: "yt:a", Title: "A", Duration: time.Minute, Position: 10 * time.Second, At: at, Playing: true, Rate: 1}); c.any() {
+	if c := diff(&own, &Info{ID: "yt:a", Title: "A", Duration: time.Minute, Position: 10 * time.Second, At: at, Playing: true, Rate: 1}); c != (change{}) {
 		t.Errorf("a rate of 1 and none: %+v", c)
 	}
 }

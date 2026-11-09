@@ -50,11 +50,10 @@ func spotifyPage(t *testing.T, secure bool, granted []string) *sobek.Runtime {
 	return vm
 }
 
-// TestSpotifyPageDecryptsWithFairPlay has the page of MyMusic's own
-// Spotify device take FairPlay, which macOS's webview has, as it takes
-// Widevine and PlayReady in WebView2, and nothing else: WebKitGTK has no
-// EME, and ClearKey doesn't play Spotify's audio (#295).
-func TestSpotifyPageDecryptsWithFairPlay(t *testing.T) {
+// TestSpotifyPageDecrypts has the page of MyMusic's own Spotify device
+// take Widevine and PlayReady in WebView2, and nothing else: ClearKey
+// doesn't play Spotify's audio (#295).
+func TestSpotifyPageDecrypts(t *testing.T) {
 	for _, c := range []struct {
 		name    string
 		secure  bool
@@ -63,10 +62,9 @@ func TestSpotifyPageDecryptsWithFairPlay(t *testing.T) {
 	}{
 		{"WebView2, with Widevine", true, []string{"com.widevine.alpha", "org.w3.clearkey"}, true},
 		{"WebView2, with PlayReady", true, []string{"com.microsoft.playready.recommendation"}, true},
-		{"macOS, with FairPlay", true, []string{"com.apple.fps", "com.apple.fps.1_0", "org.w3.clearkey"}, true},
 		{"ClearKey alone", true, []string{"org.w3.clearkey"}, false},
-		{"WebKitGTK, without EME", true, nil, false},
-		{"a page that isn't secure", false, []string{"com.apple.fps"}, false},
+		{"no EME", true, nil, false},
+		{"a page that isn't secure", false, []string{"com.widevine.alpha"}, false},
 	} {
 		vm := spotifyPage(t, c.secure, c.granted)
 		if _, err := vm.RunString(`var supported = "pending"; mm.supported().then((v) => (supported = v), (e) => (supported = String(e)));`); err != nil {
@@ -76,8 +74,8 @@ func TestSpotifyPageDecryptsWithFairPlay(t *testing.T) {
 			t.Errorf("%s: mm.supported() = %v, want %v (asked %v)", c.name, got, c.want, vm.Get("asked").Export())
 		}
 	}
-	// Widevine first, as before: WebView2 asks for nothing it didn't.
-	vm := spotifyPage(t, true, []string{"com.widevine.alpha", "com.apple.fps"})
+	// Widevine first: WebView2 asks for nothing more.
+	vm := spotifyPage(t, true, []string{"com.widevine.alpha", "com.microsoft.playready"})
 	if _, err := vm.RunString(`mm.supported()`); err != nil {
 		t.Fatal(err)
 	}

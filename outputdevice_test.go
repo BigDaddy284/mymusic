@@ -73,10 +73,9 @@ func TestOutputChoices(t *testing.T) {
 }
 
 // outputShell is a test shell of an app whose computer has the output
-// devices that devices returns. Spotify tracks play from YouTube Music, on
-// every system: on Linux, a new install's Spotify Connect shows its
-// devices button in the player bar too, which takes the room of the
-// device button at 1280.
+// devices that devices returns. Spotify tracks play from YouTube Music,
+// so that no Spotify Connect devices button takes the room of the device
+// button at 1280.
 func outputShell(t *testing.T, devices func() []app.OutputDevice) *shell {
 	t.Helper()
 	s := newTestShellOf(t, func(o *app.Options) {

@@ -85,7 +85,7 @@ func TestPaletteFollowsArrows(t *testing.T) {
 // the search box the offer takes the focus from, would press.
 func TestOfferFirstFocus(t *testing.T) {
 	offer := &app.Release{Version: "9.9.9", Newer: true, Page: "https://example.invalid/notes",
-		Download: "https://example.invalid/m.deb", File: "mymusic-9.9.9-linux-amd64.deb"}
+		Download: "https://example.invalid/m.exe", File: "mymusic-setup-9.9.9-amd64.exe"}
 	s := newTestShell(t)
 	tt := tester(t, s)
 	s.offer = offer
@@ -118,7 +118,7 @@ const longNotes = "Added\n- Dislike songs, and skip the ones you dislike.\n- Pod
 // testOffer is a release whose notes take more room than a short window
 // has.
 var testOffer = app.Release{Version: "9.9.9", Newer: true, Page: "https://example.invalid/notes",
-	Download: "https://example.invalid/m.deb", File: "mymusic-9.9.9-linux-amd64.deb", Notes: longNotes}
+	Download: "https://example.invalid/m.exe", File: "mymusic-setup-9.9.9-amd64.exe", Notes: longNotes}
 
 // atTextSize sets the text size of the shell's settings.
 func atTextSize(t *testing.T, s *shell, scale float64) {
@@ -283,8 +283,8 @@ func TestDialogsInShortWindows(t *testing.T) {
 						// Where the text wraps can differ by system and from
 						// one run to the next: with text at its usual size,
 						// the question is only about 40 DIPs too tall for
-						// this window here, and fit it in one of two runs on
-						// Linux. These are too tall in any: the offer by its
+						// this window here. These are too tall in any: the
+						// offer by its
 						// eight lines of notes, and the question with text
 						// at its largest, by a third of the room.
 						t.Error("the body doesn't scroll in a window too short for it")

@@ -211,7 +211,6 @@ func shortcutName(mods ui.Modifiers, key ui.Key) string {
 	if mods&ui.Cmd != 0 {
 		parts = append(parts, "Mod")
 	}
-	// Control on macOS, where Mod is Cmd, and the Windows key elsewhere.
 	if mods&ui.Ctrl != 0 && ui.Cmd != ui.Ctrl {
 		parts = append(parts, "Ctrl")
 	}
@@ -228,15 +227,14 @@ func shortcutName(mods ui.Modifiers, key ui.Key) string {
 }
 
 // sameShortcut tells whether two shortcuts are the same keys, however
-// written, as Mod+K and Ctrl+K off macOS.
+// written, as Mod+K and Ctrl+K.
 func sameShortcut(a, b string) bool {
 	am, ak, aok := parseShortcut(a)
 	bm, bk, bok := parseShortcut(b)
 	return aok == bok && am == bm && ak == bk
 }
 
-// parseShortcut reads a shortcut as "Mod+Shift+L": Mod is Ctrl, or Cmd on
-// macOS.
+// parseShortcut reads a shortcut as "Mod+Shift+L": Mod is Ctrl.
 func parseShortcut(s string) (ui.Modifiers, ui.Key, bool) {
 	if s == "" {
 		return 0, 0, false

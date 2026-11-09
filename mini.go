@@ -155,9 +155,7 @@ func (s *shell) miniBody(c *ui.Context, w float32) {
 			ui.Row(c).Gap(2).AlignItems(ui.Center).MinWidth(0).Children(func() {
 				ui.Text(c, title).FontSize(k.size(1.25)).FontWeight(k.titleWeight()).Font(k.display).
 					LetterSpacing(k.tracking(-0.02, k.size(1.25))).SingleLine().Grow(1).MinWidth(0).PaddingEnd(6)
-				// Both close this window once this frame is drawn: on Linux
-				// the frame draws in the window's GL area, and GTK crashed
-				// finishing it once the window was gone (#37).
+				// Both close this window once this frame is drawn (#37).
 				if s.miniButton(c, "mini-open", "mini", "Open MyMusic", false, 26, 15).Clicked() {
 					go s.svc.System.ShowMainWindow()
 				}

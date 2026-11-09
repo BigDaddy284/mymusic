@@ -14,7 +14,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -534,10 +533,7 @@ func TestHoldOffline(t *testing.T) {
 }
 
 func TestDiskFull(t *testing.T) {
-	var full error = syscall.ENOSPC
-	if runtime.GOOS == "windows" {
-		full = syscall.Errno(112)
-	}
+	var full error = syscall.Errno(112) // ERROR_DISK_FULL
 	f := &fetcher{cut: 100, cutErr: &os.PathError{Op: "write", Path: "x", Err: full}}
 	m := open(t, t.TempDir(), Options{Fetcher: f})
 	m.Add([]media.Track{yt("ppppppppppp", "Big")}, "best")

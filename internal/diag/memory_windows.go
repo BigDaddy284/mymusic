@@ -26,18 +26,18 @@ var getProcessMemoryInfo = syscall.NewLazyDLL("kernel32.dll").NewProc("K32GetPro
 
 // processMemory returns the process's working set, its resident size, and
 // its private bytes, as GetProcessMemoryInfo tells them.
-func processMemory() (resident, footprint, private uint64) {
+func processMemory() (resident, private uint64) {
 	if getProcessMemoryInfo.Find() != nil {
-		return 0, 0, 0
+		return 0, 0
 	}
 	p, err := syscall.GetCurrentProcess()
 	if err != nil {
-		return 0, 0, 0
+		return 0, 0
 	}
 	c := processMemoryCounters{}
 	c.cb = uint32(unsafe.Sizeof(c))
 	if ok, _, _ := getProcessMemoryInfo.Call(uintptr(p), uintptr(unsafe.Pointer(&c)), uintptr(c.cb)); ok == 0 {
-		return 0, 0, 0
+		return 0, 0
 	}
-	return uint64(c.workingSetSize), 0, uint64(c.privateUsage)
+	return uint64(c.workingSetSize), uint64(c.privateUsage)
 }

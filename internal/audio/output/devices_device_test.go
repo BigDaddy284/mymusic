@@ -14,8 +14,7 @@ import (
 // TestStreamDevices lists the system's output devices, then plays half a
 // second of silence on the default one, by its ID, and on a device that
 // isn't there, which plays on the default device and says so. It opens the
-// device, so it runs only with MYMUSIC_AUDIO=1, as CI's runners have one
-// each: a PulseAudio null sink, and BlackHole.
+// device, so it runs only with MYMUSIC_AUDIO=1.
 func TestStreamDevices(t *testing.T) {
 	if os.Getenv("MYMUSIC_AUDIO") != "1" {
 		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
@@ -45,7 +44,7 @@ func TestStreamDevices(t *testing.T) {
 	if defaults > 1 {
 		t.Errorf("%d default devices", defaults)
 	}
-	// ALSA marks no device the default: its first plays.
+	// Where none is marked the default, the first plays.
 	chosen := devices[0]
 	for _, d := range devices {
 		if d.Default {

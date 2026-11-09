@@ -143,9 +143,9 @@ func mustSVG(data []byte) *ui.SVG {
 
 // brand is MyMusic's mark and name, where the window drags under a
 // hidden title bar, and the button that collapses the rail, in inner DIPs,
-// the rail's width inside its padding. On macOS the window's buttons take
-// the left of that row, where the name doesn't fit beside them, nor the
-// button in the folded rail (#247): the row keeps them, and the button
+// the rail's width inside its padding. Where the title bar keeps room at
+// the left of that row, where the name doesn't fit beside it, nor the
+// button in the folded rail (#247), the row keeps it, and the button
 // where it fits, and the mark and name go under it. It tells its height.
 func (s *shell) brand(c *ui.Context, collapsed bool, inner float32) float32 {
 	bar := c.TitleBar()

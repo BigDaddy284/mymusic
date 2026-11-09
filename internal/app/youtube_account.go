@@ -47,8 +47,8 @@ type youtubeCookie struct {
 // youtubeStore keeps the cookies of the user's YouTube session in
 // youtube-session.bin, encrypted with a key that key keeps in the system's
 // credential store, or sealed for the Windows user where the Credential
-// Manager isn't available. Where there is no credential store, as on Linux
-// without a Secret Service, they are in youtube-session.json, readable by
+// Manager isn't available. Where there is no credential store, they are
+// in youtube-session.json, readable by
 // the user alone; once a store has their key, they move into
 // youtube-session.bin (#104).
 type youtubeStore struct {

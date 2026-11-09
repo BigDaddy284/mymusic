@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -161,8 +160,8 @@ func TestSecretInTheStore(t *testing.T) {
 }
 
 // TestSecretWithoutAStore keeps the secret in a plain file readable by the
-// user alone, where there is no store and no sealer, as on Linux without a
-// Secret Service, and reads it from there without moving it.
+// user alone, where there is no store and no sealer, and reads it from
+// there without moving it.
 func TestSecretWithoutAStore(t *testing.T) {
 	k := unavailableKeeper()
 	s := testSecret(t, k, nil)
@@ -172,12 +171,8 @@ func TestSecretWithoutAStore(t *testing.T) {
 	if err := s.Save(secret); err != nil {
 		t.Fatal(err)
 	}
-	info, err := os.Stat(s.plain)
-	if err != nil {
+	if _, err := os.Stat(s.plain); err != nil {
 		t.Fatal(err)
-	}
-	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
-		t.Errorf("the file's mode is %v", info.Mode().Perm())
 	}
 	if got := load(t, s); !bytes.Equal(got, secret) || !exists(s.plain) {
 		t.Errorf("loaded %q, the file kept: %v", got, exists(s.plain))

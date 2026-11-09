@@ -7,10 +7,10 @@ import (
 )
 
 // The paths of these tests are made up; those that aren't UTF-8 hold a
-// byte of Latin-1, as a name on a Linux drive may.
+// byte of Latin-1.
 var (
 	// textPaths are written as they are: UTF-8, of every system's kind,
-	// decomposed as macOS's names are, and one that holds a replacement
+	// decomposed, and one that holds a replacement
 	// character of its own.
 	textPaths = []string{
 		"/home/ada/Music", "/home/ada/Café Nights", "/Users/ada/Cafe\u0301 Nights",

@@ -2,11 +2,9 @@
 // output device, as float32 stereo at 48 kHz, or 5.1 where the device has
 // it, which the system converts to the device's own format, following the
 // default device when the user changes it, or on a device Devices lists,
-// falling back to the default while that one isn't there: through WASAPI
-// on Windows, an Audio Queue on macOS, and PulseAudio, which PipeWire
-// serves as well, or else ALSA on Linux. It needs no cgo: it calls the
-// system's libraries at run time. Elsewhere, and on 32-bit systems, Open
-// and Devices return ErrUnsupported.
+// falling back to the default while that one isn't there: through WASAPI.
+// It needs no cgo: it calls the system's libraries at run time. On 32-bit
+// Windows, Open and Devices return ErrUnsupported.
 package output
 
 import (

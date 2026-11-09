@@ -13,9 +13,8 @@ import (
 )
 
 // newZoomShell is a test shell that plays Spotify tracks from their
-// YouTube Music recordings, as on every system, so that the player bar
-// has no Spotify Connect devices button, whose room it leaves out: Linux
-// plays them on Spotify Connect by default.
+// YouTube Music recordings, so that the player bar has no Spotify Connect
+// devices button, whose room it leaves out.
 func newZoomShell(t *testing.T) *shell {
 	s := newTestShell(t)
 	set := s.svc.Preferences.Get()
@@ -171,7 +170,7 @@ func TestZoomSetting(t *testing.T) {
 	tt := tester(t, s)
 	show(s, tt, "/settings/appearance")
 	keys := strings.ReplaceAll(s.zoomKeys(), wordJoiner, "")
-	if keys != "Ctrl+= and Ctrl+- change it, Ctrl+0 resets it." && keys != "⌘= and ⌘- change it, ⌘0 resets it." {
+	if keys != "Ctrl+= and Ctrl+- change it, Ctrl+0 resets it." {
 		t.Errorf("the zoom's row names the keys %q", keys)
 	}
 	if !tt.HasText("Makes everything larger or smaller: text, buttons and artwork. " + s.zoomKeys()) {

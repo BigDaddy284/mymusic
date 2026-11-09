@@ -78,7 +78,7 @@ var (
 	// second, before the file is read again.
 	watchOptions = mygo.FileWatchOptions{Debounce: 250 * time.Millisecond, MaxDelay: 2 * time.Second}
 	// pollEvery is how often the file is looked at where it can't be
-	// watched, as when Linux has no inotify watches left; for pollFor,
+	// watched; for pollFor,
 	// before it is watched again.
 	pollEvery = 2 * time.Second
 	pollFor   = time.Minute

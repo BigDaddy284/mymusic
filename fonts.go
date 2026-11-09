@@ -47,9 +47,8 @@ var fontsOnce sync.Once
 // comes first, so Light does, for the page titles and pivots. Registered
 // from a map, in another order each launch, the titles were Semilight in
 // about half of them, heavier and wider (#241). Before MyGo 0.8, Windows
-// and Linux looked the nav labels' Selawik Semilight up as the family of
-// its file, Selawik, and set them in Light; every system keeps it to its
-// file now.
+// looked the nav labels' Selawik Semilight up as the family of its file,
+// Selawik, and set them in Light; it keeps it to its file now.
 var fonts = []struct{ file, family string }{
 	{"fonts/selawkl.ttf", face},
 	{"fonts/selawk.ttf", face},

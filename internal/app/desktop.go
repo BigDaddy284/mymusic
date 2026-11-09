@@ -39,8 +39,7 @@ func (a *App) Start() {
 	// process before it returns.
 	mygo.App.OnWillQuit(func(*mygo.QuitEvent) { a.flush() })
 	mygo.App.OnQuit(a.flush)
-	// The listener stops hearing Spotify as MyMusic quits: on macOS, its
-	// tap and the device that reads it go.
+	// The listener stops hearing Spotify as MyMusic quits.
 	mygo.App.OnWillQuit(func(*mygo.QuitEvent) {
 		if l := a.listen.Load(); l != nil {
 			l.close()
@@ -100,8 +99,7 @@ func (a *App) keepYTDLPCurrent() {
 
 // openMain opens the main window, with its player, hidden when MyMusic
 // starts at login. Where MyMusic can't play, it says why and quits, and
-// returns nil. With close to the tray on, closing it hides it, on macOS
-// out of full screen first.
+// returns nil. With close to the tray on, closing it hides it.
 func (a *App) openMain(hidden bool) *mygo.Window {
 	if _, err := a.startGoPlayer(); err != nil {
 		log.Printf("mymusic: can't play: %v", err)

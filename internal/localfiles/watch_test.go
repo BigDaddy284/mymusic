@@ -326,7 +326,7 @@ func TestWatchUnwatched(t *testing.T) {
 	}{
 		{ErrNetworkDrive, "it's on a network drive"},
 		{ErrRemovableDrive, "it's on a removable drive, which a watch would keep from being ejected"},
-		{fmt.Errorf("%w (fs.inotify.max_user_watches)", ErrWatchLimit), "the system's limit on watched folders is reached (fs.inotify.max_user_watches)"},
+		{fmt.Errorf("%w (8192 folders)", ErrWatchLimit), "the system's limit on watched folders is reached (8192 folders)"},
 		{ErrCantWatch, "this system doesn't tell of changes to folders"},
 		{errors.New("Access is denied."), "the system can't watch it"},
 	} {
@@ -428,7 +428,7 @@ func TestWatchEnded(t *testing.T) {
 		return opened == 2 && stopped == 1 && w.watching(ti.dir) && rescans.Load() >= 2
 	}, func() any { return []any{fake.opened, fake.stopped, rescans.Load()} })
 
-	fake.tell(ti.dir).Ended(fmt.Errorf("%w (fs.inotify.max_user_watches)", ErrWatchLimit))
+	fake.tell(ti.dir).Ended(fmt.Errorf("%w (8192 folders)", ErrWatchLimit))
 	waitFor(t, "the folder unwatched", func() bool { return w.Unwatched(ti.dir) != "" && !w.watching(ti.dir) },
 		func() any { return w.Unwatched(ti.dir) })
 	time.Sleep(3 * retryEvery)

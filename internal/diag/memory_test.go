@@ -31,8 +31,8 @@ func TestMemoryString(t *testing.T) {
 	if got := m.String(); got != "Go heap 120 MB in use, 300 MB from the system, 45 GCs" {
 		t.Errorf("of Go alone: %q", got)
 	}
-	m.Resident, m.Footprint = 410<<20, 380<<20
-	if got := m.String(); got != "Go heap 120 MB in use, 300 MB from the system, 45 GCs; resident 410 MB, footprint 380 MB" {
+	m.Resident, m.Private = 410<<20, 380<<20
+	if got := m.String(); got != "Go heap 120 MB in use, 300 MB from the system, 45 GCs; resident 410 MB, private 380 MB" {
 		t.Errorf("with the process's: %q", got)
 	}
 	if m.Process() != 410<<20 {

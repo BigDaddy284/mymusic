@@ -12,7 +12,6 @@ import (
 	"github.com/egoist/mygo"
 
 	"github.com/bigdaddy284/mymusic/internal/nowplaying"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // controls shows what MyMusic's own audio engine plays in the system's
@@ -134,38 +133,11 @@ func controlsInfo(np NowPlaying, at time.Time) *nowplaying.Info {
 	return info
 }
 
-// setSpeed keeps speed, as the system's controls ask it, as the speed of
-// the kind of track they show, which the player takes in: the podcasts'
-// for an episode, else the songs'.
-func (a *App) setSpeed(speed float64) {
-	a.controls.mu.Lock()
-	episode := a.controls.np.Track != nil && a.controls.np.Track.IsEpisode()
-	a.controls.mu.Unlock()
-	st := a.settings.Get()
-	kept := &st.SongSpeed
-	if episode {
-		kept = &st.PodcastSpeed
-	}
-	if speed = settings.CleanSpeed(speed); speed == *kept {
-		return
-	}
-	*kept = speed
-	if _, err := (&Preferences{a}).Set(st); err != nil {
-		log.Printf("mymusic: keeping the speed: %v", err)
-	}
-}
-
 // controlsAsked does what the system's controls ask.
 func (a *App) controlsAsked(r nowplaying.Request) {
 	switch r.Command {
-	case nowplaying.Raise:
-		a.showMain()
 	case nowplaying.Seek:
 		a.command(PlayerCommand{Command: CommandSeek, Value: ms(r.Position)})
-	case nowplaying.SetVolume:
-		a.command(PlayerCommand{Command: CommandVolume, Value: r.Volume})
-	case nowplaying.SetRate:
-		a.setSpeed(r.Rate)
 	default:
 		if c, ok := controlCommands[r.Command]; ok {
 			a.command(PlayerCommand{Command: c})
