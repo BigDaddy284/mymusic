@@ -7,10 +7,8 @@ import (
 	"errors"
 	"log"
 	"maps"
-	"runtime"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/egoist/mygo"
 )
@@ -46,11 +44,6 @@ var GlobalCommands = []GlobalCommand{
 // the volume, as the window's keys do.
 const globalVolumeStep = 0.05
 
-// globalRepeat is how soon another press of a global shortcut is taken for
-// its key held down, where the system repeats the presses of a key held:
-// X11 does, while Windows and macOS report one press.
-const globalRepeat = 300 * time.Millisecond
-
 // globalShortcuts is what the app registered of the user's global
 // shortcuts, which mu guards.
 type globalShortcuts struct {
@@ -64,11 +57,6 @@ type globalShortcuts struct {
 	busy, again, retry bool
 	// hook sees the presses first.
 	hook *func(id, keys string) bool
-	// repeats tells whether the system repeats the presses of a key held,
-	// and last is when the keys of each command were pressed last, at now.
-	repeats bool
-	last    map[string]time.Time
-	now     func() time.Time
 	// run runs the command of a press; tests see the presses there.
 	run func(id string)
 }
@@ -165,11 +153,11 @@ func (a *App) globalPass(hk Hotkeys, retry bool) bool {
 		if keys == "" {
 			continue
 		}
-		if p := GlobalKeysProblem(keys, runtime.GOOS); p != "" {
+		if p := GlobalKeysProblem(keys); p != "" {
 			problems[gc.ID] = p
 			continue
 		}
-		acc, _ := globalAccelerator(keys, runtime.GOOS)
+		acc, _ := globalAccelerator(keys)
 		if taken[acc] {
 			problems[gc.ID] = "Another command has these keys"
 			continue
@@ -190,7 +178,7 @@ func (a *App) globalPass(hk Hotkeys, retry bool) bool {
 		}
 		if err := hk.Register(acc, func() { a.globalPressed(id) }); err != nil {
 			log.Printf("mymusic: global shortcut %s: %v", acc, err)
-			problems[id] = globalShortcutError(err, runtime.GOOS)
+			problems[id] = globalShortcutError(err)
 			continue
 		}
 		registered[id] = acc
@@ -203,43 +191,22 @@ func (a *App) globalPass(hk Hotkeys, retry bool) bool {
 
 // globalShortcutError tells, in the words of Settings › Shortcuts, why the
 // system refused the keys of a global shortcut, as err says.
-func globalShortcutError(err error, goos string) string {
-	switch {
-	case errors.Is(err, errors.ErrUnsupported):
-		// Wayland, where the desktop has no GlobalShortcuts portal.
-		return "Your desktop doesn't offer global shortcuts"
-	case goos == "linux" && strings.Contains(err.Error(), "desktop entry"):
-		// The portal answers NotAllowed to an app it can't name.
-		return "Global shortcuts need MyMusic installed with its desktop entry"
+func globalShortcutError(err error) string {
+	if errors.Is(err, errors.ErrUnsupported) {
+		return "This system doesn't offer global shortcuts"
 	}
 	// MyGo tells no more than that the system refused them.
 	return "These keys are already in use: pick others, or try again once they're free"
 }
 
 // globalPressed runs the command of the global shortcut of id, pressed, on
-// the main thread, unless the hook takes the press. A press too soon after
-// the last is the key held, where the system repeats them; the volume's
-// keys go on turning it.
+// the main thread, unless the hook takes the press.
 func (a *App) globalPressed(id string) {
 	g := &a.global
 	g.mu.Lock()
 	keys, hook, run := g.applied[id], g.hook, g.run
-	held := false
-	if g.repeats && id != "player.volumeUp" && id != "player.volumeDown" {
-		now := time.Now()
-		if g.now != nil {
-			now = g.now()
-		}
-		last, ok := g.last[id]
-		held = ok && now.Sub(last) < globalRepeat
-		if g.last == nil {
-			g.last = map[string]time.Time{}
-		}
-		g.last[id] = now
-	}
 	g.mu.Unlock()
 	switch {
-	case held:
 	case hook != nil && (*hook)(id, keys):
 	case run != nil:
 		run(id)
@@ -268,8 +235,6 @@ func (a *App) globalCommand(id string) {
 	case "player.dislike":
 		a.command(PlayerCommand{Command: CommandDislike})
 	case "app.show":
-		// At once, in the press's callback: on Wayland the window shown
-		// then takes the focus with the press's activation token.
 		a.showMain()
 	}
 }
@@ -331,10 +296,9 @@ var namedKeys = map[string]bool{
 	"F7": true, "F8": true, "F9": true, "F10": true, "F11": true, "F12": true,
 }
 
-// parseGlobalKeys reads keys as the settings write shortcuts, "Mod+Alt+P",
-// on goos: Mod is ⌘ on macOS and Ctrl elsewhere, and Meta or Cmd the
-// Windows or Super key, ⌘ on macOS.
-func parseGlobalKeys(keys, goos string) (globalKeys, bool) {
+// parseGlobalKeys reads keys as the settings write shortcuts, "Mod+Alt+P":
+// Mod is Ctrl, and Meta or Cmd the Windows key.
+func parseGlobalKeys(keys string) (globalKeys, bool) {
 	var k globalKeys
 	parts := strings.Split(keys, "+")
 	name := parts[len(parts)-1]
@@ -351,13 +315,7 @@ func parseGlobalKeys(keys, goos string) (globalKeys, bool) {
 	}
 	for _, p := range parts[:len(parts)-1] {
 		switch p {
-		case "Mod":
-			if goos == "darwin" {
-				k.super = true
-			} else {
-				k.ctrl = true
-			}
-		case "Ctrl":
+		case "Mod", "Ctrl":
 			k.ctrl = true
 		case "Alt":
 			k.alt = true
@@ -387,9 +345,9 @@ func (k globalKeys) accelerator() string {
 	return strings.Join(append(parts, k.key), "+")
 }
 
-// globalAccelerator is the accelerator MyGo registers keys as on goos.
-func globalAccelerator(keys, goos string) (string, bool) {
-	k, ok := parseGlobalKeys(keys, goos)
+// globalAccelerator is the accelerator MyGo registers keys as.
+func globalAccelerator(keys string) (string, bool) {
+	k, ok := parseGlobalKeys(keys)
 	if !ok {
 		return "", false
 	}
@@ -397,28 +355,20 @@ func globalAccelerator(keys, goos string) (string, bool) {
 }
 
 // GlobalKeysProblem tells why keys, written as the settings write
-// shortcuts, can't be a global shortcut on goos, or "" when they can. A
-// global shortcut takes its keys from every window, so it needs Ctrl, Alt
-// or the Windows key, or on macOS ⌘ or ⌃, as ⌥ with a key types a
-// character there; F1 to F12 may stand alone, but F12 on Windows.
-func GlobalKeysProblem(keys, goos string) string {
-	k, ok := parseGlobalKeys(keys, goos)
+// shortcuts, can't be a global shortcut, or "" when they can. A global
+// shortcut takes its keys from every window, so it needs Ctrl, Alt or the
+// Windows key; F1 to F11 may stand alone, but Windows keeps F12.
+func GlobalKeysProblem(keys string) string {
+	k, ok := parseGlobalKeys(keys)
 	switch {
 	case !ok, k.key == "Escape", k.key == "Tab", k.key == "Backspace", k.key == "Delete":
 		return "These keys can't be a global shortcut"
 	case len(k.key) > 1 && k.key[0] == 'F':
-		if goos == "windows" && k.key == "F12" && !k.super && !k.ctrl && !k.alt && !k.shift {
+		if k.key == "F12" && !k.super && !k.ctrl && !k.alt && !k.shift {
 			return "Windows keeps F12 for itself"
 		}
-	case goos == "darwin":
-		if !k.super && !k.ctrl {
-			return "A global shortcut needs ⌘ or ⌃"
-		}
 	case !k.super && !k.ctrl && !k.alt:
-		if goos == "windows" {
-			return "A global shortcut needs Ctrl, Alt or the Windows key"
-		}
-		return "A global shortcut needs Ctrl, Alt or Super"
+		return "A global shortcut needs Ctrl, Alt or the Windows key"
 	}
 	return ""
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"image/color"
-	"runtime"
 	"strconv"
 	"strings"
 
@@ -341,13 +340,5 @@ func fontFamily(stack string) string {
 	return ""
 }
 
-// monospace is the system's monospaced family.
-func monospace() string {
-	switch runtime.GOOS {
-	case "windows":
-		return "Consolas"
-	case "darwin":
-		return "Menlo"
-	}
-	return "DejaVu Sans Mono"
-}
+// monospace is Windows' monospaced family.
+func monospace() string { return "Consolas" }

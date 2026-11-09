@@ -4,7 +4,6 @@ package main
 // commands whichever window is in front (#80).
 
 import (
-	"runtime"
 	"strings"
 
 	"github.com/egoist/mygo/ui"
@@ -18,23 +17,14 @@ import (
 // shortcuts wait meanwhile, as while the user records one of theirs.
 const globalRecording = "global:"
 
-// globalHint is the first line of the group of global shortcuts on goos.
-func globalHint(goos string) string {
-	hint := "These keys control MyMusic whichever window is in front, and while it runs they do nothing else."
-	switch goos {
-	case "linux":
-		hint += " On Wayland your desktop asks you to confirm them, and its keyboard settings can change them."
-	case "darwin":
-		hint += " A letter is the key in its place on a US keyboard."
-	}
-	return hint
-}
+// globalHint is the first line of the group of global shortcuts.
+const globalHint = "These keys control MyMusic whichever window is in front, and while it runs they do nothing else."
 
 // globalShortcutSettings list the commands that global shortcuts run, and
 // their keys, which the user records as the window's shortcuts.
 func (s *shell) globalShortcutSettings(c *ui.Context) {
 	s.group(c, "From any app", func() {
-		s.hint(c, globalHint(runtime.GOOS))
+		s.hint(c, globalHint)
 		for _, gc := range app.GlobalCommands {
 			s.globalShortcutRow(c, gc)
 		}
@@ -139,7 +129,7 @@ func (s *shell) recordGlobalKey(gc app.GlobalCommand, ev ui.InputEvent) bool {
 // takeGlobalKeys gives a command the keys pressed as its global shortcut,
 // unless they can't be one: a toast tells why, and the recording goes on.
 func (s *shell) takeGlobalKeys(gc app.GlobalCommand, keys string) {
-	if problem := app.GlobalKeysProblem(keys, runtime.GOOS); problem != "" {
+	if problem := app.GlobalKeysProblem(keys); problem != "" {
 		s.notes = append(s.notes, player.Notice{Message: problem, Error: true})
 		return
 	}

@@ -38,9 +38,7 @@ func (a *App) startGoPlayer() (*player.Player, error) {
 	}
 	a.queue = queue
 	p := player.New(playerServices{a}, engineStream{a, e}, connectDevice{a}, queue.Get())
-	if spotifyPlaysHere {
-		p.SpotifyHere(hereDevice{&a.here})
-	}
+	p.SpotifyHere(hereDevice{&a.here})
 	l := newListener()
 	a.listen.Store(l)
 	p.Subscribe(func(player.Event) { l.follow(p.State()) })

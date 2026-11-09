@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-	"runtime"
 	"strings"
 
 	"github.com/egoist/mygo/ui"
@@ -268,26 +267,18 @@ func parseShortcut(s string) (ui.Modifiers, ui.Key, bool) {
 	return mods, key, true
 }
 
-// shortcutLabel writes a shortcut as the system does: ⌘K on macOS, Ctrl+K
-// elsewhere.
+// shortcutLabel writes a shortcut as Windows does: Ctrl+K.
 func shortcutLabel(s string) string {
 	if s == "" {
 		return ""
 	}
-	if runtime.GOOS == "darwin" {
-		return macKeyLabels.Replace(s)
-	}
 	return arrowLabels.Replace(strings.ReplaceAll(s, "Mod+", "Ctrl+"))
 }
 
-// arrowLabels write the arrows of shortcuts as arrows, and macKeyLabels
-// the modifiers too, as macOS does. Shortcuts' labels show in every frame
-// of Settings › Shortcuts and the palette: the replacers are made once.
-var (
-	arrowLabels  = strings.NewReplacer("ArrowLeft", "←", "ArrowRight", "→", "ArrowUp", "↑", "ArrowDown", "↓")
-	macKeyLabels = strings.NewReplacer("Mod+", "⌘", "Shift+", "⇧", "Alt+", "⌥", "Ctrl+", "⌃",
-		"ArrowLeft", "←", "ArrowRight", "→", "ArrowUp", "↑", "ArrowDown", "↓")
-)
+// arrowLabels write the arrows of shortcuts as arrows. Shortcuts' labels
+// show in every frame of Settings › Shortcuts and the palette: the
+// replacer is made once.
+var arrowLabels = strings.NewReplacer("ArrowLeft", "←", "ArrowRight", "→", "ArrowUp", "↑", "ArrowDown", "↓")
 
 // shortcuts run the commands whose shortcuts were pressed, but while the
 // user records one, whose keys are the shortcut's instead.

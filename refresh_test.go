@@ -246,9 +246,6 @@ func TestRefreshYieldsKeys(t *testing.T) {
 	if keys := s.shortcutOf(command{id: "view.refresh", shortcut: refreshKeys}); keys != "" {
 		t.Errorf("Refresh this page keeps %q", keys)
 	}
-	if refreshKeysOn("darwin") != "Mod+Shift+R" || refreshKeysOn("windows") != "F5" || refreshKeysOn("linux") != "F5" {
-		t.Errorf("Refresh's keys: macOS %q, Windows %q", refreshKeysOn("darwin"), refreshKeysOn("windows"))
-	}
 }
 
 // TestRefreshShown tells what each page refreshes: nothing where what it

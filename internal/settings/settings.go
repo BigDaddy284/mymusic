@@ -9,9 +9,8 @@ import (
 )
 
 // NativeAudio reports whether MyMusic's audio engine plays on this
-// system: 64-bit Windows, macOS and Linux.
-const NativeAudio = (runtime.GOOS == "windows" || runtime.GOOS == "darwin" || runtime.GOOS == "linux") &&
-	(runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64")
+// system: 64-bit Windows.
+const NativeAudio = runtime.GOOS == "windows" && (runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64")
 
 // Settings are the user's preferences, by section: each section's file
 // holds its struct, its defaults and its part of Clean. The sections are

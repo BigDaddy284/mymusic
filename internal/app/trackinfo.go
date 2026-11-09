@@ -208,7 +208,7 @@ func spotifyPlayer(t media.Track, st settings.Settings, now *player.Source) (Tra
 	switch {
 	case st.SpotifyPlayback == settings.SpotifyPlaybackConnect:
 		return PlaysConnect, true
-	case st.SpotifyPlayback == settings.SpotifyPlaybackHere && spotifyPlaysHere:
+	case st.SpotifyPlayback == settings.SpotifyPlaybackHere:
 		return PlaysSpotify, true
 	}
 	return "", false

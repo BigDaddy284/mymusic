@@ -1,24 +1,13 @@
 package main
 
 import (
-	"runtime"
-
 	"github.com/egoist/mygo/ui"
 
 	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
-// refreshKeys are the keys of Refresh this page: F5, but ⇧⌘R on macOS,
-// where F5 takes Fn on most keyboards. Mod+R stays Repeat's.
-var refreshKeys = refreshKeysOn(runtime.GOOS)
-
-// refreshKeysOn are refreshKeys on goos.
-func refreshKeysOn(goos string) string {
-	if goos == "darwin" {
-		return "Mod+Shift+R"
-	}
-	return "F5"
-}
+// refreshKeys are the keys of Refresh this page. Mod+R stays Repeat's.
+const refreshKeys = "F5"
 
 // refresher is a loaded of any type, as a refresh sees it.
 type refresher interface {

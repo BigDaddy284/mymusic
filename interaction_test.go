@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -1404,12 +1403,9 @@ func TestSettingsKeep(t *testing.T) {
 	}
 }
 
-// TestShortcutLabel writes shortcuts as the system does.
+// TestShortcutLabel writes shortcuts as Windows does.
 func TestShortcutLabel(t *testing.T) {
 	want := map[string]string{"Mod+Shift+ArrowLeft": "Ctrl+Shift+←", "Alt+1": "Alt+1", "Space": "Space", "": ""}
-	if runtime.GOOS == "darwin" {
-		want = map[string]string{"Mod+Shift+ArrowLeft": "⌘⇧←", "Alt+1": "⌥1", "Space": "Space", "": ""}
-	}
 	for in, w := range want {
 		if got := shortcutLabel(in); got != w {
 			t.Errorf("shortcutLabel(%q) = %q, not %q", in, got, w)
@@ -1596,11 +1592,8 @@ func TestShortcutName(t *testing.T) {
 			t.Errorf("%q isn't the same as itself", c.want)
 		}
 	}
-	// Mod is Ctrl, or Cmd on macOS.
+	// Mod is Ctrl.
 	written := "Ctrl+K"
-	if runtime.GOOS == "darwin" {
-		written = "Cmd+K"
-	}
 	if !sameShortcut("Mod+K", written) || sameShortcut("Mod+K", "Mod+J") {
 		t.Errorf("sameShortcut tells Mod+K from %s, or not from Mod+J", written)
 	}
@@ -1778,16 +1771,6 @@ func TestLiveTileTurns(t *testing.T) {
 	tt.Advance(liveRest + liveTurn)
 	if turned() {
 		t.Error("the tile turns over while the track is paused")
-	}
-}
-
-// TestTitleBarStyle gives the main window the system's own title bar, but
-// on macOS, whose traffic lights sit over the window.
-func TestTitleBarStyle(t *testing.T) {
-	for goos, want := range map[string]mygo.TitleBarStyle{"windows": mygo.TitleBarDefault, "linux": mygo.TitleBarDefault, "darwin": mygo.TitleBarHidden} {
-		if got := titleBarStyle(goos); got != want {
-			t.Errorf("the title bar on %s is %q, want %q", goos, got, want)
-		}
 	}
 }
 

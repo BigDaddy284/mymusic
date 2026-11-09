@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"os"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -65,14 +64,8 @@ func (h *testHotkeys) press(t *testing.T, acc string) {
 	fn()
 }
 
-// globalAcc is the accelerator MyGo registers Ctrl, or ⌘ on macOS, with
-// these keys as.
-func globalAcc(keys string) string {
-	if runtime.GOOS == "darwin" {
-		return "Super+" + keys
-	}
-	return "Ctrl+" + keys
-}
+// globalAcc is the accelerator MyGo registers Ctrl with these keys as.
+func globalAcc(keys string) string { return "Ctrl+" + keys }
 
 // newGlobalShell is a test shell whose global shortcuts register with h,
 // on Settings › Shortcuts.
@@ -92,7 +85,7 @@ func newGlobalShell(t *testing.T, h *testHotkeys) (*shell, *ui.Tester) {
 func TestGlobalShortcutRecorder(t *testing.T) {
 	h := newTestHotkeys()
 	s, tt := newGlobalShell(t, h)
-	if !tt.HasText("from any app") || !tt.HasText(globalHint(runtime.GOOS)) {
+	if !tt.HasText("from any app") || !tt.HasText(globalHint) {
 		t.Fatalf("no group of global shortcuts: %q", tt.Texts())
 	}
 	click(t, s, tt, "set the global shortcut of Play or pause")
@@ -102,7 +95,7 @@ func TestGlobalShortcutRecorder(t *testing.T) {
 	}
 	// Keys that can't be global say why, and the recording goes on.
 	tt.Key(0, ui.KeyK)
-	if why := app.GlobalKeysProblem("K", runtime.GOOS); !tt.HasText(why) || s.recording == "" || len(s.set.GlobalShortcuts) != 0 {
+	if why := app.GlobalKeysProblem("K"); !tt.HasText(why) || s.recording == "" || len(s.set.GlobalShortcuts) != 0 {
 		t.Errorf("K alone: toast %v, recording %q, kept %v", tt.HasText(why), s.recording, s.set.GlobalShortcuts)
 	}
 	tt.Key(ui.Cmd|ui.Alt, ui.KeyP)
@@ -274,13 +267,8 @@ func TestGlobalShortcutGivenAway(t *testing.T) {
 }
 
 func TestGlobalHint(t *testing.T) {
-	for _, goos := range []string{"windows", "linux", "darwin"} {
-		if hint := globalHint(goos); strings.Contains(strings.ToLower(hint), "other app") || strings.Contains(hint, "another app") {
-			t.Errorf("%s: %q", goos, hint)
-		}
-	}
-	if !strings.Contains(globalHint("linux"), "Wayland") {
-		t.Error("Linux's hint doesn't tell of Wayland")
+	if strings.Contains(strings.ToLower(globalHint), "other app") || strings.Contains(globalHint, "another app") {
+		t.Errorf("%q", globalHint)
 	}
 }
 

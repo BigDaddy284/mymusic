@@ -10,7 +10,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -196,9 +195,6 @@ type App struct {
 	// quitting is set once MyMusic starts to quit: its windows close then,
 	// even with close to the tray on.
 	quitting atomic.Bool
-	// trayHide hides the main window in the tray, out of full screen first
-	// on macOS (#84).
-	trayHide trayHide
 	// global holds the user's global shortcuts as registered (#80).
 	global globalShortcuts
 	// metered is set while the system tells the connection is metered.
@@ -245,7 +241,6 @@ type App struct {
 func New(opts Options) (*App, error) {
 	a := &App{opts: opts, lastCrash: opts.LastCrash}
 	a.here.a = a
-	a.global.repeats = runtime.GOOS == "linux"
 	var err error
 	if a.settings, err = store.OpenWith(filepath.Join(opts.DataDir, "settings.json"), settings.Default(), settings.Decode); err != nil {
 		return nil, fmt.Errorf("opening settings: %w", err)
@@ -389,20 +384,10 @@ func needWebView(what string) error {
 	if webViewAvailable() {
 		return nil
 	}
-	switch runtime.GOOS {
-	case "windows":
-		return fmt.Errorf("%s needs Microsoft's WebView2 Runtime, which this computer doesn't have: get it from https://go.microsoft.com/fwlink/p/?LinkId=2124703", what)
-	case "linux":
-		return fmt.Errorf("%s needs WebKitGTK, which this computer doesn't have: install libwebkit2gtk-4.1-0 on Debian and Ubuntu, webkit2gtk4.1 on Fedora", what)
-	}
-	return fmt.Errorf("%s needs the system's webview, which this computer doesn't have", what)
+	return fmt.Errorf("%s needs Microsoft's WebView2 Runtime, which this computer doesn't have: get it from https://go.microsoft.com/fwlink/p/?LinkId=2124703", what)
 }
 
-// webViewAvailable is mygo.WebViewAvailable, asked on the main thread. On
-// Linux the first call loads WebKitGTK and keeps its cookies in a file,
-// which creates WebKit's default web context on the calling thread. Created
-// on another thread than GTK's, the context makes the web view of the next
-// window abort as GTK's thread creates it (#51).
+// webViewAvailable is mygo.WebViewAvailable, asked on the main thread.
 func webViewAvailable() bool {
 	var available bool
 	mygo.RunOnMain(func() { available = mygo.WebViewAvailable() })
@@ -413,10 +398,7 @@ func webViewAvailable() bool {
 // custom schemes, at http://<scheme>.localhost: the stream addresses
 // PrepareStream gives keep that form.
 func schemeURL(scheme string) string {
-	if runtime.GOOS == "windows" {
-		return "http://" + scheme + ".localhost/"
-	}
-	return scheme + "://localhost/"
+	return "http://" + scheme + ".localhost/"
 }
 
 // memo remembers the results of lookups, up to a number of keys.

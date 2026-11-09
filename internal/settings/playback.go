@@ -2,7 +2,6 @@ package settings
 
 import (
 	"math"
-	"runtime"
 
 	"github.com/bigdaddy284/mymusic/internal/volume"
 )
@@ -91,7 +90,8 @@ type Playback struct {
 // defaultPlayback is how a new install plays.
 func defaultPlayback() Playback {
 	var p Playback
-	p.SpotifyPlayback = defaultSpotifyPlayback(runtime.GOOS)
+	// In MyMusic: WebView2 decrypts Spotify's audio with Widevine (#295).
+	p.SpotifyPlayback = SpotifyPlaybackHere
 	p.Quality = QualityBest
 	p.Loudness = true
 	p.Autoplay = true
@@ -102,17 +102,6 @@ func defaultPlayback() Playback {
 	p.VolumeCurve = volume.Natural
 	p.Volume = 0.8
 	return p
-}
-
-// defaultSpotifyPlayback is how Spotify tracks play in a new install on
-// goos: in MyMusic on Windows and macOS, whose webviews decrypt Spotify's
-// audio (WebView2 with Widevine, WKWebView with FairPlay, #295), else on
-// Spotify Connect.
-func defaultSpotifyPlayback(goos string) SpotifyPlayback {
-	if goos == "windows" || goos == "darwin" {
-		return SpotifyPlaybackHere
-	}
-	return SpotifyPlaybackConnect
 }
 
 // clean is p with every value in its range, and d's in place of values

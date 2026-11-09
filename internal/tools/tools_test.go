@@ -14,19 +14,14 @@ import (
 )
 
 func TestAsset(t *testing.T) {
-	for platform, want := range map[[2]string]string{
-		{"windows", "amd64"}: "yt-dlp.exe",
-		{"linux", "amd64"}:   "yt-dlp_linux",
-		{"linux", "arm64"}:   "yt-dlp_linux_aarch64",
-		{"darwin", "arm64"}:  "yt-dlp_macos.zip",
-	} {
-		got, err := asset(platform[0], platform[1])
+	for arch, want := range map[string]string{"amd64": "yt-dlp.exe", "arm64": "yt-dlp_arm64.exe", "386": "yt-dlp_x86.exe"} {
+		got, err := asset(arch)
 		if err != nil || got != want {
-			t.Errorf("asset(%s) = %q, %v", platform, got, err)
+			t.Errorf("asset(%s) = %q, %v", arch, got, err)
 		}
 	}
-	if _, err := asset("plan9", "amd64"); err == nil {
-		t.Error("plan9 has no yt-dlp build")
+	if _, err := asset("riscv64"); err == nil {
+		t.Error("riscv64 has no yt-dlp build")
 	}
 }
 
@@ -106,24 +101,21 @@ func TestJSRuntimeFromDir(t *testing.T) {
 // folders installers put them in too.
 func TestToolsOutsidePath(t *testing.T) {
 	t.Setenv("PATH", "")
-	brew := t.TempDir()
-	noToolDirs(t, filepath.Join(t.TempDir(), "missing"), brew)
+	dir := t.TempDir()
+	noToolDirs(t, filepath.Join(t.TempDir(), "missing"), dir)
 	m := New(t.TempDir())
 	if _, err := m.YTDLP(); err == nil {
 		t.Fatal("found yt-dlp in empty folders")
 	}
 	for _, name := range []string{"yt-dlp", "node"} {
-		if runtime.GOOS == "windows" {
-			name += ".exe"
-		}
-		if err := os.WriteFile(filepath.Join(brew, name), []byte("x"), 0o755); err != nil {
+		if err := os.WriteFile(filepath.Join(dir, exe(name)), []byte("x"), 0o755); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if got, err := m.YTDLP(); err != nil || filepath.Dir(got) != brew {
-		t.Errorf("YTDLP() = %q, %v; want it in %s", got, err, brew)
+	if got, err := m.YTDLP(); err != nil || filepath.Dir(got) != dir {
+		t.Errorf("YTDLP() = %q, %v; want it in %s", got, err, dir)
 	}
-	if name, got, ok := m.JSRuntime(); !ok || name != "node" || filepath.Dir(got) != brew {
+	if name, got, ok := m.JSRuntime(); !ok || name != "node" || filepath.Dir(got) != dir {
 		t.Errorf("JSRuntime() = %q, %q, %v", name, got, ok)
 	}
 }
@@ -176,13 +168,8 @@ func TestUpdateCommand(t *testing.T) {
 		`C:\Users\a\scoop\shims\yt-dlp.exe`:                                     "scoop update yt-dlp",
 		`C:\ProgramData\chocolatey\bin\yt-dlp.exe`:                              "choco upgrade yt-dlp",
 		`C:\Users\a\AppData\Local\Programs\Python\Python312\Scripts\yt-dlp.exe`: "python -m pip install -U yt-dlp",
-		"/opt/homebrew/bin/yt-dlp":                                              "brew upgrade yt-dlp",
-		"/usr/local/Cellar/yt-dlp/2025.01.15/bin/yt-dlp":                        "brew upgrade yt-dlp",
-		"/home/linuxbrew/.linuxbrew/bin/yt-dlp":                                 "brew upgrade yt-dlp",
-		"/home/a/.local/share/pipx/venvs/yt-dlp/bin/yt-dlp":                     "pipx upgrade yt-dlp",
-		"/snap/bin/yt-dlp":                "sudo snap refresh yt-dlp",
-		"/usr/bin/yt-dlp":                 "",
-		`C:\Users\a\Downloads\yt-dlp.exe`: "",
+		`C:\Users\a\pipx\venvs\yt-dlp\Scripts\yt-dlp.exe`:                       "pipx upgrade yt-dlp",
+		`C:\Users\a\Downloads\yt-dlp.exe`:                                       "",
 	} {
 		if got := updateCommand(path); got != want {
 			t.Errorf("updateCommand(%s) = %q, want %q", path, got, want)
@@ -216,11 +203,11 @@ func TestYTDLPToolTellsANewerRelease(t *testing.T) {
 	ctx := context.Background()
 	m := New(t.TempDir())
 
-	got := m.ytdlpTool(ctx, "/opt/homebrew/bin/yt-dlp", "2025.01.15")
-	if got.Latest != "2026.09.01" || got.UpdateCommand != "brew upgrade yt-dlp" || got.Managed {
+	got := m.ytdlpTool(ctx, `C:\Users\a\scoop\shims\yt-dlp.exe`, "2025.01.15")
+	if got.Latest != "2026.09.01" || got.UpdateCommand != "scoop update yt-dlp" || got.Managed {
 		t.Errorf("an old yt-dlp of the user's: %+v", got)
 	}
-	if got := m.ytdlpTool(ctx, "/opt/homebrew/bin/yt-dlp", "2026.09.01"); got.Latest != "" || got.UpdateCommand != "" {
+	if got := m.ytdlpTool(ctx, `C:\Users\a\scoop\shims\yt-dlp.exe`, "2026.09.01"); got.Latest != "" || got.UpdateCommand != "" {
 		t.Errorf("a current yt-dlp: %+v", got)
 	}
 	if got := m.ytdlpTool(ctx, m.managedPath(), "2025.01.15"); got.Latest != "2026.09.01" || got.UpdateCommand != "" || !got.Managed {

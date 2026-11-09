@@ -11,7 +11,6 @@ import (
 	"math"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 
@@ -670,13 +669,9 @@ func (s *shell) downloadSettings(c *ui.Context) {
 const downloadRows = "playback › Downloads"
 
 // samePath reports whether two folders are the same, as their names tell:
-// regardless of case on Windows.
+// regardless of case, as on Windows.
 func samePath(a, b string) bool {
-	a, b = filepath.Clean(a), filepath.Clean(b)
-	if runtime.GOOS == "windows" {
-		return strings.EqualFold(a, b)
-	}
-	return a == b
+	return strings.EqualFold(filepath.Clean(a), filepath.Clean(b))
 }
 
 // chooseDownloadsFolder asks for the folder to move the downloads to.

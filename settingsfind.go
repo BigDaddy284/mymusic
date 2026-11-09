@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/url"
-	"runtime"
 	"strings"
 	"time"
 
@@ -267,16 +266,12 @@ func (s *shell) findBox(c *ui.Context, tab, q string, current bool) {
 
 // shortcutWords are the words the search of the settings finds a command's
 // shortcut by: as Settings shows it, and with Mod spelled as the key's
-// name, "ctrl+k", or "cmd+k" on macOS.
+// name, "ctrl+k".
 func shortcutWords(keys string) string {
 	if keys == "" {
 		return ""
 	}
-	mod := "Ctrl+"
-	if runtime.GOOS == "darwin" {
-		mod = "Cmd+"
-	}
-	return shortcutLabel(keys) + " " + strings.ReplaceAll(keys, "Mod+", mod)
+	return shortcutLabel(keys) + " " + strings.ReplaceAll(keys, "Mod+", "Ctrl+")
 }
 
 // tellAfter is how long the typing pauses before screen readers hear what

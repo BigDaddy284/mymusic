@@ -107,7 +107,6 @@
   "discordTimeLeft": false,
   "discordListenButton": true,
   "discordKeepWhilePaused": true,
-  "notchPlayer": false,
   "ytdlpPath": "/usr/local/bin/yt-dlp",
   "jsRuntime": "deno",
   "shortcuts": {

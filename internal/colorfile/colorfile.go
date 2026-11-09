@@ -14,7 +14,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"strconv"
 	"strings"
 
@@ -455,11 +454,7 @@ func Expand(p string) (string, error) {
 		p = filepath.Join(home, p[1:])
 	}
 	if !filepath.IsAbs(p) {
-		root := "/"
-		if runtime.GOOS == "windows" {
-			root = `C:\`
-		}
-		return "", fmt.Errorf("it isn't a full path, which starts with ~ or %s", root)
+		return "", fmt.Errorf("it isn't a full path, which starts with ~ or C:\\")
 	}
 	return filepath.Clean(p), nil
 }

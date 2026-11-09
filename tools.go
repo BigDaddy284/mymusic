@@ -114,9 +114,6 @@ func (s *shell) toolSettings(c *ui.Context) {
 			if y.Managed {
 				desc += ", MyMusic's own, which it keeps up to date"
 			}
-			if y.Bundled {
-				desc += ", which comes with MyMusic and updates with it"
-			}
 			if outdated(y) {
 				desc += ". " + y.Latest + " is out."
 			}

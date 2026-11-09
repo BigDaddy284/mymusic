@@ -105,7 +105,7 @@ func TestDeepLinkPaths(t *testing.T) {
 
 func TestSchemeURL(t *testing.T) {
 	got := schemeURL("stream")
-	if got != "http://stream.localhost/" && got != "stream://localhost/" {
+	if got != "http://stream.localhost/" {
 		t.Errorf("schemeURL = %q", got)
 	}
 }

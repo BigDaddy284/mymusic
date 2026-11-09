@@ -29,8 +29,7 @@ var (
 	// elsewhere.
 	ErrNoBrowserCookies = errors.New("no cookies of the browser were found")
 	// ErrCookiesDenied is returned when the system keeps the browser's
-	// cookies from MyMusic, as macOS keeps Safari's without Full Disk
-	// Access.
+	// cookies from MyMusic.
 	ErrCookiesDenied = errors.New("the system keeps the browser's cookies from MyMusic")
 )
 
