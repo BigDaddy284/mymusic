@@ -56,8 +56,9 @@ TITLE = "Check tone"
 ARTIST = "MyMusic CI"
 TONE_HZ = 440
 # The track's cover: the system's controls show covers of https addresses
-# alone: MyMusic's icon at a tag, whose address stays when files move.
-COVER = "https://raw.githubusercontent.com/bigdaddy284/mymusic/v0.5.9/resources/icon.png"
+# alone: MyMusic's icon at the commit that drew it, whose address stays
+# when files move.
+COVER = "https://raw.githubusercontent.com/bigdaddy284/mymusic/5abac2f6111261b8608fb3c32a6a388fb344c0eb/brand/icon.png"
 MPRIS = "org.mpris.MediaPlayer2.mymusic"  # outside a Flatpak
 MPRIS_PATH = "/org/mpris/MediaPlayer2"
 PLAYER = "org.mpris.MediaPlayer2.Player"
