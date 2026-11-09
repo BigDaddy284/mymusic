@@ -7,10 +7,10 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/brand"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/brand"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // navItem is a page of the rail.
@@ -128,14 +128,11 @@ func (s *shell) rail(c *ui.Context) {
 	})
 }
 
-// brandMark is MixMusic's mark, the pink rings with a play button of its
-// icon, and brandPink their colour.
-var (
-	brandMark = mustSVG(brand.Mark)
-	brandPink = ui.RGB(0xe6, 0x00, 0x7e)
-)
+// brandMark is MyMusic's mark, the music note of its icon, in its own
+// blue to purple gradient.
+var brandMark = mustSVG(brand.Mark)
 
-// mustSVG parses an SVG MixMusic ships.
+// mustSVG parses an SVG MyMusic ships.
 func mustSVG(data []byte) *ui.SVG {
 	svg, err := ui.ParseSVG(data)
 	if err != nil {
@@ -144,7 +141,7 @@ func mustSVG(data []byte) *ui.SVG {
 	return svg
 }
 
-// brand is MixMusic's mark and name, where the window drags under a
+// brand is MyMusic's mark and name, where the window drags under a
 // hidden title bar, and the button that collapses the rail, in inner DIPs,
 // the rail's width inside its padding. On macOS the window's buttons take
 // the left of that row, where the name doesn't fit beside them, nor the
@@ -201,13 +198,13 @@ func (s *shell) brand(c *ui.Context, collapsed bool, inner float32) float32 {
 	return tall + 40
 }
 
-// logo is MixMusic's mark, and its name in what is left of room DIPs.
+// logo is MyMusic's mark, and its name in what is left of room DIPs.
 func (s *shell) logo(c *ui.Context, room float32) {
 	k := &s.lk
-	// The mark keeps its pink in every theme, as the app's icon does.
-	ui.Icon(c, brandMark).Size(26, 26).Shrink(0).TextColor(brandPink)
+	// The mark keeps its gradient in every theme, as the app's icon does.
+	ui.Icon(c, brandMark).Size(26, 26).Shrink(0)
 	size := s.wordmarkSize(c, room)
-	ui.Text(c, "mixmusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
+	ui.Text(c, "mymusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
 		SingleLine().Grow(1).MinWidth(0)
 }
 
@@ -222,7 +219,7 @@ func (s *shell) railButton(c *ui.Context, collapsed bool) {
 	}
 }
 
-// wordmarkFit is the size of MixMusic's name in the rail, the face, weight
+// wordmarkFit is the size of MyMusic's name in the rail, the face, weight
 // and room it was measured for, and its width at 24.
 type wordmarkFit struct {
 	font   string
@@ -232,7 +229,7 @@ type wordmarkFit struct {
 	width  float32
 }
 
-// wordmarkSize is the size of MixMusic's name in room DIPs: 24, or less
+// wordmarkSize is the size of MyMusic's name in room DIPs: 24, or less
 // when the theme's face is too wide for it there, as Sakura's Georgia is,
 // so that the name never shows cut. It measures the name once for each
 // face, weight and room, not every frame.
@@ -242,7 +239,7 @@ func (s *shell) wordmarkSize(c *ui.Context, room float32) float32 {
 	if s.wordmark.size > 0 && s.wordmark.font == f.font && s.wordmark.weight == f.weight && s.wordmark.room == f.room {
 		return s.wordmark.size
 	}
-	f.width, _ = c.MeasureText(0, ui.Span{Text: "mixmusic", Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
+	f.width, _ = c.MeasureText(0, ui.Span{Text: "mymusic", Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
 	f.size = fitSize(24, f.width, room)
 	s.wordmark = f
 	return f.size
