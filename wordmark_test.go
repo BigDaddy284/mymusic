@@ -43,7 +43,7 @@ func TestWordmarkFits(t *testing.T) {
 				}
 				s.refresh()
 				tt.Frame()
-				if !tt.HasText("MyMusic") {
+				if !tt.HasText(railName) {
 					t.Fatalf("%s, %s: no name in the rail: %q", th.ID, layout, tt.Texts())
 				}
 				f := s.wordmark

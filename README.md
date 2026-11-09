@@ -1,7 +1,7 @@
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.id.md">Bahasa Indonesia</a></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="MyMusic's icon: a music note in a blue to purple gradient on a dark rounded tile" />
+  <img src="brand/icon.png" width="112" height="112" alt="MyMusic's icon: five sound bars in a blue to purple gradient on a dark rounded tile" />
 </p>
 
 <h1 align="center">MyMusic</h1>

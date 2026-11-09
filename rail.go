@@ -128,8 +128,9 @@ func (s *shell) rail(c *ui.Context) {
 	})
 }
 
-// brandMark is MyMusic's mark, the music note of its icon, in its own
-// blue to purple gradient.
+// brandMark is the Music mark, a music note in its own blue to purple
+// gradient, which the sidebar shows beside the section's name: the app's
+// own icon is the sound bars.
 var brandMark = mustSVG(brand.Mark)
 
 // mustSVG parses an SVG MyMusic ships.
@@ -198,13 +199,16 @@ func (s *shell) brand(c *ui.Context, collapsed bool, inner float32) float32 {
 	return tall + 40
 }
 
-// logo is MyMusic's mark, and its name in what is left of room DIPs.
+// railName is the name at the head of the sidebar, beside the Music mark.
+const railName = "Music"
+
+// logo is the Music mark, and its name in what is left of room DIPs.
 func (s *shell) logo(c *ui.Context, room float32) {
 	k := &s.lk
 	// The mark keeps its gradient in every theme, as the app's icon does.
 	ui.Image(c, brandMark).Size(26, 26).Shrink(0)
 	size := s.wordmarkSize(c, room)
-	ui.Text(c, "MyMusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
+	ui.Text(c, railName).FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
 		SingleLine().Grow(1).MinWidth(0)
 }
 
@@ -239,7 +243,7 @@ func (s *shell) wordmarkSize(c *ui.Context, room float32) float32 {
 	if s.wordmark.size > 0 && s.wordmark.font == f.font && s.wordmark.weight == f.weight && s.wordmark.room == f.room {
 		return s.wordmark.size
 	}
-	f.width, _ = c.MeasureText(0, ui.Span{Text: "MyMusic", Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
+	f.width, _ = c.MeasureText(0, ui.Span{Text: railName, Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
 	f.size = fitSize(24, f.width, room)
 	s.wordmark = f
 	return f.size

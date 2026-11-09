@@ -1,7 +1,7 @@
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <strong>Bahasa Indonesia</strong></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="Ikon MyMusic: not musik bergradasi biru ke ungu di atas ubin gelap membulat" />
+  <img src="brand/icon.png" width="112" height="112" alt="Ikon MyMusic: lima batang suara bergradasi biru ke ungu di atas ubin gelap membulat" />
 </p>
 
 <h1 align="center">MyMusic</h1>

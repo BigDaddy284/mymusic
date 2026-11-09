@@ -1,7 +1,7 @@
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong> · <a href="README.id.md">Bahasa Indonesia</a></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="MyMusic 的图标：深色圆角方块上的蓝紫渐变音符" />
+  <img src="brand/icon.png" width="112" height="112" alt="MyMusic 的图标：深色圆角方块上的蓝紫渐变的五根声音条" />
 </p>
 
 <h1 align="center">MyMusic</h1>
