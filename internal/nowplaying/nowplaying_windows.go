@@ -3,7 +3,7 @@
 package nowplaying
 
 // Windows shows what plays through the SystemMediaTransportControls of a
-// hidden window of MixMusic's own: in the media flyout of the volume keys
+// hidden window of MyMusic's own: in the media flyout of the volume keys
 // and of Quick Settings, and on the lock screen. They pass on the flyout's
 // buttons and seeks, and the media keys Windows sends them. The controls
 // live on a thread of their own, in COM's multithreaded apartment, which
@@ -193,7 +193,7 @@ type message struct {
 // windowClass registers the class of the controls' windows, once: the
 // system's DefWindowProc handles their messages.
 var windowClass = sync.OnceValues(func() (*uint16, error) {
-	name, err := syscall.UTF16PtrFromString("MixMusicMediaControls")
+	name, err := syscall.UTF16PtrFromString("MyMusicMediaControls")
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +253,7 @@ type winControls struct {
 // settleAfter is how long the controls stay on once nothing shows, and
 // off once they went off: turned off and on again in quick succession, as
 // when the player stops a track and loads the next, the system may lose
-// them, and the next controls of MixMusic's with them.
+// them, and the next controls of MyMusic's with them.
 const settleAfter = 2 * time.Second
 
 func open(ask func(Request), _ func(func())) (platform, error) {
@@ -330,7 +330,7 @@ func (w *winControls) start() error {
 		return err
 	}
 	instance, _, _ := syscall.SyscallN(procGetModuleHandleW.Addr(), 0)
-	title, _ := syscall.UTF16PtrFromString("MixMusic")
+	title, _ := syscall.UTF16PtrFromString("MyMusic")
 	hwnd, _, errno := syscall.SyscallN(procCreateWindowExW.Addr(), 0, uintptr(unsafe.Pointer(class)), uintptr(unsafe.Pointer(title)),
 		wsPopup, 0, 0, 0, 0, 0, 0, instance, 0)
 	if hwnd == 0 {
@@ -536,7 +536,7 @@ func (w *winControls) settle() {
 }
 
 // describe shows the track of info: its title, artists and album, and its
-// cover once MixMusic has it.
+// cover once MyMusic has it.
 func (w *winControls) describe(info *Info) {
 	set := func(fn uintptr, this unsafe.Pointer, s string) {
 		h, err := newHString(s)

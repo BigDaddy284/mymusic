@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // surroundOf is the Source of a track of 5.1 surround audio beside its

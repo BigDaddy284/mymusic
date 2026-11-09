@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // episodeRow is a made-up row of a show's episodes, an hour and 40 minutes

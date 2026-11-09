@@ -11,12 +11,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/mp4"
-	"github.com/fzn0x/mixmusic/webm"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/mp4"
+	"github.com/bigdaddy284/mymusic/webm"
 )
 
 var (
@@ -280,7 +280,7 @@ func (m *Manager) download(j *job, dir, video string) error {
 	}
 	a, err := inspect(part, s.Size)
 	if err != nil {
-		log.Printf("mixmusic: the download of %s doesn't play: %v", video, err)
+		log.Printf("mymusic: the download of %s doesn't play: %v", video, err)
 		os.Remove(part)
 		m.mu.Lock()
 		delete(m.idx.Parts, video)
@@ -391,7 +391,7 @@ func (m *Manager) waiting() bool {
 func (m *Manager) failed(id string, e *entry, err error) {
 	why := plain(err)
 	now := time.Now()
-	log.Printf("mixmusic: downloading %s: %s", id, why)
+	log.Printf("mymusic: downloading %s: %s", id, why)
 	switch {
 	case errors.Is(err, stream.ErrThrottled):
 		m.setHold(holdThrottled, true, "YouTube is turning down requests from this network for now; downloads go on in a while", now.Add(throttleFor))

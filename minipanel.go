@@ -10,11 +10,11 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // The mini player's panel (#371): buttons beside the artists open a panel
@@ -365,7 +365,7 @@ func (s *shell) miniQueueEntry(c *ui.Context, i int, it player.Item, current boo
 	ink, sub := k.text, k.muted
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)
@@ -539,7 +539,7 @@ func (s *shell) miniOutput(c *ui.Context) {
 			s.miniConnectDevices(c)
 		}
 		if !shown {
-			s.miniNote(c, "MixMusic plays on the system's default device.")
+			s.miniNote(c, "MyMusic plays on the system's default device.")
 		}
 	})
 }
@@ -589,7 +589,7 @@ func (s *shell) miniChoice(c *ui.Context, key, label, detail string, on, disable
 	return b.Clicked()
 }
 
-// miniOutputDevices are the output devices MixMusic's own player can play
+// miniOutputDevices are the output devices MyMusic's own player can play
 // on (outputChoices), and why what plays now doesn't play there, if it
 // doesn't.
 func (s *shell) miniOutputDevices(c *ui.Context) {
@@ -667,7 +667,7 @@ func (s *shell) miniConnectDevices(c *ui.Context) {
 func (s *shell) miniErrorPanel(c *ui.Context) {
 	f := s.p.Failures()
 	if len(f) == 0 {
-		s.miniNote(c, "No track failed to play since MixMusic started.")
+		s.miniNote(c, "No track failed to play since MyMusic started.")
 		return
 	}
 	ui.Scroll(c).Grow(1).MinHeight(0).Padding(4, 12, 12).Children(func() { s.failureDetails(c, f[0]) })

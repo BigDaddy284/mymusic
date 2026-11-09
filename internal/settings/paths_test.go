@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 // pathSettings are settings of each path setting, of a folder of dir:
@@ -52,7 +52,7 @@ func TestPathsNotUTF8(t *testing.T) {
 
 // TestPathsKept keeps the paths of the settings through the store, which
 // copies them through JSON as they change, and in the file it saves, as
-// MixMusic keeps settings.json.
+// MyMusic keeps settings.json.
 func TestPathsKept(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "settings.json")

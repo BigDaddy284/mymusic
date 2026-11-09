@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/ogg"
+	"github.com/bigdaddy284/mymusic/ogg"
 )
 
 // The keys of Vorbis comments the tags take, in upper case.

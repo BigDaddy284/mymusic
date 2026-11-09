@@ -3,8 +3,8 @@ package playertest
 import (
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // Stream is the player's stream doing nothing: its methods return zero

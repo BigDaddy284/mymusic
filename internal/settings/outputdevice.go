@@ -2,7 +2,7 @@ package settings
 
 import "strings"
 
-// OutputDevice is the audio output device of this computer that MixMusic's
+// OutputDevice is the audio output device of this computer that MyMusic's
 // own player plays on, as Settings › Playback chooses it.
 type OutputDevice struct {
 	// ID is the system's ID of the device: its endpoint ID on Windows, its

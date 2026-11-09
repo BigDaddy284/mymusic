@@ -1,7 +1,7 @@
 # Code of conduct
 <!-- docs: group=project order=40 -->
 
-MixMusic is made by people who love music and like making things for each
+MyMusic is made by people who love music and like making things for each
 other. Keep it a place where everyone is glad to take part.
 
 ## Expected
@@ -21,7 +21,7 @@ other. Keep it a place where everyone is glad to take part.
 ## Enforcement
 
 Report what you saw to the maintainers through
-[a private report](https://github.com/fzn0x/mixmusic/security/advisories/new)
+[a private report](https://github.com/bigdaddy284/mymusic/security/advisories/new)
 or by e-mail to a maintainer. Reports are read in confidence. Maintainers may
 remove contributions and comments, and block people from the project, for
 behavior that breaks this code, in the project's spaces and wherever

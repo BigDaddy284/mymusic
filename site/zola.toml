@@ -1,4 +1,4 @@
-# The MixMusic website, built with Zola: `zola --root site serve` to
+# The MyMusic website, built with Zola: `zola --root site serve` to
 # preview it, `zola --root site build` to build it into site/public, after
 # `go run ./tools/sitedocs`, which makes the docs' pages from docs/*.md, the
 # folders of docs/ with a README.md, and CONTRIBUTING.md, CODE_OF_CONDUCT.md
@@ -9,16 +9,14 @@
 # its FAQ answers. The docs are content/docs, shown by templates/docs and
 # styled by static/docs.css.
 
-# GitHub Pages' address. cloudflare.yml builds the copy at
-# https://mixmusic.functionx.dev with --base-url.
-base_url = "https://fzn0x.github.io/mixmusic"
-title = "MixMusic"
+# GitHub Pages' address.
+base_url = "https://bigdaddy284.github.io/mymusic"
+title = "MyMusic"
 description = "Spotify and YouTube Music in one free, open-source desktop player for macOS, Windows and Linux."
 default_language = "en"
 
-# robots.txt is only read at a domain's root: cloudflare.yml writes one for
-# the copy at https://mixmusic.functionx.dev, and GitHub Pages' copy, under
-# /mixmusic/, has none.
+# robots.txt is only read at a domain's root: GitHub Pages' copy, under
+# /mymusic/, has none.
 generate_robots_txt = false
 
 # The docs are Markdown for GitHub as much as for the site: what looks like
@@ -40,8 +38,6 @@ lazy_async_image = true
 skip_anchor_prefixes = ["https://github.com/"]
 
 [extra]
-# The site's one address for search engines. Both copies of the site, on
-# GitHub Pages and on Cloudflare, name this one in each page's canonical
-# link, og:url and sitemap.xml, so that the same page at two addresses
-# counts as one.
-canonical_url = "https://mixmusic.functionx.dev"
+# The site's one address for search engines, which each page names in its
+# canonical link, og:url and sitemap.xml.
+canonical_url = "https://bigdaddy284.github.io/mymusic"

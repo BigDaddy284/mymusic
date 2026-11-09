@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strconv"
 
-	"github.com/fzn0x/mixmusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
 )
 
 // palette is the colours of the theme's tokens.
@@ -150,7 +150,7 @@ func fileTokens(f colorfile.Colors, mode string) (map[string]color.NRGBA, bool) 
 }
 
 // fileMode tells, of a file with a single set of colours, whether they are
-// dark: such a file decides whether MixMusic is light or dark.
+// dark: such a file decides whether MyMusic is light or dark.
 func fileMode(f colorfile.Colors) (dark, one bool) {
 	if !f.OneMode() {
 		return false, false

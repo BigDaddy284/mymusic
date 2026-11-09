@@ -2,7 +2,7 @@
 
 package silk
 
-import "github.com/fzn0x/mixmusic/opus/internal/rangedec"
+import "github.com/bigdaddy284/mymusic/opus/internal/rangedec"
 
 // decodeIndices is silk_decode_indices: decodes the side-information
 // parameters of frame FrameIndex from the payload.

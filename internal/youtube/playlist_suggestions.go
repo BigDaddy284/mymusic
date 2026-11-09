@@ -7,7 +7,7 @@ package youtube
 import (
 	"context"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // suggestToken returns the token of what YouTube Music shows below the

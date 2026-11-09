@@ -11,8 +11,8 @@ package main
 import (
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // homeArrange is Home's own state: whether it shows as the user edits it,
@@ -309,7 +309,7 @@ func (s *shell) addShelfMenu(m *ui.Menu, full []settings.HomeShelf) {
 	item(m, homeDownloads, "Downloads")
 }
 
-// followedEverywhere returns the artists the user follows, in MixMusic,
+// followedEverywhere returns the artists the user follows, in MyMusic,
 // then on the services they signed in to, as those were read, each once.
 func (s *shell) followedEverywhere() []media.Artist {
 	artists := s.svc.Collection.FollowedArtists()

@@ -6,8 +6,8 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 const (
@@ -35,7 +35,7 @@ func OpenMini(a *app.App) *mygo.Window {
 	registerFonts()
 	s := newShell(a, a.GoPlayer())
 	s.attach(mygo.NewWindow(mygo.WindowOptions{
-		Title:       "MixMusic mini player",
+		Title:       "MyMusic mini player",
 		Width:       miniWidth,
 		Height:      miniHeight,
 		MinWidth:    miniMinWidth,
@@ -60,7 +60,7 @@ func OpenMini(a *app.App) *mygo.Window {
 
 // miniView builds the mini player: the artwork the height of the player,
 // what plays with the buttons of the panels and the transport beside it,
-// buttons that open MixMusic or close the window, and the progress along
+// buttons that open MyMusic or close the window, and the progress along
 // its foot, which seeks. The panel shows above or below it, where the
 // window grows for it (minipanel.go). Dragging it anywhere but its
 // controls moves the window.
@@ -144,7 +144,7 @@ func (s *shell) miniBody(c *ui.Context, w float32) {
 	cur, ok := s.st.Current()
 	ui.Column(c).Grow(1).MinWidth(0).Padding(2, 0, miniSeekRoom-4).PaddingStart(12).PaddingEnd(4).
 		Gap(4).Justify(ui.Center).Children(func() {
-		title, line := k.words("Nothing playing"), "play something in MixMusic"
+		title, line := k.words("Nothing playing"), "play something in MyMusic"
 		if ok {
 			title, line = cur.Track.Title, names(cur.Track.Artists)
 		}
@@ -158,7 +158,7 @@ func (s *shell) miniBody(c *ui.Context, w float32) {
 				// Both close this window once this frame is drawn: on Linux
 				// the frame draws in the window's GL area, and GTK crashed
 				// finishing it once the window was gone (#37).
-				if s.miniButton(c, "mini-open", "mini", "Open MixMusic", false, 26, 15).Clicked() {
+				if s.miniButton(c, "mini-open", "mini", "Open MyMusic", false, 26, 15).Clicked() {
 					go s.svc.System.ShowMainWindow()
 				}
 				if s.miniButton(c, "mini-close", "close", "Close the mini player", false, 26, 15).Clicked() {

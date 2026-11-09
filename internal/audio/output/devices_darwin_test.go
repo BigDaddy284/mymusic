@@ -11,7 +11,7 @@ func TestCFStrings(t *testing.T) {
 	if err := loadCoreFoundation(); err != nil {
 		t.Fatal(err)
 	}
-	for _, s := range []string{"BuiltInSpeakerDevice", "Kopfhörer — MixMusic 🎧", "スピーカー", ""} {
+	for _, s := range []string{"BuiltInSpeakerDevice", "Kopfhörer — MyMusic 🎧", "スピーカー", ""} {
 		ref := cfString(s)
 		if ref == 0 {
 			t.Fatalf("no CFString of %q", s)

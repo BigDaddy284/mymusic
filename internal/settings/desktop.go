@@ -6,19 +6,19 @@ import (
 	"strings"
 )
 
-// DefaultDiscordAppID is MixMusic's own Discord application, whose name
+// DefaultDiscordAppID is MyMusic's own Discord application, whose name
 // Discord shows beside what plays when the user set no other.
 const DefaultDiscordAppID = "1562074343691788378"
 
 // discordIDRe matches a Discord application ID, a number.
 var discordIDRe = regexp.MustCompile(`^[0-9]{15,22}$`)
 
-// Desktop is how MixMusic fits in the desktop: Settings › Desktop.
+// Desktop is how MyMusic fits in the desktop: Settings › Desktop.
 type Desktop struct {
 	// CloseToTray keeps the music playing as the window closes, from the
 	// tray icon. It is off at first.
 	CloseToTray bool `json:"closeToTray"`
-	// Notifications tell what starts playing while MixMusic is in the
+	// Notifications tell what starts playing while MyMusic is in the
 	// background.
 	Notifications bool `json:"notifications"`
 	// ShowInTitle names what plays in the main window's title.
@@ -30,14 +30,14 @@ type Desktop struct {
 	// (#371): MiniQueue, MiniLyrics or MiniOutput, or "" for none.
 	MiniPanel string `json:"miniPanel"`
 	// MediaKeys has the keyboard's play, next and previous keys control
-	// MixMusic.
+	// MyMusic.
 	MediaKeys bool `json:"mediaKeys"`
 	// DiscordPresence shows what plays on the user's Discord profile, as
-	// the Discord application of DiscordAppID, or MixMusic's own when it
+	// the Discord application of DiscordAppID, or MyMusic's own when it
 	// is empty.
 	DiscordPresence bool `json:"showOnDiscord"`
 	// DiscordAppID is the ID of the user's own Discord application, which
-	// DiscordPresence shows as; "" is MixMusic's.
+	// DiscordPresence shows as; "" is MyMusic's.
 	DiscordAppID string `json:"discordAppId"`
 	// DiscordFirstLine is the first line of the Discord status, a template
 	// whose placeholders, as {title}, name the track's (#352). Empty, the
@@ -95,5 +95,5 @@ func (d Desktop) clean() Desktop {
 }
 
 // DiscordApp returns the ID of the Discord application that shows what
-// plays: the user's, or MixMusic's own.
+// plays: the user's, or MyMusic's own.
 func (d Desktop) DiscordApp() string { return cmp.Or(d.DiscordAppID, DefaultDiscordAppID) }

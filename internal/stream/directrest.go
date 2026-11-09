@@ -104,7 +104,7 @@ func (d *Direct) count(ctx context.Context, err error, retried bool) (retry bool
 	if late {
 		why = fmt.Sprintf("refused or didn't answer %d streams in a row, the last not in time", r.refused)
 	}
-	log.Printf("mixmusic: YouTube's player API %s; yt-dlp alone finds them for %d minutes", why, int(r.last/time.Minute))
+	log.Printf("mymusic: YouTube's player API %s; yt-dlp alone finds them for %d minutes", why, int(r.last/time.Minute))
 	return false
 }
 

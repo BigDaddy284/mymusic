@@ -15,15 +15,15 @@ plugin: a pull request adding one folder.
 You need [Go](https://go.dev/dl/) 1.27.3 or later and [Bun](https://bun.sh) 1.2 or later.
 
 ```sh
-git clone https://github.com/fzn0x/mixmusic
-cd mixmusic
+git clone https://github.com/bigdaddy284/mymusic
+cd mymusic
 bun install
 bun run dev
 ```
 
 `bun run dev` builds the app, starts it, and rebuilds it as you edit it.
-Development builds keep their data apart from an installed MixMusic, under
-the name `MixMusic Dev`.
+Development builds keep their data apart from an installed MyMusic, under
+the name `MyMusic Dev`.
 
 Before you open a pull request:
 
@@ -48,13 +48,13 @@ rules keep the project healthy:
   `sdk/index.d.ts` and [docs/plugins.md](docs/plugins.md) together; the
   typecheck checks the community's plugins against the types.
 - **Tests do not need the network.** Parsers are tested on recorded
-  responses in `testdata/`; live tests run only with `MIXMUSIC_LIVE=1`.
+  responses in `testdata/`; live tests run only with `MYMUSIC_LIVE=1`.
   The Opus decoder's conformance test runs when `OPUS_TESTVECTORS` names
   the folder of the
   [RFC 8251 test vectors](https://opus-codec.org/static/testvectors/opus_testvectors-rfc8251.tar.gz),
   which CI downloads. The tests that open the audio device, silently, run
-  only with `MIXMUSIC_AUDIO=1`, which CI sets on Linux and macOS, and those that compare the native engine's
-  sound with Chromium's Web Audio when `MIXMUSIC_BROWSER` names a Chromium
+  only with `MYMUSIC_AUDIO=1`, which CI sets on Linux and macOS, and those that compare the native engine's
+  sound with Chromium's Web Audio when `MYMUSIC_BROWSER` names a Chromium
   browser, as `msedge.exe`.
 - **Honest errors.** When a service refuses something, say what and how to
   get past it, in the words of the interface.
@@ -90,7 +90,7 @@ same lines, as below, or waits for the other to merge.
   `settings_surround.go` does, and registers itself from `init()` with
   `addSettings(place, order, build)`: a place is a tab, as `"playback"`,
   or a group, as `soundRows`. Orders go up in tens, so a new row slots in
-  between. Two rows at the same order stop MixMusic at start-up, so the
+  between. Two rows at the same order stop MyMusic at start-up, so the
   tests catch it; the second to merge takes another number. Nothing edits
   a central list or switch.
 - **Options, not arguments.** When a function or an interface method would
@@ -155,7 +155,7 @@ don't edit CHANGELOG.md itself, so they never conflict over it;
 3. Tag the commit and push it with the tag:
 
    ```sh
-   git tag -a vx.y.z -m "MixMusic vx.y.z"
+   git tag -a vx.y.z -m "MyMusic vx.y.z"
    git push origin main vx.y.z
    ```
 
@@ -201,8 +201,8 @@ archives, so that updates install the signed app too: see the comments of
 | `APPLE_API_KEY_ID`, `APPLE_API_ISSUER` | its key ID and its issuer ID |
 | `WINDOWS_CERTIFICATE` | a code signing certificate and its private key, as a `.pfx`, in base64 |
 | `WINDOWS_CERTIFICATE_PASSWORD` | its password, if it has one |
-| `HOMEBREW_TAP_TOKEN` | a token that can write to `fzn0x/homebrew-tap` |
-| `AUR_SSH_PRIVATE_KEY` | the private SSH key of the AUR account that maintains `mixmusic-bin` |
+| `HOMEBREW_TAP_TOKEN` | a token that can write to `bigdaddy284/homebrew-tap` |
+| `AUR_SSH_PRIVATE_KEY` | the private SSH key of the AUR account that maintains `mymusic-bin` |
 
 What only the maintainer can do, once:
 
@@ -231,29 +231,29 @@ What only the maintainer can do, once:
    signing service, and never come as a `.pfx`: those sign with MyGo's
    `windows.signCommand` instead, which takes a step of its own. SmartScreen
    may still warn about a new certificate until it has a reputation.
-3. **Homebrew.** Create the public repository `fzn0x/homebrew-tap`, and a
+3. **Homebrew.** Create the public repository `bigdaddy284/homebrew-tap`, and a
    fine-grained personal access token for it alone with Contents: Read and
    write, then `gh secret set HOMEBREW_TAP_TOKEN`. The next release writes
-   `Casks/mixmusic.rb` there, for `brew install --cask fzn0x/tap/mixmusic`.
+   `Casks/mymusic.rb` there, for `brew install --cask fzn0x/tap/mymusic`.
 4. **The AUR.** Make an account on the [AUR](https://aur.archlinux.org),
    and a key of its own for the workflow alone, with no passphrase. Add
    the public key to the account's SSH Public Key, then:
 
    ```sh
-   ssh-keygen -t ed25519 -N "" -C "mixmusic release" -f aur
+   ssh-keygen -t ed25519 -N "" -C "mymusic release" -f aur
    gh secret set AUR_SSH_PRIVATE_KEY < aur
    ```
 
-   The next release pushes `mixmusic-bin` there, from
+   The next release pushes `mymusic-bin` there, from
    [packaging/aur](packaging/aur) with `tools/aur`, for
-   `yay -S mixmusic-bin`. It installs the files of the release's `.deb`,
-   and MixMusic tells it by pacman's database: it offers no download, as
+   `yay -S mymusic-bin`. It installs the files of the release's `.deb`,
+   and MyMusic tells it by pacman's database: it offers no download, as
    pacman updates it. Pre-releases stay off the AUR.
 
 The first signed release: check on a Mac and on Windows that it opens
 without a warning, and that `brew install`, `brew upgrade` and
-`brew uninstall` work, and on Arch that `yay -S mixmusic-bin` installs a
-MixMusic whose Settings › About says "AUR package". Then take "(coming soon)" out of the README's AUR row. Then take "not notarized yet" and "not signed yet"
+`brew uninstall` work, and on Arch that `yay -S mymusic-bin` installs a
+MyMusic whose Settings › About says "AUR package". Then take "(coming soon)" out of the README's AUR row. Then take "not notarized yet" and "not signed yet"
 out of the README's first launch, docs/troubleshooting.md and the
 website, its FAQ in site/data/faq.toml too, and "once its tap is up" out of the README's Homebrew line. The
 release notes and the cask's caveats leave them out by themselves.
@@ -262,30 +262,20 @@ release notes and the cask's caveats leave them out by themselves.
 
 The [website](site/templates/index.html) and the docs' pages are built with
 [Zola](https://www.getzola.org) from `site/` and `docs/` (see
-[site/zola.toml](site/zola.toml)), and go out to two places whenever what
-they're built from changes on main:
-
-- [pages.yml](.github/workflows/pages.yml) publishes them to GitHub Pages,
-  at https://fzn0x.github.io/mixmusic/.
-- [cloudflare.yml](.github/workflows/cloudflare.yml) builds them again with
-  `--base-url https://mixmusic.functionx.dev` and deploys them to that
-  domain as the Worker of [site/wrangler.jsonc](site/wrangler.jsonc), which
-  serves only the built files. It needs two secrets in the repository: a
-  Cloudflare API token as `CLOUDFLARE_API_TOKEN`, made from the "Edit
-  Cloudflare Workers" template with the functionx.dev zone in it, and the
-  account's ID as `CLOUDFLARE_ACCOUNT_ID`. Pull requests that change the
-  site check the Worker without deploying it, and keep the built site as
-  their `site-cloudflare` artifact.
+[site/zola.toml](site/zola.toml)), and
+[pages.yml](.github/workflows/pages.yml) publishes them to GitHub Pages, at
+https://bigdaddy284.github.io/mymusic/, whenever what they're built from
+changes on main.
 
 ## The Flatpak
 
 [packaging/flatpak](packaging/flatpak) packs the app of the Linux build
-into a Flatpak, `io.github.fzn0x.mixmusic`, on the GNOME runtime, with the
+into a Flatpak, `io.github.bigdaddy284.mymusic`, on the GNOME runtime, with the
 tray's library from Flathub's shared modules (a git submodule) and Node.js
 from the SDK's extension, for x64 and Arm64: the manifest takes the
 Linux archive of the architecture it builds for. CI builds both on every
 pull request, each on a runner of its architecture, installs them and
-starts MixMusic in them; its `flatpak-amd64` and `flatpak-arm64`
+starts MyMusic in them; its `flatpak-amd64` and `flatpak-arm64`
 artifacts are the bundles. To build it on Linux, with
 [Flatpak](https://flatpak.org/setup/) and
 `flatpak install flathub org.flatpak.Builder`, on x64 (on Arm64, the
@@ -295,14 +285,14 @@ same with `arm64` for `amd64`):
 git submodule update --init
 bun run build -- -platform linux/amd64
 mkdir -p packaging/flatpak/dist
-cp build/linux-amd64/mixmusic-*-linux-amd64.tar.gz packaging/flatpak/dist/mixmusic-linux-amd64.tar.gz
-go run ./tools/metainfo -o packaging/flatpak/dist/io.github.fzn0x.mixmusic.metainfo.xml
+cp build/linux-amd64/mymusic-*-linux-amd64.tar.gz packaging/flatpak/dist/mymusic-linux-amd64.tar.gz
+go run ./tools/metainfo -o packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
 flatpak run org.flatpak.Builder --user --install --install-deps-from=flathub --force-clean \
-  build/flatpak packaging/flatpak/io.github.fzn0x.mixmusic.yml
-flatpak run io.github.fzn0x.mixmusic
+  build/flatpak packaging/flatpak/io.github.bigdaddy284.mymusic.yml
+flatpak run io.github.bigdaddy284.mymusic
 ```
 
-`flatpak run --log-session-bus io.github.fzn0x.mixmusic` shows what the
+`flatpak run --log-session-bus io.github.bigdaddy284.mymusic` shows what the
 sandbox refuses on the session bus. GNOME runtimes get about a year of
 support: the manifest's `runtime-version`, the `gnome-<version>` image of
 ci.yml and release.yml, and the Node.js extension's branch move together;
@@ -320,7 +310,7 @@ language line.
 
 ## Flathub
 
-[packaging/flathub](packaging/flathub) builds MixMusic from source as
+[packaging/flathub](packaging/flathub) builds MyMusic from source as
 Flathub builds apps, without the network, and the
 [flathub workflow](.github/workflows/flathub.yml) builds it the way
 Flathub's builder does, with Flathub's linter, when what it's built from
@@ -328,13 +318,13 @@ changes, and weekly. After a change of `go.mod` or `go.sum`, run
 `go run ./tools/flathub`, which writes `packaging/flathub/go-modules.json`
 again; the workflow fails until it's current. Its
 [README](packaging/flathub/README.md) tells what the build needs, why it
-asks for each permission, and how MixMusic is submitted to Flathub and
+asks for each permission, and how MyMusic is submitted to Flathub and
 kept up to date there.
 
 ## Reports
 
-Open an [issue](https://github.com/fzn0x/mixmusic/issues) with what you did,
-what happened, and what you expected, with your system and MixMusic's
+Open an [issue](https://github.com/bigdaddy284/mymusic/issues) with what you did,
+what happened, and what you expected, with your system and MyMusic's
 version (Settings › About). For security problems, see
 [SECURITY.md](SECURITY.md) instead.
 

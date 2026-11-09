@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // liveTrack is a live video, as YouTube Music lists it: of no length.

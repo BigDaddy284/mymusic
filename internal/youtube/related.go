@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Related returns the shelves YouTube Music relates to a track: songs you

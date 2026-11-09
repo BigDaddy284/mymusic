@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-# Starts MixMusic as a Linux desktop starts it, and checks what Linux alone
+# Starts MyMusic as a Linux desktop starts it, and checks what Linux alone
 # has, from outside, as a desktop sees it (#146):
 #
-#   linux-app.py [--libs nix|system] <mixmusic> <out>
+#   linux-app.py [--libs nix|system] <mymusic> <out>
 #
 # It runs under a virtual X display and a session bus of its own:
 #
 #   xvfb-run -a -s "-screen 0 1600x1000x24" dbus-run-session -- \
-#       /usr/bin/python3 .github/scripts/linux-app.py result/bin/mixmusic out
+#       /usr/bin/python3 .github/scripts/linux-app.py result/bin/mymusic out
 #
 # with xdotool, ffmpeg, PulseAudio's pactl and parec, xmessage, and
 # PyGObject's Gio. A sound server should run: the tone's checks fail
 # without one.
 #
-# MixMusic gets a profile of its own (MIXMUSIC_DATA_DIR) that holds one
+# MyMusic gets a profile of its own (MYMUSIC_DATA_DIR) that holds one
 # track, downloaded: a 440 Hz tone that ffmpeg makes, which plays without
-# the network, with MixMusic's icon from GitHub as its cover. MixMusic
+# the network, with MyMusic's icon from GitHub as its cover. MyMusic
 # starts twice:
 #
 #   - in capture mode, which saves its own frames of home, Settings › About
@@ -51,22 +51,23 @@ import gi
 gi.require_version("Gio", "2.0")
 from gi.repository import Gio, GLib  # noqa: E402
 
-VIDEO = "mixmusicCI1"  # the downloaded track's video ID: 11 characters
+VIDEO = "mymusicCI01"  # the downloaded track's video ID: 11 characters
 TITLE = "Check tone"
-ARTIST = "MixMusic CI"
+ARTIST = "MyMusic CI"
 TONE_HZ = 440
 # The track's cover: the system's controls show covers of https addresses
-# alone: MixMusic's icon at a tag, whose address stays when files move.
-COVER = "https://raw.githubusercontent.com/fzn0x/mixmusic/v0.5.9/resources/icon.png"
-MPRIS = "org.mpris.MediaPlayer2.mixmusic"  # outside a Flatpak
+# alone: MyMusic's icon at the commit that drew it, whose address stays
+# when files move.
+COVER = "https://raw.githubusercontent.com/bigdaddy284/mymusic/5abac2f6111261b8608fb3c32a6a388fb344c0eb/brand/icon.png"
+MPRIS = "org.mpris.MediaPlayer2.mymusic"  # outside a Flatpak
 MPRIS_PATH = "/org/mpris/MediaPlayer2"
 PLAYER = "org.mpris.MediaPlayer2.Player"
 WATCHER = "org.kde.StatusNotifierWatcher"
 WATCHER_PATH = "/StatusNotifierWatcher"
 ITEM = "org.kde.StatusNotifierItem"
 MENU = "com.canonical.dbusmenu"
-# The tray menu's items, as MixMusic makes them (internal/app/desktop.go).
-TRAY_ITEMS = ["Play / Pause", "Next", "Previous", "Show MixMusic", "Mini player"]
+# The tray menu's items, as MyMusic makes them (internal/app/desktop.go).
+TRAY_ITEMS = ["Play / Pause", "Next", "Previous", "Show MyMusic", "Mini player"]
 
 WATCHER_XML = """<node>
   <interface name="org.kde.StatusNotifierWatcher">
@@ -303,7 +304,7 @@ def listen(source, seconds=1.5):
     return (20 * math.log10(rms) if rms > 0 else -math.inf), rising / (len(samples) / 48000)
 
 
-# The profile MixMusic starts with.
+# The profile MyMusic starts with.
 
 def make_tone(work):
     """Makes the tone, which plays for 10 minutes."""
@@ -328,7 +329,7 @@ def fetch(url):
 
 def make_profile(root, tone, cover_url):
     """A profile whose queue holds the track, downloaded, paused at its
-    start, as MixMusic left it."""
+    start, as MyMusic left it."""
     data, downloads = os.path.join(root, "data"), os.path.join(root, "downloads")
     os.makedirs(data)
     os.makedirs(os.path.join(downloads, "audio"))
@@ -361,7 +362,7 @@ def stored(folder):
 
 
 def app_env(profile, extra=None):
-    env = dict(os.environ, MIXMUSIC_DATA_DIR=profile, GDK_BACKEND="x11", NO_AT_BRIDGE="1")
+    env = dict(os.environ, MYMUSIC_DATA_DIR=profile, GDK_BACKEND="x11", NO_AT_BRIDGE="1")
     env.update(extra or {})
     return env
 
@@ -427,26 +428,26 @@ def edit_settings(path, change, in_place=False):
         os.replace(path + ".edit", path)
 
 
-def capture_run(c, mixmusic, profile, out):
-    """MixMusic in capture mode, which saves its own frames: home,
+def capture_run(c, mymusic, profile, out):
+    """MyMusic in capture mode, which saves its own frames: home,
     Settings › About, and Now playing as the track plays, into no device."""
     shots = os.path.join(out, "capture")
     env = app_env(profile, {
-        "MIXMUSIC_CAPTURE": shots,
-        "MIXMUSIC_CAPTURE_ROUTES": "/|/settings/about|act:resume|act:wait:4s|/now-playing|act:title",
-        "MIXMUSIC_CAPTURE_WAIT": "8s",
-        "MIXMUSIC_CAPTURE_SIZE": "1280x800",
-        "MIXMUSIC_CAPTURE_QUIT": "1",
-        "MIXMUSIC_SILENT": "1",
+        "MYMUSIC_CAPTURE": shots,
+        "MYMUSIC_CAPTURE_ROUTES": "/|/settings/about|act:resume|act:wait:4s|/now-playing|act:title",
+        "MYMUSIC_CAPTURE_WAIT": "8s",
+        "MYMUSIC_CAPTURE_SIZE": "1280x800",
+        "MYMUSIC_CAPTURE_QUIT": "1",
+        "MYMUSIC_SILENT": "1",
     })
     with open(os.path.join(out, "capture-run.log"), "w") as log:
-        p = subprocess.Popen([mixmusic], env=env, stdout=log, stderr=subprocess.STDOUT)
+        p = subprocess.Popen([mymusic], env=env, stdout=log, stderr=subprocess.STDOUT)
         try:
             code = p.wait(timeout=180)
         except subprocess.TimeoutExpired:
             p.kill()
             code = "still running after 180 s"
-    c.add("Capture mode: MixMusic starts, saves its frames and quits", code == 0, f"exit {code}")
+    c.add("Capture mode: MyMusic starts, saves its frames and quits", code == 0, f"exit {code}")
     for name in ["01-home", "02-settings-about", "03-now-playing"]:
         path = os.path.join(shots, name + ".png")
         if not os.path.exists(path):
@@ -455,9 +456,9 @@ def capture_run(c, mixmusic, profile, out):
         ok, saw = drawn(*decode_png(path))
         c.add(f"Capture mode: {name}.png shows the window drawn", ok, saw)
     title = ""
-    log_file = os.path.join(profile, "logs", "mixmusic.log")
+    log_file = os.path.join(profile, "logs", "mymusic.log")
     if os.path.exists(log_file):
-        shutil.copy(log_file, os.path.join(out, "capture-mixmusic.log"))
+        shutil.copy(log_file, os.path.join(out, "capture-mymusic.log"))
         with open(log_file) as f:
             for line in f:
                 if "the window's title is" in line:
@@ -467,7 +468,7 @@ def capture_run(c, mixmusic, profile, out):
 
 
 class Session:
-    """MixMusic started as a user starts it, and what its checks found."""
+    """MyMusic started as a user starts it, and what its checks found."""
 
     def __init__(self, c, args, out, work, tone, cover):
         self.c, self.out, self.cover = c, out, cover
@@ -480,9 +481,9 @@ class Session:
         self.display = Display(out)
         self.tray = None
         self.started = time.monotonic()
-        self.log = open(os.path.join(out, "mixmusic-stderr.log"), "w")
+        self.log = open(os.path.join(out, "mymusic-stderr.log"), "w")
         env = app_env(self.profile, {"XDG_CACHE_HOME": os.path.join(work, "xdg-cache")})
-        self.app = subprocess.Popen([os.path.abspath(args.mixmusic)], env=env, stdout=self.log,
+        self.app = subprocess.Popen([os.path.abspath(args.mymusic)], env=env, stdout=self.log,
                                     stderr=subprocess.STDOUT)
 
     def grab(self, name=None):
@@ -492,7 +493,7 @@ class Session:
         """It starts, and shows its window."""
         app = self.app
         found = until(lambda: app.poll() is not None or windows(app.pid), 90)
-        if not self.c.add("MixMusic starts and shows its window", app.poll() is None and found,
+        if not self.c.add("MyMusic starts and shows its window", app.poll() is None and found,
                           f"in {time.monotonic() - self.started:.1f} s" if found and app.poll() is None
                           else f"exited with {app.poll()}" if app.poll() is not None else "no window in 90 s"):
             return False
@@ -536,7 +537,7 @@ class Session:
         icon = name if os.path.isabs(name) else os.path.join(props.get("IconThemePath", ""), name + ".png")
         with open(os.path.join(os.path.dirname(__file__), "..", "..", "brand", "tray.png"), "rb") as f:
             same = os.path.isfile(icon) and open(icon, "rb").read() == f.read()
-        self.c.add("The tray item is active, with MixMusic's icon", props.get("Status") == "Active" and same,
+        self.c.add("The tray item is active, with MyMusic's icon", props.get("Status") == "Active" and same,
                    f"Status {props.get('Status')}, icon {icon}"
                    + (" = brand/tray.png" if same else " differs or is missing"))
         layout = call(item["bus"], props["Menu"], MENU, "GetLayout", GLib.Variant("(iias)", (0, -1, [])))[1]
@@ -563,7 +564,7 @@ class Session:
 
     def zoom_keys(self):
         """The zoom keys in the window, which the GTK handler of #251 takes
-        for the keypad's +: read back from settings.json, which MixMusic
+        for the keypad's +: read back from settings.json, which MyMusic
         saves, and which it writes at its start."""
         until(lambda: read_settings(self.settings), 20)
         run("xdotool", "windowfocus", "--sync", self.wid, timeout=10)
@@ -593,7 +594,7 @@ class Session:
                     f" (bg or surface: {' or '.join(want)})")
 
     def settings_file(self):
-        """settings.json edited while MixMusic runs (#81): through inotify,
+        """settings.json edited while MyMusic runs (#81): through inotify,
         the theme written over the file, and the zoom in place."""
         watched = inotify_inodes(self.app.pid)
         folder = os.stat(os.path.dirname(self.settings)).st_ino
@@ -656,13 +657,13 @@ class Session:
         self.c.add("matugen.json in the data folder colours the window", ok, saw)
         edit_settings(self.settings, lambda s: s.update(colorSource=""))
         self.shows(self.base)
-        with open(os.path.join(self.profile, "logs", "mixmusic.log")) as f:
+        with open(os.path.join(self.profile, "logs", "mymusic.log")) as f:
             polled = "looking at it every" in f.read()
         self.c.add("settings.json was never watched by polling", not polled,
                    "the fallback was logged" if polled else "no fallback logged")
 
     def playback(self):
-        """The media keys: a press of the keyboard's play key, which MixMusic
+        """The media keys: a press of the keyboard's play key, which MyMusic
         grabs on X11, plays the queue it kept: the track, downloaded. The
         MPRIS player comes once something plays."""
         run("xdotool", "key", "XF86AudioPlay")
@@ -689,7 +690,7 @@ class Session:
               'interface name="org.mpris.MediaPlayer2"' in xml and f'interface name="{PLAYER}"' in xml,
               f"{len(xml)} bytes")
         root = get_all(MPRIS, MPRIS_PATH, "org.mpris.MediaPlayer2")
-        c.add("MPRIS names MixMusic", root.get("Identity") == "MixMusic" and root.get("DesktopEntry") == "mixmusic",
+        c.add("MPRIS names MyMusic", root.get("Identity") == "MyMusic" and root.get("DesktopEntry") == "mymusic",
               f"Identity {root.get('Identity')}, DesktopEntry {root.get('DesktopEntry')}, "
               f"CanRaise {root.get('CanRaise')}, CanQuit {root.get('CanQuit')}")
         art = until(lambda: get_all(MPRIS, MPRIS_PATH, PLAYER)["Metadata"].get("mpris:artUrl"), 30)
@@ -786,7 +787,7 @@ class Session:
             code = self.app.wait(20)
         except subprocess.TimeoutExpired:
             code = "still running after 20 s"
-        self.c.add("The tray menu's Quit quits MixMusic", code == 0, f"exit {code}")
+        self.c.add("The tray menu's Quit quits MyMusic", code == 0, f"exit {code}")
         crash = os.path.join(self.profile, "logs", "crash.log")
         size = os.path.getsize(crash) if os.path.exists(crash) else 0
         self.c.add("No crash was logged", size == 0, f"crash.log {size} bytes")
@@ -814,7 +815,7 @@ class Session:
             except subprocess.TimeoutExpired:
                 self.app.kill()
         self.log.close()
-        for name in ["mixmusic.log", "crash.log"]:
+        for name in ["mymusic.log", "crash.log"]:
             path = os.path.join(self.profile, "logs", name)
             if os.path.exists(path):
                 shutil.copy(path, os.path.join(self.out, name))
@@ -825,7 +826,7 @@ class Session:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--libs", choices=["nix", "system"], default="system")
-    ap.add_argument("mixmusic")
+    ap.add_argument("mymusic")
     ap.add_argument("out")
     ap.add_argument("--watcher", help=argparse.SUPPRESS)
     args = ap.parse_args()
@@ -845,9 +846,9 @@ def main():
 
     capture = os.path.join(work, "capture-profile")
     make_profile(capture, tone, COVER)
-    capture_run(c, os.path.abspath(args.mixmusic), capture, out)
+    capture_run(c, os.path.abspath(args.mymusic), capture, out)
 
-    # The stand-in for the panel's tray, before MixMusic starts, as on a
+    # The stand-in for the panel's tray, before MyMusic starts, as on a
     # desktop.
     items_file = os.path.join(out, "tray-items.json")
     helpers = [subprocess.Popen([sys.executable, os.path.abspath(__file__), "--watcher", items_file, "-", "-"])]
@@ -866,7 +867,7 @@ def main():
         for p in helpers:
             p.kill()
         shutil.rmtree(work, ignore_errors=True)
-    ok = c.save(f"MixMusic on Linux ({args.libs} libraries)")
+    ok = c.save(f"MyMusic on Linux ({args.libs} libraries)")
     sys.exit(0 if ok else 1)
 
 

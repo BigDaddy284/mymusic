@@ -9,7 +9,7 @@ import (
 )
 
 // spotifyPage runs the script of public/spotify.html, the page of
-// MixMusic's own Spotify device, without a document, in a webview whose
+// MyMusic's own Spotify device, without a document, in a webview whose
 // EME grants the key systems of granted, or that has no EME when granted
 // is nil, and returns its runtime. asked lists the key systems the page
 // asked for.
@@ -50,7 +50,7 @@ func spotifyPage(t *testing.T, secure bool, granted []string) *sobek.Runtime {
 	return vm
 }
 
-// TestSpotifyPageDecryptsWithFairPlay has the page of MixMusic's own
+// TestSpotifyPageDecryptsWithFairPlay has the page of MyMusic's own
 // Spotify device take FairPlay, which macOS's webview has, as it takes
 // Widevine and PlayReady in WebView2, and nothing else: WebKitGTK has no
 // EME, and ClearKey doesn't play Spotify's audio (#295).

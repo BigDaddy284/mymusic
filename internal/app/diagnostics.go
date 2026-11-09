@@ -12,22 +12,22 @@ import (
 )
 
 // issuesURL is where problems are reported.
-const issuesURL = "https://github.com/fzn0x/mixmusic/issues/new"
+const issuesURL = "https://github.com/bigdaddy284/mymusic/issues/new"
 
-// LogsFolder returns the folder of MixMusic's log and of its crash
+// LogsFolder returns the folder of MyMusic's log and of its crash
 // reports.
 func (s *System) LogsFolder() string { return s.a.opts.LogsDir }
 
 // OpenLogsFolder opens the folder of the log in the file manager.
 func (s *System) OpenLogsFolder() error {
 	if s.a.opts.LogsDir == "" {
-		return fmt.Errorf("MixMusic keeps no log here")
+		return fmt.Errorf("MyMusic keeps no log here")
 	}
 	return mygo.Shell.OpenPath(s.a.opts.LogsDir)
 }
 
 // LastCrash returns the name of the crash report of the run before, when
-// MixMusic crashed then and the user has not answered yet; "" otherwise.
+// MyMusic crashed then and the user has not answered yet; "" otherwise.
 func (s *System) LastCrash() string {
 	s.a.mu.Lock()
 	defer s.a.mu.Unlock()
@@ -46,7 +46,7 @@ func (s *System) DismissCrash() {
 }
 
 // ReportURL returns the address of a new problem report on GitHub, with
-// the version and the setup filled in: the system, how MixMusic was
+// the version and the setup filled in: the system, how MyMusic was
 // installed, the tools, the theme and the plugins. Nothing of the user's
 // accounts or library goes in it.
 func (s *System) ReportURL(ctx context.Context) string {
@@ -54,7 +54,7 @@ func (s *System) ReportURL(ctx context.Context) string {
 	set := s.a.settings.Get()
 	tools := s.a.tools.Status(ctx)
 	var b strings.Builder
-	fmt.Fprintf(&b, "MixMusic %s on %s %s", info.Version, runtime.GOOS, runtime.GOARCH)
+	fmt.Fprintf(&b, "MyMusic %s on %s %s", info.Version, runtime.GOOS, runtime.GOARCH)
 	if kind := installKind(); kind != "" {
 		fmt.Fprintf(&b, ", installed as %s", kind)
 	}
@@ -67,7 +67,7 @@ func (s *System) ReportURL(ctx context.Context) string {
 	case !tools.YTDLP.Found:
 		b.WriteString("yt-dlp: not installed\n")
 	case tools.YTDLP.Managed:
-		fmt.Fprintf(&b, "yt-dlp %s, installed by MixMusic%s\n", tools.YTDLP.Version, outdated)
+		fmt.Fprintf(&b, "yt-dlp %s, installed by MyMusic%s\n", tools.YTDLP.Version, outdated)
 	default:
 		fmt.Fprintf(&b, "yt-dlp %s, the system's%s\n", tools.YTDLP.Version, outdated)
 	}
@@ -80,7 +80,7 @@ func (s *System) ReportURL(ctx context.Context) string {
 	if len(set.EnabledPlugins) > 0 {
 		fmt.Fprintf(&b, "Plugins: %s\n", strings.Join(set.EnabledPlugins, ", "))
 	}
-	b.WriteString("\nThe log, mixmusic.log, is in the folder Settings › About opens: read it before you attach it.\n")
+	b.WriteString("\nThe log, mymusic.log, is in the folder Settings › About opens: read it before you attach it.\n")
 	b.WriteString(s.memoryNote())
 	q := url.Values{"template": {"bug_report.yml"}, "version": {info.Version}, "more": {b.String()}}
 	return issuesURL + "?" + q.Encode()

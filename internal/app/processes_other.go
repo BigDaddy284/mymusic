@@ -6,5 +6,5 @@ package app
 // plays.
 func processes() []proc { return nil }
 
-// webViewAudio returns 0: only Windows and macOS hear MixMusic's web views.
+// webViewAudio returns 0: only Windows and macOS hear MyMusic's web views.
 func webViewAudio([]proc) uint32 { return 0 }

@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestLocalShelfKeys names Home's own shelves by their kind, which Home

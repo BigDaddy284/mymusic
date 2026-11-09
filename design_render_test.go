@@ -16,12 +16,12 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/youtube"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // coverOf draws a made-up cover, of hue n: two colours across it and a
@@ -86,24 +86,24 @@ func coverServer(t *testing.T, s *shell) string {
 }
 
 // TestRenderDesignLanguages draws the main pages in each layout design, in
-// Mix and Daylight, to MIXMUSIC_RENDER, with made-up covers, for a look:
-// MIXMUSIC_LAYOUTS and MIXMUSIC_THEMES list others, and MIXMUSIC_FOLLOW=off
+// Mix and Daylight, to MYMUSIC_RENDER, with made-up covers, for a look:
+// MYMUSIC_LAYOUTS and MYMUSIC_THEMES list others, and MYMUSIC_FOLLOW=off
 // keeps the themes' own accents rather than the covers'. The images are
 // named by the layout, then the theme.
 func TestRenderDesignLanguages(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	layouts := settings.Layouts
-	if only := os.Getenv("MIXMUSIC_LAYOUTS"); only != "" {
+	if only := os.Getenv("MYMUSIC_LAYOUTS"); only != "" {
 		layouts = nil
 		for _, l := range strings.Split(only, ",") {
 			layouts = append(layouts, settings.Layout(l))
 		}
 	}
 	themes := []string{"mix", "daylight"}
-	if only := os.Getenv("MIXMUSIC_THEMES"); only != "" {
+	if only := os.Getenv("MYMUSIC_THEMES"); only != "" {
 		themes = strings.Split(only, ",")
 	}
 	for _, layout := range layouts {
@@ -128,7 +128,7 @@ func renderDesign(t *testing.T, dir string, layout settings.Layout, theme string
 	st := s.svc.Preferences.Get()
 	st.FollowSystem, st.Theme, st.Layout = false, theme, layout
 	// The theme's own accent, rather than the cover's.
-	st.DynamicAccent = os.Getenv("MIXMUSIC_FOLLOW") != "off"
+	st.DynamicAccent = os.Getenv("MYMUSIC_FOLLOW") != "off"
 	if _, err := s.svc.Preferences.Set(st); err != nil {
 		t.Fatal(err)
 	}

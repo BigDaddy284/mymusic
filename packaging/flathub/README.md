@@ -1,19 +1,19 @@
-# MixMusic on Flathub
+# MyMusic on Flathub
 
-This folder builds MixMusic from source as Flathub builds apps: in the
+This folder builds MyMusic from source as Flathub builds apps: in the
 GNOME SDK, with Go's and Node.js's SDK extensions, without the network.
 The [flathub workflow](../../.github/workflows/flathub.yml) builds it on
 x86_64 and aarch64 the way Flathub's builder does, runs Flathub's linter on
 the manifest and on what it built, then installs the bundle and starts
-MixMusic in it.
+MyMusic in it.
 
 | File | What it is |
 |---|---|
-| `io.github.fzn0x.mixmusic.yml` | The manifest. Its MixMusic is this checkout |
+| `io.github.bigdaddy284.mymusic.yml` | The manifest. Its MyMusic is this checkout |
 | `go-modules.json` | The Go modules of `go.sum`, vendored from the Go module proxy, written by `go run ./tools/flathub` |
 | `build.sh` | What `mygo build` does for Linux, as the sandbox runs it |
-| `io.github.fzn0x.mixmusic.desktop` | The desktop entry |
-| `io.github.fzn0x.mixmusic.metainfo.xml` | The AppStream metadata; `build.sh` adds the releases of CHANGELOG.md |
+| `io.github.bigdaddy284.mymusic.desktop` | The desktop entry |
+| `io.github.bigdaddy284.mymusic.metainfo.xml` | The AppStream metadata; `build.sh` adds the releases of CHANGELOG.md |
 
 ## Submitting
 
@@ -22,7 +22,7 @@ rules out three things this folder would otherwise be for:
 
 - A manifest submitted to Flathub must contain no AI-generated or
   AI-assisted content, and disclosing it doesn't exempt it. The manifest
-  here was written with an AI assistant, so it's MixMusic's own build and
+  here was written with an AI assistant, so it's MyMusic's own build and
   check of what Flathub needs, not the one to submit.
 - AI tools must not open or automate the submission pull request, or write
   its description, its commit messages or the replies to reviewers. This
@@ -50,10 +50,10 @@ What the maintainer does, by hand:
    its branches, branch off `new-pr`, add the manifest, its `go-modules.json`
    and Flathub's shared modules
    (`git submodule add https://github.com/flathub/shared-modules.git`),
-   and open a pull request to `new-pr` titled `Add io.github.fzn0x.mixmusic`,
+   and open a pull request to `new-pr` titled `Add io.github.bigdaddy284.mymusic`,
    filling in Flathub's template yourself. Then comment `bot, build`.
 4. Answer the reviewers, and accept the invitation to
-   `flathub/io.github.fzn0x.mixmusic` within a week of the merge, with
+   `flathub/io.github.bigdaddy284.mymusic` within a week of the merge, with
    two-factor authentication on.
 5. Verify the app on flathub.org: the `io.github.fzn0x` ID is checked
    through the `fzn0x` GitHub account.
@@ -71,25 +71,25 @@ What the maintainer does, by hand:
   [flatpak-go-mod](https://github.com/dennwc/flatpak-go-mod), which
   flatpak-builder-tools points to, writes the same layout.
 - **What `mygo build` does for Linux**, which needs Bun or Node.js only to
-  read `mygo.config.ts`, and downloads nothing for MixMusic: `go build` of
+  read `mygo.config.ts`, and downloads nothing for MyMusic: `go build` of
   the root package with `-trimpath`, the `mygo_noinspector` tag, `public/`
   embedded through a generated file, and the app's name, version,
   identifier and URL scheme linked in with `-X`; no update feed. `build.sh`
   does this; `tools/flathub`'s tests keep it in step with `mygo.config.ts`.
   Nothing is built in Nix, so the release's loader fix (`tools/elfloader`,
   `system-loader.py`) has no part in it.
-- **The app's files**: the executable in `/app/lib/mixmusic`, the release
-  Flatpak's launcher (`packaging/flatpak/mixmusic.sh`, which keeps the
-  tray's icon where the desktop sees it) as `/app/bin/mixmusic`, the desktop
-  entry, the SVG icon, the metadata, and the licenses of MixMusic and of
+- **The app's files**: the executable in `/app/lib/mymusic`, the release
+  Flatpak's launcher (`packaging/flatpak/mymusic.sh`, which keeps the
+  tray's icon where the desktop sees it) as `/app/bin/mymusic`, the desktop
+  entry, the SVG icon, the metadata, and the licenses of MyMusic and of
   each Go module.
-- **The mark** `/app/share/mixmusic/flathub`, by which MixMusic tells it is
+- **The mark** `/app/share/mymusic/flathub`, by which MyMusic tells it is
   Flathub's build (`internal/app/flathub.go`).
 - **yt-dlp and Node.js**, below.
 
 ### Updates
 
-MixMusic doesn't update a Flathub copy itself. In Flathub's build,
+MyMusic doesn't update a Flathub copy itself. In Flathub's build,
 Settings › About names the build "Flathub", offers no `.flatpak`, and says
 a new version comes from Flathub through the software center, or
 `flatpak update`. It still tells when a new version is out on GitHub;
@@ -100,7 +100,7 @@ and built.
 
 Flathub's build has yt-dlp as a module of its manifest: the pinned wheels of
 `yt-dlp` and `yt-dlp-ejs`, its solver of YouTube's challenges, which runs on
-Node.js from the SDK's extension. MixMusic runs it, unless the user chose
+Node.js from the SDK's extension. MyMusic runs it, unless the user chose
 another in Settings › Playback, and downloads none. This is what other
 downloaders on Flathub do, such as Video Downloader and Parabolic, whose
 `x-checker-data` has Flathub's bot propose each new yt-dlp: that matters
@@ -136,11 +136,11 @@ and Zen installed from Flathub (`~/.var/app/<browser>/…`), from which
 Settings › Accounts imports a YouTube Music sign-in (#199). That is
 reading other apps' cookies, which Flathub's reviewers are the most likely
 to refuse, so Flathub's build doesn't ask for it. Its users sign in with
-Google's sign-in in MixMusic's own window, as everyone can; the import
+Google's sign-in in MyMusic's own window, as everyone can; the import
 lists no browser. Someone who wants it grants one browser's folder:
 
 ```sh
-flatpak override --user --filesystem=~/.var/app/org.mozilla.firefox/.mozilla/firefox:ro io.github.fzn0x.mixmusic
+flatpak override --user --filesystem=~/.var/app/org.mozilla.firefox/.mozilla/firefox:ro io.github.bigdaddy284.mymusic
 ```
 
 ## Keeping it up to date
@@ -148,7 +148,7 @@ flatpak override --user --filesystem=~/.var/app/org.mozilla.firefox/.mozilla/fir
 - **go.sum.** After a change of the Go modules, `go run ./tools/flathub`
   writes `go-modules.json` again; the workflow fails until it does
   (`go run ./tools/flathub -check`).
-- **Releases.** Flathub's bot (`x-checker-data` of type `git` on MixMusic's
+- **Releases.** Flathub's bot (`x-checker-data` of type `git` on MyMusic's
   source) proposes each new tag in a pull request on the app's Flathub
   repository. When the release changed `go.sum`, that pull request also
   needs the release's `go-modules.json`, which `go run ./tools/flathub -o
@@ -172,11 +172,11 @@ On Linux, with [Flatpak](https://flatpak.org/setup/) and
 ```sh
 git submodule update --init packaging/flatpak/shared-modules
 go run ./tools/flathub -o build/flathub
-flatpak run --command=flathub-build org.flatpak.Builder --install build/flathub/io.github.fzn0x.mixmusic.yml
-flatpak run io.github.fzn0x.mixmusic
+flatpak run --command=flathub-build org.flatpak.Builder --install build/flathub/io.github.bigdaddy284.mymusic.yml
+flatpak run io.github.bigdaddy284.mymusic
 ```
 
 `-o` writes the folder of a Flathub repository: the manifest, `go-modules.json`
-and Flathub's shared modules. Without `-commit` or `-tag`, its MixMusic is
+and Flathub's shared modules. Without `-commit` or `-tag`, its MyMusic is
 this checkout; with them, a commit of GitHub's repository, as the workflow
 builds.

@@ -11,11 +11,11 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // testShow is a podcast of YouTube Music with three episodes, and more.
@@ -283,11 +283,11 @@ func TestReleasedLabel(t *testing.T) {
 }
 
 // TestRenderPodcasts draws a show's page, the search's podcasts and
-// Library › Podcasts to MIXMUSIC_RENDER, for a look.
+// Library › Podcasts to MYMUSIC_RENDER, for a look.
 func TestRenderPodcasts(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newPodcastShell(t)
 	s.loads["podcast:"+testShow.ID] = &loaded[media.Podcast]{done: true, value: testShow}

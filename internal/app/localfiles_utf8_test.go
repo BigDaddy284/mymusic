@@ -8,9 +8,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/builtin"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/builtin"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestLocalNamesNotUTF8 plays a song whose file's name and folder's name

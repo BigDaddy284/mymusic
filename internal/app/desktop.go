@@ -12,9 +12,9 @@ import (
 	"github.com/egoist/mygo"
 )
 
-// URLScheme is the scheme of MixMusic's deep links, such as
-// mixmusic://search?q=daft+punk.
-const URLScheme = "mixmusic"
+// URLScheme is the scheme of MyMusic's deep links, such as
+// mymusic://search?q=daft+punk.
+const URLScheme = "mymusic"
 
 // mediaKeys are the global shortcuts of the keyboard's media keys.
 var mediaKeys = map[string]Command{
@@ -24,14 +24,14 @@ var mediaKeys = map[string]Command{
 	"MediaStop":          CommandPause,
 }
 
-// Start opens the main window and puts MixMusic on the desktop: the tray
+// Start opens the main window and puts MyMusic on the desktop: the tray
 // icon, the media keys and the user's global shortcuts, the deep links of
 // portable copies. It runs once the app is ready.
 func (a *App) Start() {
 	// Quitting closes every window; the main window must close then, not
 	// hide in the tray, or the quit stops there.
 	mygo.App.OnBeforeQuit(func(*mygo.QuitEvent) { a.quitting.Store(true) })
-	// What waits a moment to be saved is saved as MixMusic quits: once its
+	// What waits a moment to be saved is saved as MyMusic quits: once its
 	// windows closed, before the single instance lock is released and an
 	// update's restart starts the new copy, and again once the loop
 	// stopped, which is all that runs when Windows ends the session. The
@@ -40,7 +40,7 @@ func (a *App) Start() {
 	// process before it returns.
 	mygo.App.OnWillQuit(func(*mygo.QuitEvent) { a.flush() })
 	mygo.App.OnQuit(a.flush)
-	// The listener stops hearing Spotify as MixMusic quits: on macOS, its
+	// The listener stops hearing Spotify as MyMusic quits: on macOS, its
 	// tap and the device that reads it go.
 	mygo.App.OnWillQuit(func(*mygo.QuitEvent) {
 		if l := a.listen.Load(); l != nil {
@@ -49,13 +49,13 @@ func (a *App) Start() {
 	})
 	if runtime.GOOS != "darwin" && !mygo.App.IsPackaged() {
 		if err := mygo.App.RegisterURLScheme(URLScheme); err != nil {
-			log.Printf("mixmusic: registering %s links: %v", URLScheme, err)
+			log.Printf("mymusic: registering %s links: %v", URLScheme, err)
 		}
 	}
 	if a.openMain(mygo.App.WasOpenedAtLogin()) == nil {
 		return
 	}
-	// Edits of settings.json apply while MixMusic runs. The watch starts
+	// Edits of settings.json apply while MyMusic runs. The watch starts
 	// beside the main thread, as WatchFiles waits for it to enroll.
 	ctx, stop := context.WithCancel(context.Background())
 	a.mu.Lock()
@@ -82,7 +82,7 @@ func (a *App) Start() {
 	go a.keepYTDLPCurrent()
 }
 
-// keepYTDLPCurrent updates the yt-dlp MixMusic installed a minute after
+// keepYTDLPCurrent updates the yt-dlp MyMusic installed a minute after
 // start, then once a day: YouTube changes often, and an old yt-dlp stops
 // finding its streams.
 func (a *App) keepYTDLPCurrent() {
@@ -95,22 +95,22 @@ func (a *App) keepYTDLPCurrent() {
 		cancel()
 		switch {
 		case err != nil:
-			log.Printf("mixmusic: updating yt-dlp: %v", err)
+			log.Printf("mymusic: updating yt-dlp: %v", err)
 		case updated:
-			log.Printf("mixmusic: updated yt-dlp")
+			log.Printf("mymusic: updated yt-dlp")
 		}
 	}
 }
 
-// openMain opens the main window, with its player, hidden when MixMusic
-// starts at login. Where MixMusic can't play, it says why and quits, and
+// openMain opens the main window, with its player, hidden when MyMusic
+// starts at login. Where MyMusic can't play, it says why and quits, and
 // returns nil. With close to the tray on, closing it hides it, on macOS
 // out of full screen first.
 func (a *App) openMain(hidden bool) *mygo.Window {
 	if _, err := a.startGoPlayer(); err != nil {
-		log.Printf("mixmusic: can't play: %v", err)
-		_, _ = mygo.Dialog.Message(mygo.MessageOptions{Type: mygo.MessageError, Title: "MixMusic",
-			Message: "MixMusic can't play on this computer", Detail: err.Error()})
+		log.Printf("mymusic: can't play: %v", err)
+		_, _ = mygo.Dialog.Message(mygo.MessageOptions{Type: mygo.MessageError, Title: "MyMusic",
+			Message: "MyMusic can't play on this computer", Detail: err.Error()})
 		mygo.App.Quit()
 		return nil
 	}
@@ -141,7 +141,7 @@ func (a *App) openMain(hidden bool) *mygo.Window {
 		}
 		a.closeNotch()
 		// Spotify's hidden page goes with the main window: open, it would
-		// keep MixMusic running, and playing, with no window to show it.
+		// keep MyMusic running, and playing, with no window to show it.
 		a.here.close()
 	})
 	a.mu.Lock()
@@ -249,18 +249,18 @@ func (a *App) setupTray() {
 		{Label: "Next", Click: cmd(CommandNext)},
 		{Label: "Previous", Click: cmd(CommandPrevious)},
 		mygo.Separator(),
-		{Label: "Show MixMusic", Click: func(*mygo.MenuItem, *mygo.Window) { a.showMain() }},
+		{Label: "Show MyMusic", Click: func(*mygo.MenuItem, *mygo.Window) { a.showMain() }},
 		{Label: "Mini player", Click: func(*mygo.MenuItem, *mygo.Window) { a.showMini() }},
 		mygo.Separator(),
 		{Role: mygo.RoleQuit},
 	})
-	opts := mygo.TrayOptions{Icon: a.opts.TrayIcon, ToolTip: "MixMusic"}
+	opts := mygo.TrayOptions{Icon: a.opts.TrayIcon, ToolTip: "MyMusic"}
 	if runtime.GOOS == "linux" {
 		opts.Menu = menu // AppIndicator reports no clicks: it shows the menu
 	}
 	tray, err := mygo.NewTray(opts)
 	if err != nil {
-		log.Printf("mixmusic: tray: %v", err)
+		log.Printf("mymusic: tray: %v", err)
 		return
 	}
 	if runtime.GOOS != "linux" {
@@ -293,7 +293,7 @@ func (a *App) applyMediaKeys(on bool) {
 			continue
 		}
 		if err := mygo.GlobalShortcut.Register(key, func() { a.command(PlayerCommand{Command: c}) }); err != nil {
-			log.Printf("mixmusic: media key %s: %v", key, err)
+			log.Printf("mymusic: media key %s: %v", key, err)
 		}
 	}
 }
@@ -301,8 +301,8 @@ func (a *App) applyMediaKeys(on bool) {
 // deepLinkPathRe matches the paths deep links may open.
 var deepLinkPathRe = regexp.MustCompile(`^/(search|album|artist|playlist|library|settings|marketplace|lyrics|stats|explore|mood)(/[A-Za-z0-9:_%=-]*)?$`)
 
-// HandleURL opens a deep link: mixmusic://search?q=…, mixmusic://album/<id>,
-// mixmusic://play/<track id> and the like. Register it with
+// HandleURL opens a deep link: mymusic://search?q=…, mymusic://album/<id>,
+// mymusic://play/<track id> and the like. Register it with
 // mygo.App.OnOpenURL before the app runs.
 func (a *App) HandleURL(raw string) {
 	u, err := url.Parse(raw)
@@ -353,7 +353,7 @@ func (a *App) OnNavigate(fn func(target string)) (cancel func()) {
 	}
 }
 
-// SecondInstance shows the main window when the user starts MixMusic again.
+// SecondInstance shows the main window when the user starts MyMusic again.
 func (a *App) SecondInstance([]string, string) { whenReady(a.showMain) }
 
 // Activate shows the main window when the app is activated without it in
@@ -372,7 +372,7 @@ func (a *App) Activate(bool) {
 
 // whenReady runs fn now once MyGo is ready, and before then once it is,
 // after Start opened the main window: no window can open earlier, and a
-// second start of MixMusic, or a click on its Dock icon, can come while it
+// second start of MyMusic, or a click on its Dock icon, can come while it
 // is still starting (#305).
 func whenReady(fn func()) {
 	if mygo.App.IsReady() {

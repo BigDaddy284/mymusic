@@ -1,4 +1,4 @@
-// Command aur writes the AUR package of a release, mixmusic-bin: its
+// Command aur writes the AUR package of a release, mymusic-bin: its
 // PKGBUILD and .SRCINFO, from packaging/aur/PKGBUILD.tmpl and
 // packaging/aur/SRCINFO.tmpl, with the version and the SHA-256 of the
 // release's two .deb files, which the package installs the files of, and
@@ -91,8 +91,8 @@ func releaseOf(root, version, dir string) (release, error) {
 		path string
 		sum  *string
 	}{
-		{filepath.Join(dir, "mixmusic-"+version+"-linux-amd64.deb"), &r.AMD64SHA256},
-		{filepath.Join(dir, "mixmusic-"+version+"-linux-arm64.deb"), &r.ARM64SHA256},
+		{filepath.Join(dir, "mymusic-"+version+"-linux-amd64.deb"), &r.AMD64SHA256},
+		{filepath.Join(dir, "mymusic-"+version+"-linux-arm64.deb"), &r.ARM64SHA256},
 		{filepath.Join(root, "LICENSE-MIT"), &r.LicenseSHA256},
 	} {
 		sum, err := sha256Of(f.path)

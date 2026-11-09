@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// NativeAudio reports whether MixMusic's audio engine plays on this
+// NativeAudio reports whether MyMusic's audio engine plays on this
 // system: 64-bit Windows, macOS and Linux.
 const NativeAudio = (runtime.GOOS == "windows" || runtime.GOOS == "darwin" || runtime.GOOS == "linux") &&
 	(runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64")

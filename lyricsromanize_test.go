@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // seoulLines are made-up lyrics in Korean, the second with English in it,
@@ -47,7 +47,7 @@ func romanizedIn(t *testing.T, lang string, lines []lyrics.Line) (*shell, func()
 }
 
 // asked tells whether the panel asked Unison for a translation of the
-// lyrics, which romanization alone of a language MixMusic romanizes
+// lyrics, which romanization alone of a language MyMusic romanizes
 // never does.
 func asked(s *shell) bool {
 	for key := range s.loads {
@@ -83,7 +83,7 @@ func TestLyricsRomanized(t *testing.T) {
 }
 
 // TestLyricsRomanizedEveryScript offers the switch at once for lyrics in
-// each script MixMusic romanizes, those Unison didn't romanize as Thai,
+// each script MyMusic romanizes, those Unison didn't romanize as Thai,
 // Hindi, Greek and Hebrew too, and shows them so, sending nothing.
 func TestLyricsRomanizedEveryScript(t *testing.T) {
 	for _, c := range []struct{ lang, line, roman string }{
@@ -107,7 +107,7 @@ func TestLyricsRomanizedEveryScript(t *testing.T) {
 }
 
 // TestLyricsRomanizedRemembered keeps the romanization of lyrics of a
-// language MixMusic told as another, but with lines in Hangul, as that of
+// language MyMusic told as another, but with lines in Hangul, as that of
 // Korean, which the next Korean song shows too.
 func TestLyricsRomanizedRemembered(t *testing.T) {
 	s, texts := romanizedIn(t, "en", []lyrics.Line{{Text: "Paper kites over the river"}, {TimeMs: 60000, Text: "하늘로 baby"}})
@@ -132,7 +132,7 @@ func TestLyricsRomanizedRemembered(t *testing.T) {
 }
 
 // TestLyricsRomanizedChineseNotJapanese reads lines in Chinese characters
-// alone, of a language MixMusic couldn't tell, as Chinese, in pinyin, and
+// alone, of a language MyMusic couldn't tell, as Chinese, in pinyin, and
 // Japanese lyrics in romaji, never in pinyin.
 func TestLyricsRomanizedChineseNotJapanese(t *testing.T) {
 	s, texts := romanizedIn(t, "", []lyrics.Line{{Text: "音乐"}})
@@ -272,12 +272,12 @@ func TestNotchRomanized(t *testing.T) {
 }
 
 // TestRenderRomanized draws made-up lyrics of a few scripts in the lyrics
-// panel, in Latin letters under each line, to MIXMUSIC_RENDER, for a look:
+// panel, in Latin letters under each line, to MYMUSIC_RENDER, for a look:
 // the Korean line sung now lights word by word.
 func TestRenderRomanized(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	for _, c := range []struct {
 		name, lang string

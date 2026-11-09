@@ -8,9 +8,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // look is how the interface looks: a theme's tokens, which themes keep in
@@ -31,8 +31,17 @@ type look struct {
 	// themeAccent is the accent of the theme, or of the colour file, which
 	// the user's and the artwork's replace.
 	themeAccent ui.Color
-	// The tints derived from the tokens.
+	// The tints derived from the tokens, or hover and press the theme's
+	// own "hover" and "pressed" colours, solid, where it gives them.
 	hover, press, rule, outline, scrim ui.Color
+	// gradient tells whether what the accent fills takes the theme's
+	// gradient, from gradFrom, its accent, to gradTo, its "accent-2", as
+	// the MyMusic themes' buttons and selections do. The fills keep the
+	// theme's own colours while the accent itself, which also sets text,
+	// is made readable; the user's accent, the artwork's and a colour
+	// file's turn the gradient off.
+	gradient         bool
+	gradFrom, gradTo ui.Color
 	// raised is the face of the menus that float over the page: surface-2
 	// over the ground, solid where the theme's surfaces show the page
 	// through, as Aurora's glass does.
@@ -195,6 +204,19 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	k.fx = fx
 	k.hover = col(alpha(text, 0.07))
 	k.press = col(alpha(text, 0.13))
+	if fromFile == nil && mat == nil {
+		if c, ok := parseColor(th.Colors["hover"]); ok {
+			k.hover = col(c)
+		}
+		if c, ok := parseColor(th.Colors["pressed"]); ok {
+			k.press = col(c)
+		}
+		to, ok := parseColor(th.Colors["accent-2"])
+		if _, picked := parseColor(pick); ok && (pick == "" || !picked) {
+			from, _ := parseColor(th.Colors["accent"])
+			k.gradient, k.gradFrom, k.gradTo = true, col(from), col(to)
+		}
+	}
 	k.rule = col(alpha(accent, 0.45))
 	k.outline = col(alpha(text, 0.85))
 	k.scrim = col(alpha(bg, 0.72))
@@ -209,6 +231,15 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	k.selected, k.selectedText, k.selectedSub = k.accent, k.accentText, k.accentText.Alpha(0.78)
 	k.tonalFill, k.tonalInk = col(over(p.surface3, bg)), k.text
 	switch {
+	case k.gradient:
+		// What is chosen shows as Stills & Reels' checked buttons do: a
+		// faint wash of the gradient, under the text's own ink.
+		// k.selected is the wash's middle as it shows on the ground, for
+		// what can't take a gradient; fillSelected paints the gradient.
+		middle := mix(nrgba(k.gradFrom), nrgba(k.gradTo), 0.5)
+		k.selected = col(over(alpha(middle, float64(washAlpha(k.dark))), bg))
+		k.selectedText, k.selectedSub = k.text, k.muted
+		k.tonalFill, k.tonalInk = k.surface2, k.text
 	case k.tonal && mat != nil:
 		// Material's secondary container.
 		k.selected, k.selectedText, k.selectedSub = col(mat.selected), col(mat.selectedText), col(mat.selectedText)
@@ -231,7 +262,7 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	t.Border, t.Text, t.TextMuted = k.border, k.text, k.muted
 	t.Accent, t.AccentText = k.accent, k.accentText
 	// The sliders and switches keep the accent while another window is in
-	// front, as the rest of MixMusic does: MyGo fades its widgets' to gray
+	// front, as the rest of MyMusic does: MyGo fades its widgets' to gray
 	// there.
 	t.InactiveAccent = t.Accent
 	t.AccentHover = col(mix(accent, text, 0.14))
@@ -281,7 +312,7 @@ func cssLength(s string) float32 {
 	return float32(v * unit)
 }
 
-// fontFamily picks the first family of a CSS font stack that MixMusic or
+// fontFamily picks the first family of a CSS font stack that MyMusic or
 // the system has, or the system's font.
 func fontFamily(stack string) string {
 	have := map[string]bool{}

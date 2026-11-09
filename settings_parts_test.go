@@ -46,6 +46,8 @@ func TestAddSettings(t *testing.T) {
 // features' files in the order they always had.
 func TestSettingsOrder(t *testing.T) {
 	s := newTestShell(t)
+	// Mix, which has options, shows their group too.
+	wear(s, "mix", nil)
 	tt := testerOf(t, s, 1280, 4400)
 	for path, texts := range map[string][]string{
 		"/settings/appearance": {"layout", "Layout", "theme", "Follow the computer", "mix options", "colour and type",

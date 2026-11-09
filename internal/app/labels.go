@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 // These are the label cache's times and bounds; tests shorten some.
@@ -200,7 +200,7 @@ func (c *labelCache) run(videoID string, call *labelCall) {
 		if c.fails++; c.fails >= labelFails && !now.Before(c.paused) {
 			c.fails = 0
 			c.paused = now.Add(labelPause)
-			log.Printf("mixmusic: %d checks of AI labels in a row failed, the last with %v: tracks play unchecked for %s", labelFails, err, labelPause)
+			log.Printf("mymusic: %d checks of AI labels in a row failed, the last with %v: tracks play unchecked for %s", labelFails, err, labelPause)
 		}
 	}
 }
@@ -246,7 +246,7 @@ func (c *labelCache) save() {
 	}
 	c.mu.Unlock()
 	if err := c.file.Set(kept); err != nil {
-		log.Printf("mixmusic: keeping the AI labels: %v", err)
+		log.Printf("mymusic: keeping the AI labels: %v", err)
 	}
 }
 

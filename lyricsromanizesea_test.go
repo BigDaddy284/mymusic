@@ -4,8 +4,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // TestLyricsRomanizedLaoKhmerBurmese offers the switch at once for lyrics

@@ -12,9 +12,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // longPlaylist is a playlist of YouTube Music of n tracks, which the page
@@ -300,11 +300,11 @@ func TestBarHeadOtherPage(t *testing.T) {
 
 // TestRenderBarHead draws a playlist scrolled past its head, in each
 // layout design and in themes of grounds of their own, to
-// MIXMUSIC_RENDER, for a look.
+// MYMUSIC_RENDER, for a look.
 func TestRenderBarHead(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	for _, layout := range settings.Layouts {
 		for _, theme := range []string{"mix", "aurora", "glasshouse", "daylight"} {

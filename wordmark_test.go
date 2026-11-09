@@ -5,7 +5,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestFitSize checks that a text keeps its size where it fits, shrinks by
@@ -26,7 +26,7 @@ func TestFitSize(t *testing.T) {
 	}
 }
 
-// TestWordmarkFits checks that MixMusic's name in the unfolded rail fits
+// TestWordmarkFits checks that MyMusic's name in the unfolded rail fits
 // whole in every built-in theme, layout design and density, as Sakura's
 // wide serif didn't, and keeps its size where it fitted.
 func TestWordmarkFits(t *testing.T) {
@@ -45,7 +45,7 @@ func TestWordmarkFits(t *testing.T) {
 				}
 				s.refresh()
 				tt.Frame()
-				if !tt.HasText("mixmusic") {
+				if !tt.HasText("MyMusic") {
 					t.Fatalf("%s, %s: no name in the rail: %q", th.ID, layout, tt.Texts())
 				}
 				f := s.wordmark
@@ -103,7 +103,7 @@ func TestRailTopOnMac(t *testing.T) {
 				s.refresh()
 				tt.Frame()
 				what := th.ID + ", " + string(layout) + ", " + string(density)
-				if f := s.wordmark; !tt.HasText("mixmusic") || f.width*f.size/24 > f.room {
+				if f := s.wordmark; !tt.HasText("MyMusic") || f.width*f.size/24 > f.room {
 					t.Errorf("%s: the name is %v wide at %v, in %v", what, f.width*f.size/24, f.size, f.room)
 				}
 				inRail(what, "Collapse the sidebar")

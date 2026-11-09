@@ -1,18 +1,18 @@
 # Community themes and plugins
 
-Everything here can be installed by every MixMusic user from the
+Everything here can be installed by every MyMusic user from the
 marketplace (the store icon of the sidebar). The app reads
 [registry-2.json](registry-2.json), which lists the themes in `themes/` and
 the plugins in `plugins/`, and downloads the files of what the user
-installs from the [registry branch](https://github.com/fzn0x/mixmusic/tree/registry),
+installs from the [registry branch](https://github.com/bigdaddy284/mymusic/tree/registry),
 where the Registry workflow publishes them on every change here. Plugins
-here are made for MixMusic's own interface: their `plugin.json` says
+here are made for MyMusic's own interface: their `plugin.json` says
 `"api": 2`, and they are written in TypeScript. main keeps their
 TypeScript; the registry branch, the JavaScript it compiles to.
 
-MixMusic 0.4 and before read [registry.json](registry.json) instead, the
+MyMusic 0.4 and before read [registry.json](registry.json) instead, the
 registry of their web interface: it lists the add-ons of `web/` on the
-registry branch, as they were when MixMusic moved to its own interface,
+registry branch, as they were when MyMusic moved to its own interface,
 and stays as it is.
 
 ## Share yours
@@ -36,7 +36,7 @@ and stays as it is.
    ```
 
 5. Open a pull request titled `feat(community): add the <name> theme` (or
-   plugin), with a screenshot of it in MixMusic.
+   plugin), with a screenshot of it in MyMusic.
 
 To update your add-on, change its files, raise its `version`, run the
 registry again, and open a pull request: users see the update in the

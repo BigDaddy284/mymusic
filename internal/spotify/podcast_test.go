@@ -5,11 +5,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // The answers below are in the shape the Web API's reference gives them,
-// trimmed to what MixMusic reads.
+// trimmed to what MyMusic reads.
 
 const showJSON = `{"id": "s1", "name": "The Daily Thing", "type": "show", "total_episodes": 120,
 	"description": "News, daily.", "images": [{"url": "https://i/show-640", "width": 640, "height": 640}, {"url": "https://i/show-64", "width": 64, "height": 64}],

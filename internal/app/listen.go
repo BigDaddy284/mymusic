@@ -1,14 +1,14 @@
 package app
 
-// The analyser hears MixMusic's own engine. Spotify, when it plays in
-// MixMusic, plays in the page of a webview, which the engine never hears,
+// The analyser hears MyMusic's own engine. Spotify, when it plays in
+// MyMusic, plays in the page of a webview, which the engine never hears,
 // and on Spotify Connect in a Spotify app: the listener hears them there,
 // for the visualizer and the plugins' analyser, while one of them reads it.
 // Windows hears a process and its children through process loopback, and
 // macOS from 14.2 on what a process plays through a process tap, of
-// WebKit's GPU process, which plays what MixMusic's web views play, once
-// the user allowed MixMusic to record what other apps play. It hears the
-// Spotify app only on Windows, on this computer; other devices MixMusic
+// WebKit's GPU process, which plays what MyMusic's web views play, once
+// the user allowed MyMusic to record what other apps play. It hears the
+// Spotify app only on Windows, on this computer; other devices MyMusic
 // can't hear.
 
 import (
@@ -18,9 +18,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/audio/output"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // unread is how long the listener goes on hearing after the analyser was
@@ -36,9 +36,9 @@ type hearing int
 
 const (
 	hearNothing hearing = iota
-	// hearMixMusic hears what MixMusic's web views play, Spotify in
-	// MixMusic among them: webViewAudio's process.
-	hearMixMusic
+	// hearMyMusic hears what MyMusic's web views play, Spotify in
+	// MyMusic among them: webViewAudio's process.
+	hearMyMusic
 	// hearSpotifyApp hears the Spotify app on this computer, which plays
 	// what plays on Spotify Connect when it is the device.
 	hearSpotifyApp
@@ -51,7 +51,7 @@ func heard(st player.State) hearing {
 	}
 	switch st.Source.Mode {
 	case player.ModeSpotify:
-		return hearMixMusic
+		return hearMyMusic
 	case player.ModeConnect:
 		return hearSpotifyApp
 	}
@@ -62,7 +62,7 @@ func heard(st player.State) hearing {
 // while the Spotify app doesn't run.
 func (h hearing) process() uint32 {
 	switch h {
-	case hearMixMusic:
+	case hearMyMusic:
 		return webViewAudio(processes())
 	case hearSpotifyApp:
 		return rootNamed(processes(), "Spotify.exe")
@@ -126,7 +126,7 @@ type listener struct {
 	done chan struct{}
 	mu   sync.Mutex
 	want hearing
-	// closed is set as MixMusic quits.
+	// closed is set as MyMusic quits.
 	closed bool
 
 	// find finds the process that plays what is heard, and start starts
@@ -190,7 +190,7 @@ func (l *listener) reading() bool {
 	return time.Since(time.Unix(0, l.read.Load())) < unread
 }
 
-// close stops the listener's capture, as MixMusic quits, waiting a moment
+// close stops the listener's capture, as MyMusic quits, waiting a moment
 // at most.
 func (l *listener) close() {
 	l.mu.Lock()
@@ -281,6 +281,6 @@ func (l *listener) hear(want hearing) {
 func (l *listener) fail(err error) {
 	if !l.failed {
 		l.failed = true
-		log.Printf("mixmusic: the visualizer can't hear Spotify: %v", err)
+		log.Printf("mymusic: the visualizer can't hear Spotify: %v", err)
 	}
 }

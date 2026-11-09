@@ -15,8 +15,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/nowplaying"
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/nowplaying"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 const (
@@ -125,7 +125,7 @@ func (cc *controlsCovers) keep(rawURL string, data []byte) bool {
 			cc.told = true
 			cc.mu.Unlock()
 			if !told {
-				log.Printf("mixmusic: the system's media controls: keeping their cover in %s: %v", cc.dir, err)
+				log.Printf("mymusic: the system's media controls: keeping their cover in %s: %v", cc.dir, err)
 			}
 		}
 	}

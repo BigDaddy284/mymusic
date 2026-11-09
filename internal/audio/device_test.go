@@ -6,17 +6,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
 )
 
 // TestEngineOnTheDevice plays a 3-second track through the device, at
 // volume 0, so silently: the time must pass as the clock's, and the track
 // end when it should, 3 seconds after it started to play. It opens the
-// device, so it runs only with MIXMUSIC_AUDIO=1, as CI's audio jobs on
+// device, so it runs only with MYMUSIC_AUDIO=1, as CI's audio jobs on
 // Linux and macOS set it.
 func TestEngineOnTheDevice(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	start := func(channels int, render func([]float32, int), failed func(error)) (Output, error) {
 		return output.Start(channels, render, failed)
@@ -66,8 +66,8 @@ func TestEngineOnTheDevice(t *testing.T) {
 // once, which on macOS asks for its first buffers before the deck decoded
 // a frame, at any speed.
 func TestEngineOnTheDeviceAtSpeed(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	start := func(channels int, render func([]float32, int), failed func(error)) (Output, error) {
 		return output.Start(channels, render, failed)

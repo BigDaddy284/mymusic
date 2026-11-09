@@ -51,7 +51,7 @@ var (
 	errNotLive = errors.New("this track is no longer live")
 )
 
-// Live is the audio of a live video as MixMusic's own player reads it: the
+// Live is the audio of a live video as MyMusic's own player reads it: the
 // packed audio of the segments of its HLS media playlist, one after the
 // other, from near the live edge on, as they come. Reads wait for the
 // next segment; they return io.EOF once the broadcast ended, as the
@@ -176,7 +176,7 @@ func (l *Live) follow() error {
 		refresh = false
 		from := liveFrom(m, next)
 		if next >= 0 && from != next {
-			log.Printf("mixmusic: the live stream of %s left %d segments out of its playlist before they played; going on from near its live edge",
+			log.Printf("mymusic: the live stream of %s left %d segments out of its playlist before they played; going on from near its live edge",
 				l.videoID, max(from-next, 0))
 		}
 		next = from
@@ -202,7 +202,7 @@ func (l *Live) follow() error {
 				// Gone from the media server, as from a playlist loaded
 				// late: once it stays gone, the stream goes on without it.
 				if misses++; misses >= maxMisses {
-					log.Printf("mixmusic: segment %d of the live stream of %s is gone; going on without it", seg.seq, l.videoID)
+					log.Printf("mymusic: segment %d of the live stream of %s is gone; going on without it", seg.seq, l.videoID)
 					next, misses = seg.seq+1, 0
 				}
 			case err != nil:
@@ -343,7 +343,7 @@ func (l *Live) get(s Stream, rawURL string, limit int64) ([]byte, error) {
 				return nil, fmt.Errorf("%w: a segment or playlist of more than %d bytes", errPlaylist, limit)
 			case err == nil:
 				if !broke.IsZero() {
-					log.Printf("mixmusic: the live stream of %s comes again", l.videoID)
+					log.Printf("mymusic: the live stream of %s comes again", l.videoID)
 				}
 				return b, nil
 			case body.err != nil:
@@ -361,7 +361,7 @@ func (l *Live) get(s Stream, rawURL string, limit int64) ([]byte, error) {
 			return nil, err
 		case broke.IsZero():
 			broke = time.Now()
-			log.Printf("mixmusic: the live stream of %s broke off: %v; connecting again", l.videoID, loggable(err))
+			log.Printf("mymusic: the live stream of %s broke off: %v; connecting again", l.videoID, loggable(err))
 		case time.Since(broke)+wait > reconnect:
 			return nil, errStalled
 		}

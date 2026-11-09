@@ -2,7 +2,7 @@ package main
 
 import "github.com/egoist/mygo/ui"
 
-// MixMusic's icons, as the web interface had them: thin line glyphs with
+// MyMusic's icons, as the web interface had them: thin line glyphs with
 // square ends on a 24-unit grid, drawn in the text colour.
 var iconPaths = map[string]string{
 	"home":         "M3.5 11 12 3.5l8.5 7.5M5.5 9.5V20h5v-6h3v6h5V9.5",

@@ -11,10 +11,10 @@ func TestKindOfFlathub(t *testing.T) {
 	exists := func(files ...string) func(string) bool {
 		return func(p string) bool { return slices.Contains(files, p) }
 	}
-	if got := kindOf("linux", "/app/lib/mixmusic", false, exists("/.flatpak-info", flathubMarker)); got != "flathub" {
+	if got := kindOf("linux", "/app/lib/mymusic", false, exists("/.flatpak-info", flathubMarker)); got != "flathub" {
 		t.Errorf("Flathub's build: kindOf = %q, want flathub", got)
 	}
-	if got := kindOf("linux", "/app/lib/mixmusic", false, exists("/.flatpak-info")); got != "flatpak" {
+	if got := kindOf("linux", "/app/lib/mymusic", false, exists("/.flatpak-info")); got != "flatpak" {
 		t.Errorf("the release's .flatpak: kindOf = %q, want flatpak", got)
 	}
 	for _, arch := range []string{"amd64", "arm64"} {

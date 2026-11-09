@@ -5,8 +5,8 @@ import (
 	"slices"
 	"time"
 
+	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/egoist/mygo/ui"
-	"github.com/fzn0x/mixmusic/internal/media"
 )
 
 // saveOnYouTube saves a song to the user's library on YouTube Music, or

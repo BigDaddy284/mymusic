@@ -16,9 +16,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/aac"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/resample"
+	"github.com/bigdaddy284/mymusic/aac"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/resample"
 )
 
 // ADTS files of AAC-LC, half a second or so each of signals made up, as

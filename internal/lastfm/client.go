@@ -1,4 +1,4 @@
-// Package lastfm scrobbles what MixMusic plays to Last.fm.
+// Package lastfm scrobbles what MyMusic plays to Last.fm.
 //
 // Client calls the Last.fm API 2.0: it connects the user's account with
 // desktop authentication, and sends now-playing updates and scrobbles.
@@ -33,7 +33,7 @@ const (
 )
 
 // ErrSessionExpired is returned when Last.fm no longer accepts a session key,
-// such as after the user revoked MixMusic's access. The user must connect
+// such as after the user revoked MyMusic's access. The user must connect
 // again.
 var ErrSessionExpired = errors.New("lastfm: the session expired, connect to Last.fm again")
 
@@ -132,7 +132,7 @@ func (c *Client) call(ctx context.Context, method string, params url.Values, out
 		return err
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", "MixMusic")
+	req.Header.Set("User-Agent", "MyMusic")
 	hc := c.HTTP
 	if hc == nil {
 		hc = defaultHTTP

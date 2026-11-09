@@ -4,7 +4,7 @@ import (
 	"image/color"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestEqualizerNote says the equalizer works only on YouTube Music, and

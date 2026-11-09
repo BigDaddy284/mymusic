@@ -13,12 +13,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/aac"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/internal/youtube"
-	"github.com/fzn0x/mixmusic/mp4"
+	"github.com/bigdaddy284/mymusic/aac"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/mp4"
 )
 
 // liveSongs are the songs TestLivePlays plays: two that YouTube has only
@@ -34,23 +34,23 @@ var liveSongs = []struct {
 // TestLivePlays finds the streams of liveSongs as the app does, through
 // YouTube's player API, else yt-dlp, and plays a few seconds of each on a
 // deck, from the proxy: from the start, and after a seek. It finds them
-// with yt-dlp alone too, in both qualities, when the yt-dlp MixMusic
+// with yt-dlp alone too, in both qualities, when the yt-dlp MyMusic
 // installed, or one on the PATH, is there. With ffmpeg on the PATH, it
 // checks what the deck played against ffmpeg's decode of the same file. It
-// runs with MIXMUSIC_LIVE=1:
+// runs with MYMUSIC_LIVE=1:
 //
-//	MIXMUSIC_LIVE=1 go test ./internal/audio -run Live -v
+//	MYMUSIC_LIVE=1 go test ./internal/audio -run Live -v
 //
 // Neither the streams' URLs nor their files leave the test: the files go
 // to its temporary folder.
 func TestLivePlays(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	config, _ := os.UserConfigDir()
-	tm := tools.New(filepath.Join(config, "MixMusic", "bin"))
+	tm := tools.New(filepath.Join(config, "MyMusic", "bin"))
 	_, noYTDLP := tm.YTDLP()
 
 	for _, song := range liveSongs {
@@ -229,16 +229,16 @@ func compareLive(t *testing.T, what string, got, want []float32, at, slack int64
 // API gives, else yt-dlp, near its live edge, and on past the segments
 // that were there as it started, which a reload of the playlist brings.
 // It finds the stream with yt-dlp alone too, in both qualities, when the
-// yt-dlp MixMusic installed is there. It runs with MIXMUSIC_LIVE=1:
+// yt-dlp MyMusic installed is there. It runs with MYMUSIC_LIVE=1:
 //
-//	MIXMUSIC_LIVE=1 go test ./internal/audio -run LiveStream -v
+//	MYMUSIC_LIVE=1 go test ./internal/audio -run LiveStream -v
 //
 // With ffmpeg on the PATH, it checks what the deck played of format 234
 // against ffmpeg's decode of the same packed audio. It plays into no
 // device, and tells neither the playlist's URL nor its segments'.
 func TestLiveStreamPlays(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
@@ -328,7 +328,7 @@ func TestLiveStreamPlays(t *testing.T) {
 		play(t, r)
 	})
 	config, _ := os.UserConfigDir()
-	tm := tools.New(filepath.Join(config, "MixMusic", "bin"))
+	tm := tools.New(filepath.Join(config, "MyMusic", "bin"))
 	if _, err := tm.YTDLP(); err != nil {
 		t.Logf("yt-dlp: %v", err)
 		return

@@ -93,7 +93,7 @@ type SessionOptions struct {
 	OnEnd func(err error)
 }
 
-// Session is MixMusic's session on a cast device: its default media
+// Session is MyMusic's session on a cast device: its default media
 // receiver, which Open launches, or joins where it runs already, and the
 // media loaded in it. Its methods are safe for concurrent use; those that
 // take a context wait for the device's answer.
@@ -116,7 +116,7 @@ type Session struct {
 
 // ErrStopped is why a session ends that the device ended: its receiver
 // stopped, as from another sender or by its own timeout.
-var ErrStopped = errors.New("the cast device stopped playing from MixMusic")
+var ErrStopped = errors.New("the cast device stopped playing from MyMusic")
 
 // errNoMedia is why a command of the media fails before anything loaded.
 var errNoMedia = errors.New("cast: nothing loaded")

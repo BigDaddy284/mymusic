@@ -1,11 +1,11 @@
 /*
- * The MixMusic site: Material 3 components on neutral near-black greys, in
- * the shapes of MixMusic's default layout, Blend: rounded cards, pill
+ * The MyMusic site: Material 3 components on neutral near-black greys, in
+ * the shapes of MyMusic's default layout, Blend: rounded cards, pill
  * buttons and chips, bold headings in sentence case. Colour comes from
  * the brand pink of the mark and the download button, and the artwork of
  * each cover and screenshot, which tints its glow. Light or dark as the
  * system is, or as the theme button chose (partials/theme.html): light
- * takes the scheme of MixMusic's Material theme, as the docs do. The
+ * takes the scheme of MyMusic's Material theme, as the docs do. The
  * working player, the sketches of the app and the screenshots show the
  * app in its default, dark look in either.
  */
@@ -69,7 +69,7 @@
   --mono: "Cascadia Mono", Consolas, "SFMono-Regular", ui-monospace, monospace;
 }
 
-/* Light: the scheme of MixMusic's Material theme (builtin/themes/material),
+/* Light: the scheme of MyMusic's Material theme (builtin/themes/material),
    with its Spotify and YouTube marks, as the system has it unless the
    visitor chose dark, or as the visitor chose. The two blocks are the
    same: keep them so. */
@@ -787,7 +787,7 @@ kbd {
 .footer-inner p { flex: 1; color: var(--ink-2); font-size: 0.875rem; max-width: 70ch; }
 .brand-small { font-size: 1rem; }
 
-/* The player in the hero: a working copy of MixMusic's window in its
+/* The player in the hero: a working copy of MyMusic's window in its
    default look, the Blend layout and the Mix theme, drawn at the app's
    own measures (layout.go, theme.go) in its first window, 1280x820, and
    scaled to the column; or its mini player on narrow screens. Its accent

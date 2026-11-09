@@ -12,8 +12,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The keys of the shelves Home shows of its own, and of those the user
@@ -135,7 +135,7 @@ func addedKind(key string) bool {
 }
 
 // keySource returns the source of the shelves key names: a service's, or
-// MixMusic's own for the user's shelves.
+// MyMusic's own for the user's shelves.
 func keySource(key string) media.Source {
 	switch prefix, rest, _ := strings.Cut(key, ":"); prefix {
 	case string(media.SourceSpotify):

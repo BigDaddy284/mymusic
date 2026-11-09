@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Name=MixMusic
+Name=MyMusic
 Comment=Spotify and YouTube Music in one customizable player
-Exec=mixmusic %U
-Icon=io.github.fzn0x.mixmusic
+Exec=mymusic %U
+Icon=io.github.bigdaddy284.mymusic
 Categories=AudioVideo;Audio;Player;
 Terminal=false
-MimeType=x-scheme-handler/mixmusic;
-StartupWMClass=mixmusic
+MimeType=x-scheme-handler/mymusic;
+StartupWMClass=mymusic

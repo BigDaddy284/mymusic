@@ -1,6 +1,6 @@
 package audio
 
-import "github.com/fzn0x/mixmusic/internal/volume"
+import "github.com/bigdaddy284/mymusic/internal/volume"
 
 // SetVolumeCurve sets the curve the volume plays on (#383). The volume
 // keeps its position, which now plays at its gain on c, gliding there as

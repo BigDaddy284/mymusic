@@ -8,8 +8,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/plugins"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/plugins"
 )
 
 // withCommunityPlugins installs the community's plugins in the shell's app
@@ -134,12 +134,12 @@ func TestSpectrum(t *testing.T) {
 	}
 }
 
-// TestRenderPlugins draws the community plugins to MIXMUSIC_RENDER, for a
+// TestRenderPlugins draws the community plugins to MYMUSIC_RENDER, for a
 // look.
 func TestRenderPlugins(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	withCommunityPlugins(t, s, "sleep-timer", "spectrum")

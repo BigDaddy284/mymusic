@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/addons"
 )
 
 // TestUseThemeFollowingSystem uses a theme from its card in the

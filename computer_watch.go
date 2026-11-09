@@ -3,9 +3,9 @@ package main
 import "github.com/egoist/mygo/ui"
 
 // unwatchedFolders tells, in Settings › Playback › Music on this computer,
-// of each folder of music MixMusic can't watch for changes, as one on a
+// of each folder of music MyMusic can't watch for changes, as one on a
 // network drive, and why: what changes in it shows after a rescan, or once
-// MixMusic starts again. The others are watched, and show what changes in
+// MyMusic starts again. The others are watched, and show what changes in
 // them within a few seconds.
 func (s *shell) unwatchedFolders(c *ui.Context) {
 	for _, folder := range s.set.MusicFolders {
@@ -15,7 +15,7 @@ func (s *shell) unwatchedFolders(c *ui.Context) {
 	}
 }
 
-// unwatchedLine tells that MixMusic can't watch folder, and why.
+// unwatchedLine tells that MyMusic can't watch folder, and why.
 func unwatchedLine(folder, why string) string {
-	return "MixMusic can't watch " + folder + " for changes: " + why + ". Rescan to see what changed in it."
+	return "MyMusic can't watch " + folder + " for changes: " + why + ". Rescan to see what changed in it."
 }

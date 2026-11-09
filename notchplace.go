@@ -8,7 +8,7 @@ import (
 
 // The player around the notch (#46) takes its size from the camera
 // housing, whatever the MacBook: these are in points, as MyGo's windows
-// are on macOS, and don't follow MixMusic's zoom.
+// are on macOS, and don't follow MyMusic's zoom.
 const (
 	// notchOpenWidth is the least width of the open panel, and notchBody
 	// how much taller than the housing it grows: about 480 × 190 points
@@ -19,7 +19,7 @@ const (
 	// the edges of the black around them.
 	notchInset = 7
 	// notchOpenRoom is the room the open panel's top row keeps beside
-	// the small cover's place for the button that opens MixMusic.
+	// the small cover's place for the button that opens MyMusic.
 	notchOpenRoom = 40
 )
 

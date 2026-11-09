@@ -17,10 +17,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/aac"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/mp4"
-	"github.com/fzn0x/mixmusic/resample"
+	"github.com/bigdaddy284/mymusic/aac"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/mp4"
+	"github.com/bigdaddy284/mymusic/resample"
 )
 
 // Test files: AAC-LC in MP4, as ffmpeg makes it, from mp4's

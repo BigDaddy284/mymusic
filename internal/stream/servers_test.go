@@ -276,7 +276,7 @@ func TestProxyGivesUpWhenNoServerAnswers(t *testing.T) {
 	if took := time.Since(started); took < handshake || took > 5*time.Second {
 		t.Errorf("gave up after %s", took)
 	}
-	if why := p.Failure(testID); !strings.HasPrefix(why, "MixMusic could not reach YouTube's audio servers") {
+	if why := p.Failure(testID); !strings.HasPrefix(why, "MyMusic could not reach YouTube's audio servers") {
 		t.Errorf("Failure = %q", why)
 	}
 	if firstConns() != 1 || nextConns() != 1 {
@@ -341,12 +341,12 @@ func TestDirectAsksTheNextServer(t *testing.T) {
 // TestLiveNextServer finds the stream of a song, and then again with its
 // server never answering, as a network may leave one of YouTube's servers:
 // the direct route checks it on the stream's next server within its time,
-// and the proxy reads all of it from there. It runs with MIXMUSIC_LIVE=1:
+// and the proxy reads all of it from there. It runs with MYMUSIC_LIVE=1:
 //
-//	MIXMUSIC_LIVE=1 go test ./internal/stream -run LiveNextServer -v
+//	MYMUSIC_LIVE=1 go test ./internal/stream -run LiveNextServer -v
 func TestLiveNextServer(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	logged := captureLog(t)
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)

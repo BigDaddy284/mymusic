@@ -1,6 +1,7 @@
-// Package brand holds MixMusic's brand files: the app's icon, which
+// Package brand holds MyMusic's brand files: the app's icon, which
 // mygo.config.ts names, the tray's, which the app embeds, and the mark of
-// its logo, the pink rings with a play button, for the code that draws it.
+// its logo, the music note, for the code that draws it. make_icon.py draws
+// them all.
 // The app builds them in, so they stay out of resources/, whose every file
 // `mygo build` ships beside the app (#303).
 //
@@ -10,8 +11,8 @@ package brand
 
 import _ "embed"
 
-// Mark is MixMusic's mark, an SVG of one path, without the black tile of
-// the app's icon.
+// Mark is MyMusic's mark, the note in its gradient, without the dark tile
+// of the app's icon.
 //
 //go:embed mark.svg
 var Mark []byte

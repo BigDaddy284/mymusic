@@ -10,8 +10,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // slowPages is a service's playlist of tracks, read two at a time, a page
@@ -235,7 +235,7 @@ func TestLongPlaylistPageFails(t *testing.T) {
 	}
 }
 
-// TestLongPlaylistCut says where a playlist longer than MixMusic reads was
+// TestLongPlaylistCut says where a playlist longer than MyMusic reads was
 // cut.
 func TestLongPlaylistCut(t *testing.T) {
 	s := newTestShell(t)
@@ -247,7 +247,7 @@ func TestLongPlaylistCut(t *testing.T) {
 		Title: "Everything", TrackCount: 25000, Tracks: tracks, Cut: true}}
 	tt := tester(t, s)
 	show(s, tt, playlistPath("yt:PLcut"))
-	if !tt.HasText("This playlist has 25,000 tracks: MixMusic shows and plays its first 20,000.") {
+	if !tt.HasText("This playlist has 25,000 tracks: MyMusic shows and plays its first 20,000.") {
 		t.Errorf("the page shows %q", tt.Texts())
 	}
 }

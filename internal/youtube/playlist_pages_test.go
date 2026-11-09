@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // moreItem is the item that ends a page of a list that has more, with the

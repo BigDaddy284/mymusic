@@ -8,17 +8,17 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/aac"
-	"github.com/fzn0x/mixmusic/internal/artwork"
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/audio/output"
-	"github.com/fzn0x/mixmusic/internal/hct"
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/internal/romanize"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/spotify"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/opus"
+	"github.com/bigdaddy284/mymusic/aac"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/hct"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/internal/romanize"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/opus"
 )
 
 // Info describes the app.
@@ -30,7 +30,7 @@ type Info struct {
 	Dev         bool   `json:"dev"`
 	DataDir     string `json:"dataDir"`
 	RedirectURI string `json:"redirectUri"`
-	// NativeAudio is set where MixMusic's own audio engine can play: on
+	// NativeAudio is set where MyMusic's own audio engine can play: on
 	// 64-bit Windows, macOS and Linux, with its audio library installed.
 	NativeAudio bool `json:"nativeAudio"`
 	// Flatpak is set inside a Flatpak, whose sandbox sees only its own
@@ -56,7 +56,7 @@ func (s *System) Info() Info {
 	}
 }
 
-// version is the version of MixMusic that runs.
+// version is the version of MyMusic that runs.
 func (a *App) version() string {
 	if v := mygo.App.Version(); v != "" {
 		return v
@@ -64,7 +64,7 @@ func (a *App) version() string {
 	return a.opts.Version
 }
 
-// Tools describes the tools MixMusic runs: yt-dlp and a JavaScript
+// Tools describes the tools MyMusic runs: yt-dlp and a JavaScript
 // runtime.
 func (s *System) Tools(ctx context.Context) tools.Status { return s.a.tools.Status(ctx) }
 
@@ -91,13 +91,13 @@ func (s *System) OpenExternal(rawURL string) error {
 	return mygo.Shell.OpenExternal(u.String())
 }
 
-// Notice is the license of code MixMusic includes from another project.
+// Notice is the license of code MyMusic includes from another project.
 type Notice struct {
 	Name string `json:"name"`
 	Text string `json:"text"`
 }
 
-// Notices returns the licenses of the code MixMusic includes from other
+// Notices returns the licenses of the code MyMusic includes from other
 // projects, which its copies must reproduce.
 func (s *System) Notices() []Notice {
 	return []Notice{
@@ -166,5 +166,5 @@ func (s *System) Notify(title, body string) error {
 	return mygo.NewNotification(mygo.NotificationOptions{Title: title, Body: body}).Show()
 }
 
-// Quit quits MixMusic.
+// Quit quits MyMusic.
 func (s *System) Quit() { mygo.App.Quit() }

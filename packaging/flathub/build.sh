@@ -1,7 +1,7 @@
 #!/bin/sh
-# Builds MixMusic from source in Flathub's manifest (packaging/flathub),
+# Builds MyMusic from source in Flathub's manifest (packaging/flathub),
 # inside the GNOME SDK without the network, and installs it into
-# $FLATPAK_DEST. It makes what `mygo build` makes of MixMusic on Linux,
+# $FLATPAK_DEST. It makes what `mygo build` makes of MyMusic on Linux,
 # which reads mygo.config.ts with Bun or Node.js: the root package, built
 # with the pages of public/ in it and what the configuration tells of the
 # app linked in, with no feed of updates, as Flathub updates this copy.
@@ -45,22 +45,22 @@ EOF
 # version, as mygo build links them in: tools/flathub's tests keep them
 # the same.
 mygo=github.com/egoist/mygo
-go build -trimpath -tags mygo_noinspector -o mixmusic -ldflags "-s -w \
-	-X $mygo.packageName=MixMusic \
+go build -trimpath -tags mygo_noinspector -o mymusic -ldflags "-s -w \
+	-X $mygo.packageName=MyMusic \
 	-X $mygo.packageVersion=$version \
-	-X $mygo.packageIdentifier=app.mixmusic.desktop \
-	-X $mygo.packageURLSchemes=mixmusic \
+	-X $mygo.packageIdentifier=app.mymusic.desktop \
+	-X $mygo.packageURLSchemes=mymusic \
 	-X $mygo.production=1" .
 
-install -Dm755 mixmusic "$dest/lib/mixmusic/mixmusic"
+install -Dm755 mymusic "$dest/lib/mymusic/mymusic"
 # The release's Flatpak's launcher, which keeps the tray's icon where the
 # desktop finds it.
-install -Dm755 packaging/flatpak/mixmusic.sh "$dest/bin/mixmusic"
+install -Dm755 packaging/flatpak/mymusic.sh "$dest/bin/mymusic"
 install -Dm644 "packaging/flathub/$id.desktop" "$dest/share/applications/$id.desktop"
 install -Dm644 brand/icon.svg "$dest/share/icons/hicolor/scalable/apps/$id.svg"
 go run ./tools/metainfo -template "packaging/flathub/$id.metainfo.xml" -o "$dest/share/metainfo/$id.metainfo.xml"
 
-# MixMusic's licenses, and those of the Go modules built into it.
+# MyMusic's licenses, and those of the Go modules built into it.
 install -Dm644 LICENSE-MIT LICENSE-GPL -t "$dest/share/licenses/$id"
 sed -n 's/^# \([^ ]*\) .*/\1/p' vendor/modules.txt | while read -r module; do
 	for f in "vendor/$module"/LICENSE* "vendor/$module"/COPYING* "vendor/$module"/NOTICE*; do
@@ -70,7 +70,7 @@ sed -n 's/^# \([^ ]*\) .*/\1/p' vendor/modules.txt | while read -r module; do
 	done
 done
 
-# Flathub's mark (internal/app/flathub.go): MixMusic tells by it that
+# Flathub's mark (internal/app/flathub.go): MyMusic tells by it that
 # Flathub updates it, and runs the yt-dlp of the manifest.
-mkdir -p "$dest/share/mixmusic"
-echo "MixMusic as Flathub builds it, which Flathub updates." >"$dest/share/mixmusic/flathub"
+mkdir -p "$dest/share/mymusic"
+echo "MyMusic as Flathub builds it, which Flathub updates." >"$dest/share/mymusic/flathub"

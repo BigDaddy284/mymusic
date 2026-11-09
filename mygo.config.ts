@@ -2,39 +2,39 @@ import { defineConfig } from "mygo-cli";
 import pkg from "./package.json" with { type: "json" };
 
 export default defineConfig({
-  name: "MixMusic",
+  name: "MyMusic",
   // The slug names the update archives, the Windows installer and the disk
   // image, which release.yml and .github/scripts/package.sh look for by
-  // name. It is MyGo's default for "MixMusic": pinned so it can't move.
-  slug: "mixmusic",
-  identifier: "app.mixmusic.desktop",
+  // name. It is MyGo's default for "MyMusic": pinned so it can't move.
+  slug: "mymusic",
+  identifier: "app.mymusic.desktop",
   version: pkg.version,
-  copyright: "© 2026 MixMusic contributors",
+  copyright: "© 2026 MyMusic contributors, based on MixMusic, © 2026 MixMusic contributors",
   // The icon that `mygo build` makes each platform's icons of. It isn't
   // in resources/, MyGo's place for it by default: `mygo build` ships every
   // file there beside the app, which reads none as it runs (#303).
   icon: "brand/icon.png",
   // MyGo draws the windows itself, in Go (the root package): the only pages
-  // are that of MixMusic's own Spotify device, public/spotify.html, and that
+  // are that of MyMusic's own Spotify device, public/spotify.html, and that
   // of the picture of music videos, public/video.html with video.js, which
   // `mygo build` embeds as they are. They call Go without a generated
   // client, so `mygo dev` writes it out of the way.
   frontendDist: "public",
   bindings: ".mygo/bindings.ts",
   out: "build",
-  urlSchemes: ["mixmusic"],
+  urlSchemes: ["mymusic"],
   // Apps update themselves from the releases of the repository, signed with
   // the key whose public half is here (the secret one is the
   // MYGO_UPDATER_PRIVATE_KEY secret of the release workflow).
   updates: {
     publicKey: "y/g7m+MircfXqdGupUFNygznyyR/Y41D1YAOYw41ISU=",
-    github: "fzn0x/mixmusic",
+    github: "bigdaddy284/mymusic",
   },
   // The release workflow signs with the Developer ID and the App Store
   // Connect key of its secrets, which it puts in a keychain of its own:
   // `mygo build` signs the app with the hardened runtime and a timestamp,
   // has Apple notarize the disk image, and staples the ticket to both.
-  // MixMusic needs no entitlements: it isn't sandboxed, uses no microphone
+  // MyMusic needs no entitlements: it isn't sandboxed, uses no microphone
   // or camera, sends no Apple events and loads only the system's
   // frameworks; its plugins run in sobek, which makes no machine code, and
   // its web pages in WebKit's own processes. Without the secrets, as on a
@@ -42,16 +42,16 @@ export default defineConfig({
   macos: {
     signingIdentity: process.env.MACOS_SIGNING_IDENTITY || undefined,
     notarize: process.env.NOTARY_KEYCHAIN
-      ? { keychainProfile: "mixmusic-notary", keychain: process.env.NOTARY_KEYCHAIN }
+      ? { keychainProfile: "mymusic-notary", keychain: process.env.NOTARY_KEYCHAIN }
       : undefined,
-    // macOS asks the user before MixMusic finds cast devices on the network
+    // macOS asks the user before MyMusic finds cast devices on the network
     // and plays on them, with this reason.
     infoPlist: {
-      NSLocalNetworkUsageDescription: "MixMusic finds the cast devices on your network, such as Chromecasts and Nest speakers, to play on them.",
-      // And before the visualizer first hears Spotify in MixMusic, which
+      NSLocalNetworkUsageDescription: "MyMusic finds the cast devices on your network, such as Chromecasts and Nest speakers, to play on them.",
+      // And before the visualizer first hears Spotify in MyMusic, which
       // WebKit's own process plays: through a tap of that process, which
       // macOS counts as recording what other apps play.
-      NSAudioCaptureUsageDescription: "MixMusic hears the Spotify tracks it plays, for its visualizer and the plugins' analyser. It never records or sends them.",
+      NSAudioCaptureUsageDescription: "MyMusic hears the Spotify tracks it plays, for its visualizer and the plugins' analyser. It never records or sends them.",
       NSBonjourServices: ["_googlecast._tcp"],
     },
   },
@@ -64,8 +64,8 @@ export default defineConfig({
   linux: {
     comment: "Spotify and YouTube Music in one customizable player",
     categories: ["AudioVideo", "Audio", "Player"],
-    command: "mixmusic",
-    // MixMusic plays through PulseAudio, which PipeWire serves too, or
+    command: "mymusic",
+    // MyMusic plays through PulseAudio, which PipeWire serves too, or
     // ALSA. The tray icon needs AppIndicator, and keeping sign-ins in the
     // keyring libsecret. WebKitGTK, which MyGo depends on, shows Google's
     // sign-in to YouTube Music.

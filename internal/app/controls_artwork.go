@@ -2,7 +2,7 @@ package app
 
 import "fmt"
 
-// ControlsArtwork tells what MixMusic hands the system's media controls of
+// ControlsArtwork tells what MyMusic hands the system's media controls of
 // the cover of what plays, and what they tell back of the cover they hold,
 // where they tell it: for capture mode's act:nowplaying.
 func (a *App) ControlsArtwork() string {

@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // lookOf is the look of a theme as Mix, of corners of 10px, in the
@@ -156,7 +156,7 @@ func TestChooseLayout(t *testing.T) {
 }
 
 // TestLayoutEditedInSettingsFile applies a layout design written in
-// settings.json while MixMusic runs, and puts back one unknown.
+// settings.json while MyMusic runs, and puts back one unknown.
 func TestLayoutEditedInSettingsFile(t *testing.T) {
 	s := fileShell(t)
 	tt := tester(t, s)
@@ -169,7 +169,7 @@ func TestLayoutEditedInSettingsFile(t *testing.T) {
 	editSettings(t, s, `{"layout": "grid"}`)
 	s.refresh()
 	tt.Frame()
-	if s.set.Layout != settings.LayoutBlend || s.lk.row != 56 {
+	if s.set.Layout != settings.LayoutStudio || s.lk.row != 52 {
 		t.Errorf("an unknown layout gave %q, with rows of %vpx", s.set.Layout, s.lk.row)
 	}
 }

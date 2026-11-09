@@ -12,9 +12,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/downloads"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/downloads"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // roadTrip is a playlist downloaded, as seedRoadTrip keeps it: two tracks

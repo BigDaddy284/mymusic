@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // openBook opens the loudness kept at path, asking with ask.
@@ -183,7 +183,7 @@ func TestPrepareStreamLearnsTheLoudness(t *testing.T) {
 	}
 }
 
-// TestPrepareStreamAsksOnline asks how loud a track MixMusic holds is, from
+// TestPrepareStreamAsksOnline asks how loud a track MyMusic holds is, from
 // the cache or found before, only while the network answers: offline, the
 // engine would wait for the ask in vain.
 func TestPrepareStreamAsksOnline(t *testing.T) {

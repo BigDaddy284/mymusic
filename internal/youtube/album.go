@@ -3,7 +3,7 @@ package youtube
 import (
 	"context"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Album returns an album with its tracks, by its browse ID (MPREb_…).

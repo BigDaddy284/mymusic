@@ -16,7 +16,7 @@ func init() { addSettings(desktopRows, 15, (*shell).keepOnTopRow) }
 // › On the desktop.
 const (
 	keepOnTopTitle       = "Keep on top"
-	keepOnTopDescription = "MixMusic's window stays above your other windows. The mini player stays on top either way."
+	keepOnTopDescription = "MyMusic's window stays above your other windows. The mini player stays on top either way."
 )
 
 // keepOnTopRow turns keeping the main window on top on and off.
@@ -71,9 +71,9 @@ func (s *shell) followOnTop() {
 func (s *shell) toggleOnTop() {
 	s.set.KeepOnTop = !s.set.KeepOnTop
 	s.save()
-	msg := "MixMusic stays on top of other windows"
+	msg := "MyMusic stays on top of other windows"
 	if !s.set.KeepOnTop {
-		msg = "MixMusic no longer stays on top"
+		msg = "MyMusic no longer stays on top"
 	}
 	s.notes = append(s.notes, notice(msg))
 }

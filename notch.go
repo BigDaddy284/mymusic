@@ -10,9 +10,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // The panel's motion: it grows from the housing, and shrinks back, its
@@ -101,7 +101,7 @@ func OpenNotch(a *app.App) *mygo.Window {
 	n := &notch{s: newShell(a, a.GoPlayer()), housing: h}
 	r := h.compact()
 	win := mygo.NewWindow(mygo.WindowOptions{
-		Title:  "MixMusic around the notch",
+		Title:  "MyMusic around the notch",
 		X:      r.X,
 		Y:      r.Y,
 		Width:  r.Width,
@@ -151,9 +151,9 @@ func (n *notch) close() {
 	n.host.keyboard(false)
 }
 
-// openMixMusic shows MixMusic's main window, at the page of path unless
+// openMyMusic shows MyMusic's main window, at the page of path unless
 // it's "", and closes the panel.
-func (n *notch) openMixMusic(path string) {
+func (n *notch) openMyMusic(path string) {
 	n.s.svc.System.OpenMainWindow(path)
 	n.close()
 }
@@ -267,7 +267,7 @@ func (n *notch) closing(c *ui.Context, root ui.Element) {
 
 // topRow draws what sits beside the housing: on the left the small cover,
 // or the arrow that closes the panel in its place, with the button that
-// opens MixMusic left of it; on the right the bars that move with the
+// opens MyMusic left of it; on the right the bars that move with the
 // music, or a spinner while the track loads. Nothing is drawn under the
 // camera. Clicking either side opens the panel, or closes it.
 func (n *notch) topRow(c *ui.Context, cx, alpha float32) {
@@ -278,11 +278,11 @@ func (n *notch) topRow(c *ui.Context, cx, alpha float32) {
 	top := (hh - art) / 2
 	if alpha > 0 {
 		open := n.s.buttonBase(c.Key("notch-main")).Absolute().Left(cx-hw/2-wing-notchOpenRoom+6).Top((hh-28)/2).
-			Size(28, 28).Radius(14).Label("Open MixMusic").Cursor(ui.CursorPointer).Opacity(alpha).Disabled(!n.open)
+			Size(28, 28).Radius(14).Label("Open MyMusic").Cursor(ui.CursorPointer).Opacity(alpha).Disabled(!n.open)
 		n.buttonLook(open, false, false)
 		open.Children(func() { ui.Icon(c, icon("mini")).FontSize(15).TextColor(notchWhite) })
 		if open.Clicked() {
-			n.openMixMusic("")
+			n.openMyMusic("")
 		}
 	}
 	label := "Open the player"
@@ -363,13 +363,13 @@ func (n *notch) body(c *ui.Context, t media.Track) {
 	ui.Column(c).Width(232).Shrink(0).Gap(8).Children(func() {
 		ui.Row(c).Gap(12).AlignItems(ui.Center).Children(func() {
 			cover := n.s.buttonBase(c.Key("notch-cover")).Size(64, 64).Radius(10).Clip().Shrink(0).
-				Label("Show what plays in MixMusic").Cursor(ui.CursorPointer)
+				Label("Show what plays in MyMusic").Cursor(ui.CursorPointer)
 			if cover.FocusVisible() {
 				n.keyFocus = true
 			}
 			cover.Children(func() { n.cover(c, "notch-large", 64) })
 			if cover.Clicked() {
-				n.openMixMusic("/now-playing")
+				n.openMyMusic("/now-playing")
 			}
 			ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
 				ui.Text(c, t.Title).FontSize(14).FontWeight(600).TextColor(notchWhite).SingleLine().MinWidth(0)

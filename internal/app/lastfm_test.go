@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/lastfm"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/lastfm"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestLastfmTrack tells the scrobbler what plays: with the player's

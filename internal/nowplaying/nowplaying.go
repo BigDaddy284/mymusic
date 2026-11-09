@@ -1,4 +1,4 @@
-// Package nowplaying shows what MixMusic's own audio engine plays in the
+// Package nowplaying shows what MyMusic's own audio engine plays in the
 // system's media controls, and passes on what they ask: macOS's Now
 // Playing, which Control Center, the media keys and headphones reach, an
 // MPRIS player on Linux, which desktops show and pass their media keys to,
@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-// ErrUnsupported is returned where MixMusic can't reach the system's media
+// ErrUnsupported is returned where MyMusic can't reach the system's media
 // controls.
 var ErrUnsupported = errors.New("nowplaying: the system's media controls are not supported here")
 
@@ -27,10 +27,10 @@ type Info struct {
 	Artists []string
 	Album   string
 	// Artwork is the address of an https image of the track, or of the
-	// cover of a track on this computer that MixMusic keeps, or empty,
+	// cover of a track on this computer that MyMusic keeps, or empty,
 	// which tells covers apart: the systems take Cover, or CoverFile.
 	Artwork string
-	// Cover is the image at Artwork, as its host sent it, once MixMusic
+	// Cover is the image at Artwork, as its host sent it, once MyMusic
 	// has it: macOS and Windows show it. Show keeps it, so it mustn't
 	// change after.
 	Cover []byte
@@ -53,7 +53,7 @@ type Info struct {
 // its bytes: on Linux, MPRIS hands the desktop its address.
 const CoverFiles = runtime.GOOS == "linux"
 
-// The speeds MixMusic plays at, which the system's controls may ask.
+// The speeds MyMusic plays at, which the system's controls may ask.
 const (
 	MinRate = 0.5
 	MaxRate = 3
@@ -135,7 +135,7 @@ func valid(s string) string { return strings.ToValidUTF8(s, "�") }
 // desktop entry after the ID.
 func mprisNames(flatpakID string) (bus, desktopEntry string) {
 	if flatpakID == "" {
-		return "org.mpris.MediaPlayer2.mixmusic", "mixmusic"
+		return "org.mpris.MediaPlayer2.mymusic", "mymusic"
 	}
 	return "org.mpris.MediaPlayer2." + flatpakID, flatpakID
 }
@@ -295,7 +295,7 @@ func (c *Controls) Show(info *Info) {
 	}
 }
 
-// Close takes MixMusic out of the system's media controls.
+// Close takes MyMusic out of the system's media controls.
 func (c *Controls) Close() {
 	close(c.stop)
 	<-c.done

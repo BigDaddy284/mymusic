@@ -3,10 +3,10 @@ package library
 import (
 	"slices"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// FollowedArtist is an artist the user follows in MixMusic, as their tile
+// FollowedArtist is an artist the user follows in MyMusic, as their tile
 // shows them.
 type FollowedArtist struct {
 	ID      string        `json:"id"`
@@ -22,7 +22,7 @@ func (a FollowedArtist) media() media.Artist {
 		TopTracks: []media.Track{}, Albums: []media.Album{}, Singles: []media.Album{}, Related: []media.Ref{}}
 }
 
-// Artists returns the artists the user follows in MixMusic, the last
+// Artists returns the artists the user follows in MyMusic, the last
 // followed first.
 func (l *Library) Artists() []media.Artist {
 	followed := l.file.Get().Artists
@@ -34,12 +34,12 @@ func (l *Library) Artists() []media.Artist {
 }
 
 // FollowsArtist reports whether the user follows the artist id in
-// MixMusic.
+// MyMusic.
 func (l *Library) FollowsArtist(id string) bool {
 	return slices.ContainsFunc(l.file.Get().Artists, func(a FollowedArtist) bool { return a.ID == id })
 }
 
-// SetArtistFollowed follows an artist in MixMusic, or stops following
+// SetArtistFollowed follows an artist in MyMusic, or stops following
 // them. An artist followed again moves first.
 func (l *Library) SetArtistFollowed(a media.Artist, on bool) error {
 	return l.file.Update(func(d *Data) error {

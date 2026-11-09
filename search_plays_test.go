@@ -3,8 +3,8 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestSearchShowsPlays shows, in a search's songs, how many times each

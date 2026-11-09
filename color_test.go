@@ -4,7 +4,7 @@ import (
 	"image/color"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
 )
 
 func TestParseColor(t *testing.T) {

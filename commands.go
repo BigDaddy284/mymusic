@@ -16,7 +16,7 @@ type command struct {
 	run                        func()
 }
 
-// commands are MixMusic's own commands, and those of plugins.
+// commands are MyMusic's own commands, and those of plugins.
 func (s *shell) commands() []command {
 	cur, playing := s.st.Current()
 	cmds := []command{
@@ -390,8 +390,7 @@ func (s *shell) palette(c *ui.Context) {
 					row := ui.ButtonBase(c.Key("palette-" + cmd.id)).Height(36).PaddingX(12).Gap(12).Justify(ui.SpaceBetween).Label(cmd.title).Cursor(ui.CursorPointer)
 					ink := k.text
 					if i == s.paletteAt {
-						row.Background(k.accent)
-						ink = k.accentText
+						ink = k.fillAccent(row, fillRest)
 						// The row chosen comes into view in the frame the keys
 						// chose it: in every frame, the wheel couldn't scroll
 						// it away.

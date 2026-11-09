@@ -3,13 +3,13 @@ package app
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // TestNotchShows shows the player around the notch while the setting is
 // on, the main window is open and a track is loaded, and else not: it
-// alone never keeps MixMusic running.
+// alone never keeps MyMusic running.
 func TestNotchShows(t *testing.T) {
 	loaded := player.State{Queue: []player.Item{{Track: media.Track{ID: "yt:1"}}}, Index: 0}
 	ended := player.State{Index: -1}

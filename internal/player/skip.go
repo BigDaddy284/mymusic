@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // maxEmptyRadios stops autoplay once that many radios in a row added

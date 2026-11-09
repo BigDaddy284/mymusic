@@ -1,7 +1,7 @@
 package app
 
-// The audio a cast device plays, which it fetches from MixMusic: the
-// addresses the player plays are MixMusic's own, which no device can
+// The audio a cast device plays, which it fetches from MyMusic: the
+// addresses the player plays are MyMusic's own, which no device can
 // open, and YouTube's streams come through the proxy, which fetches them
 // in chunks, waits for YouTube to serve them, and serves the cache and the
 // downloads first. While casting, and only then, the proxy is served on
@@ -21,7 +21,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // castServer serves the proxy's audio to a cast device, while casting.
@@ -85,7 +85,7 @@ func (s *castServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // castContentType returns the MIME type of the audio of a video the cast
-// device fetches, as far as MixMusic knows it without fetching it: of its
+// device fetches, as far as MyMusic knows it without fetching it: of its
 // download, its cached audio, or its stream found, else the type of most
 // of YouTube's audio. A device picks its player by it.
 func (a *App) castContentType(videoID string, surround bool) string {

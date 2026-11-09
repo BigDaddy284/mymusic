@@ -36,14 +36,14 @@
   YouTube's own website, asked signed out with a field mask
   (`MadeWithAI`): nothing of YouTube Music carries the label. Its parsers
   are tested against recorded responses in `testdata/`, and against the
-  live service with `MIXMUSIC_LIVE=1 go test ./internal/youtube -run Live`
-  (`MIXMUSIC_YT_COOKIES` adds a signed-in account, and
-  `MIXMUSIC_YT_WRITE=1` lets it make and delete a playlist there, and
+  live service with `MYMUSIC_LIVE=1 go test ./internal/youtube -run Live`
+  (`MYMUSIC_YT_COOKIES` adds a signed-in account, and
+  `MYMUSIC_YT_WRITE=1` lets it make and delete a playlist there, and
   dislike a song and take the dislike back).
 - **`internal/spotify`** signs in with PKCE on a loopback callback, refreshes
   tokens, reads the Web API (search, albums, artists, playlists, the
   library), and controls Spotify Connect devices.
-- **`internal/sysproxy`** picks the proxy of every request MixMusic makes,
+- **`internal/sysproxy`** picks the proxy of every request MyMusic makes,
   as the `Proxy` of `http.DefaultTransport`, which the clients use or
   clone: the environment's (`HTTPS_PROXY` and the like) when it names
   one; on Windows, failing that, the one of Windows' settings, which
@@ -53,7 +53,7 @@
   server, unless the bypass list names the address. Loopback addresses
   always connect directly. It reads the settings again when their
   registry key changes, as VPN and proxy apps turn them on and off,
-  logs what MixMusic connects through, without user names or passwords,
+  logs what MyMusic connects through, without user names or passwords,
   and gives yt-dlp a `--proxy` where yt-dlp wouldn't find that proxy
   itself. A package that clones `http.DefaultTransport` as it
   initializes imports it, as `internal/online` does. macOS and Linux

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/cast/casttest"
+	"github.com/bigdaddy284/mymusic/internal/cast/casttest"
 )
 
 func init() {

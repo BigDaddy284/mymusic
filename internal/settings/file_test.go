@@ -19,7 +19,7 @@ func readTestdata(t *testing.T, name string) []byte {
 	return data
 }
 
-// TestDecode reads settings files as versions of MixMusic and Windows
+// TestDecode reads settings files as versions of MyMusic and Windows
 // PowerShell 5.1 wrote them.
 func TestDecode(t *testing.T) {
 	for _, c := range []struct {
@@ -66,7 +66,7 @@ func TestDecode(t *testing.T) {
 	}
 }
 
-// TestDecodeCleans reads a file as MixMusic does at start: missing keys
+// TestDecodeCleans reads a file as MyMusic does at start: missing keys
 // take their defaults, and values out of range go back in range.
 func TestDecodeCleans(t *testing.T) {
 	s, err := Decode([]byte(`{"fontScale": 2, "crossfade": 60, "volume": 0.5, "shortcuts": {"player.next": "Mod+N"}}`))

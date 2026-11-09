@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // TestSurroundButton shows the 5.1 button by the player only while the

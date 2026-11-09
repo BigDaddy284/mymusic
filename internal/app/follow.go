@@ -7,8 +7,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
 // errNotSignedIn is returned for following or saving on a service the user
@@ -68,7 +68,7 @@ func (a *App) syncYouTubeLike(ctx context.Context, track media.Track, liked bool
 	}
 	_, id, _ := media.ParseID(track.ID)
 	if err := a.youtube.SetLiked(ctx, id, liked); err != nil {
-		log.Printf("mixmusic: syncing a like with YouTube Music: %v", err)
+		log.Printf("mymusic: syncing a like with YouTube Music: %v", err)
 	}
 }
 
@@ -81,7 +81,7 @@ func (a *App) syncYouTubeDislike(ctx context.Context, track media.Track, dislike
 	}
 	_, id, _ := media.ParseID(track.ID)
 	if err := a.youtube.SetDisliked(ctx, id, disliked); err != nil {
-		log.Printf("mixmusic: syncing a dislike with YouTube Music: %v", err)
+		log.Printf("mymusic: syncing a dislike with YouTube Music: %v", err)
 	}
 }
 

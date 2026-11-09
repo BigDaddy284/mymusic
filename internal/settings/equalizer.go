@@ -5,7 +5,7 @@ import "slices"
 // Bands are the center frequencies of the equalizer's bands, in hertz.
 var Bands = []int{32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000}
 
-// Equalizer shapes the sound of MixMusic's own player.
+// Equalizer shapes the sound of MyMusic's own player.
 type Equalizer struct {
 	// Enabled turns the equalizer on.
 	Enabled bool `json:"enabled"`

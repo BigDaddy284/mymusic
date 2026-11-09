@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "baseUrl": "https://raw.githubusercontent.com/fzn0x/mixmusic/registry/",
+  "baseUrl": "https://raw.githubusercontent.com/bigdaddy284/mymusic/registry/",
   "themes": [
     {
       "id": "neon-nights",
       "name": "Neon Nights",
       "version": "1.1.0",
-      "author": "MixMusic community",
+      "author": "MyMusic community",
       "description": "Electric magenta and violet tiles on deep indigo.",
       "path": "themes/neon-nights",
       "files": [
@@ -37,7 +37,7 @@
       "id": "paper-mint",
       "name": "Paper Mint",
       "version": "1.0.0",
-      "author": "MixMusic community",
+      "author": "MyMusic community",
       "description": "A quiet light theme: graphite ink, mint and coral tiles, rounded corners.",
       "path": "themes/paper-mint",
       "files": [
@@ -70,7 +70,7 @@
       "id": "sleep-timer",
       "name": "Sleep Timer",
       "version": "2.0.0",
-      "author": "MixMusic community",
+      "author": "MyMusic community",
       "description": "Fades the music out and pauses it after a while, or at the end of the track.",
       "path": "plugins/sleep-timer",
       "files": [
@@ -87,7 +87,7 @@
       "id": "spectrum",
       "name": "Spectrum",
       "version": "2.0.0",
-      "author": "MixMusic community",
+      "author": "MyMusic community",
       "description": "A radial spectrum of what plays, drawn in the accent colour on the now playing page.",
       "path": "plugins/spectrum",
       "files": [

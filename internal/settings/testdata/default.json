@@ -1,15 +1,15 @@
 {
-  "theme": "mix",
+  "theme": "mymusic",
   "followSystem": false,
-  "lightTheme": "daylight",
-  "darkTheme": "mix",
+  "lightTheme": "mymusic-light",
+  "darkTheme": "mymusic",
   "themeOptions": {},
   "accent": "",
-  "dynamicAccent": true,
+  "dynamicAccent": false,
   "colorSource": "",
   "colorFile": "",
   "density": "comfortable",
-  "layout": "blend",
+  "layout": "studio",
   "fontScale": 1,
   "zoom": 1,
   "sidebarCollapsed": false,
@@ -87,5 +87,5 @@
   "shortcuts": {},
   "globalShortcuts": {},
   "enabledPlugins": [],
-  "registryUrl": "https://raw.githubusercontent.com/fzn0x/mixmusic/main/community/registry-2.json"
+  "registryUrl": "https://raw.githubusercontent.com/bigdaddy284/mymusic/main/community/registry-2.json"
 }

@@ -3,8 +3,8 @@ package main
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // TestYouTubeChannelUnswitchable lists a brand channel YouTube tells no
@@ -23,12 +23,12 @@ func TestYouTubeChannelUnswitchable(t *testing.T) {
 	tt := testerOf(t, s, 1280, 1800)
 	show(s, tt, "/settings/accounts")
 	click(t, s, tt, "Ada (@ada)")
-	const archive = "Ada Archive (@adaarchive) · YouTube doesn't let MixMusic switch to this channel"
+	const archive = "Ada Archive (@adaarchive) · YouTube doesn't let MyMusic switch to this channel"
 	if !tt.HasText(archive) || !tt.HasText("Ada Records (@adarecords)") {
 		t.Fatalf("the channels listed are %q", tt.Texts())
 	}
 	click(t, s, tt, archive)
-	if !tt.HasText("YouTube doesn't let MixMusic switch to Ada Archive") {
+	if !tt.HasText("YouTube doesn't let MyMusic switch to Ada Archive") {
 		t.Errorf("choosing it isn't told: %q", tt.Texts())
 	}
 	if s.signingIn != "" || tt.HasText("Using YouTube Music as") {

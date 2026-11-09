@@ -44,13 +44,13 @@ var testRelease = release{
 func TestPKGBUILD(t *testing.T) {
 	got := renderAll(t, testRelease)["PKGBUILD"]
 	for _, want := range []string{
-		"\npkgname=mixmusic-bin\n",
+		"\npkgname=mymusic-bin\n",
 		"\n_version=1.2.3\n",
 		"\npkgver=1.2.3\n",
 		"\nsha256sums_x86_64=('" + testRelease.AMD64SHA256 + "')\n",
 		"\nsha256sums_aarch64=('" + testRelease.ARM64SHA256 + "')\n",
 		"\nsha256sums=('" + testRelease.LicenseSHA256 + "')\n",
-		// The app lands where MixMusic tells a package of pacman's by.
+		// The app lands where MyMusic tells a package of pacman's by.
 		"ln -s \"/opt/$_pkgname/$_pkgname\" \"$pkgdir/usr/bin/$_pkgname\"",
 		"\npackage() {\n",
 	} {
@@ -76,7 +76,7 @@ func TestSRCINFOMatchesPKGBUILD(t *testing.T) {
 	// values the .SRCINFO lists, in order.
 	vars := strings.NewReplacer(
 		"${_version}", testRelease.Version, "$_version", testRelease.Version,
-		"$_pkgname", "mixmusic", "$pkgname", "mixmusic-bin",
+		"$_pkgname", "mymusic", "$pkgname", "mymusic-bin",
 	)
 	array := regexp.MustCompile(`(?ms)^(\w+)=\((.*?)\)$`)
 	item := regexp.MustCompile(`'([^']*)'|"([^"]*)"`)
@@ -114,7 +114,7 @@ func TestSRCINFOMatchesPKGBUILD(t *testing.T) {
 func TestSourcesNameTheDownloads(t *testing.T) {
 	got := renderAll(t, testRelease)["PKGBUILD"]
 	for _, arch := range []string{"amd64", "arm64"} {
-		want := "https://github.com/fzn0x/mixmusic/releases/download/v${_version}/mixmusic-${_version}-linux-" + arch + ".deb"
+		want := "https://github.com/bigdaddy284/mymusic/releases/download/v${_version}/mymusic-${_version}-linux-" + arch + ".deb"
 		if !strings.Contains(got, want) {
 			t.Errorf("no %q in\n%s", want, got)
 		}
@@ -126,7 +126,7 @@ func TestReleaseOf(t *testing.T) {
 	sums := map[string]string{}
 	for _, arch := range []string{"amd64", "arm64"} {
 		body := []byte("deb of " + arch)
-		if err := os.WriteFile(filepath.Join(dir, "mixmusic-1.2.3-linux-"+arch+".deb"), body, 0o644); err != nil {
+		if err := os.WriteFile(filepath.Join(dir, "mymusic-1.2.3-linux-"+arch+".deb"), body, 0o644); err != nil {
 			t.Fatal(err)
 		}
 		s := sha256.Sum256(body)

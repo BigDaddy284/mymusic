@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// MaxTracks bounds how many tracks of a playlist MixMusic reads: of one
+// MaxTracks bounds how many tracks of a playlist MyMusic reads: of one
 // that has more, it reads the first MaxTracks, and the playlist is Cut.
 const MaxTracks = 20000
 

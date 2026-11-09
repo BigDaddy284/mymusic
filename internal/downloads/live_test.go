@@ -7,22 +7,22 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/internal/tools"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // TestLiveDownload downloads a song of YouTube Music as the app does,
 // through the proxy, and checks that its file plays, of its whole size:
 // YouTube changes what it answers from time to time. It runs with
-// MIXMUSIC_LIVE=1, finding streams through YouTube's player API, and
-// yt-dlp where MIXMUSIC_YTDLP names one:
+// MYMUSIC_LIVE=1, finding streams through YouTube's player API, and
+// yt-dlp where MYMUSIC_YTDLP names one:
 //
-//	MIXMUSIC_LIVE=1 go test ./internal/downloads -run Live -v
+//	MYMUSIC_LIVE=1 go test ./internal/downloads -run Live -v
 func TestLiveDownload(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
@@ -32,7 +32,7 @@ func TestLiveDownload(t *testing.T) {
 	}
 	song := *songs[0].Track
 	tm := tools.New(t.TempDir())
-	tm.Configure(os.Getenv("MIXMUSIC_YTDLP"), "")
+	tm.Configure(os.Getenv("MYMUSIC_YTDLP"), "")
 	r := stream.NewResolver(tm, t.TempDir())
 	r.Direct = stream.NewDirect()
 	p := stream.NewProxy(r)

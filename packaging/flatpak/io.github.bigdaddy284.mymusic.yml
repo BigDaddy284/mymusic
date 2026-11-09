@@ -1,17 +1,17 @@
-# MixMusic as a Flatpak, for the release's mixmusic-<version>-linux-amd64.flatpak
-# and mixmusic-<version>-linux-arm64.flatpak. It packs the app of the
+# MyMusic as a Flatpak, for the release's mymusic-<version>-linux-amd64.flatpak
+# and mymusic-<version>-linux-arm64.flatpak. It packs the app of the
 # release's Linux archive for the Flatpak's architecture, as mygo build
 # makes it, with the libraries the GNOME runtime lacks, and Node.js, for
 # yt-dlp. Before flatpak-builder, dist/ needs the archive and the metadata
 # (CONTRIBUTING.md, "The Flatpak"):
 #
-#   dist/mixmusic-linux-amd64.tar.gz                build/linux-amd64/mixmusic-<version>-linux-amd64.tar.gz, for x86_64
-#   dist/mixmusic-linux-arm64.tar.gz                build/linux-arm64/mixmusic-<version>-linux-arm64.tar.gz, for aarch64
-#   dist/io.github.fzn0x.mixmusic.metainfo.xml      go run ./tools/metainfo -o <it>
+#   dist/mymusic-linux-amd64.tar.gz                build/linux-amd64/mymusic-<version>-linux-amd64.tar.gz, for x86_64
+#   dist/mymusic-linux-arm64.tar.gz                build/linux-arm64/mymusic-<version>-linux-arm64.tar.gz, for aarch64
+#   dist/io.github.bigdaddy284.mymusic.metainfo.xml      go run ./tools/metainfo -o <it>
 #
 # Flathub can't take this manifest as it is: it builds from source, without
 # the network.
-id: io.github.fzn0x.mixmusic
+id: io.github.bigdaddy284.mymusic
 runtime: org.gnome.Platform
 # GNOME 51 has GTK 3, libsecret, the PulseAudio client library and
 # WebKitGTK 4.1, which the YouTube Music sign-in shows. GNOME runtimes get
@@ -22,7 +22,7 @@ runtime-version: '51'
 sdk: org.gnome.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.node24
-command: mixmusic
+command: mymusic
 finish-args:
   - --share=ipc
   - --share=network
@@ -38,10 +38,10 @@ finish-args:
   # The keyring, where the desktop has no Secret portal, which libsecret
   # takes when there is one.
   - --talk-name=org.freedesktop.secrets
-  # Discord's socket: the app's, while it ran when MixMusic started, and
+  # Discord's socket: the app's, while it ran when MyMusic started, and
   # the folders where Discord, its Canary build and Vesktop put it when
   # they are Flatpaks themselves. The MPRIS player needs no permission:
-  # org.mpris.MediaPlayer2.io.github.fzn0x.mixmusic is the app's own.
+  # org.mpris.MediaPlayer2.io.github.bigdaddy284.mymusic is the app's own.
   - --filesystem=xdg-run/discord-ipc-0
   - --filesystem=xdg-run/app/com.discordapp.Discord:create
   - --filesystem=xdg-run/app/com.discordapp.DiscordCanary:create
@@ -73,27 +73,27 @@ modules:
     build-commands:
       - install -Dm755 /usr/lib/sdk/node24/bin/node /app/bin/node
 
-  - name: mixmusic
+  - name: mymusic
     buildsystem: simple
     sources:
       # The archive of the architecture built for, which flatpak-builder's
       # --arch names: the other is neither read nor needed.
       - type: archive
-        path: dist/mixmusic-linux-amd64.tar.gz
+        path: dist/mymusic-linux-amd64.tar.gz
         strip-components: 0
         dest: app
         only-arches:
           - x86_64
       - type: archive
-        path: dist/mixmusic-linux-arm64.tar.gz
+        path: dist/mymusic-linux-arm64.tar.gz
         strip-components: 0
         dest: app
         only-arches:
           - aarch64
       - type: file
-        path: dist/io.github.fzn0x.mixmusic.metainfo.xml
+        path: dist/io.github.bigdaddy284.mymusic.metainfo.xml
       - type: file
-        path: mixmusic.sh
+        path: mymusic.sh
       - type: file
         path: system-loader.py
       - type: file
@@ -102,13 +102,13 @@ modules:
       # The app keeps everything it needs inside itself. Built in Nix's
       # shell, it names Nix's dynamic loader, which the runtime lacks:
       # it runs on the runtime's.
-      - python3 system-loader.py app/mixmusic
-      - install -Dm755 app/mixmusic /app/lib/mixmusic/mixmusic
-      - install -Dm755 mixmusic.sh /app/bin/mixmusic
-      # mygo build's entry, which opens mixmusic:// links, named after the
+      - python3 system-loader.py app/mymusic
+      - install -Dm755 app/mymusic /app/lib/mymusic/mymusic
+      - install -Dm755 mymusic.sh /app/bin/mymusic
+      # mygo build's entry, which opens mymusic:// links, named after the
       # app's ID, as the icon is. GLib names the window after the program,
       # which StartupWMClass tells the desktop.
-      - install -Dm644 app/mixmusic.desktop /app/share/applications/io.github.fzn0x.mixmusic.desktop
-      - desktop-file-edit --set-icon=io.github.fzn0x.mixmusic --set-key=StartupWMClass --set-value=mixmusic /app/share/applications/io.github.fzn0x.mixmusic.desktop
-      - install -Dm644 icon.svg /app/share/icons/hicolor/scalable/apps/io.github.fzn0x.mixmusic.svg
-      - install -Dm644 io.github.fzn0x.mixmusic.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 app/mymusic.desktop /app/share/applications/io.github.bigdaddy284.mymusic.desktop
+      - desktop-file-edit --set-icon=io.github.bigdaddy284.mymusic --set-key=StartupWMClass --set-value=mymusic /app/share/applications/io.github.bigdaddy284.mymusic.desktop
+      - install -Dm644 icon.svg /app/share/icons/hicolor/scalable/apps/io.github.bigdaddy284.mymusic.svg
+      - install -Dm644 io.github.bigdaddy284.mymusic.metainfo.xml -t /app/share/metainfo

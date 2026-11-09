@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Filter narrows a search to one kind of item.

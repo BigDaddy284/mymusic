@@ -7,15 +7,15 @@ import (
 	"os"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
 )
 
 // TestProcessesOfCoreAudio finds this process among Core Audio's once it
 // plays, with the process macOS holds responsible for it as its parent. It
-// opens the audio device, so it runs only with MIXMUSIC_AUDIO=1.
+// opens the audio device, so it runs only with MYMUSIC_AUDIO=1.
 func TestProcessesOfCoreAudio(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	s, err := output.Start(2, func(out []float32, _ int) { clear(out) }, nil)
 	if errors.Is(err, output.ErrNoDevice) {
@@ -41,7 +41,7 @@ func TestProcessesOfCoreAudio(t *testing.T) {
 	t.Errorf("this process, %d, isn't among Core Audio's", self)
 }
 
-// TestWebViewAudioOfOthers finds no GPU process of MixMusic's among those
+// TestWebViewAudioOfOthers finds no GPU process of MyMusic's among those
 // of other apps.
 func TestWebViewAudioOfOthers(t *testing.T) {
 	self := responsible(uint32(os.Getpid()))
@@ -50,13 +50,13 @@ func TestWebViewAudioOfOthers(t *testing.T) {
 		{pid: 51, parent: 0, name: "com.apple.WebKit.GPU"},        // whose owner macOS doesn't tell
 	}
 	if got := webViewAudio(procs); got != 0 {
-		t.Errorf("took process %d for MixMusic's", got)
+		t.Errorf("took process %d for MyMusic's", got)
 	}
 	if self == 0 {
 		t.Skip("macOS tells no process responsible for this one")
 	}
 	procs = append(procs, proc{pid: 52, parent: self, name: "com.apple.WebKit.GPU"})
 	if got := webViewAudio(procs); got != 52 {
-		t.Errorf("MixMusic's GPU process is %d, want 52", got)
+		t.Errorf("MyMusic's GPU process is %d, want 52", got)
 	}
 }

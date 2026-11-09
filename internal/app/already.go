@@ -8,7 +8,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // ErrAlreadyInPlaylist is an add of tracks a playlist or a mix holds

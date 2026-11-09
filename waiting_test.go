@@ -7,9 +7,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/player/playertest"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/player/playertest"
 )
 
 // offlinePlayer is testPlayer without the network: no track can be found,
@@ -78,7 +78,7 @@ func TestWaitingForTheNetwork(t *testing.T) {
 	if !tt.HasText("waiting for the network") {
 		t.Errorf("the now playing page doesn't tell the wait: %q", tt.Texts())
 	}
-	if dir := os.Getenv("MIXMUSIC_RENDER"); dir != "" {
+	if dir := os.Getenv("MYMUSIC_RENDER"); dir != "" {
 		s.p.Play()
 		s.settle(t, func(st player.State) bool { return st.WillPlay })
 		renderTo(t, s, tt, dir, "now-playing-waiting")

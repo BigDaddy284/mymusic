@@ -281,7 +281,7 @@ func (d *Direct) countTV(err error) {
 		if d.tvRefused >= pauseAfter {
 			d.tvRefused = 0
 			d.tvPausedUntil = d.now().Add(pauseFor)
-			log.Printf("mixmusic: YouTube's player API refused the TV app %d times in a row (%s); it isn't asked of 5.1 surround audio for %d minutes",
+			log.Printf("mymusic: YouTube's player API refused the TV app %d times in a row (%s); it isn't asked of 5.1 surround audio for %d minutes",
 				pauseAfter, strings.TrimPrefix(err.Error(), "stream: "), int(pauseFor/time.Minute))
 		}
 	}

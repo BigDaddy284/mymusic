@@ -12,13 +12,13 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/plugins"
-	"github.com/fzn0x/mixmusic/internal/youtube"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/plugins"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // The tests refresh pages whose asks stay on the computer, or fail before
@@ -379,7 +379,7 @@ func TestRefreshRegistry(t *testing.T) {
 	}
 	publish := func(themes ...string) {
 		t.Helper()
-		data := `{"version": 2, "baseUrl": "https://raw.githubusercontent.com/fzn0x/mixmusic/registry/", "themes": [` + strings.Join(themes, ", ") + `], "plugins": []}`
+		data := `{"version": 2, "baseUrl": "https://raw.githubusercontent.com/bigdaddy284/mymusic/registry/", "themes": [` + strings.Join(themes, ", ") + `], "plugins": []}`
 		if err := os.WriteFile(filepath.Join(community, "registry-2.json"), []byte(data), 0o644); err != nil {
 			t.Fatal(err)
 		}
@@ -456,11 +456,11 @@ func TestSpotifyLikedStartsAgain(t *testing.T) {
 
 // TestRenderRefresh draws the top bar's refresh button, idle, as a spinner
 // while a refresh is out, and the toast of one that failed, to
-// MIXMUSIC_RENDER, for a look.
+// MYMUSIC_RENDER, for a look.
 func TestRenderRefresh(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	s.loads["album:al-x"] = &loaded[media.Album]{done: true, value: media.Album{ID: "al-x", Title: "Mezzanine", Source: media.SourceSpotify,

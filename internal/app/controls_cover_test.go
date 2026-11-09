@@ -15,8 +15,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/artwork"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // pngCover is a cover, a PNG of w×w pixels.

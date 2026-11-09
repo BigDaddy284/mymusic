@@ -8,13 +8,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The tracks that couldn't play (#351): the player keeps what it tried of
 // each, and why each try failed, as it heard, for the details of the
-// track's notice and of Settings › About, until MixMusic closes.
+// track's notice and of Settings › About, until MyMusic closes.
 
 // keptFailures is how many failures the player keeps: the latest.
 const keptFailures = 10
@@ -177,7 +177,7 @@ func (p *Player) way(cur Item) string {
 	case src.Mode == ModeConnect:
 		return "Spotify Connect"
 	case src.Mode == ModeSpotify:
-		return "Spotify in MixMusic"
+		return "Spotify in MyMusic"
 	case src.Live:
 		return "the live stream"
 	case p.playsOffline():
@@ -192,7 +192,7 @@ func (p *Player) spotifyWay() string {
 	if p.spotifyMode == settings.SpotifyPlaybackConnect {
 		return "Spotify Connect"
 	}
-	return "Spotify in MixMusic"
+	return "Spotify in MyMusic"
 }
 
 // again names a way tried once more, after n tries that failed.

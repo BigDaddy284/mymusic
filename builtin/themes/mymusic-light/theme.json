@@ -1,0 +1,37 @@
+{
+  "id": "mymusic-light",
+  "name": "MyMusic Light",
+  "version": "1.0.0",
+  "author": "MyMusic",
+  "description": "MyMusic's light look: white panels with the blue to purple gradient, as StackSpace and Stills & Reels in light mode.",
+  "scheme": "light",
+  "colors": {
+    "bg": "#f4f6fb",
+    "surface": "#fafbfe",
+    "surface-2": "#dee4f2",
+    "surface-3": "#dae2f6",
+    "border": "#dde2ee",
+    "hover": "#e8edf9",
+    "pressed": "#dae2f6",
+    "text": "#141a2d",
+    "text-muted": "#4a5570",
+    "accent": "#2563f5",
+    "accent-2": "#963ef0",
+    "accent-text": "#ffffff",
+    "danger": "#be1e3c",
+    "success": "#147846",
+    "youtube": "#e62117",
+    "spotify": "#108a3e",
+    "tile-1": "#2563f5",
+    "tile-2": "#963ef0",
+    "tile-3": "#5b55f5",
+    "tile-4": "#7a44f5",
+    "tile-text": "#ffffff"
+  },
+  "fonts": {
+    "body": "'Segoe UI Variable Text', 'Segoe UI', Selawik, 'Noto Sans', 'DejaVu Sans', system-ui, sans-serif",
+    "display": "'Segoe UI Variable Display', 'Segoe UI Semibold', 'Segoe UI', Selawik, 'Noto Sans', 'DejaVu Sans', system-ui, sans-serif"
+  },
+  "radius": "8px",
+  "options": []
+}

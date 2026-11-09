@@ -1,5 +1,5 @@
 // The star count of the GitHub button in the top bar, on the home page and
-// the docs: how many have starred MixMusic on GitHub, asked of GitHub's API
+// the docs: how many have starred MyMusic on GitHub, asked of GitHub's API
 // and kept in the browser for an hour, so that the pages ask at most once
 // an hour. When GitHub doesn't answer, or limits the requests of the
 // visitor's address, the count stays hidden. Its room is kept while it
@@ -7,8 +7,8 @@
 (() => {
   const slots = document.querySelectorAll("[data-stars]");
   if (!slots.length) return;
-  const REPO = "fzn0x/mixmusic";
-  const KEY = "mixmusic:stars";
+  const REPO = "bigdaddy284/mymusic";
+  const KEY = "mymusic:stars";
   const HOUR = 60 * 60 * 1000;
 
   // 317, 1.2k, 12k: never more than GitHub has.

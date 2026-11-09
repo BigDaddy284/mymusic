@@ -1,42 +1,43 @@
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.id.md">Bahasa Indonesia</a></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="MixMusic's icon: two pink rings and a play button on black" />
+  <img src="brand/icon.png" width="112" height="112" alt="MyMusic's icon: a music note in a blue to purple gradient on a dark rounded tile" />
 </p>
 
-<h1 align="center">MixMusic</h1>
+<h1 align="center">MyMusic</h1>
 
 <p align="center"><strong>One player for YouTube Music and Spotify.</strong></p>
 
 <p align="center">YouTube Music and Spotify client for macOS, Windows and Linux. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
 
+<p align="center"><sub>MyMusic is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
+
 <p align="center">
-  <a href="https://github.com/fzn0x/mixmusic/actions/workflows/ci.yml"><img src="https://github.com/fzn0x/mixmusic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/fzn0x/mixmusic/actions/workflows/pages.yml"><img src="https://github.com/fzn0x/mixmusic/actions/workflows/pages.yml/badge.svg" alt="Website" /></a>
-  <a href="https://github.com/fzn0x/mixmusic/releases/latest"><img src="https://img.shields.io/github/v/release/fzn0x/mixmusic" alt="Latest release" /></a>
-  <a href="https://github.com/fzn0x/mixmusic/releases"><img src="https://img.shields.io/github/downloads/fzn0x/mixmusic/total" alt="Downloads" /></a>
-  <a href="https://pkg.go.dev/github.com/fzn0x/mixmusic"><img src="https://pkg.go.dev/badge/github.com/fzn0x/mixmusic.svg" alt="Go Reference" /></a>
-  <a href="go.mod"><img src="https://img.shields.io/github/go-mod/go-version/fzn0x/mixmusic" alt="Go version" /></a>
-  <a href="https://awesomemygo.dev/apps/mixmusic"><img src="https://awesomemygo.dev/badge.svg" height="20" alt="Listed on Awesome MyGo" /></a>
+  <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/pages.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/pages.yml/badge.svg" alt="Website" /></a>
+  <a href="https://github.com/bigdaddy284/mymusic/releases/latest"><img src="https://img.shields.io/github/v/release/bigdaddy284/mymusic" alt="Latest release" /></a>
+  <a href="https://github.com/bigdaddy284/mymusic/releases"><img src="https://img.shields.io/github/downloads/bigdaddy284/mymusic/total" alt="Downloads" /></a>
+  <a href="https://pkg.go.dev/github.com/bigdaddy284/mymusic"><img src="https://pkg.go.dev/badge/github.com/bigdaddy284/mymusic.svg" alt="Go Reference" /></a>
+  <a href="go.mod"><img src="https://img.shields.io/github/go-mod/go-version/bigdaddy284/mymusic" alt="Go version" /></a>
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey" alt="macOS, Windows and Linux" />
   <a href="#license"><img src="https://img.shields.io/badge/license-MIT%20or%20GPL--3.0-blue" alt="MIT or GPL-3.0" /></a>
 </p>
 
 <p align="center">
-  <a href="https://fzn0x.github.io/mixmusic/">Website</a> ·
-  <a href="https://github.com/fzn0x/mixmusic/releases/latest">Download</a> ·
-  <a href="https://fzn0x.github.io/mixmusic/docs/">Docs</a> ·
+  <a href="https://bigdaddy284.github.io/mymusic/">Website</a> ·
+  <a href="https://github.com/bigdaddy284/mymusic/releases/latest">Download</a> ·
+  <a href="https://bigdaddy284.github.io/mymusic/docs/">Docs</a> ·
   <a href="CHANGELOG.md">Changelog</a>
 </p>
 
 <p align="center">
-  <img src="docs/banner.webp" alt="MixMusic 0.5.9 in its default look, the Blend layout with the Mix theme, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, with romaji under each line of its lyrics and the mini player in front of it; a search on the left and the library's mixes on the right" />
+  <img src="docs/banner.webp" alt="MyMusic 0.5.9 in its default look, the Blend layout with the Mix theme, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, with romaji under each line of its lyrics and the mini player in front of it; a search on the left and the library's mixes on the right" />
 </p>
 
-## Why MixMusic
+## Why MyMusic
 
 If your music is split between YouTube Music and Spotify, you usually need
-two apps, with two searches, two queues and two libraries. MixMusic puts
+two apps, with two searches, two queues and two libraries. MyMusic puts
 both services in one player:
 
 - **One search.** It looks through YouTube Music and Spotify at once, and
@@ -45,13 +46,13 @@ both services in one player:
   YouTube Music one, and a playlist can hold tracks from both.
 - **No account needed.** YouTube Music plays as soon as you open the app.
   Sign in only if you want your own library. Spotify is optional.
-- **A small program.** MixMusic is one Go program that draws its own
+- **A small program.** MyMusic is one Go program that draws its own
   windows on the GPU. There is no browser inside it to download or keep in
   memory.
 - **Yours to change.** Four layouts and fourteen themes come with it, the
   community adds more themes and plugins, and any command can have a key
   of your own.
-- **Private.** MixMusic has no account, server, analytics or telemetry of
+- **Private.** MyMusic has no account, server, analytics or telemetry of
   its own.
 - **Free and open source,** under the MIT license or the GPL 3.0.
 
@@ -85,10 +86,10 @@ both services in one player:
 
 ### Spotify, three ways
 
-- **In MixMusic itself,** at Spotify's quality, with no Spotify app open
+- **In MyMusic itself,** at Spotify's quality, with no Spotify app open
   (Premium, on Windows and macOS).
 - **On Spotify Connect:** your Spotify app, your phone or a speaker.
-- **From YouTube Music:** MixMusic plays the Spotify track's recording on
+- **From YouTube Music:** MyMusic plays the Spotify track's recording on
   YouTube Music, which needs no Premium to play.
 
 ### Sound
@@ -102,16 +103,16 @@ both services in one player:
 
 - Media keys and the system's media controls on Windows, macOS and Linux.
 - Global shortcuts of your own to play, pause, skip, change the volume,
-  mute, like or dislike what plays or show MixMusic, whichever window is
+  mute, like or dislike what plays or show MyMusic, whichever window is
   in front.
 - The player's buttons on the taskbar thumbnail on Windows.
 - Tray controls, notifications of new tracks, and start at login.
-- `mixmusic://` links.
+- `mymusic://` links.
 - **Last.fm:** every track you hear joins your profile, and scrobbles made
   offline are sent once you are back online.
 - **Discord:** your profile shows what plays, with its artwork and the time
   left.
-- **Updates:** MixMusic checks for a new release at start and every few
+- **Updates:** MyMusic checks for a new release at start and every few
   hours, checks its signature, and installs it when you say so, or by
   itself if you choose.
 
@@ -120,7 +121,7 @@ both services in one player:
 - **Layouts.** Blend, the default, has rounded shapes and springy motion
   on dense rows of big covers. Expressive, after Material 3 Expressive, is
   playful, with tonal fills, pill buttons and a floating player bar. Crate
-  is restrained, so that the covers do the work, and Tiles is MixMusic's
+  is restrained, so that the covers do the work, and Tiles is MyMusic's
   first look, with flat tiles and giant lowercase words.
 - **Themes.** Fourteen built in, each in any layout, with effects you can
   tune, one theme for light mode and one for dark mode, and an accent
@@ -134,21 +135,21 @@ both services in one player:
   from any app, and a command palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) for
   the rest.
 - **A settings file.** Your settings are `settings.json` in your data folder
-  (`%AppData%\MixMusic` on Windows, `~/Library/Application Support/MixMusic`
-  on macOS, `~/.config/MixMusic` on Linux), which you can keep with your
-  dotfiles. Save it while MixMusic runs, and it applies at once; Settings ›
+  (`%AppData%\MyMusic` on Windows, `~/Library/Application Support/MyMusic`
+  on macOS, `~/.config/MyMusic` on Linux), which you can keep with your
+  dotfiles. Save it while MyMusic runs, and it applies at once; Settings ›
   Desktop › Settings file opens it.
 
 ## A look around
 
 <p align="center">
-  <img src="docs/look-listen.webp" alt="MixMusic's pages in the Blend layout, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, each line of its lyrics with romaji and an English translation under it; the album THE BOOK 3 on the left and a followed podcast's page on the right" />
+  <img src="docs/look-listen.webp" alt="MyMusic's pages in the Blend layout, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, each line of its lyrics with romaji and an English translation under it; the album THE BOOK 3 on the left and a followed podcast's page on the right" />
 </p>
 
 <p align="center"><sub><b>Listen.</b> In the middle, now playing アイドル by YOASOBI: each line lights up as it's sung, with romaji and a translation under it. On the left, an album; on the right, a podcast you follow.</sub></p>
 
 <p align="center">
-  <img src="docs/look-yours.webp" alt="More of MixMusic, standing upright on a dark stage and facing you: Settings › Appearance with the four layouts in the middle, outlined in pink; a Material theme coloured by the cover that plays on the left, and the marketplace's community themes on the right" />
+  <img src="docs/look-yours.webp" alt="More of MyMusic, standing upright on a dark stage and facing you: Settings › Appearance with the four layouts in the middle, outlined in pink; a Material theme coloured by the cover that plays on the left, and the marketplace's community themes on the right" />
 </p>
 
 <p align="center"><sub><b>Make it yours.</b> In the middle, the four layouts: Blend, the default, Expressive, Crate and Tiles, under the themes. On the left, a Material theme that takes its colours from the cover that plays. On the right, community themes in the marketplace.</sub></p>
@@ -156,40 +157,40 @@ both services in one player:
 ## Install
 
 Download the file for your system from the
-[latest release](https://github.com/fzn0x/mixmusic/releases/latest):
+[latest release](https://github.com/bigdaddy284/mymusic/releases/latest):
 
 | System | Download |
 |---|---|
-| macOS 12 and later (Apple silicon and Intel) | [`mixmusic-<version>-macos-universal.dmg`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Windows 10 and 11 (x64, Arm), installer | [`mixmusic-<version>-windows-<arch>-setup.exe`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Windows, portable, no installation | [`mixmusic-<version>-windows-<arch>-portable.zip`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Debian, Ubuntu and derivatives | [`mixmusic-<version>-linux-<arch>.deb`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Fedora, openSUSE and derivatives | [`mixmusic-<version>-linux-<arch>.rpm`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Arch Linux and derivatives (coming soon) | [`mixmusic-bin`](https://aur.archlinux.org/packages/mixmusic-bin) on the AUR: `yay -S mixmusic-bin` |
-| Any Linux, one file | [`mixmusic-<version>-linux-<arch>.AppImage`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Any Linux, sandboxed (Flatpak) | [`mixmusic-<version>-linux-<arch>.flatpak`](https://github.com/fzn0x/mixmusic/releases/latest) |
-| Any Linux, in your home folder | [`mixmusic-<version>-linux-<arch>.tar.gz`](https://github.com/fzn0x/mixmusic/releases/latest), with `install.sh` |
+| macOS 12 and later (Apple silicon and Intel) | [`mymusic-<version>-macos-universal.dmg`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Windows 10 and 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Windows, portable, no installation | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Debian, Ubuntu and derivatives | [`mymusic-<version>-linux-<arch>.deb`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Fedora, openSUSE and derivatives | [`mymusic-<version>-linux-<arch>.rpm`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Arch Linux and derivatives (coming soon) | [`mymusic-bin`](https://aur.archlinux.org/packages/mymusic-bin) on the AUR: `yay -S mymusic-bin` |
+| Any Linux, one file | [`mymusic-<version>-linux-<arch>.AppImage`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Any Linux, sandboxed (Flatpak) | [`mymusic-<version>-linux-<arch>.flatpak`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Any Linux, in your home folder | [`mymusic-<version>-linux-<arch>.tar.gz`](https://github.com/bigdaddy284/mymusic/releases/latest), with `install.sh` |
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists
 `SHA256SUMS` to check the downloads with. You don't need the files named
-`update-…`, `….delta`, `mixmusic-<version>-macos-…` or
+`update-…`, `….delta`, `mymusic-<version>-macos-…` or
 `-windows-<arch>.tar.gz`: installed apps update from them.
 
 The installers, the portable zip and the Linux archive update themselves.
 The `.deb`, the `.rpm`, the AppImage and the Flatpak can't replace their
-own files, so MixMusic tells you when a new version is out and downloads
-it for you. The AUR's `mixmusic-bin` updates with the rest of your
+own files, so MyMusic tells you when a new version is out and downloads
+it for you. The AUR's `mymusic-bin` updates with the rest of your
 system. For the portable zip, unpack it anywhere and open
-`MixMusic.exe`. For the AppImage, make it executable (`chmod +x`) and open
+`MyMusic.exe`. For the AppImage, make it executable (`chmod +x`) and open
 it. For the Flatpak, open it with your software center, or run
-`flatpak install ./mixmusic-<version>-linux-<arch>.flatpak`; the first time,
+`flatpak install ./mymusic-<version>-linux-<arch>.flatpak`; the first time,
 Flatpak fetches the GNOME runtime from Flathub.
 
 Coming soon, once its tap is up: on a Mac, [Homebrew](https://brew.sh)
-installs MixMusic, and `brew upgrade` updates it.
+installs MyMusic, and `brew upgrade` updates it.
 
 ```sh
-brew install --cask fzn0x/tap/mixmusic
+brew install --cask fzn0x/tap/mymusic
 ```
 
 ### The first launch
@@ -200,13 +201,13 @@ brew install --cask fzn0x/tap/mixmusic
   Terminal:
 
   ```sh
-  xattr -dr com.apple.quarantine /Applications/MixMusic.app
+  xattr -dr com.apple.quarantine /Applications/MyMusic.app
   ```
 - **Windows:** the installer isn't signed yet, so SmartScreen may warn
   about it: choose More info, then Run anyway. Signing in to YouTube Music
-  and playing Spotify in MixMusic need the WebView2 Runtime, which Windows
+  and playing Spotify in MyMusic need the WebView2 Runtime, which Windows
   11 includes.
-- **Linux:** MixMusic needs GTK 3, and PulseAudio (PipeWire serves it too)
+- **Linux:** MyMusic needs GTK 3, and PulseAudio (PipeWire serves it too)
   or ALSA. Signing in to YouTube Music needs WebKitGTK 4.1, the tray icon
   needs `libayatana-appindicator3`, and keeping your sign-ins in the
   system's keyring needs `libsecret`. The `.deb` and the `.rpm` install
@@ -219,7 +220,7 @@ brew install --cask fzn0x/tap/mixmusic
   # Fedora
   sudo dnf install gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
   ```
-- **Every system:** MixMusic finds the audio of most YouTube Music tracks
+- **Every system:** MyMusic finds the audio of most YouTube Music tracks
   itself. For the rest, such as tracks made for children, it uses
   [yt-dlp](https://github.com/yt-dlp/yt-dlp), which it installs for you
   from Settings › Playback and keeps up to date. yt-dlp needs a JavaScript
@@ -228,33 +229,33 @@ brew install --cask fzn0x/tap/mixmusic
 
 ### The Flatpak
 
-The Flatpak runs MixMusic in a sandbox, which sees the network, the sound
-server, the display and the GPU, and none of your home folder. MixMusic
-keeps its settings and library in `~/.var/app/io.github.fzn0x.mixmusic`,
+The Flatpak runs MyMusic in a sandbox, which sees the network, the sound
+server, the display and the GPU, and none of your home folder. MyMusic
+keeps its settings and library in `~/.var/app/io.github.bigdaddy284.mymusic`,
 apart from a `.deb`, `.rpm`, AppImage or archive copy, and both can run at
 once. To bring a copy's settings and library over, quit both, copy
 `settings.json`, `library.json`, `queue.json` and the `addons` folder from
-`~/.config/MixMusic` into `~/.var/app/io.github.fzn0x.mixmusic/config/MixMusic`,
+`~/.config/MyMusic` into `~/.var/app/io.github.bigdaddy284.mymusic/config/MyMusic`,
 and sign in to your accounts again: sign-ins stay in the other copy's
 keyring.
 
 In the Flatpak, start at login goes through your desktop, which may ask
 you first, and a yt-dlp of your own must be in
-`~/.var/app/io.github.fzn0x.mixmusic`, as the sandbox sees no other
+`~/.var/app/io.github.bigdaddy284.mymusic`, as the sandbox sees no other
 folder. A Discord app that isn't a Flatpak shows what plays only if it
-was running when MixMusic started, until it restarts; Discord as a
+was running when MyMusic started, until it restarts; Discord as a
 Flatpak works either way. The Flatpak is new: tell us in an
-[issue](https://github.com/fzn0x/mixmusic/issues) how it runs on your
+[issue](https://github.com/bigdaddy284/mymusic/issues) how it runs on your
 desktop.
 
 ### Accounts (all optional)
 
 - **YouTube Music:** choose Sign in to YouTube Music in Settings › Accounts
   and sign in to Google in the window that opens. What you type goes to
-  Google only. MixMusic keeps the session encrypted, with a key in your
+  Google only. MyMusic keeps the session encrypted, with a key in your
   system's keyring where there is one. Where that window can't open, or
   Google refuses it, import the session of a browser you signed in with
-  (MixMusic reads it with its yt-dlp, and keeps YouTube's cookies alone),
+  (MyMusic reads it with its yt-dlp, and keeps YouTube's cookies alone),
   or paste the Cookie header of a signed-in music.youtube.com tab.
 - **Spotify:** Spotify lets an app serve up to five users, and only while
   its owner has Premium, so you sign in with a Spotify app of your own. It
@@ -263,7 +264,7 @@ desktop.
 - **Last.fm:** create an API account at
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (any name, no callback URL), paste its API key and shared secret in
-  Settings › Accounts, and approve MixMusic in your browser.
+  Settings › Accounts, and approve MyMusic in your browser.
 - **Discord:** while the Discord app runs, your profile shows what you
   listen to. Turn it off in Settings › Desktop.
 
@@ -274,7 +275,7 @@ covers the common problems and the known issues.
 
 You need [Go](https://go.dev/dl/) 1.27.3 or later, [Bun](https://bun.sh)
 1.2 or later, which runs MyGo's command line, and Git. MyGo needs no C
-compiler, so any system builds MixMusic for every system.
+compiler, so any system builds MyMusic for every system.
 
 ### Windows
 
@@ -287,8 +288,8 @@ winget install Git.Git
 Open a new terminal, then:
 
 ```powershell
-git clone https://github.com/fzn0x/mixmusic
-cd mixmusic
+git clone https://github.com/bigdaddy284/mymusic
+cd mymusic
 bun install
 bun run dev
 ```
@@ -303,8 +304,8 @@ With [Homebrew](https://brew.sh):
 
 ```sh
 brew install go oven-sh/bun/bun
-git clone https://github.com/fzn0x/mixmusic
-cd mixmusic
+git clone https://github.com/bigdaddy284/mymusic
+cd mymusic
 bun install
 bun run dev
 ```
@@ -312,7 +313,7 @@ bun run dev
 ### Linux
 
 Install Go from [go.dev/dl](https://go.dev/dl/) (distribution packages are
-often older than 1.27.3), then Bun and the libraries MixMusic runs with:
+often older than 1.27.3), then Bun and the libraries MyMusic runs with:
 
 ```sh
 curl -fsSL https://bun.sh/install | bash
@@ -325,8 +326,8 @@ sudo dnf install git gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-
 Then:
 
 ```sh
-git clone https://github.com/fzn0x/mixmusic
-cd mixmusic
+git clone https://github.com/bigdaddy284/mymusic
+cd mymusic
 bun install
 bun run dev
 ```
@@ -335,14 +336,14 @@ bun run dev
 
 With [Nix](https://nixos.org), `nix develop` gives you the tools releases
 are built with, at the versions `flake.lock` pins: Go, Bun, NSIS,
-GoReleaser and Zola. `nix build` builds MixMusic for Linux from source,
+GoReleaser and Zola. `nix build` builds MyMusic for Linux from source,
 into `result/`.
 
 ### Develop
 
 `bun run dev` builds the app, starts it, and rebuilds it as you edit. Its
-data stays apart from an installed MixMusic, under the name
-`MixMusic Dev`.
+data stays apart from an installed MyMusic, under the name
+`MyMusic Dev`.
 
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
@@ -359,7 +360,7 @@ In the Nix shell, build Linux downloads with
 and it starts only on NixOS. `go run ./tools/elfloader build/linux-amd64`
 checks a build.
 
-The [website](https://fzn0x.github.io/mixmusic/) is in `site/`, built with
+The [website](https://bigdaddy284.github.io/mymusic/) is in `site/`, built with
 [Zola](https://www.getzola.org), and the guides in `docs/` are its
 `/docs/` pages. `go run ./tools/sitedocs && zola --root site serve`
 previews it. Releases are built in the Nix shell and published by
@@ -372,7 +373,7 @@ together.
 
 The app is the root package, with the packages of `internal/` under it. The
 packages outside `internal/` are for anyone to import, and documented on
-[pkg.go.dev](https://pkg.go.dev/github.com/fzn0x/mixmusic).
+[pkg.go.dev](https://pkg.go.dev/github.com/bigdaddy284/mymusic).
 
 ```
 *.go                 the app and its windows: the pages, the player bar, the
@@ -380,7 +381,7 @@ packages outside `internal/` are for anyone to import, and documented on
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
 internal/player      the queue, played by the audio engine or on Spotify's devices
-internal/audio       MixMusic's audio engine, and the system's audio output
+internal/audio       MyMusic's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
 internal/spotify     the Spotify Web API, its sign-in and Spotify Connect
@@ -392,7 +393,7 @@ internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins, and the community registry
-builtin/themes       the themes MixMusic ships with
+builtin/themes       the themes MyMusic ships with
 public/              the page of Spotify's player, on Windows
 sdk/                 the types of the plugin API
 community/           community themes and plugins, and their registry
@@ -408,7 +409,7 @@ webm/                the audio of WebM files: packets, times and seeking
 mp4/                 the audio of MP4 files: packets, times and seeking
 resample/            sample rate conversion, with Kaiser-windowed sincs
 lyrics/              synced lyrics from Unison and LRCLIB, and translations
-brand/               MixMusic's logo, for code that draws it
+brand/               MyMusic's logo, for code that draws it
 ```
 
 ## Community
@@ -444,13 +445,13 @@ pages, commands, track actions and widgets.
 4. Open a pull request.
 
 Once it is merged, CI publishes it to the
-[registry branch](https://github.com/fzn0x/mixmusic/tree/registry), and it
+[registry branch](https://github.com/bigdaddy284/mymusic/tree/registry), and it
 shows up in everyone's marketplace. [community/README.md](community/README.md)
 has the details.
 
 ## Privacy
 
-MixMusic has no account, server, analytics or telemetry of its own. It
+MyMusic has no account, server, analytics or telemetry of its own. It
 talks to:
 
 - **YouTube and Google:** YouTube Music's catalog, its streams and how loud
@@ -460,7 +461,7 @@ talks to:
   Music history.
 - **Spotify,** once you sign in: your library, your Spotify Connect devices,
   and Spotify's player, loaded from `sdk.scdn.co`, when Spotify plays in
-  MixMusic.
+  MyMusic.
 - **Unison:** the video ID of the track that plays, or, without one, its
   title, artists, album and length, to find its lyrics. Only while you
   turn on translate, or romanize, beside the lyrics, the lyrics of the
@@ -497,18 +498,18 @@ clears the cache and the covers, and signing out of a service deletes its
 sign-in.
 
 On Windows, the visualizer hears the audio of Spotify playing on this
-computer, in MixMusic or in the Spotify app, through Windows' process
+computer, in MyMusic or in the Spotify app, through Windows' process
 loopback, which hears only that app. On macOS 14.2 and later, it hears
-Spotify playing in MixMusic through a process tap, once you allow it, as
+Spotify playing in MyMusic through a process tap, once you allow it, as
 macOS asks. It analyzes the audio in memory and never records or sends
 it.
 
 ## Credits
 
-MixMusic is built on these projects:
+MyMusic is built on these projects:
 
-- **[MyGo](https://github.com/egoist/mygo)**, the desktop framework MixMusic
-  is built with. MixMusic uses MyGo's native UI: MyGo draws every window
+- **[MyGo](https://github.com/egoist/mygo)**, the desktop framework MyMusic
+  is built with. MyMusic uses MyGo's native UI: MyGo draws every window
   itself, in Go, without a webview, from the pages and the player bar to the
   mini player. Its command line packages the app, with its installers and
   the signed updates it updates itself from.
@@ -519,7 +520,7 @@ MixMusic is built on these projects:
 - **[Sobek](https://github.com/grafana/sobek)**, the JavaScript engine each
   plugin runs in.
 - **[Nix](https://nixos.org)**, which pins the tools releases are built
-  with, and builds MixMusic for Linux from source.
+  with, and builds MyMusic for Linux from source.
 - **[GoReleaser](https://goreleaser.com)**, which publishes the releases, and
   its [nFPM](https://nfpm.goreleaser.com), which makes the RPM packages.
 - **[Bun](https://bun.sh)**, which runs the build, and
@@ -530,7 +531,7 @@ MixMusic is built on these projects:
   installers, and [appimagetool](https://github.com/AppImage/appimagetool),
   the AppImages.
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**, which finds the audio of
-  the tracks MixMusic can't find itself.
+  the tracks MyMusic can't find itself.
 - **[Unison](https://unison.boidu.dev)**, the open, crowdsourced database of
   lyrics, under the ODbL, and **[LRCLIB](https://lrclib.net)**, the open
   database of synced lyrics.
@@ -538,7 +539,7 @@ MixMusic is built on these projects:
   morphological analyser that reads the kanji of lyrics for their romaji,
   with the IPA dictionary of
   [kagome-dict](https://github.com/ikawaha/kagome-dict), made from
-  mecab-ipadic, which MixMusic downloads the first time romaji is turned
+  mecab-ipadic, which MyMusic downloads the first time romaji is turned
   on.
 - **[libopus](https://opus-codec.org)**, whose decoder the Opus decoder is a
   port of, and **[SharpJaad](https://github.com/jimm98y/SharpJaad)**, the C#
@@ -562,18 +563,18 @@ Fixes, features, themes, plugins and bug reports are all welcome.
 
 - **Report a problem** from Settings › About › report a problem. It opens a
   new GitHub issue with your version, system, theme and plugins filled in.
-  Or [open an issue](https://github.com/fzn0x/mixmusic/issues/new) yourself.
+  Or [open an issue](https://github.com/bigdaddy284/mymusic/issues/new) yourself.
 - **Send a change** as a pull request. [CONTRIBUTING.md](CONTRIBUTING.md)
   explains the checks to run, the commit style, and the changelog entry
   that a change people will notice needs.
 - **Share a theme or a plugin:** see [Community](#community).
 
 [CONTRIBUTORS.md](CONTRIBUTORS.md) thanks the people whose code, ideas and
-reports shaped MixMusic.
+reports shaped MyMusic.
 
 ## License
 
-MixMusic is dual-licensed: use it under the [MIT license](LICENSE-MIT) or
+MyMusic is dual-licensed: use it under the [MIT license](LICENSE-MIT) or
 the [GNU General Public License, version 3](LICENSE-GPL), whichever you
 prefer. Contributions are accepted under both. The typefaces in `fonts` are
 under the SIL Open Font License: [Selawik's](fonts/OFL.txt),
@@ -585,7 +586,7 @@ derives from SharpJaad, under [its MIT license](aac/LICENSE.sharpjaad), and
 the HCT color science is a port of Material Color Utilities, under
 [its Apache license](internal/hct/LICENSE.material-color-utilities).
 
-MixMusic is not affiliated with, endorsed by or sponsored by Spotify or
+MyMusic is not affiliated with, endorsed by or sponsored by Spotify or
 Google. It plays what these services offer their users, through the
 services' own interfaces; use it as their terms allow. Spotify and YouTube
 Music are trademarks of their owners.

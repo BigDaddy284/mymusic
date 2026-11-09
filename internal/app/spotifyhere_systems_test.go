@@ -6,7 +6,7 @@ import (
 	"github.com/egoist/mygo"
 )
 
-// TestSpotifyPlaysHereOn has MixMusic play Spotify itself on Windows and
+// TestSpotifyPlaysHereOn has MyMusic play Spotify itself on Windows and
 // macOS, whose webviews decrypt Spotify's audio, with Widevine and with
 // FairPlay, and not on Linux, whose WebKitGTK has no EME (#295).
 func TestSpotifyPlaysHereOn(t *testing.T) {
@@ -17,7 +17,7 @@ func TestSpotifyPlaysHereOn(t *testing.T) {
 	}
 }
 
-// TestHerePageRunsHiddenOnMacOS keeps the page of MixMusic's own Spotify
+// TestHerePageRunsHiddenOnMacOS keeps the page of MyMusic's own Spotify
 // device running in its hidden window on macOS, where WebKit slows the
 // timers of a hidden page, and leaves the page as it is elsewhere: WebView2
 // runs it, and its option is the whole browser's.

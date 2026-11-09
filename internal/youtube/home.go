@@ -3,7 +3,7 @@ package youtube
 import (
 	"context"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // maxHomePages bounds how many pages of shelves of home are read: YouTube
@@ -39,7 +39,7 @@ func parseShelves(n node) []media.Shelf {
 
 // sectionShelves reads the shelves among the sections of a page: its
 // carousels, and its grids of cards. Sections of other kinds, and shelves
-// with no item MixMusic can show, are left out.
+// with no item MyMusic can show, are left out.
 func sectionShelves(sections node) []media.Shelf {
 	shelves := []media.Shelf{}
 	for _, s := range sections.list() {

@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/sysproxy"
+	"github.com/bigdaddy284/mymusic/internal/sysproxy"
 )
 
 // connectProxy is a proxy server that tunnels CONNECT requests to the one
@@ -65,7 +65,7 @@ func (p *connectProxy) asked() []string {
 
 // TestProxyFetchesThroughTheSystemProxy fetches a stream from YouTube's
 // audio servers, over HTTPS, through the proxy server of Windows' settings,
-// as MixMusic does on a network that lets traffic out only through it; and
+// as MyMusic does on a network that lets traffic out only through it; and
 // directly when the bypass list names the server.
 func TestProxyFetchesThroughTheSystemProxy(t *testing.T) {
 	size := chunkSize + 4321

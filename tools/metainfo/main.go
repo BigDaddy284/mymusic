@@ -1,13 +1,13 @@
 // Command metainfo writes the Flatpak's AppStream metadata, which software
-// centers show: packaging/flatpak/io.github.fzn0x.mixmusic.metainfo.xml,
+// centers show: packaging/flatpak/io.github.bigdaddy284.mymusic.metainfo.xml,
 // with the releases of CHANGELOG.md in place of its <releases/>, each with
 // its date, its summary (the first paragraph of its section) and a link to
 // its page. The Flatpak builds of ci.yml and release.yml run it before
 // flatpak-builder, which reads the file it writes. With -template, it
 // fills another such file: Flathub's build fills that of packaging/flathub
-// as it builds MixMusic from source.
+// as it builds MyMusic from source.
 //
-//	go run ./tools/metainfo -o packaging/flatpak/dist/io.github.fzn0x.mixmusic.metainfo.xml
+//	go run ./tools/metainfo -o packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
 package main
 
 import (
@@ -23,10 +23,10 @@ import (
 
 // template is the metadata with <releases/> in place of the releases,
 // which -template sets.
-var template = "packaging/flatpak/io.github.fzn0x.mixmusic.metainfo.xml"
+var template = "packaging/flatpak/io.github.bigdaddy284.mymusic.metainfo.xml"
 
 // releasePage is the page of a version's release, by its tag.
-const releasePage = "https://github.com/fzn0x/mixmusic/releases/tag/v"
+const releasePage = "https://github.com/bigdaddy284/mymusic/releases/tag/v"
 
 func main() {
 	root := flag.String("root", ".", "the repository's root")
@@ -102,9 +102,9 @@ var (
 	markdownLink = regexp.MustCompile(`\[([^\]]*)\]\([^)]*\)`)
 	htmlTag      = regexp.MustCompile(`</?[a-zA-Z][^>]*>`)
 	// offered is the sentence that tells which copies offer the version,
-	// as "MixMusic 0.3.0 and later offer this version in Settings ›
+	// as "MyMusic 0.3.0 and later offer this version in Settings ›
 	// About.": a Flatpak is offered its next bundle.
-	offered = regexp.MustCompile(`MixMusic [0-9.]+( and ([0-9.]+|later))? offers? this version in Settings › About\.`)
+	offered = regexp.MustCompile(`MyMusic [0-9.]+( and ([0-9.]+|later))? offers? this version in Settings › About\.`)
 )
 
 // plain returns a summary in Markdown as plain text: links as their text,

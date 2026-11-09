@@ -13,9 +13,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 func TestVideoSend(t *testing.T) {
@@ -369,7 +369,7 @@ func TestNowPlayingVideoRefresh(t *testing.T) {
 }
 
 // TestNowPlayingVideoSettingsFile turns the picture off and on again from
-// settings.json, as an edit of it applies while MixMusic runs.
+// settings.json, as an edit of it applies while MyMusic runs.
 func TestNowPlayingVideoSettingsFile(t *testing.T) {
 	track := musicVideo()
 	s, tt, page, _ := videoShell(t, track)

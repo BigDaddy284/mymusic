@@ -8,9 +8,9 @@
   its tag, as Flathub wants addresses that never change.
 -->
 <component type="desktop-application">
-  <id>io.github.fzn0x.mixmusic</id>
+  <id>io.github.bigdaddy284.mymusic</id>
 
-  <name>MixMusic</name>
+  <name>MyMusic</name>
   <summary>Play YouTube Music and Spotify</summary>
 
   <metadata_license>CC0-1.0</metadata_license>
@@ -22,7 +22,7 @@
 
   <description>
     <p>
-      MixMusic plays YouTube Music and Spotify in one player, with one
+      MyMusic plays YouTube Music and Spotify in one player, with one
       search, one queue and one library for both.
     </p>
     <ul>
@@ -34,43 +34,43 @@
       <li>Media keys, the desktop's media controls, Last.fm and Discord</li>
     </ul>
     <p>
-      MixMusic has no account, server, analytics or telemetry of its own.
+      MyMusic has no account, server, analytics or telemetry of its own.
       It is not affiliated with, endorsed by or sponsored by Spotify or
       Google.
     </p>
   </description>
 
-  <launchable type="desktop-id">io.github.fzn0x.mixmusic.desktop</launchable>
+  <launchable type="desktop-id">io.github.bigdaddy284.mymusic.desktop</launchable>
 
   <branding>
     <color type="primary" scheme_preference="light">#f6c1dc</color>
     <color type="primary" scheme_preference="dark">#4a0b2c</color>
   </branding>
 
-  <url type="homepage">https://fzn0x.github.io/mixmusic/</url>
-  <url type="bugtracker">https://github.com/fzn0x/mixmusic/issues</url>
-  <url type="vcs-browser">https://github.com/fzn0x/mixmusic</url>
-  <url type="contribute">https://github.com/fzn0x/mixmusic/blob/main/CONTRIBUTING.md</url>
+  <url type="homepage">https://github.com/bigdaddy284/mymusic</url>
+  <url type="bugtracker">https://github.com/bigdaddy284/mymusic/issues</url>
+  <url type="vcs-browser">https://github.com/bigdaddy284/mymusic</url>
+  <url type="contribute">https://github.com/bigdaddy284/mymusic/blob/main/CONTRIBUTING.md</url>
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/home.webp</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/home.webp</image>
       <caption>Home, with what you played and your mixes</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/now-playing.webp</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/now-playing.webp</image>
       <caption>Now playing, with synced lyrics and what comes next</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/search.webp</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/search.webp</image>
       <caption>One search across both services</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/mixes.webp</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/mixes.webp</image>
       <caption>Mixes, playlists of tracks from both services</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/fzn0x/mixmusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/appearance.webp</image>
+      <image>https://raw.githubusercontent.com/bigdaddy284/mymusic/9f3b65b72c583a1dd29bf2a837f38148821d46ac/docs/shots/appearance.webp</image>
       <caption>Layouts and themes</caption>
     </screenshot>
   </screenshots>

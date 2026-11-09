@@ -1,0 +1,37 @@
+{
+  "id": "mymusic",
+  "name": "MyMusic",
+  "version": "1.0.0",
+  "author": "MyMusic",
+  "description": "The default: deep navy with a blue to purple gradient, the look of StackSpace and Stills & Reels.",
+  "scheme": "dark",
+  "colors": {
+    "bg": "#0a0d1a",
+    "surface": "#0e1325",
+    "surface-2": "#202846",
+    "surface-3": "#222b50",
+    "border": "#1e253e",
+    "hover": "#1a213e",
+    "pressed": "#222b50",
+    "text": "#eaeefa",
+    "text-muted": "#acb6d2",
+    "accent": "#2668ff",
+    "accent-2": "#b048ff",
+    "accent-text": "#ffffff",
+    "danger": "#ff788c",
+    "success": "#50c88c",
+    "youtube": "#ff4e45",
+    "spotify": "#1ed760",
+    "tile-1": "#2668ff",
+    "tile-2": "#9a3cf0",
+    "tile-3": "#5b55f5",
+    "tile-4": "#7a44f5",
+    "tile-text": "#ffffff"
+  },
+  "fonts": {
+    "body": "'Segoe UI Variable Text', 'Segoe UI', Selawik, 'Noto Sans', 'DejaVu Sans', system-ui, sans-serif",
+    "display": "'Segoe UI Variable Display', 'Segoe UI Semibold', 'Segoe UI', Selawik, 'Noto Sans', 'DejaVu Sans', system-ui, sans-serif"
+  },
+  "radius": "8px",
+  "options": []
+}

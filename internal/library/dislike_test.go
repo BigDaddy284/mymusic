@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestDisliked keeps disliked tracks of both services, the last disliked

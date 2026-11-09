@@ -14,7 +14,7 @@ import (
 
 // ReportPlay adds a track to the account's history on YouTube Music, as its
 // own player does when a track starts: the history is what its home and
-// its radios are made from. MixMusic plays the audio itself, so YouTube
+// its radios are made from. MyMusic plays the audio itself, so YouTube
 // learns of the play only from this. Signed out, it does nothing.
 func (c *Client) ReportPlay(ctx context.Context, videoID string) error {
 	if c.session() != nil {

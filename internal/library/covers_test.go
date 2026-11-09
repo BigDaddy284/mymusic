@@ -3,7 +3,7 @@ package library
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestPlaylistCover shows the cover chosen for a playlist in place of its

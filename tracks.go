@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // trackListOptions say what a track list shows.
@@ -64,7 +64,7 @@ func (s *shell) trackRow(c *ui.Context, key string, i int, t media.Track, tracks
 	}
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)

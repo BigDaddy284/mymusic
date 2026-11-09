@@ -8,7 +8,7 @@ import (
 
 	"github.com/ebitengine/purego"
 
-	"github.com/fzn0x/mixmusic/internal/audio/output"
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
 )
 
 // processes returns the processes Core Audio knows, which play or record,
@@ -23,9 +23,9 @@ func processes() []proc {
 	return procs
 }
 
-// webViewAudio returns the process that plays what MixMusic's web views
-// play, or 0 for none: WebKit's GPU process of MixMusic's, which macOS
-// holds MixMusic responsible for, as MixMusic itself, a new one at each
+// webViewAudio returns the process that plays what MyMusic's web views
+// play, or 0 for none: WebKit's GPU process of MyMusic's, which macOS
+// holds MyMusic responsible for, as MyMusic itself, a new one at each
 // start.
 func webViewAudio(procs []proc) uint32 {
 	self := responsible(uint32(os.Getpid()))

@@ -11,7 +11,7 @@ import (
 	"github.com/egoist/mygo/ui"
 	"golang.org/x/image/draw"
 
-	"github.com/fzn0x/mixmusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
 )
 
 const (

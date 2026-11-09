@@ -8,9 +8,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The colours from a file, in Settings › Appearance › Colour and type.
@@ -27,12 +27,12 @@ var colorSources = []struct {
 }
 
 // colorFileHelp is where docs/themes.md tells how to set up a colour file.
-const colorFileHelp = "https://fzn0x.github.io/mixmusic/docs/themes/#colours-from-a-file"
+const colorFileHelp = "https://bigdaddy284.github.io/mymusic/docs/themes/#colours-from-a-file"
 
 func init() { addSettings(colorTypeRows, 10, (*shell).colorFileSettings) }
 
 // colorFileSettings chooses where the colours come from, and tells what
-// MixMusic read of the file.
+// MyMusic read of the file.
 func (s *shell) colorFileSettings(c *ui.Context) {
 	labels := make([]string, len(colorSources))
 	chosen := labels[0]
@@ -56,7 +56,7 @@ func (s *shell) colorFileSettings(c *ui.Context) {
 	}
 	note, bad := colorFileNote(s.colorFile, s.set, time.Now())
 	// The search finds the file's row by what it shows: the file, what
-	// MixMusic read of it, and its links and button.
+	// MyMusic read of it, and its links and button.
 	shown := ""
 	if s.colorFile.Source == source {
 		shown = s.colorFile.Path
@@ -75,7 +75,7 @@ func (s *shell) colorFileSettings(c *ui.Context) {
 }
 
 // colorFileRow shows the colour file of source, shown where it is, note
-// what MixMusic read of it, which bad tells is a problem.
+// what MyMusic read of it, which bad tells is a problem.
 func (s *shell) colorFileRow(c *ui.Context, source settings.ColorSource, shown, note string, bad bool) {
 	k := &s.lk
 	ui.Row(c).Gap(24).Padding(14, 0).Children(func() {
@@ -115,7 +115,7 @@ func (s *shell) colorFileRow(c *ui.Context, source settings.ColorSource, shown, 
 	})
 }
 
-// colorFileNote tells what MixMusic read of the colour file the settings
+// colorFileNote tells what MyMusic read of the colour file the settings
 // name, as of now, and whether that's a problem.
 func colorFileNote(st app.ColorFileStatus, set settings.Settings, now time.Time) (string, bool) {
 	source := set.ColorSource
@@ -127,11 +127,11 @@ func colorFileNote(st app.ColorFileStatus, set settings.Settings, now time.Time)
 	case st.Missing && source == settings.ColorsPywal:
 		return "It isn't there yet: pywal writes it when you run wal.", true
 	case st.Missing && source == settings.ColorsMatugen:
-		return "It isn't there yet: add MixMusic's template to matugen's config.toml, and run matugen.", true
+		return "It isn't there yet: add MyMusic's template to matugen's config.toml, and run matugen.", true
 	case st.Missing:
 		return "It isn't there. The theme's colours show until it is.", true
 	case st.Err != "" && !st.Colors.Empty():
-		return "It can't be read: " + strings.TrimSuffix(st.Err, ".") + ". MixMusic keeps the colours it read at " + clockOf(st.ReadAt, now) + ".", true
+		return "It can't be read: " + strings.TrimSuffix(st.Err, ".") + ". MyMusic keeps the colours it read at " + clockOf(st.ReadAt, now) + ".", true
 	case st.Err != "":
 		return "It can't be read: " + strings.TrimSuffix(st.Err, ".") + ". The theme's colours show.", true
 	}

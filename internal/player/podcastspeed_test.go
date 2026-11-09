@@ -3,7 +3,7 @@ package player
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // atSpeedsOf has the songs of the fake services play at song, and the

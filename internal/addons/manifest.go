@@ -1,10 +1,10 @@
-// Package addons manages themes and plugins: those MixMusic ships with,
+// Package addons manages themes and plugins: those MyMusic ships with,
 // those the user installs from the community registry, and those they put
 // in the add-ons folder themselves.
 //
 // A theme is a folder with a theme.json manifest, which sets the colors,
 // fonts and corners of the interface. A plugin is a folder with a
-// plugin.json manifest and an ES module, whose default export MixMusic
+// plugin.json manifest and an ES module, whose default export MyMusic
 // calls with its plugin API.
 package addons
 
@@ -17,7 +17,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // Kind is a kind of add-on.
@@ -37,6 +37,12 @@ var ColorKeys = []string{
 	"tile-1", "tile-2", "tile-3", "tile-4", "tile-text",
 }
 
+// OptionalColorKeys are the colors a theme may set: "accent-2", where the
+// gradient of the main buttons, what is chosen and the seek bar ends, from
+// the accent, and "hover" and "pressed", the solid fills of what the
+// pointer is over or presses, in place of the text's tints.
+var OptionalColorKeys = []string{"accent-2", "hover", "pressed"}
+
 // OptionType is the kind of control a theme option shows.
 type OptionType string
 
@@ -54,7 +60,7 @@ type Choice struct {
 }
 
 // Option is a setting a theme offers, which the effects of the themes
-// MixMusic ships with follow.
+// MyMusic ships with follow.
 type Option struct {
 	ID      string     `json:"id"`
 	Label   string     `json:"label"`
@@ -111,14 +117,14 @@ type Plugin struct {
 	Permissions []string `json:"permissions,omitempty"`
 	Files       []string `json:"files,omitempty"`
 	// API is the version of the plugin API the plugin was written for:
-	// 2, that of MixMusic's own interface, or 1, the web interface's,
-	// which MixMusic no longer runs.
+	// 2, that of MyMusic's own interface, or 1, the web interface's,
+	// which MyMusic no longer runs.
 	API int `json:"api,omitempty"`
 
 	Builtin bool `json:"builtin"`
 }
 
-// PluginAPI is the version of the plugin API MixMusic runs.
+// PluginAPI is the version of the plugin API MyMusic runs.
 const PluginAPI = 2
 
 var (
@@ -164,8 +170,13 @@ func (t Theme) Validate() error {
 			errs = append(errs, fmt.Errorf("colors.%s must be a color", key))
 		}
 	}
-	for key := range t.Colors {
-		if !slices.Contains(ColorKeys, key) {
+	for key, v := range t.Colors {
+		switch {
+		case slices.Contains(OptionalColorKeys, key):
+			if !ValidColor(v) {
+				errs = append(errs, fmt.Errorf("colors.%s must be a color", key))
+			}
+		case !slices.Contains(ColorKeys, key):
 			errs = append(errs, fmt.Errorf("colors.%s is not a color themes set", key))
 		}
 	}
@@ -255,7 +266,7 @@ func (p Plugin) Validate() error {
 	}
 	errs = append(errs, validateFiles(p.Files, "plugin.json", p.Main))
 	if p.API < 0 || p.API > PluginAPI {
-		errs = append(errs, fmt.Errorf("api %d is unknown: MixMusic runs plugins of api %d", p.API, PluginAPI))
+		errs = append(errs, fmt.Errorf("api %d is unknown: MyMusic runs plugins of api %d", p.API, PluginAPI))
 	}
 	return errors.Join(errs...)
 }

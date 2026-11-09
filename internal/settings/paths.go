@@ -3,7 +3,7 @@ package settings
 import (
 	"encoding/json"
 
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 // The settings that name files and folders are kept in settings.json as

@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/builtin"
+	"github.com/bigdaddy284/mymusic/builtin"
 )
 
 // TestResetKeepsDownloadsFolder puts the settings back, but for the folder
-// the downloads are in: they would be lost to MixMusic otherwise.
+// the downloads are in: they would be lost to MyMusic otherwise.
 func TestResetKeepsDownloadsFolder(t *testing.T) {
 	dir := t.TempDir()
 	a, err := New(Options{DataDir: filepath.Join(dir, "data"), CacheDir: filepath.Join(dir, "cache"), Builtin: builtin.FS, Version: "test"})

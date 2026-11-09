@@ -12,9 +12,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/downloads"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/downloads"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // keptTracks are tracks of real video IDs, which downloads keep files of.
@@ -376,11 +376,11 @@ func TestOfflineToast(t *testing.T) {
 }
 
 // TestRenderDownloads draws the downloads page and a list with marks to
-// MIXMUSIC_RENDER, for a look.
+// MYMUSIC_RENDER, for a look.
 func TestRenderDownloads(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s, _ := newKeptShell(t, keptTracks...)
 	s.svc.Downloads.Add(testTracks[:3])

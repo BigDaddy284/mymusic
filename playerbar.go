@@ -6,9 +6,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // playerBar shows what plays, the transport and where it is in the track,
@@ -86,7 +86,7 @@ func (s *shell) nowPlayingInfo(c *ui.Context) {
 					line += " · on Spotify"
 				}
 			}
-			// While MixMusic plays it at another speed than its own.
+			// While MyMusic plays it at another speed than its own.
 			if sp := s.st.Speed; sp > 0 && sp != 1 && s.st.Source != nil {
 				line += " · " + speedLabel(sp)
 			}

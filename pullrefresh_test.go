@@ -11,9 +11,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // The tests pull the page of an album of a malformed ID, whose refresh
@@ -471,11 +471,11 @@ func TestPullHeight(t *testing.T) {
 }
 
 // TestRenderPull draws a pull short of the threshold and one past it, to
-// MIXMUSIC_RENDER, for a look.
+// MYMUSIC_RENDER, for a look.
 func TestRenderPull(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	pullAlbum(s, 12)

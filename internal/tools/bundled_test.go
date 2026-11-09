@@ -9,15 +9,15 @@ import (
 	"testing"
 )
 
-// bundledManager returns a manager whose yt-dlp comes with MixMusic, as in
-// Flathub's build, with a yt-dlp MixMusic installed before beside it, and
+// bundledManager returns a manager whose yt-dlp comes with MyMusic, as in
+// Flathub's build, with a yt-dlp MyMusic installed before beside it, and
 // a release server that fails the test when it's asked.
 func bundledManager(t *testing.T) (m *Manager, bundled, managed string) {
 	t.Helper()
 	t.Setenv("PATH", "")
 	noToolDirs(t)
 	srv := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
-		t.Errorf("MixMusic asked %s with a yt-dlp of its package", r.URL)
+		t.Errorf("MyMusic asked %s with a yt-dlp of its package", r.URL)
 	}))
 	t.Cleanup(srv.Close)
 	savedRelease, savedLatest := releaseURL, latestURL
@@ -38,7 +38,7 @@ func bundledManager(t *testing.T) (m *Manager, bundled, managed string) {
 	return m, bundled, m.managedPath()
 }
 
-// The yt-dlp of MixMusic's package runs in place of one MixMusic
+// The yt-dlp of MyMusic's package runs in place of one MyMusic
 // installed before, as a copy of the release's Flatpak left it, unless the
 // user chose another.
 func TestBundledYTDLPRuns(t *testing.T) {
@@ -54,7 +54,7 @@ func TestBundledYTDLPRuns(t *testing.T) {
 	if got, err := m.YTDLP(); err != nil || got != chosen {
 		t.Errorf("YTDLP() = %q, %v; want the chosen path", got, err)
 	}
-	// Without its file, MixMusic finds yt-dlp as it does elsewhere.
+	// Without its file, MyMusic finds yt-dlp as it does elsewhere.
 	m.Configure("", "")
 	if err := os.Remove(bundled); err != nil {
 		t.Fatal(err)
@@ -64,7 +64,7 @@ func TestBundledYTDLPRuns(t *testing.T) {
 	}
 }
 
-// MixMusic downloads no yt-dlp beside the one of its package: its package
+// MyMusic downloads no yt-dlp beside the one of its package: its package
 // updates that one.
 func TestBundledYTDLPDownloadsNothing(t *testing.T) {
 	m, bundled, _ := bundledManager(t)

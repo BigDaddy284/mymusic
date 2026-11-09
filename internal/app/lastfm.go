@@ -12,13 +12,13 @@ import (
 
 	"github.com/egoist/mygo"
 
-	"github.com/fzn0x/mixmusic/internal/lastfm"
-	"github.com/fzn0x/mixmusic/internal/localfiles"
-	"github.com/fzn0x/mixmusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/lastfm"
+	"github.com/bigdaddy284/mymusic/internal/localfiles"
+	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 // lastfmSecret is the key, in the system's credential store, of what
-// connects MixMusic to Last.fm: the API account and the user's session.
+// connects MyMusic to Last.fm: the API account and the user's session.
 const lastfmSecret = "lastfm"
 
 // lastfmPoll is how often connecting asks Last.fm whether the user approved.
@@ -81,7 +81,7 @@ func (a *App) startScrobbling(c lastfmCredentials) {
 			err = store.WriteFile(queue, data)
 		}
 		if err != nil {
-			log.Printf("mixmusic: keeping the scrobbles to send: %v", err)
+			log.Printf("mymusic: keeping the scrobbles to send: %v", err)
 		}
 	}
 	a.mu.Lock()
@@ -121,7 +121,7 @@ func (a *App) scrobble(np NowPlaying) {
 			a.mu.Unlock()
 			notify()
 		case err != nil && !lastfm.IsTemporary(err):
-			log.Printf("mixmusic: scrobbling: %v", err)
+			log.Printf("mymusic: scrobbling: %v", err)
 		}
 	}()
 }
@@ -156,9 +156,9 @@ func lastfmTrack(np NowPlaying) (string, lastfm.Track) {
 	return np.Track.ID, t
 }
 
-// LastfmLogin connects MixMusic to the user's Last.fm account, with the
+// LastfmLogin connects MyMusic to the user's Last.fm account, with the
 // API account they made on Last.fm: the user approves in their browser,
-// and MixMusic waits for it.
+// and MyMusic waits for it.
 func (s *Accounts) LastfmLogin(ctx context.Context, apiKey, secret string) (AccountsStatus, error) {
 	apiKey, secret = strings.TrimSpace(apiKey), strings.TrimSpace(secret)
 	if apiKey == "" || secret == "" {
@@ -185,7 +185,7 @@ func (s *Accounts) LastfmLogin(ctx context.Context, apiKey, secret string) (Acco
 		}
 		select {
 		case <-ctx.Done():
-			return AccountsStatus{}, errors.New("Last.fm did not hear from you in time: approve MixMusic in the browser, then connect again")
+			return AccountsStatus{}, errors.New("Last.fm did not hear from you in time: approve MyMusic in the browser, then connect again")
 		case <-time.After(lastfmPoll):
 		}
 	}
@@ -202,7 +202,7 @@ func (s *Accounts) LastfmLogin(ctx context.Context, apiKey, secret string) (Acco
 	return status, nil
 }
 
-// LastfmLogout disconnects MixMusic from Last.fm.
+// LastfmLogout disconnects MyMusic from Last.fm.
 func (s *Accounts) LastfmLogout(ctx context.Context) error {
 	s.a.mu.Lock()
 	s.a.lastfm = nil

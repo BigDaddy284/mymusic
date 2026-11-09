@@ -3,9 +3,9 @@
 
     python3 system-loader.py <program>
 
-The Go toolchain of Nix's shell, which the release and CI build MixMusic
+The Go toolchain of Nix's shell, which the release and CI build MyMusic
 with, links Nix's own loader, /nix/store/…/ld-linux-x86-64.so.2, into a
-program that loads C libraries at run time, as MixMusic does through
+program that loads C libraries at run time, as MyMusic does through
 purego. The Flatpak's runtime has no /nix: this sets the program's ELF
 interpreter to the loader every glibc system has, which is shorter, and
 leaves a program that has it already, or none, as it is.

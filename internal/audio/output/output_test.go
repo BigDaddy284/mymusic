@@ -14,10 +14,10 @@ import (
 // TestStream plays half a second of silence on the default device, in
 // stereo and asking for 5.1: render must be called for about as many
 // frames as play in that time, of the channels it tells, and never after
-// Stop. It opens the device, so it runs only with MIXMUSIC_AUDIO=1.
+// Stop. It opens the device, so it runs only with MYMUSIC_AUDIO=1.
 func TestStream(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	for _, asked := range []int{2, Surround} {
 		t.Run(fmt.Sprint(asked, " channels"), func(t *testing.T) { testStream(t, asked) })
@@ -73,8 +73,8 @@ func testStream(t *testing.T, asked int) {
 // TestStartStop starts and stops streams in a row, as the player does when
 // it pauses and plays: each must open the device again, and end cleanly.
 func TestStartStop(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	for i := range 5 {
 		var n atomic.Int64
@@ -96,8 +96,8 @@ func TestStartStop(t *testing.T) {
 // TestRenderPanic checks that a render that panics fails the stream, with
 // the panic, instead of crashing the program.
 func TestRenderPanic(t *testing.T) {
-	if os.Getenv("MIXMUSIC_AUDIO") != "1" {
-		t.Skip("MIXMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYMUSIC_AUDIO") != "1" {
+		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
 	}
 	var calls atomic.Int64
 	failed := make(chan error, 1)

@@ -14,7 +14,7 @@ import (
 // TestMain runs the test binary as a fake yt-dlp when a test asks: it then
 // exports cookies as fakeYTDLP says, and never reads a browser.
 func TestMain(m *testing.M) {
-	if mode := os.Getenv("MIXMUSIC_FAKE_YTDLP"); mode != "" {
+	if mode := os.Getenv("MYMUSIC_FAKE_YTDLP"); mode != "" {
 		os.Exit(fakeYTDLP(mode, os.Args[1:]))
 	}
 	os.Exit(m.Run())
@@ -24,10 +24,10 @@ func TestMain(m *testing.M) {
 const fakeJar = ".youtube.com\tTRUE\t/\tTRUE\t0\tSAPISID\tmadeup\n"
 
 // fakeYTDLP acts as yt-dlp exporting a browser's cookies, as mode says: it
-// keeps its arguments in MIXMUSIC_FAKE_ARGS, and checks the cookies file
+// keeps its arguments in MYMUSIC_FAKE_ARGS, and checks the cookies file
 // as yt-dlp loads it before it writes it.
 func fakeYTDLP(mode string, args []string) int {
-	if f := os.Getenv("MIXMUSIC_FAKE_ARGS"); f != "" {
+	if f := os.Getenv("MYMUSIC_FAKE_ARGS"); f != "" {
 		os.WriteFile(f, []byte(strings.Join(args, "\n")), 0o600)
 	}
 	file := ""
@@ -69,9 +69,9 @@ func fakeManager(t *testing.T, mode string) (*Manager, string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("MIXMUSIC_FAKE_YTDLP", mode)
+	t.Setenv("MYMUSIC_FAKE_YTDLP", mode)
 	args := filepath.Join(t.TempDir(), "args")
-	t.Setenv("MIXMUSIC_FAKE_ARGS", args)
+	t.Setenv("MYMUSIC_FAKE_ARGS", args)
 	m := New(t.TempDir())
 	m.Configure(self, "")
 	return m, args

@@ -8,7 +8,7 @@ import (
 	"slices"
 	"sync/atomic"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Kind is where the download of a track is.

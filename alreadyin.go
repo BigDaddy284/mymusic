@@ -9,8 +9,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // addOnYouTube adds a track to a playlist of the user's on YouTube Music,

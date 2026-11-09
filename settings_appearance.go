@@ -10,9 +10,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/colorfile"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/colorfile"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The groups of Settings › Appearance.
@@ -20,10 +20,11 @@ import (
 // layoutChoices are the layout designs, in the order of settings.Layouts,
 // as Settings › Appearance offers them.
 var layoutChoices = []choice{
-	{"Blend", "Expressive's rounded shapes and springy motion, on Crate's dense rows, big covers in cards and bold headings. The default.", false},
+	{"Studio", "The look of StackSpace and Stills & Reels: 8px buttons filled with the control's colour, 12px panels and bold headings. The default.", false},
+	{"Blend", "Expressive's rounded shapes and springy motion, on Crate's dense rows, big covers in cards and bold headings.", false},
 	{"Expressive", "Playful and colourful: tonal fills, big rounded shapes, pill buttons, a floating player bar and springy motion. The Material themes go with it, their colours made of the cover's.", false},
 	{"Crate", "Restrained: dense rows, big covers in cards and bold, tight headings, so that the covers do the work.", false},
-	{"Tiles", "Flat tiles, giant light lowercase words and outlined boxes, as MixMusic first was.", false},
+	{"Tiles", "Flat tiles, giant light lowercase words and outlined boxes, as MyMusic first was.", false},
 }
 
 func init() { addSettings("appearance", 10, (*shell).layoutSettings) }
@@ -345,7 +346,7 @@ func (s *shell) colorControl(c *ui.Context, key, label string, current ui.Color,
 }
 
 // keepColors saves at once the colours whose wells wait for the user to
-// stop a moment, as the window closes or MixMusic quits first. The wells'
+// stop a moment, as the window closes or MyMusic quits first. The wells'
 // own saves, once due, then find nothing to save.
 func (s *shell) keepColors() {
 	waiting := false

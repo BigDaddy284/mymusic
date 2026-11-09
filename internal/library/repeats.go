@@ -6,7 +6,7 @@ package library
 import (
 	"slices"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // AddNewToPlaylist appends the tracks a playlist doesn't hold yet, as

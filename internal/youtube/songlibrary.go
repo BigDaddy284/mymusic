@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // librarySongs is the browse ID of the library's songs: those the user

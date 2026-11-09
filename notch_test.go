@@ -13,8 +13,8 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // The made-up housings of the tests: 180 × 32 points, as a MacBook's, and
@@ -194,7 +194,7 @@ func TestNotchShapes(t *testing.T) {
 		if a := alphaAt(img, o.Width/2, o.Height-2); a != 255 {
 			t.Errorf("%+v: open, the panel doesn't reach its foot", h)
 		}
-		for _, want := range []string{testTracks[0].Title, "M83", "Open MixMusic", "Close the player"} {
+		for _, want := range []string{testTracks[0].Title, "M83", "Open MyMusic", "Close the player"} {
 			if _, ok := x.tt.Find(want); !ok {
 				t.Errorf("%+v: the open panel doesn't show %q: %q", h, want, x.tt.Texts())
 			}
@@ -252,12 +252,12 @@ func TestNotchControls(t *testing.T) {
 	}
 }
 
-// TestRenderNotch draws the player around the notch to MIXMUSIC_RENDER,
+// TestRenderNotch draws the player around the notch to MYMUSIC_RENDER,
 // for a look: compact, opening, open, and around a wider housing.
 func TestRenderNotch(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	write := func(x *notchTest, name string) {
 		f, err := os.Create(filepath.Join(dir, name+".png"))
@@ -289,7 +289,7 @@ func TestRenderNotch(t *testing.T) {
 // TestNotchCloses closes the panel by a click on either side, by Escape,
 // and once the pointer stayed away two seconds, which coming back in, a
 // drag of the progress bar or the keyboard's focus on a control calls
-// off; and as it opens MixMusic. Each gives the keyboard back.
+// off; and as it opens MyMusic. Each gives the keyboard back.
 func TestNotchCloses(t *testing.T) {
 	x := playingNotch(t, testHousing)
 	x.openPanel()
@@ -308,8 +308,8 @@ func TestNotchCloses(t *testing.T) {
 	x.closed("Escape")
 
 	x.openPanel()
-	x.click("Open MixMusic")
-	x.closed("Open MixMusic")
+	x.click("Open MyMusic")
+	x.closed("Open MyMusic")
 
 	x.openPanel()
 	x.tt.Move(-20, -20)

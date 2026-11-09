@@ -12,15 +12,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/library"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/spotify"
+	"github.com/bigdaddy284/mymusic/internal/library"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
 // errSpotifyEpisode is why a Spotify episode doesn't play from YouTube
 // Music: no recording of it is there.
-var errSpotifyEpisode = errors.New("Spotify's podcasts play only from Spotify: choose In MixMusic, from Spotify or On Spotify Connect in Settings › Playback")
+var errSpotifyEpisode = errors.New("Spotify's podcasts play only from Spotify: choose In MyMusic, from Spotify or On Spotify Connect in Settings › Playback")
 
 // errSpotifyShows is why Spotify's podcasts don't show signed out.
 var errSpotifyShows = errors.New("sign in to Spotify in Settings › Accounts to open its podcasts")
@@ -112,14 +112,14 @@ func (c *Catalog) SpotifyEpisodesPlay() bool {
 	return c.a.settings.Get().SpotifyPlayback != settings.SpotifyPlaybackMatch
 }
 
-// Podcasts returns the podcasts the user follows in MixMusic, the last
+// Podcasts returns the podcasts the user follows in MyMusic, the last
 // followed first.
 func (c *Collection) Podcasts() []media.Podcast { return c.a.library.Podcasts() }
 
-// Follows reports whether the user follows the podcast id in MixMusic.
+// Follows reports whether the user follows the podcast id in MyMusic.
 func (c *Collection) Follows(id string) bool { return c.a.library.Follows(id) }
 
-// SetPodcastFollowed follows a podcast in MixMusic, or stops, and saves it
+// SetPodcastFollowed follows a podcast in MyMusic, or stops, and saves it
 // to the user's library of its service, or takes it out, when they signed
 // in there: that it can't is logged, as for likes, unless the user stops
 // following one they followed only there, which then fails.
@@ -140,7 +140,7 @@ func (c *Collection) SetPodcastFollowed(ctx context.Context, p media.Podcast, on
 	case err != nil && !on && !here:
 		return err
 	case err != nil:
-		log.Printf("mixmusic: saving a podcast on its service: %v", err)
+		log.Printf("mymusic: saving a podcast on its service: %v", err)
 	}
 	return nil
 }

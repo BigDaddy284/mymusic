@@ -59,11 +59,11 @@
   scheme's response only once it is whole, and WebKitGTK plays no media
   from a custom scheme. Its answers are tested against recorded ones in
   `testdata/`, and against YouTube with
-  `MIXMUSIC_LIVE=1 go test ./internal/stream -run Live`.
+  `MYMUSIC_LIVE=1 go test ./internal/stream -run Live`.
 - **`internal/tools`** finds yt-dlp and a JavaScript runtime, and installs
   yt-dlp from its releases, checked against their published checksums. On
   macOS it installs the unpacked build, `yt-dlp_macos.zip`, into
   `bin/yt-dlp_macos/`: the single file starts in 8 s, the unpacked one in
-  0.2 s (#245). A yt-dlp that comes with MixMusic (`Manager.Bundled`), as
+  0.2 s (#245). A yt-dlp that comes with MyMusic (`Manager.Bundled`), as
   in Flathub's build, runs unless the user chose another, and none is
   downloaded beside it.

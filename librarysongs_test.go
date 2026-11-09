@@ -7,8 +7,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // songsSaved has YouTube answer the saves of songs to the library, and

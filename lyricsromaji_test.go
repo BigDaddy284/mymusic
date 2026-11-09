@@ -16,11 +16,11 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // TestLyricsRomaji shows Japanese lyrics in romaji, under each line or in
@@ -49,7 +49,7 @@ func TestLyricsRomaji(t *testing.T) {
 }
 
 // TestLyricsRomajiRemembered keeps the romaji of lyrics whose language
-// MixMusic couldn't tell, but that hold kana, as that of Japanese.
+// MyMusic couldn't tell, but that hold kana, as that of Japanese.
 func TestLyricsRomajiRemembered(t *testing.T) {
 	s, texts := lyricsIn(t, "", nil)
 	texts()
@@ -65,7 +65,7 @@ func TestLyricsRomajiRemembered(t *testing.T) {
 }
 
 // TestLyricsRomajiNotJapanese offers no romaji for lyrics in Japanese
-// already in Latin letters, nor for kanji alone in a language MixMusic
+// already in Latin letters, nor for kanji alone in a language MyMusic
 // couldn't tell, which may be Chinese.
 func TestLyricsRomajiNotJapanese(t *testing.T) {
 	for _, c := range []struct {

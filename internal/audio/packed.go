@@ -7,8 +7,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/fzn0x/mixmusic/aac"
-	"github.com/fzn0x/mixmusic/resample"
+	"github.com/bigdaddy284/mymusic/aac"
+	"github.com/bigdaddy284/mymusic/resample"
 )
 
 const (

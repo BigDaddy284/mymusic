@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // fakeCaptures are the captures a listener started, of fakeCapture.
@@ -63,13 +63,13 @@ func (f *fakeCaptures) tries() int {
 
 var spotifyPlays = player.State{Playing: true, Source: &player.Source{Mode: player.ModeSpotify}}
 
-// TestListenerHearsWhileRead hears Spotify in MixMusic only while the
+// TestListenerHearsWhileRead hears Spotify in MyMusic only while the
 // analyser is read, as the visualizer reads it at each frame, and stops
 // once it isn't: on macOS, hearing asks the user's permission.
 func TestListenerHearsWhileRead(t *testing.T) {
 	var f fakeCaptures
 	l := listenWith(func(h hearing) uint32 {
-		if h == hearMixMusic {
+		if h == hearMyMusic {
 			return 42
 		}
 		return 0
@@ -106,7 +106,7 @@ func TestListenerLooksAgain(t *testing.T) {
 	var f fakeCaptures
 	var looked atomic.Int32
 	l := listenWith(func(h hearing) uint32 {
-		if h == hearMixMusic && looked.Add(1) > 1 {
+		if h == hearMyMusic && looked.Add(1) > 1 {
 			return 42
 		}
 		return 0
@@ -164,7 +164,7 @@ func TestListenerSaysWhyItStopped(t *testing.T) {
 	}
 }
 
-// TestListenerClose stops hearing as MixMusic quits.
+// TestListenerClose stops hearing as MyMusic quits.
 func TestListenerClose(t *testing.T) {
 	var f fakeCaptures
 	l := listenWith(func(hearing) uint32 { return 42 }, f.start)

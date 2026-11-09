@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/egoist/mygo"
-	"github.com/fzn0x/mixmusic/internal/store"
 )
 
 func TestNewerVersion(t *testing.T) {
@@ -39,7 +39,7 @@ func TestNewerVersion(t *testing.T) {
 }
 
 func TestKindOf(t *testing.T) {
-	const installer = `C:\Users\me\AppData\Local\Programs\MixMusic`
+	const installer = `C:\Users\me\AppData\Local\Programs\MyMusic`
 	for _, c := range []struct {
 		name     string
 		goos     string
@@ -49,14 +49,14 @@ func TestKindOf(t *testing.T) {
 		want     string
 	}{
 		{"installer", "windows", installer, false, []string{filepath.Join(installer, "Uninstall.exe")}, "installer"},
-		{"portable zip", "windows", `D:\Apps\MixMusic`, false, nil, "portable"},
-		{"app bundle", "darwin", "/Applications/MixMusic.app/Contents/MacOS", false, nil, "app"},
-		{"deb", "linux", "/opt/mixmusic", false, []string{"/var/lib/dpkg/info/mixmusic.list"}, "deb"},
-		{"rpm", "linux", "/opt/mixmusic", false, nil, "rpm"},
-		{"AUR", "linux", "/opt/mixmusic", false, []string{"/var/lib/pacman/local"}, "pacman"},
+		{"portable zip", "windows", `D:\Apps\MyMusic`, false, nil, "portable"},
+		{"app bundle", "darwin", "/Applications/MyMusic.app/Contents/MacOS", false, nil, "app"},
+		{"deb", "linux", "/opt/mymusic", false, []string{"/var/lib/dpkg/info/mymusic.list"}, "deb"},
+		{"rpm", "linux", "/opt/mymusic", false, nil, "rpm"},
+		{"AUR", "linux", "/opt/mymusic", false, []string{"/var/lib/pacman/local"}, "pacman"},
 		{"AppImage", "linux", "/tmp/.mount_MixMusXYZ/usr/bin", true, nil, "appimage"},
-		{"Flatpak", "linux", "/app/lib/mixmusic", false, []string{"/.flatpak-info"}, "flatpak"},
-		{"install.sh", "linux", "/home/me/.local/share/mixmusic", false, nil, "archive"},
+		{"Flatpak", "linux", "/app/lib/mymusic", false, []string{"/.flatpak-info"}, "flatpak"},
+		{"install.sh", "linux", "/home/me/.local/share/mymusic", false, nil, "archive"},
 	} {
 		exists := func(p string) bool {
 			for _, f := range c.files {
@@ -74,14 +74,14 @@ func TestKindOf(t *testing.T) {
 
 func TestReleaseFile(t *testing.T) {
 	for kind, want := range map[string]string{
-		"installer":   "mixmusic-0.3.0-windows-amd64-setup.exe",
-		"portable":    "mixmusic-0.3.0-windows-amd64-portable.zip",
-		"app":         "mixmusic-0.3.0-macos-universal.dmg",
-		"archive":     "mixmusic-0.3.0-linux-amd64.tar.gz",
-		"deb":         "mixmusic-0.3.0-linux-amd64.deb",
-		"rpm":         "mixmusic-0.3.0-linux-amd64.rpm",
-		"appimage":    "mixmusic-0.3.0-linux-amd64.AppImage",
-		"flatpak":     "mixmusic-0.3.0-linux-amd64.flatpak",
+		"installer":   "mymusic-0.3.0-windows-amd64-setup.exe",
+		"portable":    "mymusic-0.3.0-windows-amd64-portable.zip",
+		"app":         "mymusic-0.3.0-macos-universal.dmg",
+		"archive":     "mymusic-0.3.0-linux-amd64.tar.gz",
+		"deb":         "mymusic-0.3.0-linux-amd64.deb",
+		"rpm":         "mymusic-0.3.0-linux-amd64.rpm",
+		"appimage":    "mymusic-0.3.0-linux-amd64.AppImage",
+		"flatpak":     "mymusic-0.3.0-linux-amd64.flatpak",
 		"pacman":      "",
 		"development": "",
 	} {
@@ -94,13 +94,13 @@ func TestReleaseFile(t *testing.T) {
 func TestLatestRelease(t *testing.T) {
 	body := strings.ReplaceAll(`{
 		"tag_name": "v0.3.0",
-		"html_url": "https://github.com/fzn0x/mixmusic/releases/tag/v0.3.0",
+		"html_url": "https://github.com/bigdaddy284/mymusic/releases/tag/v0.3.0",
 		"published_at": "2026-10-21T10:00:00Z",
 		"body": "Playlists of your own, and an [About page](https://example.com) that shows the newest version.\r\n\r\n### Added\r\n\r\n- Make playlists.",
 		"assets": [
-			{"name": "mixmusic-0.3.0-linux-amd64.deb", "browser_download_url": "https://example.com/amd64.deb"},
-			{"name": "mixmusic-0.3.0-linux-arm64.deb", "browser_download_url": "https://example.com/arm64.deb"},
-			{"name": "mixmusic-0.3.0-linux-amd64.flatpak", "browser_download_url": "https://example.com/amd64.flatpak"},
+			{"name": "mymusic-0.3.0-linux-amd64.deb", "browser_download_url": "https://example.com/amd64.deb"},
+			{"name": "mymusic-0.3.0-linux-arm64.deb", "browser_download_url": "https://example.com/arm64.deb"},
+			{"name": "mymusic-0.3.0-linux-amd64.flatpak", "browser_download_url": "https://example.com/amd64.flatpak"},
 			{"name": "update-GOOS-arm64.json", "browser_download_url": "https://example.com/v0.3.0/update-arm64.json"},
 			{"name": "update-GOOS-amd64.json", "browser_download_url": "https://example.com/v0.3.0/update-amd64.json"},
 			{"name": "SHA256SUMS", "browser_download_url": "https://example.com/SHA256SUMS"}
@@ -122,15 +122,15 @@ func TestLatestRelease(t *testing.T) {
 		Newer:    true,
 		Date:     "2026-10-21T10:00:00Z",
 		Notes:    "Playlists of your own, and an About page that shows the newest version.",
-		Page:     "https://github.com/fzn0x/mixmusic/releases/tag/v0.3.0",
+		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v0.3.0",
 		Download: "https://example.com/arm64.deb",
-		File:     "mixmusic-0.3.0-linux-arm64.deb",
+		File:     "mymusic-0.3.0-linux-arm64.deb",
 		manifest: "https://example.com/v0.3.0/update-arm64.json",
 	}
 	if r != want {
 		t.Errorf("latestRelease = %+v, want %+v", r, want)
 	}
-	if agent != "MixMusic/0.2.0" {
+	if agent != "MyMusic/0.2.0" {
 		t.Errorf("User-Agent = %q", agent)
 	}
 
@@ -148,7 +148,7 @@ func TestLatestRelease(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.Download != "https://example.com/amd64.flatpak" || r.File != "mixmusic-0.3.0-linux-amd64.flatpak" {
+	if r.Download != "https://example.com/amd64.flatpak" || r.File != "mymusic-0.3.0-linux-amd64.flatpak" {
 		t.Errorf("latestRelease of a Flatpak = %+v", r)
 	}
 	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "flatpak", "arm64", "0.2.0")
@@ -222,7 +222,7 @@ func TestLatestReleaseRateLimited(t *testing.T) {
 
 func TestSummary(t *testing.T) {
 	for _, c := range []struct{ notes, want string }{
-		{"MixMusic tells you when a yt-dlp you installed\nis out of date, and offers `its own`.\n\n### Added\n\n- More.", "MixMusic tells you when a yt-dlp you installed is out of date, and offers its own."},
+		{"MyMusic tells you when a yt-dlp you installed\nis out of date, and offers `its own`.\n\n### Added\n\n- More.", "MyMusic tells you when a yt-dlp you installed is out of date, and offers its own."},
 		{"**Discord** shows what plays, on [Windows](https://example.com) too.", "Discord shows what plays, on Windows too."},
 		{"### Fixed\n\n- A crash.", ""},
 		{"", ""},
@@ -274,7 +274,7 @@ func TestUpdatePrefsOfTheUpdateWindow(t *testing.T) {
 	if p.checks() || !p.AutomaticDownloads || p.SkippedVersion != "0.3.1" || p.LastCheck.IsZero() {
 		t.Errorf("prefs = %+v", p)
 	}
-	// Until the user chose, MixMusic checks.
+	// Until the user chose, MyMusic checks.
 	if !(updatePrefs{}).checks() {
 		t.Error("new prefs do not check")
 	}

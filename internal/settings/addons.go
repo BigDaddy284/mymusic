@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-// DefaultRegistryURL is the community registry in MixMusic's repository.
-const DefaultRegistryURL = "https://raw.githubusercontent.com/fzn0x/mixmusic/main/community/registry-2.json"
+// DefaultRegistryURL is the community registry in MyMusic's repository.
+const DefaultRegistryURL = "https://raw.githubusercontent.com/bigdaddy284/mymusic/main/community/registry-2.json"
 
 // WebRegistryURL is the registry of the add-ons of the web interface,
-// which the versions of MixMusic before its own interface read, and kept
+// which the versions of MyMusic before its own interface read, and kept
 // in their settings.
-const WebRegistryURL = "https://raw.githubusercontent.com/fzn0x/mixmusic/main/community/registry.json"
+const WebRegistryURL = "https://raw.githubusercontent.com/bigdaddy284/mymusic/main/community/registry.json"
 
 // Addons are the plugins that run, and where more come from.
 type Addons struct {

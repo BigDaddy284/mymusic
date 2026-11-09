@@ -3,7 +3,7 @@ package library
 import (
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // The cover a user chose for a playlist is an image file the app keeps in

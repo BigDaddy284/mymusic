@@ -3,7 +3,7 @@ package audio
 import (
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/volume"
+	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // TestEngineVolumeCurve plays the volume's position on the curve chosen

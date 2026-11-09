@@ -1,10 +1,10 @@
 name: Registry
 
-# Publishes the community's add-ons to the registry branch, where MixMusic
+# Publishes the community's add-ons to the registry branch, where MyMusic
 # downloads them (the baseUrl of community/registry-2.json): their files,
 # as their manifests list them, with the plugins' JavaScript compiled from
 # their TypeScript, which main doesn't keep. The branch's web/, the
-# add-ons of registry.json for MixMusic 0.4 and before, stays as it is.
+# add-ons of registry.json for MyMusic 0.4 and before, stays as it is.
 on:
   push:
     branches: [main]

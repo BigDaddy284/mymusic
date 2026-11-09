@@ -9,10 +9,10 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // speedButtonLabel is the label of the speed button by the player at a
@@ -267,7 +267,7 @@ func TestSpeedButtonOnSpotify(t *testing.T) {
 		t.Error("the mini player's menu changes the speed of a Spotify device")
 	}
 
-	// The song after it plays in MixMusic, at a speed the button sets.
+	// The song after it plays in MyMusic, at a speed the button sets.
 	s.p.Next()
 	s.settle(t, func(st player.State) bool {
 		return st.Index == 1 && st.Source != nil && st.Source.Mode == player.ModeStream

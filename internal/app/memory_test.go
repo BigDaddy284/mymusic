@@ -12,9 +12,9 @@ import (
 	"time"
 )
 
-// TestRecordMemory records MixMusic's memory use in the logs folder while
+// TestRecordMemory records MyMusic's memory use in the logs folder while
 // it's on, with a heap profile when asked, which a report of a problem
-// then tells of; a new start of MixMusic records nothing.
+// then tells of; a new start of MyMusic records nothing.
 func TestRecordMemory(t *testing.T) {
 	logs := filepath.Join(t.TempDir(), "logs")
 	a := newQuietApp(t, func(o *Options) { o.LogsDir = logs })
@@ -36,7 +36,7 @@ func TestRecordMemory(t *testing.T) {
 			t.Fatalf("memory.log holds %q", lines)
 		}
 	}
-	if !strings.Contains(lines[0], "Recording, MixMusic test on ") || !strings.Contains(lines[1], "Go heap ") {
+	if !strings.Contains(lines[0], "Recording, MyMusic test on ") || !strings.Contains(lines[1], "Go heap ") {
 		t.Errorf("memory.log starts %q", lines)
 	}
 	name, err := s.SaveHeapProfile()
@@ -61,7 +61,7 @@ func TestRecordMemory(t *testing.T) {
 	if err := s.RecordMemory(false); err != nil || s.RecordingMemory() {
 		t.Errorf("turned off: %v, recording %v", err, s.RecordingMemory())
 	}
-	// MixMusic starts again: it records nothing, until asked.
+	// MyMusic starts again: it records nothing, until asked.
 	if again := (&System{newQuietApp(t, func(o *Options) { o.LogsDir = logs })}); again.RecordingMemory() {
 		t.Error("recording at the next start")
 	}

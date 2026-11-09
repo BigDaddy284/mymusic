@@ -162,7 +162,7 @@ func requestBackground(ctx context.Context, b Background) (Answer, error) {
 
 	// The Response may come before the call returns: subscribe first, to
 	// the path the portal will give the request.
-	token := "mixmusic" + strconv.FormatUint(tokens.Add(1), 10)
+	token := "mymusic" + strconv.FormatUint(tokens.Add(1), 10)
 	r := &request{path: requestPath(gDBusConnectionGetUniqueName(conn), token)}
 	current.Store(r)
 	defer current.Store(nil)

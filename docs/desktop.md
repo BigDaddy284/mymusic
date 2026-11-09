@@ -1,7 +1,7 @@
 # On the desktop
 <!-- docs: group=using order=60 -->
 
-MixMusic on your desktop: the mini player, the MacBook notch player, the tray,
+MyMusic on your desktop: the mini player, the MacBook notch player, the tray,
 media keys and media controls, global shortcuts, notifications and Discord.
 
 Most of what this page covers is in [Settings › Desktop](settings.md#desktop),
@@ -22,7 +22,7 @@ It shows the cover, the title, the artists with the mark of their service,
 and the time and the length ("live" for a live stream), with a line of the
 accent along its foot for the progress. Its buttons:
 
-- at the top right, one button that opens MixMusic's main window and one
+- at the top right, one button that opens MyMusic's main window and one
   that closes the mini player;
 - beside the time, the buttons of its [panel](#its-panel): the queue, the
   lyrics and the output device, and, after a track couldn't play, a red
@@ -80,7 +80,7 @@ it showed as it closed, but the warning sign's.
 
 ## The player around the notch
 
-On a MacBook whose screen has a notch, MixMusic widens the black around the
+On a MacBook whose screen has a notch, MyMusic widens the black around the
 camera while a track is loaded: the cover on the left, and bars that move
 while it plays on the right.
 
@@ -91,12 +91,12 @@ while it plays on the right.
   plays instead. The panel shows the lyrics in
   [Latin letters](lyrics.md#other-scripts-in-latin-letters) when the lyrics
   panel does.
-- **The cover** in the panel opens MixMusic on the now playing page.
+- **The cover** in the panel opens MyMusic on the now playing page.
 - **To close it**, press <kbd>Escape</kbd>, click either side of the notch
   again, or move the pointer away for two seconds.
 
 The player shows over every app and on every Space, in full screen too,
-and stays while MixMusic is in the tray. It leaves the keyboard in the app
+and stays while MyMusic is in the tray. It leaves the keyboard in the app
 you were using until you open the panel, and gives it back when the panel
 closes. It is black with white text whatever your theme, as it extends the
 notch.
@@ -110,36 +110,36 @@ it's drawn.
 
 ## The tray
 
-MixMusic puts an icon in the tray (the menu bar on macOS). Its menu has
-**Play / Pause**, **Next**, **Previous**, **Show MixMusic**, **Mini player**,
-and the item that quits MixMusic. On Windows and macOS, a click on the icon
+MyMusic puts an icon in the tray (the menu bar on macOS). Its menu has
+**Play / Pause**, **Next**, **Previous**, **Show MyMusic**, **Mini player**,
+and the item that quits MyMusic. On Windows and macOS, a click on the icon
 shows the main window and a right click opens the menu; on Linux, a click
 opens the menu.
 
-![The tray icon's menu on Windows: Play / Pause, Next and Previous, then Show MixMusic and Mini player, then Exit](shots/tray-menu.webp)
+![The tray icon's menu on Windows: Play / Pause, Next and Previous, then Show MyMusic and Mini player, then Exit](shots/tray-menu.webp)
 
 ### Close to the tray
 
 With **Close to the tray** on, in Settings › Desktop, closing the main
-window keeps the music playing: MixMusic hides in the tray until you show
-it again from the tray icon, by starting MixMusic again, or with a global
-shortcut of your own for **Show MixMusic**. It is off on a new install, so
-closing the window quits MixMusic.
+window keeps the music playing: MyMusic hides in the tray until you show
+it again from the tray icon, by starting MyMusic again, or with a global
+shortcut of your own for **Show MyMusic**. It is off on a new install, so
+closing the window quits MyMusic.
 
 - To quit with Close to the tray on, choose the quit item of the tray
   icon's menu, or <kbd>⌘</kbd> <kbd>Q</kbd> on macOS.
-- On macOS, a click on MixMusic's icon in the Dock shows the window again.
+- On macOS, a click on MyMusic's icon in the Dock shows the window again.
   A window closed in full screen leaves full screen first, then hides, and
   comes back in full screen.
-- In the Flatpak, MixMusic asks your desktop's background portal to let it
+- In the Flatpak, MyMusic asks your desktop's background portal to let it
   play on with the window closed.
 - On Linux, the tray needs `libayatana-appindicator3` and a desktop that
   shows AppIndicator icons; GNOME needs its AppIndicator extension. Without
-  a tray icon, closing the window quits MixMusic.
+  a tray icon, closing the window quits MyMusic.
 
 ## Media keys and the system's media controls
 
-MixMusic shows what plays in your system's own media controls, with the
+MyMusic shows what plays in your system's own media controls, with the
 cover, the title and the artists, and takes their buttons:
 
 - **Windows**: the media flyout, which shows with the volume keys and in
@@ -149,23 +149,23 @@ cover, the title and the artists, and takes their buttons:
   buttons of headphones reach too.
 - **Linux**: an MPRIS player, which your desktop shows in its media
   controls and passes its media keys to. In the Flatpak, it shows under the
-  Flatpak's name. Setting the speed (rate) over MPRIS sets MixMusic's
+  Flatpak's name. Setting the speed (rate) over MPRIS sets MyMusic's
   [speed](playing-music.md#speed).
 
 The covers there come from the
-[covers MixMusic keeps](library.md#the-offline-cache) on disk, so a cover
+[covers MyMusic keeps](library.md#the-offline-cache) on disk, so a cover
 you saw in the window shows there at once, and offline too. A track [on
 this computer](local-music.md) shows the cover its file holds, or the one
-beside it, from MixMusic's copy in its cache.
+beside it, from MyMusic's copy in its cache.
 
 **Media keys**, in Settings › Desktop and on by default, has the keyboard's
-play or pause, next and previous keys control MixMusic, and its stop key
+play or pause, next and previous keys control MyMusic, and its stop key
 pause it. While a track loads, they and the system's controls do nothing:
 a track can't be paused or moved until you hear it.
 
 ### The taskbar thumbnail on Windows
 
-On Windows, the thumbnail that shows while the pointer rests on MixMusic's
+On Windows, the thumbnail that shows while the pointer rests on MyMusic's
 taskbar button has three buttons: previous, play or pause, and next. They
 are off while there's no track to play.
 
@@ -174,13 +174,13 @@ are off while there's no track to play.
 The main window's title names the track that plays, for the taskbar, the
 window switcher and screen readers, and starts with "Paused:" while it's
 paused. Turn off **Show what plays in the window title** in Settings ›
-Desktop to keep it to MixMusic's name.
+Desktop to keep it to MyMusic's name.
 
 ## Keep the window on top
 
-**Keep on top**, in Settings › Desktop and off at first, keeps MixMusic's
+**Keep on top**, in Settings › Desktop and off at first, keeps MyMusic's
 main window above your other windows, for when you work beside it.
-MixMusic remembers it between starts. Turn it on or off with:
+MyMusic remembers it between starts. Turn it on or off with:
 
 - the **Keep on top** switch in Settings › Desktop;
 - **Keep the window on top, or not** in the command palette, which has no
@@ -195,7 +195,7 @@ the mini player included.
 
 ## Global shortcuts
 
-Global shortcuts are keys of your own that control MixMusic whichever
+Global shortcuts are keys of your own that control MyMusic whichever
 window is in front, even with its window closed to the tray. Record them in
 the **From any app** group at the top of
 [Settings › Shortcuts](settings.md#change-a-shortcut), for:
@@ -204,9 +204,9 @@ the **From any app** group at the top of
 - Next track and Previous track
 - Volume up, Volume down and Mute
 - Like what plays and Dislike what plays
-- Show MixMusic
+- Show MyMusic
 
-![Settings › Shortcuts: the From any app group at the top, "These keys control MixMusic whichever window is in front", with Play or pause, Next track, Previous track and Volume up, each with none and a Set button](shots/shortcuts.webp)
+![Settings › Shortcuts: the From any app group at the top, "These keys control MyMusic whichever window is in front", with Play or pause, Next track, Previous track and Volume up, each with none and a Set button](shots/shortcuts.webp)
 
 A new install has none. To set one, choose **set** on its row and press
 the keys; <kbd>Escape</kbd> cancels and <kbd>Backspace</kbd> removes it.
@@ -216,16 +216,16 @@ the keys; <kbd>Escape</kbd> cancels and <kbd>Backspace</kbd> removes it.
   Linux, and <kbd>⌘</kbd> or <kbd>⌃</kbd> on macOS. <kbd>F1</kbd> to
   <kbd>F12</kbd> may stand alone, but <kbd>F12</kbd> on Windows, which
   keeps it for itself.
-- While MixMusic runs, those keys do nothing else, in MixMusic's own window
+- While MyMusic runs, those keys do nothing else, in MyMusic's own window
   too: a command of the window that had them gives them up.
 - Keys the system refuses, as when another app has them, stay yours: the
-  row says why, with **try again**, and MixMusic tries again at each
+  row says why, with **try again**, and MyMusic tries again at each
   start.
 - On Wayland, your desktop asks you to confirm them, and its keyboard
   settings can change them. On macOS, a letter is the key in its place on
   a US keyboard.
 - Liking or disliking from another window shows a notification, while
-  notifications are on and neither MixMusic's window nor the mini player
+  notifications are on and neither MyMusic's window nor the mini player
   is in front.
 
 The media keys work as they do without any global shortcut.
@@ -233,9 +233,9 @@ The media keys work as they do without any global shortcut.
 ## Notifications
 
 With **Notifications** on, in Settings › Desktop and on by default,
-MixMusic shows a notification when a track starts while its window isn't
+MyMusic shows a notification when a track starts while its window isn't
 in front: the title, the artists and the album, with the cover. A click
-on it shows MixMusic. None shows while the mini player is in front, or on
+on it shows MyMusic. None shows while the mini player is in front, or on
 a MacBook while the player around the notch is open: they show the track
 already. The tray icon's tip names what plays too.
 
@@ -245,9 +245,9 @@ already. The tray icon's tip names what plays too.
   notification; on Linux it is the notification's image, where your
   desktop shows one.
 - It is the cover the system's media controls show, from the covers
-  MixMusic keeps: a track on this computer shows the cover its file holds,
+  MyMusic keeps: a track on this computer shows the cover its file holds,
   or the one beside it.
-- MixMusic waits up to 2 seconds for a cover it hasn't downloaded yet:
+- MyMusic waits up to 2 seconds for a cover it hasn't downloaded yet:
   without one by then, the notification shows without it. When the next
   track starts meanwhile, only the next one's shows.
 
@@ -257,22 +257,22 @@ While the Discord app runs on your computer, your Discord profile shows
 what you listen to: the title, the artists, the cover and the time left.
 Pausing clears it, and a live stream shows how long it has played. You
 can [choose what it shows](#what-your-discord-status-shows). Discord's
-member list says "Listening to MixMusic". There's nothing to set up: turn
+member list says "Listening to MyMusic". There's nothing to set up: turn
 it off with **Show what plays on Discord** in Settings › Desktop.
 
 - **Discord application ID**, under the switch, shows the name of a Discord
-  application of your own in place of MixMusic's: create one in Discord's
+  application of your own in place of MyMusic's: create one in Discord's
   [developer portal](https://discord.com/developers/applications) and paste
   its application ID.
 - Under them, a **preview** shows your status as Discord's card does, of
   what plays, or of a song while nothing does, and follows what you choose
   below it, the lines as you type them.
 - Discord's own Spotify status comes from your Discord account's link to
-  Spotify. To show only MixMusic, turn off "Display Spotify as your status"
+  Spotify. To show only MyMusic, turn off "Display Spotify as your status"
   in Discord's Connections.
-- MixMusic finds Discord's Canary build too, and Vesktop installed with
-  Flatpak. In MixMusic's Flatpak, a Discord app that isn't a Flatpak shows
-  what plays only if it was running when MixMusic started.
+- MyMusic finds Discord's Canary build too, and Vesktop installed with
+  Flatpak. In MyMusic's Flatpak, a Discord app that isn't a Flatpak shows
+  what plays only if it was running when MyMusic started.
 
 ### What your Discord status shows
 
@@ -289,33 +289,33 @@ left, and a pause clears it.
 | Listen button | A **Listen on Spotify** or **Listen on YouTube Music** button that opens the track there. Discord shows it to the others who see your profile, not always to you. A file on your computer has none. Off at first. |
 | Keep while paused | A paused track stays, marked with a pause badge, whose tip says Paused, and without its time. Off, a pause clears your status, as before. |
 
-Discord reads the badges from MixMusic's GitHub repository, and an
-application of your own shows them as MixMusic's does.
+Discord reads the badges from MyMusic's GitHub repository, and an
+application of your own shows them as MyMusic's does.
 
 ## Start at login
 
-**Start at login**, in Settings › Desktop, starts MixMusic when you sign in
+**Start at login**, in Settings › Desktop, starts MyMusic when you sign in
 to your computer, with its window hidden in the tray, from where the tray
 icon shows it. In the Flatpak, it goes through your desktop's background
 portal, which may ask you first.
 
 ## Sleep
 
-MixMusic pauses as the computer goes to sleep, and stays paused when it
+MyMusic pauses as the computer goes to sleep, and stays paused when it
 wakes, ready where it was. A Spotify Connect device elsewhere plays on.
 
-## mixmusic:// links
+## mymusic:// links
 
-Links that start with `mixmusic://` open a page of MixMusic, or play a
+Links that start with `mymusic://` open a page of MyMusic, or play a
 track, from a browser or another app:
 
 | Link | What it does |
 |---|---|
-| `mixmusic://search?q=lofi+piano` | searches for "lofi piano" |
-| `mixmusic://album/<id>`, `mixmusic://artist/<id>`, `mixmusic://playlist/<id>` | opens an album, an artist or a playlist |
-| `mixmusic://library`, `mixmusic://explore`, `mixmusic://stats`, `mixmusic://marketplace`, `mixmusic://settings` | opens that page |
-| `mixmusic://play/<track id>` | plays a track |
+| `mymusic://search?q=lofi+piano` | searches for "lofi piano" |
+| `mymusic://album/<id>`, `mymusic://artist/<id>`, `mymusic://playlist/<id>` | opens an album, an artist or a playlist |
+| `mymusic://library`, `mymusic://explore`, `mymusic://stats`, `mymusic://marketplace`, `mymusic://settings` | opens that page |
+| `mymusic://play/<track id>` | plays a track |
 
-An ID is MixMusic's own: the service's ID after `yt:` for YouTube Music or
-`sp:` for Spotify. Opening MixMusic a second time, or a link while it runs,
+An ID is MyMusic's own: the service's ID after `yt:` for YouTube Music or
+`sp:` for Spotify. Opening MyMusic a second time, or a link while it runs,
 opens the page in the window that's there.

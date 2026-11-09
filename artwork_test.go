@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/artwork"
+	"github.com/bigdaddy284/mymusic/internal/artwork"
 )
 
 // scriptedArt is a source of images whose addresses fail as scripted, in

@@ -22,10 +22,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/stream"
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 var (
@@ -403,7 +403,7 @@ func TestCancelRemovesPart(t *testing.T) {
 }
 
 // TestResumeAfterRestart goes on from what a download kept before
-// MixMusic quit, when YouTube sends the same file, and starts over when it
+// MyMusic quit, when YouTube sends the same file, and starts over when it
 // sends another.
 func TestResumeAfterRestart(t *testing.T) {
 	for _, c := range []struct {
@@ -723,7 +723,7 @@ func TestFolderUnreachable(t *testing.T) {
 		t.Error("served from a folder that isn't there")
 	}
 	// A folder the user chose, gone, as with its drive, isn't made again.
-	gone := filepath.Join(t.TempDir(), "unplugged", "MixMusic downloads")
+	gone := filepath.Join(t.TempDir(), "unplugged", "MyMusic downloads")
 	m = open(t, gone, Options{Fetcher: &fetcher{}, Exists: true})
 	if st := m.Status(); !strings.Contains(st.Problem, "can't be reached") {
 		t.Errorf("status %+v", st)

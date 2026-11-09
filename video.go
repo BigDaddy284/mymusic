@@ -1,7 +1,7 @@
 package main
 
 // The picture of music videos on the now playing page. MyGo draws no
-// video, so a web view of the main window shows a page of MixMusic's own,
+// video, so a web view of the main window shows a page of MyMusic's own,
 // public/video.html, in place of the cover: it plays the picture, muted,
 // through Media Source Extensions, from the proxy (internal/app/video.go),
 // and follows the engine's clock, which the window sends it a few times a
@@ -22,9 +22,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 const (
@@ -375,15 +375,16 @@ func (s *shell) videoSleeve(c *ui.Context, t, rec media.Track, size float32) {
 		switch {
 		case !asked:
 			// No motion the user didn't ask for: a play button asks.
-			b := s.buttonBase(c.Key("sleeve-video-play")).Size(42, 42).Radius(21).Background(k.accent).Absolute().
+			b := s.buttonBase(c.Key("sleeve-video-play")).Size(42, 42).Radius(21).Absolute().
 				Right(8).Bottom(8).Label("Play the video").Tooltip("Play the video").Cursor(ui.CursorPointer)
+			ink := k.fillAccent(b, stateOf(b))
 			if b.Clicked() {
 				if v.played == nil {
 					v.played = map[string]bool{}
 				}
 				v.played[rec.ID] = true
 			}
-			b.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(k.accentText) })
+			b.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(ink) })
 			return
 		case v.view == nil:
 			s.makeVideoView()
@@ -492,7 +493,7 @@ func (s *shell) videoFailed(rec media.Track, why string) {
 		v.broken = map[string]bool{}
 	}
 	v.broken[rec.ID] = true
-	log.Printf("mixmusic: the picture of %s doesn't play: %s", rec.ID, why)
+	log.Printf("mymusic: the picture of %s doesn't play: %s", rec.ID, why)
 }
 
 // makeVideoView makes the web view of the picture, beside the main thread,
@@ -511,7 +512,7 @@ func (s *shell) makeVideoView() {
 			v.making = false
 			if err != nil {
 				v.problem = "The picture of music videos couldn't load here."
-				log.Printf("mixmusic: the picture of music videos can't show: %v", err)
+				log.Printf("mymusic: the picture of music videos can't show: %v", err)
 				if web != nil {
 					go web.Destroy()
 				}

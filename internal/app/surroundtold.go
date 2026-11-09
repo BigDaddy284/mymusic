@@ -3,7 +3,7 @@ package app
 import (
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // surroundTold has the track that plays a video offer its 5.1 surround

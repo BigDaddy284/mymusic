@@ -8,8 +8,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // TestRefreshKeepsAccounts goes on showing the accounts while the shell
@@ -113,7 +113,7 @@ func TestYouTubeCookieSignIn(t *testing.T) {
 		t.Error("the pasted header stayed in the field")
 	}
 	waitText(t, s, tt, "That isn't a signed-in YouTube Music cookie header: copy the Cookie header of a request to music.youtube.com, from a tab signed in to it")
-	if !tt.HasText("MixMusic didn't sign in to YouTube Music") || s.signingIn != "" {
+	if !tt.HasText("MyMusic didn't sign in to YouTube Music") || s.signingIn != "" {
 		t.Errorf("the failure isn't told: %q, waiting for %q", tt.Texts(), s.signingIn)
 	}
 
@@ -140,7 +140,7 @@ func TestYouTubeAccountPicker(t *testing.T) {
 	s.youtubePick = true
 	tt := testerOf(t, s, 1280, 1800)
 	show(s, tt, "/settings/accounts")
-	for _, want := range []string{"Account and channel", "Ada · ada@example.com", "Your session reaches more than one account or channel. MixMusic uses the first account: choose another here."} {
+	for _, want := range []string{"Account and channel", "Ada · ada@example.com", "Your session reaches more than one account or channel. MyMusic uses the first account: choose another here."} {
 		if !tt.HasText(want) {
 			t.Errorf("the picker doesn't show %q: %q", want, tt.Texts())
 		}
@@ -149,7 +149,7 @@ func TestYouTubeAccountPicker(t *testing.T) {
 	// The channel used is gone: what remains is offered, even alone.
 	s.loads["channels"] = &loaded[[]youtube.AccountChannel]{done: true, value: []youtube.AccountChannel{{Name: "Ada", Email: "ada@example.com"}}}
 	tt.Frame()
-	if !tt.HasText("The account or channel MixMusic used is no longer one of this session: choose one.") || !tt.HasText("Channel") {
+	if !tt.HasText("The account or channel MyMusic used is no longer one of this session: choose one.") || !tt.HasText("Channel") {
 		t.Errorf("a channel gone isn't told: %q", tt.Texts())
 	}
 	s.loads["channels"] = &loaded[[]youtube.AccountChannel]{done: true, value: []youtube.AccountChannel{{Name: "Ada", Current: true}}}
@@ -172,7 +172,7 @@ func TestSettingsFindCookieSignIn(t *testing.T) {
 	}
 	s.youtubeCookies.problem = "Firefox has no signed-in YouTube Music session"
 	show(s, tt, settingsPath("", "paste"))
-	showsOnly(t, tt, "searching paste after a failure", append([]string{"MixMusic didn't sign in to YouTube Music", s.youtubeCookies.problem}, form...), nil)
+	showsOnly(t, tt, "searching paste after a failure", append([]string{"MyMusic didn't sign in to YouTube Music", s.youtubeCookies.problem}, form...), nil)
 	show(s, tt, settingsPath("", "crossfade"))
 	showsOnly(t, tt, "searching crossfade", nil, form)
 
@@ -188,5 +188,5 @@ func TestSettingsFindCookieSignIn(t *testing.T) {
 	// The channel used is gone, which the row says instead.
 	s.loads["channels"] = &loaded[[]youtube.AccountChannel]{done: true, value: []youtube.AccountChannel{{Name: "Ada"}, {Name: "My band", PageID: "b"}}}
 	show(s, tt, settingsPath("", "brand channels"))
-	showsOnly(t, tt, "a channel gone, searching brand channels", []string{"Channel", "The account or channel MixMusic used is no longer one of this session: choose one."}, nil)
+	showsOnly(t, tt, "a channel gone, searching brand channels", []string{"Channel", "The account or channel MyMusic used is no longer one of this session: choose one."}, nil)
 }

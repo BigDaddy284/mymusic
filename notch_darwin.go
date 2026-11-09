@@ -5,7 +5,7 @@ package main
 // AppKit's part of the player around the notch (#46), through the
 // Objective-C runtime with purego, on the main thread: the camera housing
 // of the built-in screen, the window over the menu bar, and the keyboard,
-// which the open panel takes and gives back without activating MixMusic.
+// which the open panel takes and gives back without activating MyMusic.
 
 import (
 	"github.com/ebitengine/purego/objc"
@@ -22,7 +22,7 @@ const (
 	nsAnimationNone = 2
 	// An NSTrackingArea's options: entered and exited, moved, always, and
 	// in the visible rect. MyGo's own is only while the app is active,
-	// which the panel never makes MixMusic: without this one, the pointer
+	// which the panel never makes MyMusic: without this one, the pointer
 	// over the panel in front of another app would tell nothing.
 	trackingAlways = 0x01 | 0x02 | 0x80 | 0x200
 	// NSEvent's masks of the left, right and other mouse buttons' presses,
@@ -90,7 +90,7 @@ func notchScreens() []notchScreen {
 type macNotch struct {
 	ns     objc.ID // the NSWindow
 	keys   keyHandBack
-	local  objc.ID // the monitor of the presses MixMusic gets
+	local  objc.ID // the monitor of the presses MyMusic gets
 	global objc.ID // and of those other apps and the menu bar get
 	blocks []objc.Block
 	closed bool
@@ -169,7 +169,7 @@ func (m *macNotch) watch() {
 	m.global = events.Send(sel("addGlobalMonitorForEventsMatchingMask:handler:"), uint64(maskPresses), global).Send(sel("retain"))
 }
 
-// pressed counts a press or a release MixMusic gets, before its window
+// pressed counts a press or a release MyMusic gets, before its window
 // does.
 func (m *macNotch) pressed(ev objc.ID) {
 	if m.closed {
@@ -181,7 +181,7 @@ func (m *macNotch) pressed(ev objc.ID) {
 		if mine {
 			m.keys.press()
 		} else {
-			// Another window of MixMusic's takes the keyboard itself.
+			// Another window of MyMusic's takes the keyboard itself.
 			m.keys.lost()
 		}
 	case 2, 4, 26: // and their ups
@@ -215,7 +215,7 @@ func (m *macNotch) keyboard(take bool) {
 // handBack gives the keyboard back to the app the user was in, while the
 // window has it. resignKeyWindow would do nothing, being AppKit's
 // notification, not a request: the window goes out and straight back in,
-// which leaves the key window to that app, without activating MixMusic.
+// which leaves the key window to that app, without activating MyMusic.
 func (m *macNotch) handBack() {
 	if m.closed || m.ns == 0 || !objc.Send[bool](m.ns, sel("isKeyWindow")) {
 		return

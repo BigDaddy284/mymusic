@@ -3,7 +3,7 @@ package celt
 // Port of celt/cwrs.c: the decoding of PVQ codewords, the pulses of a
 // band's shape.
 
-import "github.com/fzn0x/mixmusic/opus/internal/rangedec"
+import "github.com/bigdaddy284/mymusic/opus/internal/rangedec"
 
 // pvqRow is CELT_PVQ_U_ROW[r].
 func pvqRow(r int) []uint32 { return pvqUData[pvqURowOffsets[r]:] }

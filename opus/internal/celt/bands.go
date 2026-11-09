@@ -4,7 +4,7 @@ package celt
 // recursively, folded from lower bands when they get no pulses, and their
 // stereo.
 
-import "github.com/fzn0x/mixmusic/opus/internal/rangedec"
+import "github.com/bigdaddy284/mymusic/opus/internal/rangedec"
 
 var (
 	orderyTable = [...]int{

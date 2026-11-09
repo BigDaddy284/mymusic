@@ -5,7 +5,7 @@ package celt
 import (
 	"errors"
 
-	"github.com/fzn0x/mixmusic/opus/internal/rangedec"
+	"github.com/bigdaddy284/mymusic/opus/internal/rangedec"
 )
 
 var (

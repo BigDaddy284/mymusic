@@ -11,7 +11,7 @@ import (
 	"github.com/egoist/mygo/ui"
 	"golang.org/x/text/unicode/norm"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // trackSorts are the orders a list of tracks shows in, the list's own

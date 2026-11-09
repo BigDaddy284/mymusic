@@ -5,8 +5,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // roomCast is the width the cast button takes in the player bar, beside
@@ -26,7 +26,7 @@ func (s *shell) castShown() bool {
 // castButton chooses where the player's tracks play: on this computer, or
 // on a cast device on the network, listed by its name, which tells its
 // room, and its model. Choosing one moves what plays there, from where it
-// was. Spotify tracks that play on Spotify Connect, or in MixMusic as a
+// was. Spotify tracks that play on Spotify Connect, or in MyMusic as a
 // Spotify device, stay where they play.
 func (s *shell) castButton(c *ui.Context) {
 	if !s.castShown() {

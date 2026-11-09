@@ -81,7 +81,7 @@ type fakePortal struct {
 	background atomic.Uint32
 
 	mu sync.Mutex
-	// allow lets MixMusic run in the background, and then start at
+	// allow lets MyMusic run in the background, and then start at
 	// login as asked; silent answers no request.
 	allow, silent bool
 	asked         []fakeRequest
@@ -283,14 +283,14 @@ func lookupStrings(dict uintptr, key string) []string {
 	return ss
 }
 
-// TestBackgroundPortal asks a portal to start MixMusic at login, and to
+// TestBackgroundPortal asks a portal to start MyMusic at login, and to
 // stop, as the desktop's would be asked, and hears its answers: allowed,
 // refused, none, and no Background portal at all.
 func TestBackgroundPortal(t *testing.T) {
 	f := startFake(t)
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
 	defer cancel()
-	login := Background{Reason: "MixMusic starts when you log in", Autostart: true, Commandline: []string{"mixmusic", "--mygo-opened-at-login"}}
+	login := Background{Reason: "MyMusic starts when you log in", Autostart: true, Commandline: []string{"mymusic", "--mygo-opened-at-login"}}
 
 	got, err := RequestBackground(ctx, login)
 	if err != nil {
@@ -299,7 +299,7 @@ func TestBackgroundPortal(t *testing.T) {
 	if got != (Answer{Background: true, Autostart: true}) {
 		t.Errorf("allowed to start at login: %+v", got)
 	}
-	got, err = RequestBackground(ctx, Background{Reason: "MixMusic plays on in the tray", Commandline: login.Commandline})
+	got, err = RequestBackground(ctx, Background{Reason: "MyMusic plays on in the tray", Commandline: login.Commandline})
 	if err != nil {
 		t.Fatal(err)
 	}

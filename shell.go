@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/egoist/mygo/ui"
-	"github.com/fzn0x/mixmusic/internal/media"
 )
 
 // view builds the main window: the rail, the top bar over the main pane
@@ -117,7 +117,7 @@ func (s *shell) page(c *ui.Context, r *ui.Route) {
 	case r.Match("/marketplace/{tab}"):
 		s.marketplacePage(c, r.Param("tab"))
 	default:
-		s.lost(c, "This page isn't one of MixMusic's.")
+		s.lost(c, "This page isn't one of MyMusic's.")
 	}
 	s.collecting = false
 }

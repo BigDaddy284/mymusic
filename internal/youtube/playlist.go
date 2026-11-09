@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // Playlist returns a playlist with its first page of tracks, about a

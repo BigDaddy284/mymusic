@@ -11,7 +11,7 @@ import (
 	"github.com/egoist/mygo/plugins/glass"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/addons"
 )
 
 // effects are what the built-in themes' stylesheets add to their tokens in

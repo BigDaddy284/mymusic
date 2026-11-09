@@ -2,7 +2,7 @@ package app
 
 // The listening to YouTube Music's episodes, reported back to the history
 // of the user's account there, which YouTube Music resumes an episode from
-// on any device. As YouTube's own player does, MixMusic reports a playback
+// on any device. As YouTube's own player does, MyMusic reports a playback
 // on a schedule while it plays, as it pauses and plays again, and a last
 // time as another track plays or none does. It starts once the play
 // counts, with the play itself, and tells what was heard until then. The
@@ -18,8 +18,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // seekSlack is how far from where the report before and the time since
@@ -262,7 +262,7 @@ func (a *App) startWatch(p *episodePlay) {
 		if err != nil {
 			p.failed = true
 			if !errors.Is(err, youtube.ErrSignedOut) && !errors.Is(err, youtube.ErrSessionRejected) {
-				log.Printf("mixmusic: reporting the listening to an episode to YouTube Music: %v", err)
+				log.Printf("mymusic: reporting the listening to an episode to YouTube Music: %v", err)
 			}
 			return
 		}
@@ -299,7 +299,7 @@ func (a *App) sendWatchtime(p *episodePlay, r youtube.WatchReport) {
 		defer cancel()
 		err := watch.Report(ctx, r)
 		if err != nil && !errors.Is(err, youtube.ErrSessionRejected) && !p.warned.Swap(true) {
-			log.Printf("mixmusic: reporting the listening to an episode to YouTube Music: %v", err)
+			log.Printf("mymusic: reporting the listening to an episode to YouTube Music: %v", err)
 		}
 	}()
 }

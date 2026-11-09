@@ -25,7 +25,7 @@ import (
 )
 
 // busName is the player's name on the bus, and desktopEntry the name of
-// MixMusic's desktop entry, which desktops take its name and icon from:
+// MyMusic's desktop entry, which desktops take its name and icon from:
 // those of its Flatpak inside one.
 var busName, desktopEntry = mprisNames(os.Getenv("FLATPAK_ID"))
 
@@ -37,7 +37,7 @@ const (
 	noTrack = "/org/mpris/MediaPlayer2/TrackList/NoTrack"
 	// trackPrefix starts the track IDs of tracks, which go on with the hex
 	// of the track's ID, as object paths allow only [A-Za-z0-9_].
-	trackPrefix = "/org/mixmusic/track/"
+	trackPrefix = "/org/mymusic/track/"
 
 	gBusTypeSession = 2
 	// dbusNameFlagDoNotQueue fails to own a name taken, rather than wait.
@@ -417,7 +417,7 @@ func (l *linuxControls) emit(iface, signal string, params uintptr) {
 func (l *linuxControls) warn(err error) {
 	if !l.warned {
 		l.warned = true
-		log.Printf("mixmusic: the desktop's media controls: %v", err)
+		log.Printf("mymusic: the desktop's media controls: %v", err)
 	}
 }
 
@@ -433,7 +433,7 @@ func (l *linuxControls) property(name string) uintptr {
 	case "CanRaise", "CanGoNext", "CanGoPrevious", "CanControl":
 		return gVariantNewBoolean(true)
 	case "Identity":
-		return gVariantNewString("MixMusic")
+		return gVariantNewString("MyMusic")
 	case "DesktopEntry":
 		return gVariantNewString(desktopEntry)
 	case "SupportedUriSchemes", "SupportedMimeTypes":
@@ -526,7 +526,7 @@ func (l *linuxControls) method(name string, params uintptr) string {
 func mprisMethod(_ uintptr, _, _, _, method *byte, params, inv, _ uintptr) {
 	if l := mprisCurrent.Load(); l != nil {
 		if name := l.method(goString(method), params); name != "" {
-			gDBusMethodInvocationReturnDBusError(inv, name, "MixMusic doesn't open addresses")
+			gDBusMethodInvocationReturnDBusError(inv, name, "MyMusic doesn't open addresses")
 			return
 		}
 	}

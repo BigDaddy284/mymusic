@@ -8,9 +8,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // sidePanel is the panel at the right of the main pane: the queue, or the
@@ -117,7 +117,7 @@ func (s *shell) queueRow(c *ui.Context, i int, it player.Item, current bool) {
 	}
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)

@@ -251,7 +251,7 @@ func (p *Proxy) relay(ctx context.Context, out io.Writer, videoID string, s Stre
 			body = nil
 			from += n
 			if n > 0 && !broke.IsZero() {
-				log.Printf("mixmusic: the audio of %s comes again", videoID)
+				log.Printf("mymusic: the audio of %s comes again", videoID)
 				broke, wait = time.Time{}, backoff
 			}
 			switch {
@@ -276,7 +276,7 @@ func (p *Proxy) relay(ctx context.Context, out io.Writer, videoID string, s Stre
 			return false
 		case broke.IsZero():
 			broke = time.Now()
-			log.Printf("mixmusic: the audio of %s broke off at byte %d of %d: %v; connecting again", videoID, from, s.Size, loggable(err))
+			log.Printf("mymusic: the audio of %s broke off at byte %d of %d: %v; connecting again", videoID, from, s.Size, loggable(err))
 		case time.Since(broke)+wait > reconnect:
 			p.fail(nil, videoID, errStalled)
 			return false
@@ -331,7 +331,7 @@ func (p *Proxy) served(ctx context.Context, videoID string, s Stream) error {
 		return nil
 	}
 	wait = min(wait, maxAvailableWait)
-	log.Printf("mixmusic: waiting %.1fs for YouTube to serve the stream of %s", wait.Seconds(), videoID)
+	log.Printf("mymusic: waiting %.1fs for YouTube to serve the stream of %s", wait.Seconds(), videoID)
 	t := time.NewTimer(wait)
 	defer t.Stop()
 	select {
@@ -376,7 +376,7 @@ func (p *Proxy) fail(w http.ResponseWriter, videoID string, err error) {
 	if errors.Is(err, context.Canceled) {
 		return
 	}
-	log.Printf("mixmusic: the audio of %s: %v", videoID, loggable(err))
+	log.Printf("mymusic: the audio of %s: %v", videoID, loggable(err))
 	p.setFailure(videoID, plainFailure(err))
 }
 
@@ -417,7 +417,7 @@ func plainFailure(err error) string {
 	case errors.Is(err, errStalled):
 		return "YouTube stopped sending the audio, as happens when the connection drops; check the connection and play the track again"
 	case errors.As(err, &ue):
-		return "MixMusic could not reach YouTube's audio servers, which a firewall, a VPN or a DNS filter may block"
+		return "MyMusic could not reach YouTube's audio servers, which a firewall, a VPN or a DNS filter may block"
 	}
 	return strings.TrimPrefix(err.Error(), "stream: ")
 }

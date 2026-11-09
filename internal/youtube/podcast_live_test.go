@@ -6,14 +6,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // TestLivePodcasts checks the parsers of podcasts against YouTube Music
-// itself, with MIXMUSIC_LIVE=1: a search, a show's page and its next page.
+// itself, with MYMUSIC_LIVE=1: a search, a show's page and its next page.
 func TestLivePodcasts(t *testing.T) {
-	if os.Getenv("MIXMUSIC_LIVE") == "" {
-		t.Skip("set MIXMUSIC_LIVE=1 to test against YouTube Music")
+	if os.Getenv("MYMUSIC_LIVE") == "" {
+		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube Music")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

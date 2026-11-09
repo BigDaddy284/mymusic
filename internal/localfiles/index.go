@@ -1,6 +1,6 @@
 // Package localfiles keeps the index of the music on the user's computer:
 // the files of the folders the settings name, with what their tags tell,
-// which MixMusic plays from the files themselves. The index is kept in
+// which MyMusic plays from the files themselves. The index is kept in
 // the data folder (local-files.json), and each scan reads only the files
 // whose size or time of change changed since the scan before; the covers
 // the files hold are kept in a folder of the cache, never beside the
@@ -17,8 +17,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/tags"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/tags"
 )
 
 // version is the version of the index file: one of another is read again
@@ -44,7 +44,7 @@ type Entry struct {
 	// Art is the file of the cover in the folder of covers, "" without
 	// one.
 	Art string `json:"art,omitempty"`
-	// Skipped is why MixMusic can't play the file, "" when it can.
+	// Skipped is why MyMusic can't play the file, "" when it can.
 	Skipped string `json:"skipped,omitempty"`
 }
 
@@ -57,10 +57,10 @@ type saved struct {
 // Folder is a folder of the index, as the last scan found it.
 type Folder struct {
 	Path string
-	// Tracks counts the files MixMusic plays, and Skipped those it can't.
+	// Tracks counts the files MyMusic plays, and Skipped those it can't.
 	Tracks, Skipped int
 	// Unread are the folders in it that the scan couldn't read, as one
-	// MixMusic isn't allowed to: their tracks stay as the scan before
+	// MyMusic isn't allowed to: their tracks stay as the scan before
 	// found them, until a scan reads them.
 	Unread []string
 	// Problem is why the folder can't be read, as when it is on a drive
@@ -75,7 +75,7 @@ type Status struct {
 	// Found so far.
 	Scanning    bool
 	Read, Found int
-	// Tracks counts the files MixMusic plays, of every folder.
+	// Tracks counts the files MyMusic plays, of every folder.
 	Tracks int
 }
 
@@ -212,7 +212,7 @@ func (x *Index) Missing(id string) bool {
 		// The files of a folder that can't be read stay in the index:
 		// those of a music folder that can't be read at all, as on a
 		// drive unplugged, are missing meanwhile, and those of a folder
-		// in one, as one MixMusic isn't allowed to read, are looked at.
+		// in one, as one MyMusic isn't allowed to read, are looked at.
 		unread := false
 		for _, f := range x.folders {
 			if f.Problem != "" && within(path, f.Path) {

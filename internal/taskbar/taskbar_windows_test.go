@@ -66,7 +66,7 @@ type message struct {
 
 // testClass registers the class of the tests' windows, once.
 var testClass = sync.OnceValue(func() *uint16 {
-	name, _ := syscall.UTF16PtrFromString("MixMusicTaskbarTest")
+	name, _ := syscall.UTF16PtrFromString("MyMusicTaskbarTest")
 	instance, _, _ := syscall.SyscallN(procGetModuleHandle.Addr(), 0)
 	wc := wndClassEx{wndProc: procDefWindowProcW.Addr(), instance: instance, className: name}
 	wc.size = uint32(unsafe.Sizeof(wc))
@@ -92,7 +92,7 @@ func apartment(t *testing.T) {
 // test. Shown, it has a taskbar button: off the screen, it takes no focus.
 func testWindow(t *testing.T, shown bool) uintptr {
 	t.Helper()
-	title, _ := syscall.UTF16PtrFromString("MixMusic taskbar test")
+	title, _ := syscall.UTF16PtrFromString("MyMusic taskbar test")
 	instance, _, _ := syscall.SyscallN(procGetModuleHandle.Addr(), 0)
 	x := uintptr(0)
 	if shown {

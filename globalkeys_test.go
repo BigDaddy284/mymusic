@@ -11,7 +11,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/app"
 )
 
 // testHotkeys registers global shortcuts for the presses the test makes,
@@ -145,9 +145,9 @@ func TestGlobalShortcutRecorder(t *testing.T) {
 	if _, ok := s.set.GlobalShortcuts["player.next"]; ok || len(h.registered()) != 0 {
 		t.Errorf("Backspace leaves %v, registered %v", s.set.GlobalShortcuts, h.registered())
 	}
-	click(t, s, tt, "set the global shortcut of Show MixMusic")
+	click(t, s, tt, "set the global shortcut of Show MyMusic")
 	tt.Key(ui.Cmd|ui.Alt, ui.KeyM)
-	click(t, s, tt, "remove the global shortcut of Show MixMusic")
+	click(t, s, tt, "remove the global shortcut of Show MyMusic")
 	if len(s.set.GlobalShortcuts) != 0 || len(h.registered()) != 0 {
 		t.Errorf("remove leaves %v, registered %v", s.set.GlobalShortcuts, h.registered())
 	}
@@ -161,7 +161,7 @@ func TestGlobalShortcutRecorder(t *testing.T) {
 }
 
 // TestGlobalShortcutInUse tells, on the row, of keys the system refused,
-// until they register as MixMusic tries again.
+// until they register as MyMusic tries again.
 func TestGlobalShortcutInUse(t *testing.T) {
 	h := newTestHotkeys()
 	h.fail[globalAcc("Alt+V")] = errors.New(`mygo: cannot register "Ctrl+Alt+V": Hot key is already registered.`)
@@ -184,7 +184,7 @@ func TestGlobalShortcutInUse(t *testing.T) {
 	}
 }
 
-// TestGlobalShortcutPressRecords hands MixMusic's own global keys, which
+// TestGlobalShortcutPressRecords hands MyMusic's own global keys, which
 // never reach the window, to the recorder, and leaves them to their
 // command otherwise.
 func TestGlobalShortcutPressRecords(t *testing.T) {
@@ -244,7 +244,7 @@ func TestSettingsFindGlobalShortcuts(t *testing.T) {
 }
 
 // TestGlobalShortcutFoundRecords records the keys of a global shortcut a
-// search of the settings found, MixMusic's own global keys included, from
+// search of the settings found, MyMusic's own global keys included, from
 // the first section's page.
 func TestGlobalShortcutFoundRecords(t *testing.T) {
 	h := newTestHotkeys()
@@ -285,11 +285,11 @@ func TestGlobalHint(t *testing.T) {
 }
 
 // TestRenderGlobalShortcuts draws Settings › Shortcuts with a global
-// shortcut set, and one the system refused, to MIXMUSIC_RENDER.
+// shortcut set, and one the system refused, to MYMUSIC_RENDER.
 func TestRenderGlobalShortcuts(t *testing.T) {
-	dir := os.Getenv("MIXMUSIC_RENDER")
+	dir := os.Getenv("MYMUSIC_RENDER")
 	if dir == "" {
-		t.Skip("MIXMUSIC_RENDER names no folder")
+		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	h := newTestHotkeys()
 	h.fail[globalAcc("Alt+N")] = errors.New("in use")

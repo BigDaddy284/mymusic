@@ -7,15 +7,15 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/romaji"
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/lyrics"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/romaji"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
 // kiteLines are made-up lyrics in Japanese, kiteTranslation their made-up
-// translation and romanization, and kiteRomaji their romaji, as MixMusic
+// translation and romanization, and kiteRomaji their romaji, as MyMusic
 // makes it once the dictionary of the readings of kanji is there.
 var (
 	kiteLines       = []lyrics.Line{{TimeMs: 0, Text: "紙の凧"}, {TimeMs: 60000, Text: "空へ"}}
@@ -52,7 +52,7 @@ func lyricsIn(t *testing.T, lang string, tr *loaded[translated]) (*shell, func()
 
 // TestLyricsSwitches offers to translate lyrics in another language than
 // the one they translate to, and to show those in another script in Latin
-// letters, which MixMusic writes, or in romaji, for Japanese.
+// letters, which MyMusic writes, or in romaji, for Japanese.
 func TestLyricsSwitches(t *testing.T) {
 	for _, c := range []struct {
 		lang                string
@@ -62,14 +62,14 @@ func TestLyricsSwitches(t *testing.T) {
 		{"ko", seoulLines, "translate", "romanize"},
 		{"ru", []lyrics.Line{{Text: "Бумажный змей"}}, "translate", "romanize"},
 		{"ja", kiteLines, "translate", "romaji"},
-		// Unison romanized no Ukrainian when checked: MixMusic does.
+		// Unison romanized no Ukrainian when checked: MyMusic does.
 		{"uk", []lyrics.Line{{Text: "Паперовий змій"}}, "translate", "romanize"},
 		// Lyrics said to be Korean, not in Hangul, have nothing to
 		// romanize.
 		{"ko", kiteLines[:1], "translate", ""},
 		{"es", kiteLines, "translate", ""},
 		{"en", kiteLines, "", ""},
-		// A language MixMusic couldn't tell may be another, as Japanese,
+		// A language MyMusic couldn't tell may be another, as Japanese,
 		// with kana.
 		{"", kiteLines, "translate", "romaji"},
 	} {
@@ -166,7 +166,7 @@ func TestLyricsCreditTranslated(t *testing.T) {
 }
 
 // TestLyricsRomajiWithTranslation shows the romaji of Japanese lyrics that
-// MixMusic makes, whether their translation brought romanized lines or
+// MyMusic makes, whether their translation brought romanized lines or
 // not, as Unison's translations of Japanese bring none now; and asks
 // Unison for nothing for romaji alone.
 func TestLyricsRomajiWithTranslation(t *testing.T) {
@@ -236,7 +236,7 @@ func TestLyricsTranslationFails(t *testing.T) {
 		t.Error("try again didn't ask for the translation again")
 	}
 	// Romanization alone, asked of Unison, says so of romanization: of
-	// lyrics said to be in Arabic, which MixMusic can't romanize itself.
+	// lyrics said to be in Arabic, which MyMusic can't romanize itself.
 	s, texts = lyricsIn(t, "ar", failed)
 	s.set.LyricsRomanize = map[string]string{"ar": settings.RomanizeUnder}
 	if got := texts(); !slices.Contains(got, "Romanization isn't available right now.") {
@@ -290,8 +290,8 @@ func TestLyricsSettingsInBlend(t *testing.T) {
 }
 
 // TestLyricsSettingsEdited applies an edit of settings.json to how lyrics
-// show while MixMusic runs: the language they translate to, and how the
-// lyrics of each language show, a way MixMusic has no name for put back.
+// show while MyMusic runs: the language they translate to, and how the
+// lyrics of each language show, a way MyMusic has no name for put back.
 func TestLyricsSettingsEdited(t *testing.T) {
 	s := fileShell(t)
 	editSettings(t, s, `{"lyricsTranslateTo": "ja", "lyricsTranslate": ["ko"], "lyricsRomanize": {"ko": "only", "ru": "sideways"}}`)

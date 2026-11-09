@@ -1,4 +1,4 @@
-// Package plugins runs MixMusic's plugins: each in a JavaScript runtime of
+// Package plugins runs MyMusic's plugins: each in a JavaScript runtime of
 // its own (sobek, an ECMAScript engine in Go), on a goroutine of its own,
 // with the API of docs/plugins.md. The native interface shows what they
 // add: sidebar items, pages, widgets, track actions and commands.
@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/addons"
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // UI is what the plugins show through: the native interface's main window.
@@ -215,7 +215,7 @@ func (h *Host) fail(pl *plugin, err error) {
 	}
 	h.failures[pl.id] = failure{err.Error(), pl.version}
 	h.mu.Unlock()
-	log.Printf("mixmusic: the plugin %s failed: %v", pl.id, err)
+	log.Printf("mymusic: the plugin %s failed: %v", pl.id, err)
 	h.toast(fmt.Sprintf("The plugin %s failed to start: %v", pl.name, err), "error")
 	h.changed()
 }
@@ -235,7 +235,7 @@ func (h *Host) stopLocked(pl *plugin) {
 		case <-pl.loop.done:
 		case <-time.After(wait):
 			if vm := pl.runtime.Load(); vm != nil {
-				vm.Interrupt("MixMusic stopped the plugin")
+				vm.Interrupt("MyMusic stopped the plugin")
 			}
 		}
 	}()

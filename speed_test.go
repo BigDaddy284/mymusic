@@ -7,8 +7,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestSpeedSettings sets the speed of songs with its slider, by steps, and
@@ -17,7 +17,7 @@ func TestSpeedSettings(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 3200)
 	show(s, tt, "/settings/playback")
-	for _, want := range []string{"speed", "Songs", "Their own speed.", "Speed changes what MixMusic plays itself: YouTube Music, and Spotify tracks played from it.", "So do live streams, which play as they're broadcast."} {
+	for _, want := range []string{"speed", "Songs", "Their own speed.", "Speed changes what MyMusic plays itself: YouTube Music, and Spotify tracks played from it.", "So do live streams, which play as they're broadcast."} {
 		if !tt.HasText(want) {
 			t.Errorf("the settings don't say %q", want)
 		}
@@ -91,7 +91,7 @@ func TestSpeedFound(t *testing.T) {
 	}
 }
 
-// TestPlayerBarSpeed shows the speed after the artists while MixMusic
+// TestPlayerBarSpeed shows the speed after the artists while MyMusic
 // plays the track at another than its own.
 func TestPlayerBarSpeed(t *testing.T) {
 	s := newTestShell(t)

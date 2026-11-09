@@ -137,9 +137,9 @@ func TestKeepOnTopCommand(t *testing.T) {
 		if got := s.svc.Preferences.Get().KeepOnTop; got != want {
 			t.Errorf("the command saved keepOnTop %v, not %v", got, want)
 		}
-		toast := "MixMusic stays on top of other windows"
+		toast := "MyMusic stays on top of other windows"
 		if !want {
-			toast = "MixMusic no longer stays on top"
+			toast = "MyMusic no longer stays on top"
 		}
 		if !tt.HasText(toast) {
 			t.Errorf("no toast %q: %q", toast, tt.Texts())

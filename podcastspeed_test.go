@@ -19,7 +19,7 @@ func TestPodcastSpeedSettings(t *testing.T) {
 	if r.Y <= songs.Y || !tt.HasText("Podcasts") {
 		t.Errorf("the podcasts' row isn't under the songs': %v, %v", songs, r)
 	}
-	if !tt.HasText("Tracks and episodes Spotify plays, in MixMusic or on Spotify Connect, keep their own speed.") {
+	if !tt.HasText("Tracks and episodes Spotify plays, in MyMusic or on Spotify Connect, keep their own speed.") {
 		t.Errorf("the settings don't tell that Spotify's episodes keep their speed: %q", tt.Texts())
 	}
 	tt.ClickAt(r.X+r.W-1, r.Y+r.H/2)

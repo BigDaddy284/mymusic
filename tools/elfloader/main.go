@@ -1,4 +1,4 @@
-// Command elfloader checks that MixMusic's Linux builds ask for the
+// Command elfloader checks that MyMusic's Linux builds ask for the
 // system's own loader, at the path every distribution has it, so that they
 // start outside NixOS too (#166). It reads the ELF programs in the folders
 // given, and those in their .tar.gz archives, and fails on a program that
@@ -123,7 +123,7 @@ func check(data []byte) (string, error) {
 	}
 	want, ok := loaders[f.Machine]
 	if !ok {
-		return "", fmt.Errorf("a program for %v, which MixMusic isn't built for", f.Machine)
+		return "", fmt.Errorf("a program for %v, which MyMusic isn't built for", f.Machine)
 	}
 	for _, p := range f.Progs {
 		if p.Type != elf.PT_INTERP {

@@ -1,13 +1,13 @@
 package localfiles
 
-// The watch of the folders of music: while MixMusic runs, the system tells
+// The watch of the folders of music: while MyMusic runs, the system tells
 // of what changes in them, and the index reads only that again (update),
 // once the changes settle, so that a folder copied in is read once, whole,
 // and no scan reads the folders again. Each system tells with its own API:
 // ReadDirectoryChangesW on Windows (watch_windows.go), FSEvents on macOS
 // (watch_darwin.go) and inotify on Linux (watch_linux.go). A folder that
 // can't be watched, as one on a network drive, whose changes made from
-// other computers the system doesn't hear of, is read as MixMusic starts
+// other computers the system doesn't hear of, is read as MyMusic starts
 // and when asked, as before, and Settings tells why.
 
 import (
@@ -19,7 +19,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // Why a folder can't be watched, in the words Settings tells them in.
@@ -80,7 +80,7 @@ type WatcherOptions struct {
 	Rescan func()
 }
 
-// Watcher watches the folders of music while MixMusic runs, and has the
+// Watcher watches the folders of music while MyMusic runs, and has the
 // index read what changed in them. It is safe for concurrent use.
 type Watcher struct {
 	x      *Index
@@ -149,7 +149,7 @@ func (w *Watcher) Close() {
 	w.wg.Wait()
 }
 
-// Unwatched tells why MixMusic can't watch folder for changes, as when
+// Unwatched tells why MyMusic can't watch folder for changes, as when
 // it's on a network drive: "" while it watches it, and while the folder
 // isn't there, as its scan tells.
 func (w *Watcher) Unwatched(folder string) string {
@@ -320,7 +320,7 @@ func (w *Watcher) open(path string) bool {
 	defer w.mu.Unlock()
 	if err != nil {
 		f.why = whyUnwatched(err)
-		log.Printf("mixmusic: watching %s for changes: %v", path, err)
+		log.Printf("mymusic: watching %s for changes: %v", path, err)
 		return false
 	}
 	f.stop = stop

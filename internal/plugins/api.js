@@ -1,7 +1,7 @@
 "use strict";
 // The API plugins get, built over the natives of the Go side (native), as
 // the web interface's src/plugins/api.ts built it over its own. It returns
-// the MixMusicAPI of sdk/index.d.ts, the types published for plugin
+// the MyMusicAPI of sdk/index.d.ts, the types published for plugin
 // authors, which the type checker holds it to; docs/plugins.md tells how
 // to use it. `bun run build:plugins` compiles it to api.js, which the Go
 // side runs: a script, not a module, whose value is this function.

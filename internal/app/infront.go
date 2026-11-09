@@ -1,6 +1,6 @@
 package app
 
-// Whether a window of MixMusic's is in front, which shows what a
+// Whether a window of MyMusic's is in front, which shows what a
 // notification would tell: the notification would only repeat it over the
 // window the user looks at (#289).
 
@@ -21,7 +21,7 @@ func (a *App) inFront() bool {
 
 // playingInFront is inFront, or the player around the notch has the
 // keyboard. That is a panel on macOS, the only system it opens on, which
-// never activates MixMusic, but takes the keyboard as its panel opens and
+// never activates MyMusic, but takes the keyboard as its panel opens and
 // gives it back as it closes: open, it shows what plays, though not
 // whether it is liked or disliked.
 func (a *App) playingInFront() bool {

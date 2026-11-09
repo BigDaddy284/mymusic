@@ -35,17 +35,17 @@ fetch() {
 	echo "$2  $3" | sha256sum -c --quiet -
 }
 
-# Windows: the app and the files beside it, in a MixMusic folder that runs
+# Windows: the app and the files beside it, in a MyMusic folder that runs
 # from wherever it is unpacked.
 for dir in build/windows-*/; do
 	arch="$(basename "$dir")"
 	arch="${arch#windows-}"
-	stage="$work/portable-$arch/MixMusic"
+	stage="$work/portable-$arch/MyMusic"
 	mkdir -p "$stage"
-	cp "$dir"MixMusic.exe "$stage/"
+	cp "$dir"MyMusic.exe "$stage/"
 	for f in "$dir"*.png; do cp "$f" "$stage/"; done
-	(cd "$work/portable-$arch" && zip -qr9 "$out/mixmusic-$v-windows-$arch-portable.zip" MixMusic)
-	echo "made mixmusic-$v-windows-$arch-portable.zip"
+	(cd "$work/portable-$arch" && zip -qr9 "$out/mymusic-$v-windows-$arch-portable.zip" MyMusic)
+	echo "made mymusic-$v-windows-$arch-portable.zip"
 done
 
 linux=(build/linux-*/)
@@ -74,51 +74,51 @@ for dir in "${linux[@]}"; do
 	# needed.
 	config="$work/nfpm-$arch.yaml"
 	{
-		echo "name: mixmusic"
+		echo "name: mymusic"
 		echo "arch: $arch"
 		echo "platform: linux"
 		echo "version: $v"
 		echo "release: 1"
 		echo "maintainer: MixMusic contributors"
 		echo "description: Spotify and YouTube Music in one customizable player"
-		echo "homepage: https://github.com/fzn0x/mixmusic"
+		echo "homepage: https://github.com/bigdaddy284/mymusic"
 		echo "license: MIT"
 		echo "depends: [gtk3, webkit2gtk4.1, '(pulseaudio-libs or alsa-lib)']"
 		echo "recommends: [libayatana-appindicator-gtk3, libsecret]"
 		echo "rpm: {compression: xz}"
 		echo "contents:"
-		echo "  - dst: /opt/mixmusic"
+		echo "  - dst: /opt/mymusic"
 		echo "    type: dir"
 		# The files of the app and its entry; the command is a link to the
 		# app, made here, whatever the .deb's file of it unpacked to.
 		(cd "$root" && find . -type f -not -path './usr/bin/*' | sed 's|^\./||' | sort) | while read -r f; do
 			mode="0$(stat -c %a "$root/$f")"
-			[ "$f" = opt/mixmusic/mixmusic ] && mode=0755
+			[ "$f" = opt/mymusic/mymusic ] && mode=0755
 			echo "  - src: $root/$f"
 			echo "    dst: /$f"
 			echo "    file_info: {mode: $mode}"
 		done
-		echo "  - src: /opt/mixmusic/mixmusic"
-		echo "    dst: /usr/bin/mixmusic"
+		echo "  - src: /opt/mymusic/mymusic"
+		echo "    dst: /usr/bin/mymusic"
 		echo "    type: symlink"
 	} >"$config"
 	cat "$config"
-	go run "$nfpm" package --config "$config" --packager rpm --target "$out/mixmusic-$v-linux-$arch.rpm"
-	echo "made mixmusic-$v-linux-$arch.rpm"
+	go run "$nfpm" package --config "$config" --packager rpm --target "$out/mymusic-$v-linux-$arch.rpm"
+	echo "made mymusic-$v-linux-$arch.rpm"
 
 	# AppImage: the app and the files beside it in usr/bin, and its entry
 	# and icon at the top, as AppImages keep them.
 	appdir="$work/AppDir-$arch"
 	mkdir -p "$appdir/usr/bin" "$appdir/usr/share"
-	cp -a "$root/opt/mixmusic/." "$appdir/usr/bin/"
-	chmod 0755 "$appdir/usr/bin/mixmusic"
+	cp -a "$root/opt/mymusic/." "$appdir/usr/bin/"
+	chmod 0755 "$appdir/usr/bin/mymusic"
 	cp -a "$root/usr/share/icons" "$appdir/usr/share/"
-	cp "$dir"mixmusic.desktop "$appdir/mixmusic.desktop"
-	cp "$root/usr/share/icons/hicolor/256x256/apps/mixmusic.png" "$appdir/mixmusic.png"
+	cp "$dir"mymusic.desktop "$appdir/mymusic.desktop"
+	cp "$root/usr/share/icons/hicolor/256x256/apps/mymusic.png" "$appdir/mymusic.png"
 	cat >"$appdir/AppRun" <<'EOF'
 #!/bin/sh
 here="$(dirname "$(readlink -f "$0")")"
-exec "$here/usr/bin/mixmusic" "$@"
+exec "$here/usr/bin/mymusic" "$@"
 EOF
 	chmod +x "$appdir/AppRun"
 	case "$arch" in
@@ -132,6 +132,6 @@ EOF
 	fetch "$runtime_url/runtime-$appimage_arch" "${runtime_sha256[$appimage_arch]}" "$work/runtime-$appimage_arch"
 	# The tool is an AppImage itself; runners have no FUSE to mount it.
 	APPIMAGE_EXTRACT_AND_RUN=1 ARCH="$appimage_arch" "$work/appimagetool" --no-appstream \
-		--runtime-file "$work/runtime-$appimage_arch" "$appdir" "$out/mixmusic-$v-linux-$arch.AppImage"
-	echo "made mixmusic-$v-linux-$arch.AppImage"
+		--runtime-file "$work/runtime-$appimage_arch" "$appdir" "$out/mymusic-$v-linux-$arch.AppImage"
+	echo "made mymusic-$v-linux-$arch.AppImage"
 done

@@ -1,6 +1,6 @@
 // Package diag keeps what helps tell what went wrong: a log file of what
-// MixMusic reports, without the secrets it may hold, and the report Go
-// writes when MixMusic crashes, which the next start offers to send.
+// MyMusic reports, without the secrets it may hold, and the report Go
+// writes when MyMusic crashes, which the next start offers to send.
 package diag
 
 import (
@@ -21,7 +21,7 @@ import (
 const (
 	// logName is the log file; older ones are logName with .1, .2… before
 	// the extension, the newest first.
-	logName = "mixmusic.log"
+	logName = "mymusic.log"
 	// maxLogSize is the size at which the log starts a new file.
 	maxLogSize = 1 << 20
 	// keepLogs is how many older log files are kept.
@@ -49,11 +49,11 @@ func Start(dir, version string) (*Log, string, error) {
 	if err != nil {
 		return nil, "", err
 	}
-	fmt.Fprintf(l, "MixMusic %s on %s/%s, started %s\n", version, runtime.GOOS, runtime.GOARCH, time.Now().Format(time.RFC3339))
+	fmt.Fprintf(l, "MyMusic %s on %s/%s, started %s\n", version, runtime.GOOS, runtime.GOARCH, time.Now().Format(time.RFC3339))
 	log.SetOutput(io.MultiWriter(l, os.Stderr))
 	crash, err := keepCrash(dir)
 	if err != nil {
-		log.Printf("mixmusic: keeping crash reports: %v", err)
+		log.Printf("mymusic: keeping crash reports: %v", err)
 	}
 	return l, crash, nil
 }

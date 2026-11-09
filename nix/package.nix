@@ -1,4 +1,4 @@
-# MixMusic for Linux, built from source. MyGo needs no C toolchain: it
+# MyMusic for Linux, built from source. MyGo needs no C toolchain: it
 # loads GTK, WebKitGTK, the tray's AppIndicator, the keyring and the sound
 # libraries as it runs, which the wrapper finds for it.
 {
@@ -29,7 +29,7 @@
 }:
 
 let
-  # What MixMusic loads as it runs, by these libraries' names.
+  # What MyMusic loads as it runs, by these libraries' names.
   runtimeLibraries = [
     gtk3
     glib
@@ -49,7 +49,7 @@ let
   ];
 in
 (buildGoModule.override { go = go_1_27; }) {
-  pname = "mixmusic";
+  pname = "mymusic";
   inherit version;
 
   src = lib.cleanSource ../.;
@@ -81,33 +81,33 @@ in
   '';
 
   postInstall = ''
-    install -Dm644 brand/icon.png $out/share/pixmaps/mixmusic.png
+    install -Dm644 brand/icon.png $out/share/pixmaps/mymusic.png
   '';
 
   desktopItems = [
     (makeDesktopItem {
-      name = "mixmusic";
-      desktopName = "MixMusic";
+      name = "mymusic";
+      desktopName = "MyMusic";
       comment = "Spotify and YouTube Music in one customizable player";
-      exec = "mixmusic %U";
-      icon = "mixmusic";
+      exec = "mymusic %U";
+      icon = "mymusic";
       categories = [
         "AudioVideo"
         "Audio"
         "Player"
       ];
-      mimeTypes = [ "x-scheme-handler/mixmusic" ];
+      mimeTypes = [ "x-scheme-handler/mymusic" ];
     })
   ];
 
   meta = {
     description = "Spotify and YouTube Music in one customizable desktop player";
-    homepage = "https://github.com/fzn0x/mixmusic";
+    homepage = "https://github.com/bigdaddy284/mymusic";
     license = with lib.licenses; [
       mit
       gpl3Only
     ];
-    mainProgram = "mixmusic";
+    mainProgram = "mymusic";
     platforms = lib.platforms.linux;
   };
 }

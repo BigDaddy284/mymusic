@@ -50,7 +50,7 @@ func listenPipe(t *testing.T, name string) func() *os.File {
 }
 
 func testPipe(t *testing.T) string {
-	return fmt.Sprintf(`\\.\pipe\mixmusic-discord-test-%d-%s`, os.Getpid(), t.Name())
+	return fmt.Sprintf(`\\.\pipe\mymusic-discord-test-%d-%s`, os.Getpid(), t.Name())
 }
 
 func TestPipeNames(t *testing.T) {

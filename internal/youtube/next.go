@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // watchNextTabs returns the tabs of a "next" response: up next, lyrics,

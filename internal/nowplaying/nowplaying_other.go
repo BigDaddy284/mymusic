@@ -2,6 +2,6 @@
 
 package nowplaying
 
-// Other systems aren't reached yet, nor 32-bit ones: there, MixMusic's own
+// Other systems aren't reached yet, nor 32-bit ones: there, MyMusic's own
 // audio engine has no place in the system's media controls.
 func open(func(Request), func(func())) (platform, error) { return nil, ErrUnsupported }

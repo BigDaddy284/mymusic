@@ -151,7 +151,7 @@ func TestWithSource(t *testing.T) {
 	}
 	want := strings.Join([]string{
 		"      - type: git",
-		"        url: https://github.com/fzn0x/mixmusic.git",
+		"        url: https://github.com/bigdaddy284/mymusic.git",
 		"        tag: v0.6.0",
 		"        commit: " + commit,
 		"        disable-submodules: true",
@@ -208,22 +208,22 @@ func TestBuildAgreesWithConfig(t *testing.T) {
 		t.Errorf("build.sh doesn't embed frontendDist: no %q", want)
 	}
 	slug := field("slug")
-	for _, want := range []string{"-o " + slug + " ", "install -Dm755 " + slug + ` "$dest/lib/mixmusic/mixmusic"`, "-tags mygo_noinspector", "-X $mygo.production=1", "-trimpath"} {
+	for _, want := range []string{"-o " + slug + " ", "install -Dm755 " + slug + ` "$dest/lib/mymusic/mymusic"`, "-tags mygo_noinspector", "-X $mygo.production=1", "-trimpath"} {
 		if !strings.Contains(build, want) {
 			t.Errorf("build.sh lacks %q", want)
 		}
 	}
-	if !strings.Contains(read(t, "packaging/flatpak/mixmusic.sh"), "exec /app/lib/mixmusic/mixmusic ") {
-		t.Error("the launcher doesn't start /app/lib/mixmusic/mixmusic")
+	if !strings.Contains(read(t, "packaging/flatpak/mymusic.sh"), "exec /app/lib/mymusic/mymusic ") {
+		t.Error("the launcher doesn't start /app/lib/mymusic/mymusic")
 	}
 }
 
 // The files of Flathub's build agree with each other, with the app, which
 // tells Flathub's build by its marker, and with the release's Flatpak.
 func TestFlathubFiles(t *testing.T) {
-	const id = "io.github.fzn0x.mixmusic"
+	const id = "io.github.bigdaddy284.mymusic"
 	m := read(t, filepath.Join(dir, manifest))
-	for _, want := range []string{"\nid: " + id + "\n", "\ncommand: mixmusic\n", "\n  - org.freedesktop.Sdk.Extension.golang\n", "\n      - sh packaging/flathub/build.sh\n", "\n      - " + sourcesFile + "\n"} {
+	for _, want := range []string{"\nid: " + id + "\n", "\ncommand: mymusic\n", "\n  - org.freedesktop.Sdk.Extension.golang\n", "\n      - sh packaging/flathub/build.sh\n", "\n      - " + sourcesFile + "\n"} {
 		if !strings.Contains(m, want) {
 			t.Errorf("the manifest lacks %q", strings.TrimSpace(want))
 		}
@@ -245,7 +245,7 @@ func TestFlathubFiles(t *testing.T) {
 	build := read(t, filepath.Join(dir, "build.sh"))
 	for _, file := range regexp.MustCompile(`install -Dm\d+ ((?:[^ "$]+ )+)`).FindAllStringSubmatch(build, -1) {
 		for _, f := range strings.Fields(file[1]) {
-			if f == "mixmusic" || strings.HasPrefix(f, "-") {
+			if f == "mymusic" || strings.HasPrefix(f, "-") {
 				continue
 			}
 			if _, err := os.Stat(filepath.Join(root, f)); err != nil {
@@ -259,13 +259,13 @@ func TestFlathubFiles(t *testing.T) {
 		}
 	}
 	desktop := read(t, filepath.Join(dir, id+".desktop"))
-	for _, want := range []string{"\nIcon=" + id + "\n", "\nExec=mixmusic %U\n", "\nMimeType=x-scheme-handler/mixmusic;\n", "\nStartupWMClass=mixmusic\n"} {
+	for _, want := range []string{"\nIcon=" + id + "\n", "\nExec=mymusic %U\n", "\nMimeType=x-scheme-handler/mymusic;\n", "\nStartupWMClass=mymusic\n"} {
 		if !strings.Contains(desktop, want) {
 			t.Errorf("the desktop entry lacks %q", strings.TrimSpace(want))
 		}
 	}
 
-	// MixMusic finds the marker and the yt-dlp where the build puts them.
+	// MyMusic finds the marker and the yt-dlp where the build puts them.
 	app := read(t, "internal/app/flathub.go")
 	marker := regexp.MustCompile(`flathubMarker = "/app/([^"]+)"`).FindStringSubmatch(app)
 	if marker == nil || !strings.Contains(build, `"$dest/`+marker[1]+`"`) {

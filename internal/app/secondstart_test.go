@@ -6,7 +6,7 @@ import (
 	"github.com/egoist/mygo"
 )
 
-// TestStartedAgainWhileStarting starts MixMusic again, and activates it,
+// TestStartedAgainWhileStarting starts MyMusic again, and activates it,
 // before MyGo is ready, as a second start can while the first still starts
 // (#305): no window opens before then, which would panic in MyGo.
 func TestStartedAgainWhileStarting(t *testing.T) {

@@ -13,11 +13,11 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/match"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/stream"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/match"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
 // TestNativeAnalysisOfSilence checks that the analysis of silence, whose
@@ -59,7 +59,7 @@ func TestOpenNativeTakesStreamURLs(t *testing.T) {
 }
 
 // TestOpenNativeMeasures gives the engine the loudness of the tracks
-// MixMusic knows, from the cache too.
+// MyMusic knows, from the cache too.
 func TestOpenNativeMeasures(t *testing.T) {
 	webm, err := os.ReadFile("../../webm/testdata/stereo-cues-front.webm")
 	if err != nil {

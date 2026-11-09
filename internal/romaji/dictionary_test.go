@@ -45,7 +45,7 @@ func (s *served) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // downloads from srv, of the hash and size of data.
 func testDictionary(t *testing.T, srv *httptest.Server, data []byte) *Dictionary {
 	t.Helper()
-	d := NewDictionary(t.TempDir(), "MixMusic/test")
+	d := NewDictionary(t.TempDir(), "MyMusic/test")
 	d.URL = srv.URL + "/ipa.dict"
 	sum := sha256.Sum256(data)
 	d.SHA256, d.Size = hex.EncodeToString(sum[:]), int64(len(data))
@@ -185,7 +185,7 @@ func TestDictionaryRomanizes(t *testing.T) {
 	ts := httptest.NewServer(srv)
 	d := testDictionary(t, ts, data)
 	if d.SHA256 != DictionarySHA256 || d.Size != DictionarySize {
-		t.Fatalf("the module's dictionary is %s, %d bytes: not the one MixMusic downloads", d.SHA256, d.Size)
+		t.Fatalf("the module's dictionary is %s, %d bytes: not the one MyMusic downloads", d.SHA256, d.Size)
 	}
 	d.Romanize(weather)
 	waitDownload(t, d)
@@ -196,7 +196,7 @@ func TestDictionaryRomanizes(t *testing.T) {
 
 	// Another run reads it from its file, without downloading it.
 	ts.Close()
-	again := NewDictionary(filepath.Dir(d.path), "MixMusic/test")
+	again := NewDictionary(filepath.Dir(d.path), "MyMusic/test")
 	again.URL = ts.URL
 	if got := again.Romanize(weather); got.Readings != Read || got.Romaji[0] != "kyō wa ii tenki" {
 		t.Errorf("from its file: %+v", got)
@@ -210,7 +210,7 @@ func TestDictionaryRomanizes(t *testing.T) {
 	if err := os.WriteFile(d.path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	third := NewDictionary(filepath.Dir(d.path), "MixMusic/test")
+	third := NewDictionary(filepath.Dir(d.path), "MyMusic/test")
 	third.URL = ts.URL
 	if got := third.Romanize(weather); got.Readings != Downloading || got.Romaji[0] != "今日 haii 天気" {
 		t.Errorf("a changed file: %+v", got)
@@ -228,7 +228,7 @@ func TestDictionaryLetsGo(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	d := NewDictionary(t.TempDir(), "MixMusic/test")
+	d := NewDictionary(t.TempDir(), "MyMusic/test")
 	if err := os.WriteFile(d.path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -266,7 +266,7 @@ func TestDictionaryCost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	d := NewDictionary(t.TempDir(), "MixMusic/test")
+	d := NewDictionary(t.TempDir(), "MyMusic/test")
 	if err := os.WriteFile(d.path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}

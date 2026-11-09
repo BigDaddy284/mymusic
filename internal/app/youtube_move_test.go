@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // TestMoveInYouTubePlaylist moves a track of a playlist of YouTube Music
-// by its MixMusic ID, before another by their places in the playlist, and
+// by its MyMusic ID, before another by their places in the playlist, and
 // nothing of another service or signed out.
 func TestMoveInYouTubePlaylist(t *testing.T) {
 	ctx := context.Background()

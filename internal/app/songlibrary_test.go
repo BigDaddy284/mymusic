@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/youtube"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // TestSetSongSaved saves a YouTube Music song to the library, by its
-// MixMusic ID, with the token of its menu, and nothing of another service,
+// MyMusic ID, with the token of its menu, and nothing of another service,
 // an episode, or signed out.
 func TestSetSongSaved(t *testing.T) {
 	ctx := context.Background()

@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/app"
-	"github.com/fzn0x/mixmusic/internal/audio"
-	"github.com/fzn0x/mixmusic/internal/media"
-	"github.com/fzn0x/mixmusic/internal/player"
-	"github.com/fzn0x/mixmusic/internal/tags"
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/audio"
+	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/tags"
 )
 
 // fakeTrackInfo answers the dialog of Track info, in place of the app:
@@ -65,7 +65,7 @@ func hasAll(t *testing.T, tt interface{ HasText(string) bool }, want ...string) 
 }
 
 // TestTrackInfoFromTheMenu shows a track's Track info from its menu: its
-// stream, as MixMusic found it, and how loud it plays; Close closes it.
+// stream, as MyMusic found it, and how loud it plays; Close closes it.
 func TestTrackInfoFromTheMenu(t *testing.T) {
 	s := newTestShell(t)
 	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysEngine, EvenLoudness: true, Measured: true, LKFS: -9.2, Trim: -4.8,
@@ -139,8 +139,8 @@ func TestTrackInfoOfSpotify(t *testing.T) {
 	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysSpotify, EvenLoudness: true})
 	tt := tester(t, s)
 	s.showTrackInfo(testTracks[1])
-	until(t, s, tt, "the dialog", func() bool { return tt.HasText("In Spotify's own player, in MixMusic") })
-	if !hasAll(t, tt, "Spotify", "As your Spotify account and Spotify's settings choose: Spotify tells MixMusic nothing of its audio.",
+	until(t, s, tt, "the dialog", func() bool { return tt.HasText("In Spotify's own player, in MyMusic") })
+	if !hasAll(t, tt, "Spotify", "As your Spotify account and Spotify's settings choose: Spotify tells MyMusic nothing of its audio.",
 		"3:31", "Spotify plays it at its own loudness.") {
 		t.Fatalf("the dialog shows %q", tt.Texts())
 	}
@@ -165,13 +165,13 @@ func TestTrackInfoOfTheTrackPlaying(t *testing.T) {
 	s.settle(t, func(st player.State) bool { return st.Playing && st.Source != nil })
 	tt := tester(t, s)
 	s.showTrackInfo(testTracks[0])
-	until(t, s, tt, "the dialog", func() bool { return tt.HasText("MixMusic's audio engine is opening it…") })
+	until(t, s, tt, "the dialog", func() bool { return tt.HasText("MyMusic's audio engine is opening it…") })
 	tt.Advance(1100 * time.Millisecond)
 	until(t, s, tt, "what the engine plays", func() bool {
 		tt.Advance(100 * time.Millisecond)
-		return tt.HasText("In MixMusic's audio engine, streamed from YouTube, converted to 48 kHz")
+		return tt.HasText("In MyMusic's audio engine, streamed from YouTube, converted to 48 kHz")
 	})
-	if !hasAll(t, tt, "AAC in MP4", "130 kbit/s", "44.1 kHz", "Stereo", "MixMusic has no measure of it yet: it plays at its own level.") {
+	if !hasAll(t, tt, "AAC in MP4", "130 kbit/s", "44.1 kHz", "Stereo", "MyMusic has no measure of it yet: it plays at its own level.") {
 		t.Errorf("the dialog shows %q", tt.Texts())
 	}
 	asks := f.asks()
@@ -208,17 +208,17 @@ func TestTrackFacts(t *testing.T) {
 		"Format":   "Opus in WebM",
 		"Bitrate":  "About 160 kbit/s, on average",
 		"Download": "/d/a.webm",
-		"Loudness": "MixMusic has no measure of it yet: it plays at its own level. Volume levelling squeezes its loud and quiet moments closer together.",
+		"Loudness": "MyMusic has no measure of it yet: it plays at its own level. Volume levelling squeezes its loud and quiet moments closer together.",
 	} {
 		if got[label] != want {
 			t.Errorf("%s: %q, want %q", label, got[label], want)
 		}
 	}
 	// Not found yet.
-	if got := values(trackFacts(spotify, app.TrackInfo{Plays: app.PlaysEngine})); got["Format"] != "MixMusic finds its recording on YouTube Music as it plays, and tells its format then." {
+	if got := values(trackFacts(spotify, app.TrackInfo{Plays: app.PlaysEngine})); got["Format"] != "MyMusic finds its recording on YouTube Music as it plays, and tells its format then." {
 		t.Errorf("a Spotify track not found: %q", got)
 	}
-	if got := values(trackFacts(testTracks[0], app.TrackInfo{Plays: app.PlaysEngine})); got["Format"] != "MixMusic finds its stream as it plays, and tells its format then." {
+	if got := values(trackFacts(testTracks[0], app.TrackInfo{Plays: app.PlaysEngine})); got["Format"] != "MyMusic finds its stream as it plays, and tells its format then." {
 		t.Errorf("a track not played: %q", got)
 	}
 	// 5.1 surround, from the cache, and a quiet track.
@@ -229,7 +229,7 @@ func TestTrackFacts(t *testing.T) {
 		"Format":       "E-AC-3 in MP4",
 		"Channels":     "5.1 surround",
 		"Offline copy": "/c/a.5.1.m4a",
-		"Playing":      "In MixMusic's audio engine, its 5.1 surround audio, from the offline cache",
+		"Playing":      "In MyMusic's audio engine, its 5.1 surround audio, from the offline cache",
 		"Loudness":     "YouTube measured it at −16.0 LKFS. Even loudness leaves it as it is: it isn't louder than −14.0 LKFS.",
 	} {
 		if got[label] != want {

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Checks a bundle of MixMusic's Flatpak, as ci.yml and release.yml build
+# Checks a bundle of MyMusic's Flatpak, as ci.yml and release.yml build
 # it, in their flatpak-builder container, on a machine of the bundle's
 # architecture, x64 or Arm64:
 #
@@ -7,16 +7,16 @@
 #
 # It installs the bundle, finds the app, its launcher and Node.js where
 # the manifest puts them, checks that the app is for this machine and that
-# the runtime has its loader, loads in the sandbox each library MixMusic
+# the runtime has its loader, loads in the sandbox each library MyMusic
 # and MyGo load, and runs Node.js on the runtime's OpenSSL, zlib and ICU. With
-# shots, it starts MixMusic in the sandbox too, under a virtual X server
+# shots, it starts MyMusic in the sandbox too, under a virtual X server
 # and a session bus of its own, which saves screenshots of home, Settings ›
 # About and Settings › Playback, with its tools, into shots, then quits.
 set -euo pipefail
 
 bundle="${1:?usage: check.sh <bundle> [shots]}"
 shots="${2:-}"
-id=io.github.fzn0x.mixmusic
+id=io.github.bigdaddy284.mymusic
 
 flatpak install --user --noninteractive --assumeyes --bundle "$bundle"
 flatpak info --user "$id"
@@ -25,27 +25,27 @@ flatpak info --user --show-permissions "$id"
 echo "== The app, its launcher and Node.js"
 flatpak run --user --command=sh "$id" -c '
 	set -e
-	test -x /app/lib/mixmusic/mixmusic
-	test -x /app/bin/mixmusic
+	test -x /app/lib/mymusic/mymusic
+	test -x /app/bin/mymusic
 	test "$(command -v node)" = /app/bin/node
-	test -f /app/share/applications/io.github.fzn0x.mixmusic.desktop
-	test -f /app/share/metainfo/io.github.fzn0x.mixmusic.metainfo.xml
-	test -f /app/share/icons/hicolor/scalable/apps/io.github.fzn0x.mixmusic.svg
-	cat /app/share/applications/io.github.fzn0x.mixmusic.desktop
+	test -f /app/share/applications/io.github.bigdaddy284.mymusic.desktop
+	test -f /app/share/metainfo/io.github.bigdaddy284.mymusic.metainfo.xml
+	test -f /app/share/icons/hicolor/scalable/apps/io.github.bigdaddy284.mymusic.svg
+	cat /app/share/applications/io.github.bigdaddy284.mymusic.desktop
 '
 flatpak run --user --command=node "$id" -e '
-	require("crypto").createHash("sha256").update("mixmusic").digest("hex");
-	require("zlib").gzipSync("mixmusic");
+	require("crypto").createHash("sha256").update("mymusic").digest("hex");
+	require("zlib").gzipSync("mymusic");
 	new Intl.DateTimeFormat("ja-JP", { dateStyle: "full" }).format(0);
 	console.log("Node.js " + process.version + ", ICU " + process.versions.icu + ", OpenSSL " + process.versions.openssl);
 '
 
 # The archive of another architecture, or a loader the runtime lacks,
-# would keep MixMusic from starting, which only shots tries.
+# would keep MyMusic from starting, which only shots tries.
 echo "== The app is for this machine, and its loader is in the runtime"
 flatpak run --user --command=python3 "$id" -c '
 import os, platform, struct
-with open("/app/lib/mixmusic/mixmusic", "rb") as f:
+with open("/app/lib/mymusic/mymusic", "rb") as f:
     elf = f.read()
 machine = {62: "x86_64", 183: "aarch64"}.get(struct.unpack_from("<H", elf, 0x12)[0])
 if machine != platform.machine():
@@ -61,7 +61,7 @@ for i in range(phnum):
         print(f"The app is for {machine}, and runs on {loader}")
 '
 
-echo "== The libraries MixMusic loads"
+echo "== The libraries MyMusic loads"
 flatpak run --user --command=python3 "$id" -c '
 import ctypes
 for lib in [
@@ -77,7 +77,7 @@ for lib in [
 
 [ -n "$shots" ] || exit 0
 
-echo "== MixMusic in the sandbox"
+echo "== MyMusic in the sandbox"
 mkdir -p "$shots"
 runtime_dir="$(mktemp -d)"
 chmod 700 "$runtime_dir"
@@ -103,12 +103,12 @@ XDG_RUNTIME_DIR="$runtime_dir" timeout 300 dbus-run-session -- bash -c '
 	fi
 	xvfb-run --auto-servernum -s "-screen 0 1600x1000x24" \
 		flatpak run --user \
-		--env=MIXMUSIC_CAPTURE="$INSIDE" \
-		--env=MIXMUSIC_CAPTURE_ROUTES="/|/settings/about|/settings/playback|act:scroll:end|act:shot:settings-playback-tools" \
-		--env=MIXMUSIC_CAPTURE_WAIT=15s \
-		--env=MIXMUSIC_CAPTURE_SIZE=1440x900 \
-		--env=MIXMUSIC_CAPTURE_QUIT=1 \
-		--env=MIXMUSIC_SILENT=1 \
+		--env=MYMUSIC_CAPTURE="$INSIDE" \
+		--env=MYMUSIC_CAPTURE_ROUTES="/|/settings/about|/settings/playback|act:scroll:end|act:shot:settings-playback-tools" \
+		--env=MYMUSIC_CAPTURE_WAIT=15s \
+		--env=MYMUSIC_CAPTURE_SIZE=1440x900 \
+		--env=MYMUSIC_CAPTURE_QUIT=1 \
+		--env=MYMUSIC_SILENT=1 \
 		"$ID"
 ' || status=$?
 cp -r "$inside/." "$shots/" 2>/dev/null || true
@@ -119,12 +119,12 @@ while IFS= read -r log; do
 done < <(find "$HOME/.var/app/$id" -name '*.log' -type f)
 ls -l "$shots"
 if [ "$status" -ne 0 ]; then
-	echo "MixMusic exited with $status" >&2
+	echo "MyMusic exited with $status" >&2
 	exit "$status"
 fi
 for shot in 01-home 02-settings-about 03-settings-playback 04-settings-playback-tools; do
 	if [ ! -s "$shots/$shot.png" ]; then
-		echo "MixMusic saved no $shot.png" >&2
+		echo "MyMusic saved no $shot.png" >&2
 		exit 1
 	fi
 done

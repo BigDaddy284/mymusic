@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{%- block title %}{{ page.title }} · MixMusic docs{% endblock title %}
+{%- block title %}{{ page.title }} · MyMusic docs{% endblock title %}
 {%- block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
 {%- block meta %}
   {%- set base = config.extra.canonical_url | trim_end(pat='/') %}
@@ -9,7 +9,7 @@
   {%- set docs_url = base ~ "/docs/" %}
   {%- set image = base ~ "/assets/og.jpg" %}
   {%- if page.description %}{% set description = page.description %}{% else %}{% set description = config.description %}{% endif %}
-  {%- set social_title = page.title ~ " · MixMusic docs" %}
+  {%- set social_title = page.title ~ " · MyMusic docs" %}
   {%- set social_description = description %}
   {%- set social_url = url %}
   {%- set social_kind = "article" %}
@@ -25,12 +25,12 @@
      "inLanguage": "en",
      "image": {{ image | json_encode | safe }},
      "articleSection": {{ page.extra.group_title | default(value="Docs") | json_encode | safe }},
-     "author": {"@type": "Organization", "name": "MixMusic contributors", "url": "https://github.com/fzn0x/mixmusic/graphs/contributors"},
-     "publisher": {"@type": "Organization", "name": "MixMusic contributors", "url": "https://github.com/fzn0x/mixmusic"},
-     "about": {"@type": "SoftwareApplication", "name": "MixMusic", "url": {{ root | json_encode | safe }}},
-     "isPartOf": {"@type": "WebSite", "name": "MixMusic", "url": {{ root | json_encode | safe }}}},
+     "author": {"@type": "Organization", "name": "MixMusic contributors", "url": "https://github.com/bigdaddy284/mymusic/graphs/contributors"},
+     "publisher": {"@type": "Organization", "name": "MixMusic contributors", "url": "https://github.com/bigdaddy284/mymusic"},
+     "about": {"@type": "SoftwareApplication", "name": "MyMusic", "url": {{ root | json_encode | safe }}},
+     "isPartOf": {"@type": "WebSite", "name": "MyMusic", "url": {{ root | json_encode | safe }}}},
     {"@type": "BreadcrumbList", "itemListElement": [
-      {"@type": "ListItem", "position": 1, "name": "MixMusic", "item": {{ root | json_encode | safe }}},
+      {"@type": "ListItem", "position": 1, "name": "MyMusic", "item": {{ root | json_encode | safe }}},
       {"@type": "ListItem", "position": 2, "name": "Docs", "item": {{ docs_url | json_encode | safe }}},
       {"@type": "ListItem", "position": 3, "name": {{ page.title | json_encode | safe }}, "item": {{ url | json_encode | safe }}}
     ]}
@@ -93,11 +93,11 @@
         </nav>
         {%- endif %}
         {%- if page.extra.source is ending_with(pat="/") %}
-        <p class="docs-source">Made from the files of <a href="https://github.com/fzn0x/mixmusic/tree/main/{{ page.extra.source }}">{{ page.extra.source }}</a> in the repository, a file for each part.</p>
+        <p class="docs-source">Made from the files of <a href="https://github.com/bigdaddy284/mymusic/tree/main/{{ page.extra.source }}">{{ page.extra.source }}</a> in the repository, a file for each part.</p>
         {%- else %}
         <p class="docs-source">
-          <span>Made from <a href="https://github.com/fzn0x/mixmusic/blob/main/{{ page.extra.source }}">{{ page.extra.source }}</a> in the repository.</span>
-          <a class="btn btn-text btn-small" href="https://github.com/fzn0x/mixmusic/edit/main/{{ page.extra.source }}"><svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-edit" /></svg><span>Edit this page on GitHub</span></a>
+          <span>Made from <a href="https://github.com/bigdaddy284/mymusic/blob/main/{{ page.extra.source }}">{{ page.extra.source }}</a> in the repository.</span>
+          <a class="btn btn-text btn-small" href="https://github.com/bigdaddy284/mymusic/edit/main/{{ page.extra.source }}"><svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-edit" /></svg><span>Edit this page on GitHub</span></a>
         </p>
         {%- endif %}
       </footer>

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // A podcast's page is browsed by "MPSP" and the playlist of its episodes,

@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/player"
+	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
 // volumeNear is whether the player plays unmuted at the volume v.

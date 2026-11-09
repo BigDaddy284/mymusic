@@ -6,7 +6,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/fzn0x/mixmusic/internal/media"
+	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 func TestMemoForgetsOldest(t *testing.T) {
@@ -34,7 +34,7 @@ func TestTrayTip(t *testing.T) {
 	if got := trayTip(NowPlaying{Track: track}); !strings.HasPrefix(got, "Paused: ") {
 		t.Errorf("paused tip = %q", got)
 	}
-	if got := trayTip(NowPlaying{}); got != "MixMusic" {
+	if got := trayTip(NowPlaying{}); got != "MyMusic" {
 		t.Errorf("idle tip = %q", got)
 	}
 	long := &media.Track{Title: strings.Repeat("a", 200), Artists: []media.Ref{{Name: "b"}}}
@@ -63,11 +63,11 @@ func TestWindowTitle(t *testing.T) {
 		{"paused", NowPlaying{Track: track}, false, "Paused: One More Time - Daft Punk"},
 		// As one track ends, the next loads with the player paused.
 		{"loading", NowPlaying{Track: track, Loading: true}, false, "One More Time - Daft Punk"},
-		{"nothing to play", NowPlaying{}, false, "MixMusic"},
-		{"turned off", NowPlaying{Track: track, Playing: true}, true, "MixMusic"},
+		{"nothing to play", NowPlaying{}, false, "MyMusic"},
+		{"turned off", NowPlaying{Track: track, Playing: true}, true, "MyMusic"},
 		{"two artists", NowPlaying{Track: &media.Track{Title: "Song", Artists: []media.Ref{{Name: "Ann"}, {Name: "Bo"}}}, Playing: true}, false, "Song - Ann, Bo"},
 		{"no artists", NowPlaying{Track: &media.Track{Title: "Song"}, Playing: true}, false, "Song"},
-		{"no title", NowPlaying{Track: &media.Track{Artists: []media.Ref{{Name: "Ann"}}}, Playing: true}, false, "MixMusic"},
+		{"no title", NowPlaying{Track: &media.Track{Artists: []media.Ref{{Name: "Ann"}}}, Playing: true}, false, "MyMusic"},
 		{"lines and bytes", NowPlaying{Track: &media.Track{Title: "One\nMore\x00Time\xff"}, Playing: true}, false, "One More Time�"},
 		{"spaces", NowPlaying{Track: &media.Track{Title: "  One \t More ", Artists: []media.Ref{{Name: "\r\n"}}}, Playing: true}, false, "One More"},
 		// An override left open would turn " - Daft Punk" around.

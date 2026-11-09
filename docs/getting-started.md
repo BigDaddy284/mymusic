@@ -1,33 +1,33 @@
 # Getting started
 <!-- docs: group=start order=10 -->
 
-MixMusic is a free desktop player for Spotify and YouTube Music on macOS, Windows and Linux. This page installs it and shows you around.
+MyMusic is a free desktop player for Spotify and YouTube Music on macOS, Windows and Linux. This page installs it and shows you around.
 
-MixMusic puts both services in one window: one search looks through YouTube Music and Spotify at once, one queue plays tracks of either, and your liked songs and mixes hold tracks of both. YouTube Music plays as soon as you open it, with no account. Spotify, and your own YouTube Music library, are there once you sign in. MixMusic has no account, server, analytics or telemetry of its own, and it is open source, under the MIT license or the GPL 3.0.
+MyMusic puts both services in one window: one search looks through YouTube Music and Spotify at once, one queue plays tracks of either, and your liked songs and mixes hold tracks of both. YouTube Music plays as soon as you open it, with no account. Spotify, and your own YouTube Music library, are there once you sign in. MyMusic has no account, server, analytics or telemetry of its own, and it is open source, under the MIT license or the GPL 3.0.
 
 ## Install
 
 Download the file for your system from the
-[latest release](https://github.com/fzn0x/mixmusic/releases/latest):
+[latest release](https://github.com/bigdaddy284/mymusic/releases/latest):
 
-- **macOS 12 and later**, on Apple silicon or Intel: `mixmusic-<version>-macos-universal.dmg`. Open it and move MixMusic into your Applications folder.
-- **Windows 10 and 11**, on x64 or Arm: the installer, `mixmusic-<version>-windows-<arch>-setup.exe`, or the portable zip, `mixmusic-<version>-windows-<arch>-portable.zip`, which you unpack anywhere and start with `MixMusic.exe`.
-- **Linux**, on x64 or Arm64: the `.deb` for Debian, Ubuntu and their derivatives, the `.rpm` for Fedora and openSUSE, the AppImage for any Linux (make it executable with `chmod +x`, then open it), the Flatpak for any Linux, or the `.tar.gz` archive with its `install.sh`, which installs MixMusic in your home folder.
+- **macOS 12 and later**, on Apple silicon or Intel: `mymusic-<version>-macos-universal.dmg`. Open it and move MyMusic into your Applications folder.
+- **Windows 10 and 11**, on x64 or Arm: the installer, `mymusic-<version>-windows-<arch>-setup.exe`, or the portable zip, `mymusic-<version>-windows-<arch>-portable.zip`, which you unpack anywhere and start with `MyMusic.exe`.
+- **Linux**, on x64 or Arm64: the `.deb` for Debian, Ubuntu and their derivatives, the `.rpm` for Fedora and openSUSE, the AppImage for any Linux (make it executable with `chmod +x`, then open it), the Flatpak for any Linux, or the `.tar.gz` archive with its `install.sh`, which installs MyMusic in your home folder.
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists `SHA256SUMS` to check the downloads with, and files you don't need, which installed copies update from. The [README](../README.md#install) has the full table of downloads.
 
-The installers, the portable zip and the Linux archive update themselves: MixMusic looks for a new version at start and every few hours, and asks before it installs one, unless you let it install updates by itself. The `.deb`, the `.rpm`, the AppImage and the Flatpak can't replace their own files, so MixMusic tells you when a new version is out and downloads its file for you. [Settings › About](settings.md#about) shows your version and the newest one.
+The installers, the portable zip and the Linux archive update themselves: MyMusic looks for a new version at start and every few hours, and asks before it installs one, unless you let it install updates by itself. The `.deb`, the `.rpm`, the AppImage and the Flatpak can't replace their own files, so MyMusic tells you when a new version is out and downloads its file for you. [Settings › About](settings.md#about) shows your version and the newest one.
 
 ## The first launch
 
 - **macOS.** The app isn't notarized by Apple yet, so the first time you open it, macOS says it can't check it. Open it anyway from System Settings › Privacy & Security › Open Anyway, or run this once in Terminal:
 
   ```sh
-  xattr -dr com.apple.quarantine /Applications/MixMusic.app
+  xattr -dr com.apple.quarantine /Applications/MyMusic.app
   ```
 
-- **Windows.** The installer isn't signed yet, so SmartScreen may warn about it: choose More info, then Run anyway. Signing in to YouTube Music and playing Spotify in MixMusic itself need the WebView2 Runtime, which Windows 11 includes. On Windows 10, install it from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
-- **Linux.** MixMusic needs GTK 3, and PulseAudio (which PipeWire serves too) or ALSA. Signing in to YouTube Music needs WebKitGTK 4.1, the tray icon needs `libayatana-appindicator3`, and keeping your sign-ins in the system's keyring needs `libsecret`. The `.deb` and the `.rpm` install them and the Flatpak brings them; for the AppImage and the archive:
+- **Windows.** The installer isn't signed yet, so SmartScreen may warn about it: choose More info, then Run anyway. Signing in to YouTube Music and playing Spotify in MyMusic itself need the WebView2 Runtime, which Windows 11 includes. On Windows 10, install it from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
+- **Linux.** MyMusic needs GTK 3, and PulseAudio (which PipeWire serves too) or ALSA. Signing in to YouTube Music needs WebKitGTK 4.1, the tray icon needs `libayatana-appindicator3`, and keeping your sign-ins in the system's keyring needs `libsecret`. The `.deb` and the `.rpm` install them and the Flatpak brings them; for the AppImage and the archive:
 
   ```sh
   # Debian and Ubuntu
@@ -36,23 +36,23 @@ The installers, the portable zip and the Linux archive update themselves: MixMus
   sudo dnf install gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
   ```
 
-- **yt-dlp, on every system.** MixMusic finds the audio of most YouTube Music tracks itself. For the rest, such as tracks made for children, it runs [yt-dlp](https://github.com/yt-dlp/yt-dlp). Until yt-dlp is there, Home says "Some tracks need yt-dlp", with a button that installs it; Settings › Playback › Tools installs it too, and MixMusic keeps the copy it installed up to date. yt-dlp needs a JavaScript runtime: [Deno](https://deno.com), Node.js, Bun or QuickJS, which MixMusic finds once you install one. The Flatpak has Node.js. [Where the audio streams come from](streams.md#when-yt-dlp-is-needed) tells which tracks need it.
+- **yt-dlp, on every system.** MyMusic finds the audio of most YouTube Music tracks itself. For the rest, such as tracks made for children, it runs [yt-dlp](https://github.com/yt-dlp/yt-dlp). Until yt-dlp is there, Home says "Some tracks need yt-dlp", with a button that installs it; Settings › Playback › Tools installs it too, and MyMusic keeps the copy it installed up to date. yt-dlp needs a JavaScript runtime: [Deno](https://deno.com), Node.js, Bun or QuickJS, which MyMusic finds once you install one. The Flatpak has Node.js. [Where the audio streams come from](streams.md#when-yt-dlp-is-needed) tells which tracks need it.
 
-MixMusic opens on Home in the [Blend layout](look-and-feel.md#layouts). Your settings and library stay in a [data folder](data-and-privacy.md#the-data-folder) of your own: `%AppData%\MixMusic` on Windows, `~/Library/Application Support/MixMusic` on macOS and `~/.config/MixMusic` on Linux.
+MyMusic opens on Home in the [Blend layout](look-and-feel.md#layouts). Your settings and library stay in a [data folder](data-and-privacy.md#the-data-folder) of your own: `%AppData%\MyMusic` on Windows, `~/Library/Application Support/MyMusic` on macOS and `~/.config/MyMusic` on Linux.
 
 ### The Flatpak
 
-The Flatpak runs MixMusic in a sandbox, which sees the network, the sound server, the display and the GPU, and none of your home folder. It keeps its settings and library in `~/.var/app/io.github.fzn0x.mixmusic`, apart from a `.deb`, `.rpm`, AppImage or archive copy, and both can run at once. The [README](../README.md#the-flatpak) tells how to bring another copy's settings and library over.
+The Flatpak runs MyMusic in a sandbox, which sees the network, the sound server, the display and the GPU, and none of your home folder. It keeps its settings and library in `~/.var/app/io.github.bigdaddy284.mymusic`, apart from a `.deb`, `.rpm`, AppImage or archive copy, and both can run at once. The [README](../README.md#the-flatpak) tells how to bring another copy's settings and library over.
 
-In the Flatpak, start at login goes through your desktop, which may ask you first, and a yt-dlp of your own must be in `~/.var/app/io.github.fzn0x.mixmusic`, as the sandbox sees no other folder. A Discord app that isn't a Flatpak shows what plays only if it was running when MixMusic started.
+In the Flatpak, start at login goes through your desktop, which may ask you first, and a yt-dlp of your own must be in `~/.var/app/io.github.bigdaddy284.mymusic`, as the sandbox sees no other folder. A Discord app that isn't a Flatpak shows what plays only if it was running when MyMusic started.
 
 ## The window
 
-![MixMusic's window on Home, in its default look: the sidebar on the left, with its pages and Your mixes under them, the top bar with the back and forward arrows, Refresh and the search box, Home's Jump back in, Add Spotify, Liked songs and Your mixes tiles over its Recently played shelf, and the player bar along the foot](shots/home.webp)
+![MyMusic's window on Home, in its default look: the sidebar on the left, with its pages and Your mixes under them, the top bar with the back and forward arrows, Refresh and the search box, Home's Jump back in, Add Spotify, Liked songs and Your mixes tiles over its Recently played shelf, and the player bar along the foot](shots/home.webp)
 
 ### The sidebar
 
-The sidebar on the left goes to MixMusic's pages: Home, Search, Explore, Library, Stats, [Marketplace](marketplace.md) and [Settings](settings.md), then the pages plugins add. Under them, Your mixes lists your liked songs, your downloads once you have some, and each [mix](library.md#mixes) you made, with how many tracks each holds; its + button makes a new mix. At its foot, a card shows what plays, and opens the now playing page. The button beside MixMusic's name folds the sidebar to its icons, as Ctrl+B (⌘B on macOS) does; in a narrow window it folds by itself.
+The sidebar on the left goes to MyMusic's pages: Home, Search, Explore, Library, Stats, [Marketplace](marketplace.md) and [Settings](settings.md), then the pages plugins add. Under them, Your mixes lists your liked songs, your downloads once you have some, and each [mix](library.md#mixes) you made, with how many tracks each holds; its + button makes a new mix. At its foot, a card shows what plays, and opens the now playing page. The button beside MyMusic's name folds the sidebar to its icons, as Ctrl+B (⌘B on macOS) does; in a narrow window it folds by itself.
 
 - **Home** has your own tiles first: Jump back in plays the track you played last, then Liked songs and Your mixes, and Add Spotify while you aren't signed in to it. Then come your shelves, such as Recently played, [New from artists you follow](library.md#new-releases), and those of YouTube Music and Spotify. The pivots at the top keep Everything, only Yours, only Spotify's or only YouTube Music's, and [Edit home](home.md#arrange-home) moves, hides and adds its shelves.
 - **Explore** has YouTube Music's new albums, singles and trending songs, its charts, and its moods and genres, each with playlists of its own.
@@ -105,7 +105,7 @@ On macOS, ⌘ takes the place of Ctrl in every one of them. The [media keys](des
 
 ## What works without an account
 
-With no account at all, MixMusic:
+With no account at all, MyMusic:
 
 - searches YouTube Music and plays it, with its home shelves, Explore, artists, albums, playlists, [podcasts](podcasts.md) and [radios](playing-music.md#autoplay-and-radios);
 - keeps your liked songs, dislikes, mixes, history and stats on your computer, in [your library](library.md);
@@ -116,9 +116,9 @@ Every account is optional, and you add them in Settings › Accounts: [Accounts]
 
 ### What each account adds
 
-- **YouTube Music.** Sign in with [Google's own page](accounts.md#the-sign-in-window) in a window MixMusic opens, or [import the session of a browser](accounts.md#import-from-a-browser) you signed in with. You get your home feed, your library (playlists, albums, artists you follow and liked songs), likes and dislikes that reach YouTube Music, saving albums and playlists, making and deleting playlists, and a [brand channel](accounts.md#several-google-accounts-and-brand-channels) of your account if you have one. What you play joins your YouTube Music history, so its home and radios learn from it, and podcast episodes [go on where you left them](podcasts.md#with-youtube-music) on your phone. Tracks play the same signed in or out.
-- **Spotify.** Spotify lets an app serve up to five accounts, and only while the app's owner has Premium, so you sign in with a Spotify app of your own: [Spotify](spotify.md) walks you through it. You can then search Spotify too, see your Spotify library, and like, save and follow there. Spotify tracks play in MixMusic itself (with Premium, on Windows and macOS), on Spotify Connect (with Premium), or from their recording on YouTube Music, which needs no Premium.
-- **Last.fm.** Paste the API key and shared secret of a Last.fm API account of yours, and approve MixMusic in your browser: what you listen to joins your Last.fm profile once half of a track, or four minutes of it, played. Scrobbles made offline are sent once you're back online.
+- **YouTube Music.** Sign in with [Google's own page](accounts.md#the-sign-in-window) in a window MyMusic opens, or [import the session of a browser](accounts.md#import-from-a-browser) you signed in with. You get your home feed, your library (playlists, albums, artists you follow and liked songs), likes and dislikes that reach YouTube Music, saving albums and playlists, making and deleting playlists, and a [brand channel](accounts.md#several-google-accounts-and-brand-channels) of your account if you have one. What you play joins your YouTube Music history, so its home and radios learn from it, and podcast episodes [go on where you left them](podcasts.md#with-youtube-music) on your phone. Tracks play the same signed in or out.
+- **Spotify.** Spotify lets an app serve up to five accounts, and only while the app's owner has Premium, so you sign in with a Spotify app of your own: [Spotify](spotify.md) walks you through it. You can then search Spotify too, see your Spotify library, and like, save and follow there. Spotify tracks play in MyMusic itself (with Premium, on Windows and macOS), on Spotify Connect (with Premium), or from their recording on YouTube Music, which needs no Premium.
+- **Last.fm.** Paste the API key and shared secret of a Last.fm API account of yours, and approve MyMusic in your browser: what you listen to joins your Last.fm profile once half of a track, or four minutes of it, played. Scrobbles made offline are sent once you're back online.
 
 ## Next
 

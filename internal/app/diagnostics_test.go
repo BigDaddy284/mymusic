@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fzn0x/mixmusic/internal/settings"
-	"github.com/fzn0x/mixmusic/internal/store"
-	"github.com/fzn0x/mixmusic/internal/tools"
+	"github.com/bigdaddy284/mymusic/internal/settings"
+	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/bigdaddy284/mymusic/internal/tools"
 )
 
 // The report of a problem names the version and the setup, in the fields
@@ -37,12 +37,12 @@ func TestReportURL(t *testing.T) {
 		t.Errorf("template and version = %q, %q", q.Get("template"), q.Get("version"))
 	}
 	more := q.Get("more")
-	// The first line tells how MixMusic was installed: a Flatpak, a .deb…
+	// The first line tells how MyMusic was installed: a Flatpak, a .deb…
 	first, _, _ := strings.Cut(more, "\n")
-	if want := "MixMusic 9.9.9 on " + runtime.GOOS + " " + runtime.GOARCH + ", installed as " + installKind(); first != want {
+	if want := "MyMusic 9.9.9 on " + runtime.GOOS + " " + runtime.GOARCH + ", installed as " + installKind(); first != want {
 		t.Errorf("the report starts %q, want %q", first, want)
 	}
-	for _, want := range []string{"Theme: aurora", "Plugins: sleep-timer", "yt-dlp: not installed", "mixmusic.log"} {
+	for _, want := range []string{"Theme: aurora", "Plugins: sleep-timer", "yt-dlp: not installed", "mymusic.log"} {
 		if !strings.Contains(more, want) {
 			t.Errorf("the report lacks %q:\n%s", want, more)
 		}
