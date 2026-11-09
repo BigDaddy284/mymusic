@@ -51,7 +51,7 @@ import gi
 gi.require_version("Gio", "2.0")
 from gi.repository import Gio, GLib  # noqa: E402
 
-VIDEO = "mymusicCI1"  # the downloaded track's video ID: 11 characters
+VIDEO = "mymusicCI01"  # the downloaded track's video ID: 11 characters
 TITLE = "Check tone"
 ARTIST = "MyMusic CI"
 TONE_HZ = 440
