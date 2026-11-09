@@ -8,7 +8,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -43,14 +42,13 @@ func Open(a *app.App, hidden bool) *mygo.Window {
 		MinHeight:       least.Height,
 		BackgroundColor: hexColor(s.lk.bg),
 		StateKey:        "main",
-		TitleBarStyle:   titleBarStyle(runtime.GOOS),
+		TitleBarStyle:   mygo.TitleBarDefault,
 		Hidden:          hidden,
 		AlwaysOnTop:     s.startOnTop(),
 		Content:         ui.View(s.view),
 	}))
 	fitOnScreen(s.win)
 	s.start()
-	s.useMenuBar()
 	s.useKeypad()
 	s.usePlugins()
 	s.offerCrashReport()
@@ -83,16 +81,6 @@ func fitIn(r, work mygo.Rectangle) mygo.Rectangle {
 	r.X = min(max(r.X, work.X), work.X+work.Width-r.Width)
 	r.Y = min(max(r.Y, work.Y), work.Y+work.Height-r.Height)
 	return r
-}
-
-// titleBarStyle is the main window's title bar on goos: the system's own,
-// whose buttons are drawn as the system draws them, but on macOS, where
-// the traffic lights sit over the window, as in the system's apps.
-func titleBarStyle(goos string) mygo.TitleBarStyle {
-	if goos == "darwin" {
-		return mygo.TitleBarHidden
-	}
-	return mygo.TitleBarDefault
 }
 
 // shell is the main window: its state, which belongs to the main thread
@@ -180,10 +168,6 @@ type shell struct {
 	// for, and zoomToast set when the next frame tells of a new zoom.
 	zoom, zoomRoom float64
 	zoomToast      bool
-	// zoomIn is macOS's View › Zoom In, and zoomInAccelerator its key
-	// (zoomInKey).
-	zoomIn            *mygo.MenuItem
-	zoomInAccelerator string
 	// onTop is whether the main window was kept on top (keepontop.go).
 	onTop onTop
 	// liveSince is when the live tile began turning over to what plays

@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"github.com/egoist/mygo"
@@ -74,11 +73,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	home, _ := os.UserHomeDir()
 	a, err := app.New(app.Options{
 		DataDir:      dataDir,
 		CacheDir:     cacheDir,
-		DownloadsDir: defaultDownloadsDir(runtime.GOOS, portable, dataDir, cacheDir, home, os.Getenv("XDG_DATA_HOME")),
+		DownloadsDir: defaultDownloadsDir(portable, cacheDir),
 		Builtin:      builtin.FS,
 		TrayIcon:     trayIcon,
 		Version:      version,
@@ -86,7 +84,6 @@ func main() {
 		LastCrash:    lastCrash,
 		Interface:    Open,
 		Mini:         OpenMini,
-		Notch:        OpenNotch,
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -101,28 +98,13 @@ func main() {
 	}
 }
 
-// defaultDownloadsDir is the folder the downloads are in on goos, unless
-// the user chose another: in the folder of the app's data that the system
-// keeps, never its cache, whose files may go, nor the Windows folder that
-// roams. A portable copy keeps them in its own folder.
-//
-//   - Windows: %LocalAppData%\MyMusic\downloads, beside the cache
-//   - macOS: ~/Library/Application Support/MyMusic/downloads
-//   - Linux and others: $XDG_DATA_HOME/MyMusic/downloads, of
-//     ~/.local/share without it; a relative XDG_DATA_HOME doesn't count,
-//     as the XDG specification says.
-func defaultDownloadsDir(goos, portable, dataDir, cacheDir, home, xdgDataHome string) string {
-	switch {
-	case portable != "":
+// defaultDownloadsDir is the folder the downloads are in, unless the user
+// chose another: %LocalAppData%\MyMusic\downloads, beside the cache, in
+// the folder of the app's data that Windows keeps and doesn't roam. A
+// portable copy keeps them in its own folder.
+func defaultDownloadsDir(portable, cacheDir string) string {
+	if portable != "" {
 		return filepath.Join(portable, "downloads")
-	case goos == "windows":
-		return filepath.Join(cacheDir, "downloads")
-	case goos == "darwin":
-		return filepath.Join(dataDir, "downloads")
 	}
-	base := xdgDataHome
-	if !filepath.IsAbs(base) {
-		base = filepath.Join(home, ".local", "share")
-	}
-	return filepath.Join(base, filepath.Base(dataDir), "downloads")
+	return filepath.Join(cacheDir, "downloads")
 }

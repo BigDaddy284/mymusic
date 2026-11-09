@@ -246,31 +246,6 @@ func TestSungWordsRomanizedHere(t *testing.T) {
 	}
 }
 
-// TestNotchRomanized shows the lyrics in the notch player in Latin letters
-// as the user shows them in the panel: in place of their words, or the
-// line sung now under it.
-func TestNotchRomanized(t *testing.T) {
-	s := newTestShell(t)
-	s.loads["lyrics:"+testTracks[0].ID] = &loaded[lyrics.Lyrics]{done: true, value: lyrics.Lyrics{Synced: true, Source: "LRCLIB", Language: "ko", Lines: seoulLines}}
-	s.set.LyricsRomanize = map[string]string{"ko": settings.RomanizeOnly}
-	s.p.PlayTracks(testTracks, 0)
-	s.settle(t, func(st player.State) bool { return st.Playing })
-	x := newNotchTest(t, s, testHousing)
-	x.openPanel()
-	// The romanization is made beside the main thread.
-	for deadline := time.Now().Add(10 * time.Second); !x.tt.HasText(seoulRoman[0]) && time.Now().Before(deadline); time.Sleep(time.Millisecond) {
-		x.frame()
-	}
-	if !x.tt.HasText(seoulRoman[0]) || x.tt.HasText(seoulLines[0].Text) {
-		t.Errorf("only: %q", x.tt.Texts())
-	}
-	s.set.LyricsRomanize = map[string]string{"ko": settings.RomanizeUnder}
-	x.frame()
-	if !x.tt.HasText(seoulRoman[0]) || !x.tt.HasText(seoulLines[0].Text) {
-		t.Errorf("under: %q", x.tt.Texts())
-	}
-}
-
 // TestRenderRomanized draws made-up lyrics of a few scripts in the lyrics
 // panel, in Latin letters under each line, to MYMUSIC_RENDER, for a look:
 // the Korean line sung now lights word by word.

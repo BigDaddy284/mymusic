@@ -2,23 +2,12 @@
 
 | System | Download |
 | --- | --- |
-| **macOS** 12 and later, Apple silicon and Intel | [`mymusic-{version}-macos-universal.dmg`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-macos-universal.dmg) |
 | **Windows** 10 and 11, x64 | [`mymusic-{version}-windows-amd64-setup.exe`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-windows-amd64-setup.exe) |
 | **Windows** 11 on Arm | [`mymusic-{version}-windows-arm64-setup.exe`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-windows-arm64-setup.exe) |
 | **Windows**, without installing | [`mymusic-{version}-windows-amd64-portable.zip`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-windows-amd64-portable.zip), or [`-arm64-portable.zip`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-windows-arm64-portable.zip) on Arm |
-| **Debian, Ubuntu**, x64 | [`mymusic-{version}-linux-amd64.deb`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-amd64.deb) |
-| **Debian, Ubuntu**, Arm64 | [`mymusic-{version}-linux-arm64.deb`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-arm64.deb) |
-| **Fedora, openSUSE**, x64 | [`mymusic-{version}-linux-amd64.rpm`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-amd64.rpm) |
-| **Fedora, openSUSE**, Arm64 | [`mymusic-{version}-linux-arm64.rpm`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-arm64.rpm) |
-| **Any Linux**, one file | [`mymusic-{version}-linux-amd64.AppImage`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-amd64.AppImage), or [`-arm64.AppImage`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-arm64.AppImage) on Arm64: make it executable and open it |
-| **Any Linux**, sandboxed, x64 | [`mymusic-{version}-linux-amd64.flatpak`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-amd64.flatpak): `flatpak install ./mymusic-{version}-linux-amd64.flatpak`, which fetches the GNOME runtime from Flathub the first time |
-| **Any Linux**, sandboxed, Arm64 | [`mymusic-{version}-linux-arm64.flatpak`](https://github.com/{repo}/releases/download/{tag}/mymusic-{version}-linux-arm64.flatpak): `flatpak install ./mymusic-{version}-linux-arm64.flatpak`, which fetches the GNOME runtime from Flathub the first time |
-| **Any Linux**, x64 or Arm64 | `mymusic-{version}-linux-<arch>.tar.gz` and [`install.sh`](https://github.com/{repo}/releases/download/{tag}/install.sh) side by side, then `sh install.sh` |
-
-**First launch on macOS.** The app is not notarized yet: open it once from System Settings › Privacy & Security › Open Anyway, or run `xattr -dr com.apple.quarantine /Applications/MyMusic.app`.
 
 **First launch on Windows.** The installer is not signed yet: if SmartScreen warns, choose More info › Run anyway.
 
-**Playing music.** YouTube Music plays without anything else, apart from a few tracks, such as those made for children, which need yt-dlp: MyMusic installs it for you from Settings › Playback. Spotify needs an app of your own, which the [setup guide](https://github.com/{repo}/blob/{tag}/docs/spotify.md) walks through. The [README](https://github.com/{repo}/blob/{tag}/README.md#install) lists what each system needs.
+**Playing music.** YouTube Music plays without anything else, apart from a few tracks, such as those made for children, which need yt-dlp: MyMusic installs it for you from Settings › Playback. Spotify needs an app of your own, which the [setup guide](https://github.com/{repo}/blob/{tag}/docs/spotify.md) walks through. The [README](https://github.com/{repo}/blob/{tag}/README.md#install) lists what Windows needs.
 
 Verify downloads with `SHA256SUMS`.

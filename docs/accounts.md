@@ -61,11 +61,6 @@ alone, encrypted on your computer, and deletes the rest at once.
   Settings › Privacy & Security, for its cookies to be read.
 - **Zen and Helium** are read from their profile folders. When MyMusic
   doesn't find them, give the folder of a profile under Profile.
-- **Flatpak browsers on Linux.** A browser installed from Flathub keeps its
-  profiles in `~/.var/app`, so it shows in the list apart from the same
-  browser installed otherwise, as "Chrome (Flatpak)", once its folder is
-  there. MyMusic's own Flatpak may read those folders, read-only, and
-  imports only from them, as its sandbox sees no other folder of yours.
 
 ### Paste a cookie header
 

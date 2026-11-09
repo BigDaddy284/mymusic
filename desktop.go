@@ -246,14 +246,11 @@ func (s *shell) updateSettings(c *ui.Context) {
 }
 
 // newVersionDoes tells, after the row of the checks, what a new version
-// found does in a copy of u's: Flathub's comes through the software
-// center.
+// found does in a copy of u's.
 func newVersionDoes(u app.UpdateStatus) string {
 	switch {
 	case u.Enabled && !u.AutomaticDownloads:
 		return " A new version asks to install."
-	case u.Kind == "flathub":
-		return " A new version comes from Flathub, through your software center."
 	case !u.Enabled:
 		return " A new version offers its download."
 	}
@@ -263,9 +260,7 @@ func newVersionDoes(u app.UpdateStatus) string {
 // buildNames tell how a copy of each kind was installed, as
 // UpdateStatus.Kind says.
 var buildNames = map[string]string{
-	"installer": "installed with the setup", "portable": "portable", "app": "app", "archive": "installed with install.sh",
-	"deb": ".deb package", "rpm": ".rpm package", "pacman": "AUR package", "appimage": "AppImage", "flatpak": "Flatpak",
-	"flathub": "Flathub", "development": "development build",
+	"installer": "installed with the setup", "portable": "portable", "development": "development build",
 }
 
 // releaseRow tells whether a newer version is out, and installs it, or
@@ -336,9 +331,7 @@ func (s *shell) releaseRow(c *ui.Context, u app.UpdateStatus) {
 // downloadLabels name the download of a release that replaces a copy of
 // each kind, as UpdateStatus.Kind says.
 var downloadLabels = map[string]string{
-	"installer": "download the installer", "portable": "download the portable zip", "app": "download the disk image",
-	"archive": "download the archive", "deb": "download the .deb", "rpm": "download the .rpm", "appimage": "download the AppImage",
-	"flatpak": "download the Flatpak",
+	"installer": "download the installer", "portable": "download the portable zip",
 }
 
 // downloadLabel names the download that replaces a copy of kind.
@@ -353,27 +346,6 @@ func downloadLabel(kind string) string {
 // copy of kind, which can't replace itself.
 func replacing(kind, file string) string {
 	switch kind {
-	case "deb":
-		return "Open " + file + " with your software center, or run sudo apt install ./" + file + ". Your library and settings stay."
-	case "rpm":
-		return "Open " + file + " with your software center, or run sudo dnf install ./" + file + ". Your library and settings stay."
-	case "pacman":
-		// The AUR's mymusic-bin updates with the system, as pacman's
-		// packages do: no download of the release replaces it.
-		return "Update it as you update your system, with your AUR helper, such as yay -Syu, or with makepkg -si in its AUR folder. Your library and settings stay."
-	case "appimage":
-		return "Make " + file + " executable and use it in place of this AppImage. Your library and settings stay."
-	case "flatpak":
-		// A bundle's copy updates only from the next bundle: flatpak
-		// update doesn't know where it came from.
-		if file == "" {
-			return ""
-		}
-		return "Open " + file + " with your software center, or run flatpak install ./" + file + ". Your library and settings stay."
-	case "flathub":
-		// Flathub builds each release, and the software center installs
-		// it with the updates of the other apps: no download replaces it.
-		return "Your software center, such as GNOME Software or KDE Discover, installs it from Flathub with your other updates, once Flathub has built it, or run flatpak update. Your library and settings stay."
 	case "development":
 		return "Development builds don't update themselves."
 	}

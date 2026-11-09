@@ -6,16 +6,11 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/bigdaddy284/mymusic/internal/app"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The groups of Settings › Playback: the Spotify tracks and the sound
 // here, the others in their features' files.
-
-// spotifyPlaysHere tells whether MyMusic plays Spotify itself: on Windows
-// and macOS, whose webviews decrypt Spotify's audio.
-var spotifyPlaysHere = app.SpotifyPlaysHere()
 
 func init() { addSettings("playback", 10, (*shell).spotifyTrackSettings) }
 
@@ -26,13 +21,10 @@ func (s *shell) spotifyTrackSettings(c *ui.Context) {
 	signedIn := sp.SignedIn
 	s.group(c, "Spotify tracks", func() {
 		here := "MyMusic plays them itself, at Spotify's own quality, and shows among your Spotify devices. Needs Spotify Premium, and no Spotify app."
-		if !spotifyPlaysHere {
-			here = "This computer's webview, WebKitGTK, can't play Spotify's protected audio, so MyMusic can't play Spotify itself."
-		}
 		modes := []settings.SpotifyPlayback{settings.SpotifyPlaybackHere, settings.SpotifyPlaybackConnect, settings.SpotifyPlaybackMatch}
 		mode := slices.Index(modes, s.set.SpotifyPlayback)
 		if s.choices(c, "spotify-mode", "How Spotify tracks play", &mode, []choice{
-			{k.words("In MyMusic, from Spotify"), here, !spotifyPlaysHere},
+			{k.words("In MyMusic, from Spotify"), here, false},
 			{k.words("On Spotify Connect"), "Your Spotify app, or another Spotify device, plays them, at Spotify's own quality. Needs Spotify Premium and a device with Spotify open.", false},
 			{k.words("In MyMusic, from YouTube Music"), "MyMusic plays their recording on YouTube Music, with the equalizer, crossfade and visualizer. Works without Premium.", false},
 		}) {
@@ -48,7 +40,7 @@ func (s *shell) spotifyTrackSettings(c *ui.Context) {
 					ui.Text(c, " to play your Spotify library.")
 				})
 			})
-		case s.set.SpotifyPlayback == settings.SpotifyPlaybackHere && spotifyPlaysHere && !sp.Streaming:
+		case s.set.SpotifyPlayback == settings.SpotifyPlaybackHere && !sp.Streaming:
 			busy := s.signingIn == "spotify"
 			label := "sign in again"
 			if busy {

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"sync"
 	"testing"
@@ -95,14 +94,11 @@ func (f *fakeHotkeys) press(t *testing.T, acc string) {
 }
 
 // newShortcutApp is an app in a folder of its own whose global shortcuts
-// register with a fake, and whose presses the test sees in ran. Presses
-// come as fast as the test makes them, on Linux too, where the presses of
-// a key held repeat.
+// register with a fake, and whose presses the test sees in ran.
 func newShortcutApp(t *testing.T) (*App, *fakeHotkeys, *[]string) {
 	t.Helper()
 	hk := newFakeHotkeys()
 	a := newPlainApp(t, hk)
-	a.global.repeats = false
 	ran := &[]string{}
 	a.global.run = func(id string) { *ran = append(*ran, id) }
 	return a, hk, ran
@@ -141,7 +137,7 @@ func saveGlobal(a *App, global map[string]string) error {
 // acc is the accelerator keys register as here.
 func acc(t *testing.T, keys string) string {
 	t.Helper()
-	a, ok := globalAccelerator(keys, runtime.GOOS)
+	a, ok := globalAccelerator(keys)
 	if !ok {
 		t.Fatalf("%q has no accelerator", keys)
 	}
@@ -149,30 +145,25 @@ func acc(t *testing.T, keys string) string {
 }
 
 func TestGlobalAccelerator(t *testing.T) {
-	for _, c := range []struct {
-		keys          string
-		others, macOS string
-	}{
-		{"Mod+Alt+P", "Ctrl+Alt+P", "Super+Alt+P"},
-		{"Ctrl+Alt+P", "Ctrl+Alt+P", "Ctrl+Alt+P"},
-		{"Meta+Alt+K", "Super+Alt+K", "Super+Alt+K"},
-		{"Cmd+K", "Super+K", "Super+K"},
-		{"Mod+Shift+ArrowRight", "Ctrl+Shift+Right", "Super+Shift+Right"},
-		{"Shift+Alt+Mod+P", "Ctrl+Alt+Shift+P", "Super+Alt+Shift+P"},
-		{"Mod+Alt+Space", "Ctrl+Alt+Space", "Super+Alt+Space"},
-		{"Mod+Alt+PageDown", "Ctrl+Alt+PageDown", "Super+Alt+PageDown"},
-		{"Mod+Alt+,", "Ctrl+Alt+,", "Super+Alt+,"},
-		{"Mod+Alt+\\", "Ctrl+Alt+\\", "Super+Alt+\\"},
-		{"F9", "F9", "F9"},
+	for _, c := range []struct{ keys, want string }{
+		{"Mod+Alt+P", "Ctrl+Alt+P"},
+		{"Ctrl+Alt+P", "Ctrl+Alt+P"},
+		{"Meta+Alt+K", "Super+Alt+K"},
+		{"Cmd+K", "Super+K"},
+		{"Mod+Shift+ArrowRight", "Ctrl+Shift+Right"},
+		{"Shift+Alt+Mod+P", "Ctrl+Alt+Shift+P"},
+		{"Mod+Alt+Space", "Ctrl+Alt+Space"},
+		{"Mod+Alt+PageDown", "Ctrl+Alt+PageDown"},
+		{"Mod+Alt+,", "Ctrl+Alt+,"},
+		{"Mod+Alt+\\", "Ctrl+Alt+\\"},
+		{"F9", "F9"},
 	} {
-		for goos, want := range map[string]string{"windows": c.others, "linux": c.others, "darwin": c.macOS} {
-			if got, ok := globalAccelerator(c.keys, goos); !ok || got != want {
-				t.Errorf("globalAccelerator(%q, %s) = %q, %v, want %q", c.keys, goos, got, ok, want)
-			}
+		if got, ok := globalAccelerator(c.keys); !ok || got != c.want {
+			t.Errorf("globalAccelerator(%q) = %q, %v, want %q", c.keys, got, ok, c.want)
 		}
 	}
 	for _, keys := range []string{"", "Mod++", "Mod+", "Mod+Foo", "Hyper+K", "Mod+a", "Mod+Alt+F13"} {
-		if got, ok := globalAccelerator(keys, "windows"); ok {
+		if got, ok := globalAccelerator(keys); ok {
 			t.Errorf("globalAccelerator(%q) = %q", keys, got)
 		}
 	}
@@ -181,45 +172,35 @@ func TestGlobalAccelerator(t *testing.T) {
 func TestGlobalKeysProblem(t *testing.T) {
 	for _, c := range []struct {
 		keys string
-		// ok lists the systems the keys can be a global shortcut on.
-		ok []string
+		ok   bool
 	}{
-		{"K", nil},
-		{"Shift+K", nil},
-		{"Space", nil},
-		{"Alt+K", []string{"windows", "linux"}},
-		{"Ctrl+Alt+K", []string{"windows", "linux", "darwin"}},
-		{"Mod+K", []string{"windows", "linux", "darwin"}},
-		{"Meta+K", []string{"windows", "linux", "darwin"}},
-		{"Mod+Alt+ArrowUp", []string{"windows", "linux", "darwin"}},
-		{"F9", []string{"windows", "linux", "darwin"}},
-		{"Shift+F5", []string{"windows", "linux", "darwin"}},
-		{"F12", []string{"linux", "darwin"}},
-		{"Shift+F12", []string{"windows", "linux", "darwin"}},
-		{"Mod+Alt+Enter", []string{"windows", "linux", "darwin"}},
-		{"Mod+Escape", nil},
-		{"Mod+Tab", nil},
-		{"Mod+Backspace", nil},
-		{"Mod+Delete", nil},
-		{"Mod+Foo", nil},
+		{"K", false},
+		{"Shift+K", false},
+		{"Space", false},
+		{"Alt+K", true},
+		{"Ctrl+Alt+K", true},
+		{"Mod+K", true},
+		{"Meta+K", true},
+		{"Mod+Alt+ArrowUp", true},
+		{"F9", true},
+		{"Shift+F5", true},
+		{"F12", false},
+		{"Shift+F12", true},
+		{"Mod+Alt+Enter", true},
+		{"Mod+Escape", false},
+		{"Mod+Tab", false},
+		{"Mod+Backspace", false},
+		{"Mod+Delete", false},
+		{"Mod+Foo", false},
 	} {
-		for _, goos := range []string{"windows", "linux", "darwin"} {
-			got := GlobalKeysProblem(c.keys, goos)
-			if want := slices.Contains(c.ok, goos); (got == "") != want {
-				t.Errorf("GlobalKeysProblem(%q, %s) = %q", c.keys, goos, got)
-			}
+		if got := GlobalKeysProblem(c.keys); (got == "") != c.ok {
+			t.Errorf("GlobalKeysProblem(%q) = %q", c.keys, got)
 		}
 	}
-	if got := GlobalKeysProblem("Shift+K", "windows"); got != "A global shortcut needs Ctrl, Alt or the Windows key" {
-		t.Errorf("Windows: %q", got)
+	if got := GlobalKeysProblem("Shift+K"); got != "A global shortcut needs Ctrl, Alt or the Windows key" {
+		t.Errorf("Shift+K: %q", got)
 	}
-	if got := GlobalKeysProblem("Shift+K", "linux"); got != "A global shortcut needs Ctrl, Alt or Super" {
-		t.Errorf("Linux: %q", got)
-	}
-	if got := GlobalKeysProblem("Alt+K", "darwin"); got != "A global shortcut needs ⌘ or ⌃" {
-		t.Errorf("macOS: %q", got)
-	}
-	if got := GlobalKeysProblem("F12", "windows"); got != "Windows keeps F12 for itself" {
+	if got := GlobalKeysProblem("F12"); got != "Windows keeps F12 for itself" {
 		t.Errorf("F12: %q", got)
 	}
 }
@@ -283,14 +264,14 @@ func TestApplyGlobalShortcuts(t *testing.T) {
 	if got := p.GlobalShortcutProblem("player.like"); got != "Another command has these keys" {
 		t.Errorf("keys of a command before: %q", got)
 	}
-	if got := p.GlobalShortcutProblem("player.mute"); got != GlobalKeysProblem("K", runtime.GOOS) {
+	if got := p.GlobalShortcutProblem("player.mute"); got != GlobalKeysProblem("K") {
 		t.Errorf("keys that can't be global: %q", got)
 	}
 
 	// The desktop's refusals.
 	hk.fail[acc(t, "Mod+Alt+V")] = fmt.Errorf("mygo: global shortcuts need an X11 session or a desktop with the GlobalShortcuts portal: %w", errors.ErrUnsupported)
 	setGlobal(t, a, map[string]string{"player.volumeUp": "Mod+Alt+V"})
-	if got := p.GlobalShortcutProblem("player.volumeUp"); got != "Your desktop doesn't offer global shortcuts" {
+	if got := p.GlobalShortcutProblem("player.volumeUp"); got != "This system doesn't offer global shortcuts" {
 		t.Errorf("no portal: %q", got)
 	}
 	if p.GlobalShortcutProblem("player.like") != "" || p.GlobalShortcutProblem("player.mute") != "" {
@@ -322,15 +303,9 @@ func TestGlobalShortcutsFromSettingsFile(t *testing.T) {
 }
 
 func TestGlobalShortcutError(t *testing.T) {
-	entry := errors.New("mygo: global shortcuts on Wayland need the app installed, with its desktop entry mymusic.desktop: GDBus.Error:org.freedesktop.portal.Error.NotAllowed")
-	if got := globalShortcutError(entry, "linux"); got != "Global shortcuts need MyMusic installed with its desktop entry" {
-		t.Errorf("no desktop entry: %q", got)
-	}
 	grab := errors.New("mygo: Ctrl+Alt+P is already a global shortcut of another app")
-	for _, goos := range []string{"linux", "windows", "darwin"} {
-		if got := globalShortcutError(grab, goos); got != "These keys are already in use: pick others, or try again once they're free" {
-			t.Errorf("%s: %q", goos, got)
-		}
+	if got := globalShortcutError(grab); got != "These keys are already in use: pick others, or try again once they're free" {
+		t.Errorf("%q", got)
 	}
 }
 
@@ -407,8 +382,7 @@ func TestGlobalShortcutsBackMeanwhile(t *testing.T) {
 }
 
 // TestGlobalShortcutPressed runs the command of the keys pressed, unless
-// the hook takes them, and once for a key held, where the system repeats
-// the presses of keys held.
+// the hook takes them.
 func TestGlobalShortcutPressed(t *testing.T) {
 	a, hk, ran := newShortcutApp(t)
 	setGlobal(t, a, map[string]string{"player.toggle": "Mod+Alt+P", "player.next": "Mod+Alt+N", "player.volumeUp": "Mod+Alt+ArrowUp"})
@@ -438,28 +412,6 @@ func TestGlobalShortcutPressed(t *testing.T) {
 	hk.press(t, acc(t, "Mod+Alt+N"))
 	if len(hooked) != 0 || !slices.Equal(*ran, []string{"player.next"}) {
 		t.Errorf("after cancel the hook saw %q, the commands ran %q", hooked, *ran)
-	}
-
-	// Where the system repeats the presses of a key held.
-	now := time.Unix(1e9, 0)
-	a.global.repeats, a.global.now = true, func() time.Time { return now }
-	*ran = nil
-	for _, step := range []time.Duration{0, 100, 250, 400, 0} {
-		now = now.Add(step * time.Millisecond)
-		hk.press(t, acc(t, "Mod+Alt+N"))
-		hk.press(t, acc(t, "Mod+Alt+ArrowUp"))
-	}
-	next, up := 0, 0
-	for _, id := range *ran {
-		switch id {
-		case "player.next":
-			next++
-		case "player.volumeUp":
-			up++
-		}
-	}
-	if next != 2 || up != 5 {
-		t.Errorf("a key held ran Next track %d times, want 2, and Volume up %d of 5", next, up)
 	}
 }
 

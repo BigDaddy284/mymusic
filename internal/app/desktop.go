@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/url"
 	"regexp"
-	"runtime"
 	"strings"
 	"time"
 
@@ -47,7 +46,7 @@ func (a *App) Start() {
 			l.close()
 		}
 	})
-	if runtime.GOOS != "darwin" && !mygo.App.IsPackaged() {
+	if !mygo.App.IsPackaged() {
 		if err := mygo.App.RegisterURLScheme(URLScheme); err != nil {
 			log.Printf("mymusic: registering %s links: %v", URLScheme, err)
 		}
@@ -64,9 +63,6 @@ func (a *App) Start() {
 	go a.watchSettings(ctx)
 	a.tellStart()
 	a.setupTray()
-	if a.settings.Get().CloseToTray {
-		runInBackground()
-	}
 	a.applyMediaKeys(a.settings.Get().MediaKeys)
 	// The colour file New read: from now on, as it changes.
 	a.followColorFile(a.settings.Get().Clean())
@@ -122,24 +118,20 @@ func (a *App) openMain(hidden bool) *mygo.Window {
 		a.mu.Unlock()
 		if tray != nil && a.settings.Get().CloseToTray && !a.quitting.Load() {
 			e.PreventDefault()
-			a.trayHide.hide(win) // keep playing in the tray
+			win.Hide() // keep playing in the tray
 		}
 	})
-	win.OnEnterFullScreen(func() { a.trayHide.entered(win) })
-	win.OnLeaveFullScreen(func() { a.trayHide.left(win) })
 	win.OnClosed(func() {
 		a.mu.Lock()
 		if a.main == win {
 			// The thumbnail's buttons go with their window.
 			a.main, a.taskbar = nil, nil
-			a.trayHide.forget()
 		}
 		mini := a.mini
 		a.mu.Unlock()
 		if mini != nil {
 			mini.Close()
 		}
-		a.closeNotch()
 		// Spotify's hidden page goes with the main window: open, it would
 		// keep MyMusic running, and playing, with no window to show it.
 		a.here.close()
@@ -149,7 +141,6 @@ func (a *App) openMain(hidden bool) *mygo.Window {
 	a.mu.Unlock()
 	// The player may have told what plays before the window opened.
 	a.retitle()
-	a.followNotch()
 	return win
 }
 
@@ -198,14 +189,8 @@ func (a *App) showMain() {
 	if win.IsMinimized() {
 		win.Restore()
 	}
-	// Hidden in the tray out of full screen, it goes back in. A hide on its
-	// way out of full screen is called off.
-	fullScreen := a.trayHide.shown(win.IsVisible())
 	win.Show()
 	win.Focus()
-	if fullScreen {
-		win.SetFullScreen(true)
-	}
 }
 
 // showMini shows the mini player.
@@ -254,24 +239,18 @@ func (a *App) setupTray() {
 		mygo.Separator(),
 		{Role: mygo.RoleQuit},
 	})
-	opts := mygo.TrayOptions{Icon: a.opts.TrayIcon, ToolTip: "MyMusic"}
-	if runtime.GOOS == "linux" {
-		opts.Menu = menu // AppIndicator reports no clicks: it shows the menu
-	}
-	tray, err := mygo.NewTray(opts)
+	tray, err := mygo.NewTray(mygo.TrayOptions{Icon: a.opts.TrayIcon, ToolTip: "MyMusic"})
 	if err != nil {
 		log.Printf("mymusic: tray: %v", err)
 		return
 	}
-	if runtime.GOOS != "linux" {
-		// A click shows the window; a right click, the menu.
-		tray.OnClick(a.showMain)
-		tray.OnRightClick(func() {
-			tray.SetMenu(menu)
-			tray.PopUpMenu()
-			tray.SetMenu(nil)
-		})
-	}
+	// A click shows the window; a right click, the menu.
+	tray.OnClick(a.showMain)
+	tray.OnRightClick(func() {
+		tray.SetMenu(menu)
+		tray.PopUpMenu()
+		tray.SetMenu(nil)
+	})
 	a.mu.Lock()
 	a.tray = tray
 	a.mu.Unlock()
@@ -357,14 +336,13 @@ func (a *App) OnNavigate(fn func(target string)) (cancel func()) {
 func (a *App) SecondInstance([]string, string) { whenReady(a.showMain) }
 
 // Activate shows the main window when the app is activated without it in
-// view, as by a click on its Dock icon after it was closed to the tray, or
-// while it leaves full screen to hide there.
+// view, as after it was closed to the tray.
 func (a *App) Activate(bool) {
 	whenReady(func() {
 		a.mu.Lock()
 		win := a.main
 		a.mu.Unlock()
-		if win == nil || !win.IsVisible() || win.IsMinimized() || a.trayHide.pending() {
+		if win == nil || !win.IsVisible() || win.IsMinimized() {
 			a.showMain()
 		}
 	})
@@ -380,4 +358,16 @@ func whenReady(fn func()) {
 		return
 	}
 	mygo.App.WhenReady(fn)
+}
+
+// OpenMainWindow shows the main window, opening it again if it was
+// closed, at the page of path unless it is "", and leaves the other
+// windows as they are, as the mini player opens MyMusic.
+func (s *System) OpenMainWindow(path string) {
+	mygo.App.WhenReady(func() {
+		s.a.showMain()
+		if path != "" {
+			s.a.navigateTo(path)
+		}
+	})
 }

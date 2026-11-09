@@ -29,7 +29,7 @@ Before you open a pull request:
 
 ```sh
 gofmt -l .                      # prints nothing
-go vet ./... && GOOS=linux go vet ./... && GOOS=darwin go vet ./...
+GOOS=windows go vet ./...
 bun run build:plugins           # the community plugins' JavaScript, which tests run
 go test ./...
 bun run typecheck
@@ -39,7 +39,7 @@ go run ./tools/registry -check
 [docs/architecture](docs/architecture/README.md) tells where things live. A few
 rules keep the project healthy:
 
-- **Every system.** Changes must build for macOS, Windows and Linux; `GOOS=linux go vet ./...` and `GOOS=darwin go vet ./...` check them from Windows.
+- **Windows only.** MyMusic is built for Windows alone. Linux still compiles the code, with stubs that do nothing, because `mygo build` runs it there to write its bindings and releases are cross-compiled on Linux: `GOOS=windows go vet ./...` checks a change from Linux.
 - **The theme contract is public.** Community themes set the tokens of
   [docs/themes.md](docs/themes.md): colors, fonts and a radius. Rename or
   remove one only with a plan for the themes that set it, and document new
@@ -53,7 +53,7 @@ rules keep the project healthy:
   the folder of the
   [RFC 8251 test vectors](https://opus-codec.org/static/testvectors/opus_testvectors-rfc8251.tar.gz),
   which CI downloads. The tests that open the audio device, silently, run
-  only with `MYMUSIC_AUDIO=1`, which CI sets on Linux and macOS, and those that compare the native engine's
+  only with `MYMUSIC_AUDIO=1`, and those that compare the native engine's
   sound with Chromium's Web Audio when `MYMUSIC_BROWSER` names a Chromium
   browser, as `msedge.exe`.
 - **Honest errors.** When a service refuses something, say what and how to
@@ -160,8 +160,8 @@ don't edit CHANGELOG.md itself, so they never conflict over it;
    ```
 
 The tag runs [the release workflow](.github/workflows/release.yml). It
-checks that the tag, package.json and CHANGELOG.md agree, builds the apps of
-every system, and publishes the release with the version's section of
+checks that the tag, package.json and CHANGELOG.md agree, builds the Windows
+installers and portable zips for x64 and Arm64, and publishes the release with the version's section of
 CHANGELOG.md, the downloads of
 [.github/release-notes.md](.github/release-notes.md) and `SHA256SUMS`. To
 build a tag again, run the workflow from the Actions tab with the tag.
@@ -171,92 +171,41 @@ release, and the page reads the latest version from GitHub's API. Once the
 release is published, set the two `data-version` spans to it, for when the
 API does not answer.
 
-The release has a Flatpak for each architecture too, which the workflow
-packs from the Linux build's x64 and Arm64 archives (see
-[The Flatpak](#the-flatpak)). Their releases come from CHANGELOG.md's
-headings, so they need no step of their own; when one's job fails, the
-release goes out without it, and running the failed jobs again adds it.
-
 Installed apps update themselves from the latest release. Its update files are
 signed with the key whose public half is `updates.publicKey` in
 [mygo.config.ts](mygo.config.ts); the secret half is the repository's
 `MYGO_UPDATER_PRIVATE_KEY` secret, which the workflow signs with. Without it, the
 release has no update files and apps stay on the version they have.
 
-### Signing and Homebrew
+### Signing
 
-The workflow signs and notarizes the macOS app, signs the Windows apps and
-installers, and updates the Homebrew cask, each once its secrets are in the
-repository; without them it says so in a notice and skips that part, and
-the release goes out as before. Some of the macOS secrets without the
-others stop the build. `mygo build` signs, before it makes the update
-archives, so that updates install the signed app too: see the comments of
-[mygo.config.ts](mygo.config.ts) and of the workflow.
+The workflow signs the Windows apps and installers once their secrets are
+in the repository; without them it says so in a notice and skips that
+part, and the release goes out as before. `mygo build` signs, before it
+makes the update archives, so that updates install the signed app too:
+see the comments of [mygo.config.ts](mygo.config.ts) and of the workflow.
 
 | Secret | What it holds |
 |---|---|
-| `MACOS_CERTIFICATE` | the Developer ID Application certificate and its private key, as a `.p12`, in base64 |
-| `MACOS_CERTIFICATE_PASSWORD` | the password of the `.p12` |
-| `APPLE_API_KEY` | an App Store Connect API key, the `AuthKey_<key ID>.p8` file as it is, which notarizes |
-| `APPLE_API_KEY_ID`, `APPLE_API_ISSUER` | its key ID and its issuer ID |
 | `WINDOWS_CERTIFICATE` | a code signing certificate and its private key, as a `.pfx`, in base64 |
 | `WINDOWS_CERTIFICATE_PASSWORD` | its password, if it has one |
-| `HOMEBREW_TAP_TOKEN` | a token that can write to `bigdaddy284/homebrew-tap` |
-| `AUR_SSH_PRIVATE_KEY` | the private SSH key of the AUR account that maintains `mymusic-bin` |
 
-What only the maintainer can do, once:
+Get a code signing certificate that comes as a `.pfx`, then:
 
-1. **macOS.** In the [Apple Developer Program](https://developer.apple.com/programs/),
-   create a Developer ID Application certificate, and export it with its
-   key from Keychain Access as a `.p12` with a password. In App Store
-   Connect › Users and Access › Integrations, create a team API key with
-   the Developer role. Then:
+```sh
+base64 -w0 code-signing.pfx | gh secret set WINDOWS_CERTIFICATE
+gh secret set WINDOWS_CERTIFICATE_PASSWORD
+```
 
-   ```sh
-   base64 -i developer-id.p12 | gh secret set MACOS_CERTIFICATE
-   gh secret set MACOS_CERTIFICATE_PASSWORD
-   gh secret set APPLE_API_KEY < AuthKey_XXXXXXXXXX.p8
-   gh secret set APPLE_API_KEY_ID
-   gh secret set APPLE_API_ISSUER
-   ```
-2. **Windows.** Get a code signing certificate that comes as a `.pfx`,
-   then:
+Most certificates sold today keep their key on a hardware token or in a
+signing service, and never come as a `.pfx`: those sign with MyGo's
+`windows.signCommand` instead, which takes a step of its own. SmartScreen
+may still warn about a new certificate until it has a reputation.
 
-   ```sh
-   base64 -w0 code-signing.pfx | gh secret set WINDOWS_CERTIFICATE
-   gh secret set WINDOWS_CERTIFICATE_PASSWORD
-   ```
-
-   Most certificates sold today keep their key on a hardware token or in a
-   signing service, and never come as a `.pfx`: those sign with MyGo's
-   `windows.signCommand` instead, which takes a step of its own. SmartScreen
-   may still warn about a new certificate until it has a reputation.
-3. **Homebrew.** Create the public repository `bigdaddy284/homebrew-tap`, and a
-   fine-grained personal access token for it alone with Contents: Read and
-   write, then `gh secret set HOMEBREW_TAP_TOKEN`. The next release writes
-   `Casks/mymusic.rb` there, for `brew install --cask fzn0x/tap/mymusic`.
-4. **The AUR.** Make an account on the [AUR](https://aur.archlinux.org),
-   and a key of its own for the workflow alone, with no passphrase. Add
-   the public key to the account's SSH Public Key, then:
-
-   ```sh
-   ssh-keygen -t ed25519 -N "" -C "mymusic release" -f aur
-   gh secret set AUR_SSH_PRIVATE_KEY < aur
-   ```
-
-   The next release pushes `mymusic-bin` there, from
-   [packaging/aur](packaging/aur) with `tools/aur`, for
-   `yay -S mymusic-bin`. It installs the files of the release's `.deb`,
-   and MyMusic tells it by pacman's database: it offers no download, as
-   pacman updates it. Pre-releases stay off the AUR.
-
-The first signed release: check on a Mac and on Windows that it opens
-without a warning, and that `brew install`, `brew upgrade` and
-`brew uninstall` work, and on Arch that `yay -S mymusic-bin` installs a
-MyMusic whose Settings › About says "AUR package". Then take "(coming soon)" out of the README's AUR row. Then take "not notarized yet" and "not signed yet"
-out of the README's first launch, docs/troubleshooting.md and the
-website, its FAQ in site/data/faq.toml too, and "once its tap is up" out of the README's Homebrew line. The
-release notes and the cask's caveats leave them out by themselves.
+The first signed release: check on Windows that it opens without a
+warning. Then take "not signed yet" out of the README's first launch,
+docs/troubleshooting.md and the website, its FAQ in site/data/faq.toml
+too. The release notes leave it out by themselves.
 
 ## The website
 
@@ -267,37 +216,6 @@ The [website](site/templates/index.html) and the docs' pages are built with
 https://bigdaddy284.github.io/mymusic/, whenever what they're built from
 changes on main.
 
-## The Flatpak
-
-[packaging/flatpak](packaging/flatpak) packs the app of the Linux build
-into a Flatpak, `io.github.bigdaddy284.mymusic`, on the GNOME runtime, with the
-tray's library from Flathub's shared modules (a git submodule) and Node.js
-from the SDK's extension, for x64 and Arm64: the manifest takes the
-Linux archive of the architecture it builds for. CI builds both on every
-pull request, each on a runner of its architecture, installs them and
-starts MyMusic in them; its `flatpak-amd64` and `flatpak-arm64`
-artifacts are the bundles. To build it on Linux, with
-[Flatpak](https://flatpak.org/setup/) and
-`flatpak install flathub org.flatpak.Builder`, on x64 (on Arm64, the
-same with `arm64` for `amd64`):
-
-```sh
-git submodule update --init
-bun run build -- -platform linux/amd64
-mkdir -p packaging/flatpak/dist
-cp build/linux-amd64/mymusic-*-linux-amd64.tar.gz packaging/flatpak/dist/mymusic-linux-amd64.tar.gz
-go run ./tools/metainfo -o packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
-flatpak run org.flatpak.Builder --user --install --install-deps-from=flathub --force-clean \
-  build/flatpak packaging/flatpak/io.github.bigdaddy284.mymusic.yml
-flatpak run io.github.bigdaddy284.mymusic
-```
-
-`flatpak run --log-session-bus io.github.bigdaddy284.mymusic` shows what the
-sandbox refuses on the session bus. GNOME runtimes get about a year of
-support: the manifest's `runtime-version`, the `gnome-<version>` image of
-ci.yml and release.yml, and the Node.js extension's branch move together;
-the image must be published for both architectures, as Flathub's are.
-
 ## Translations of the README
 
 [README.zh-CN.md](README.zh-CN.md) (Simplified Chinese) and
@@ -307,19 +225,6 @@ that changes the README needn't change them: say in it which sections
 changed, so that a translator can follow. Corrections and new languages are
 welcome, as `README.<language code>.md` with a link in each README's
 language line.
-
-## Flathub
-
-[packaging/flathub](packaging/flathub) builds MyMusic from source as
-Flathub builds apps, without the network, and the
-[flathub workflow](.github/workflows/flathub.yml) builds it the way
-Flathub's builder does, with Flathub's linter, when what it's built from
-changes, and weekly. After a change of `go.mod` or `go.sum`, run
-`go run ./tools/flathub`, which writes `packaging/flathub/go-modules.json`
-again; the workflow fails until it's current. Its
-[README](packaging/flathub/README.md) tells what the build needs, why it
-asks for each permission, and how MyMusic is submitted to Flathub and
-kept up to date there.
 
 ## Reports
 

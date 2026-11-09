@@ -14,9 +14,6 @@ func (a *App) ControlsArtwork() string {
 		return "the system's media controls show nothing"
 	}
 	handed := fmt.Sprintf("handed %q: %d bytes", info.Artwork, len(info.Cover))
-	if info.CoverFile != "" {
-		handed += ", in " + info.CoverFile
-	}
 	w, h, ok, told := ctl.Artwork()
 	switch {
 	case !told:

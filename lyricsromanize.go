@@ -149,7 +149,7 @@ func (s *shell) lyricsRoman(c *ui.Context, text string, size float32, words []ly
 }
 
 // latinLines returns the lines of lyrics in Latin letters, as far as they
-// are made, and how the user shows them, for the notch player: romaji,
+// are made, and how the user shows them, for the mini player: romaji,
 // and those romanized on the computer; nil while there are none, as for
 // lyrics shown as they are written.
 func (s *shell) latinLines(t media.Track, ly lyrics.Lyrics) ([]string, string) {
@@ -175,9 +175,9 @@ func (s *shell) latinLines(t media.Track, ly lyrics.Lyrics) ([]string, string) {
 	return nil, how
 }
 
-// notchLine is line i of lyrics as the notch player shows it: in Latin
+// compactLine is line i of lyrics as the mini player shows it: in Latin
 // letters in place of its words when the user shows them only so.
-func notchLine(lines []lyrics.Line, latin []string, how string, i int) string {
+func compactLine(lines []lyrics.Line, latin []string, how string, i int) string {
 	if i < 0 || i >= len(lines) || lines[i].Text == "" {
 		return "♪"
 	}
@@ -187,9 +187,9 @@ func notchLine(lines []lyrics.Line, latin []string, how string, i int) string {
 	return lines[i].Text
 }
 
-// notchUnder is the line in Latin letters the notch player shows under
+// compactUnder is the line in Latin letters the mini player shows under
 // line i, sung now, when the user shows them under it; "" for none.
-func notchUnder(latin []string, how string, i int) string {
+func compactUnder(latin []string, how string, i int) string {
 	if how != settings.RomanizeUnder || i < 0 || i >= len(latin) {
 		return ""
 	}

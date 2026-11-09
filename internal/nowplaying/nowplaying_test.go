@@ -103,7 +103,6 @@ func TestDiff(t *testing.T) {
 		{"another artist", with(func(i *Info) { i.Artists = []string{"X", "Y"} }), change{track: true}},
 		{"its artwork", with(func(i *Info) { i.Artwork = "https://example.com/b.jpg" }), change{track: true}},
 		{"its cover", with(func(i *Info) { i.Cover = []byte("jpeg") }), change{track: true}},
-		{"its cover's file", with(func(i *Info) { i.CoverFile = "/cache/a.jpg" }), change{track: true}},
 		{"its duration", with(func(i *Info) { i.Duration = 2 * time.Minute }), change{track: true}},
 		{"the volume", with(func(i *Info) { i.Volume = 0.5 }), change{volume: true}},
 	} {
@@ -230,18 +229,5 @@ func TestCloseShowsNothing(t *testing.T) {
 	c.Close()
 	if calls := f.calls(); len(calls) != 2 || calls[1] != nil || !f.closed {
 		t.Errorf("closing what shows: %d calls, closed %v", len(calls), f.closed)
-	}
-}
-
-// In a Flatpak, the player takes a name under the Flatpak's ID, the only
-// names its sandbox lets it own, and gives the Flatpak's desktop entry.
-func TestMPRISNames(t *testing.T) {
-	for _, c := range []struct{ id, bus, entry string }{
-		{"", "org.mpris.MediaPlayer2.mymusic", "mymusic"},
-		{"io.github.bigdaddy284.mymusic", "org.mpris.MediaPlayer2.io.github.bigdaddy284.mymusic", "io.github.bigdaddy284.mymusic"},
-	} {
-		if bus, entry := mprisNames(c.id); bus != c.bus || entry != c.entry {
-			t.Errorf("mprisNames(%q) = %q, %q, want %q, %q", c.id, bus, entry, c.bus, c.entry)
-		}
 	}
 }

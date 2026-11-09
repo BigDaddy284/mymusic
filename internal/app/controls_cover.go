@@ -6,17 +6,8 @@ package app
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
-	"log"
-	"net/http"
-	"os"
-	"path/filepath"
 	"sync"
 	"time"
-
-	"github.com/bigdaddy284/mymusic/internal/nowplaying"
-	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
 const (
@@ -32,55 +23,38 @@ const (
 type controlsCovers struct {
 	// load returns the image at an address, as the artwork store does.
 	load func(ctx context.Context, rawURL string) ([]byte, error)
-	// dir is the folder of the covers' files, for controls that take a
-	// file; "" for those that take the bytes.
-	dir string
 	// changed is called once a cover asked for loaded, or didn't.
 	changed func()
 	now     func() time.Time
 
 	mu sync.Mutex
-	// url is the address of the cover kept: data, in file, or neither
-	// when it didn't load at failed.
+	// url is the address of the cover kept: data, or none when it didn't
+	// load at failed.
 	url    string
 	data   []byte
-	file   string
 	failed time.Time
 	// want is the address asked for last, and loading those that load.
 	want    string
 	loading map[string]bool
-	// told is set once a file didn't write.
-	told bool
-	// writing is held while files are written and removed.
-	writing sync.Mutex
 }
 
 // newControlsCovers returns the covers of the artwork store, which call
 // changed once one loaded.
 func (a *App) newControlsCovers(changed func()) *controlsCovers {
-	cc := &controlsCovers{load: a.coverBytes, changed: changed, now: time.Now}
-	if nowplaying.CoverFiles {
-		// Desktops take the file's address whole.
-		dir := filepath.Join(a.opts.CacheDir, "now-playing")
-		if abs, err := filepath.Abs(dir); err == nil {
-			dir = abs
-		}
-		cc.dir = dir
-	}
-	return cc
+	return &controlsCovers{load: a.coverBytes, changed: changed, now: time.Now}
 }
 
-// get returns the cover at rawURL, and its file, once kept. Until then it
-// returns nothing, and loads it beside the caller.
-func (cc *controlsCovers) get(rawURL string) (data []byte, file string) {
+// get returns the cover at rawURL, once kept. Until then it returns
+// nothing, and loads it beside the caller.
+func (cc *controlsCovers) get(rawURL string) []byte {
 	cc.mu.Lock()
 	defer cc.mu.Unlock()
 	cc.want = rawURL
 	if rawURL == "" {
-		return nil, ""
+		return nil
 	}
 	if cc.url == rawURL && (cc.data != nil || cc.now().Sub(cc.failed) < coverRetry) {
-		return cc.data, cc.file
+		return cc.data
 	}
 	if !cc.loading[rawURL] {
 		if cc.loading == nil {
@@ -89,7 +63,7 @@ func (cc *controlsCovers) get(rawURL string) (data []byte, file string) {
 		cc.loading[rawURL] = true
 		go cc.fetch(rawURL)
 	}
-	return nil, ""
+	return nil
 }
 
 // fetch reads the cover at rawURL from the store, which downloads it unless
@@ -107,72 +81,17 @@ func (cc *controlsCovers) fetch(rawURL string) {
 }
 
 // keep keeps data, the cover at rawURL, or that it didn't load, if it's
-// still the one asked for, and reports whether it was. Where the controls
-// take a file, it writes one, and removes the others, but the kept cover's.
+// still the one asked for, and reports whether it was.
 func (cc *controlsCovers) keep(rawURL string, data []byte) bool {
-	// One fetch at a time writes and removes files.
-	cc.writing.Lock()
-	defer cc.writing.Unlock()
 	cc.mu.Lock()
-	wanted := cc.want == rawURL
-	cc.mu.Unlock()
-	file := ""
-	if data != nil && wanted && cc.dir != "" {
-		var err error
-		if file, err = cc.write(rawURL, data); err != nil {
-			cc.mu.Lock()
-			told := cc.told
-			cc.told = true
-			cc.mu.Unlock()
-			if !told {
-				log.Printf("mymusic: the system's media controls: keeping their cover in %s: %v", cc.dir, err)
-			}
-		}
-	}
-	cc.mu.Lock()
+	defer cc.mu.Unlock()
 	delete(cc.loading, rawURL)
-	if wanted = cc.want == rawURL; wanted {
-		cc.url, cc.data, cc.file, cc.failed = rawURL, data, file, time.Time{}
-		if data == nil {
-			cc.failed = cc.now()
-		}
+	if cc.want != rawURL {
+		return false
 	}
-	kept := cc.file
-	cc.mu.Unlock()
-	if cc.dir != "" {
-		entries, _ := os.ReadDir(cc.dir)
-		for _, e := range entries {
-			if path := filepath.Join(cc.dir, e.Name()); path != kept {
-				os.Remove(path)
-			}
-		}
+	cc.url, cc.data, cc.failed = rawURL, data, time.Time{}
+	if data == nil {
+		cc.failed = cc.now()
 	}
-	return wanted
-}
-
-// write keeps data, the cover at rawURL, in a file of cc.dir, whose path
-// it returns.
-func (cc *controlsCovers) write(rawURL string, data []byte) (string, error) {
-	sum := sha256.Sum256([]byte(rawURL))
-	path := filepath.Join(cc.dir, hex.EncodeToString(sum[:8])+coverExt(data))
-	if info, err := os.Stat(path); err == nil && info.Size() == int64(len(data)) {
-		return path, nil
-	}
-	if err := store.WriteFile(path, data); err != nil {
-		return "", err
-	}
-	return path, nil
-}
-
-// coverExt is the extension of a cover's file: desktops may go by it.
-func coverExt(data []byte) string {
-	switch http.DetectContentType(data) {
-	case "image/jpeg":
-		return ".jpg"
-	case "image/png":
-		return ".png"
-	case "image/webp":
-		return ".webp"
-	}
-	return ""
+	return true
 }

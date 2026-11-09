@@ -73,10 +73,8 @@ or macOS.
 - **How.** Spotify's Web Playback SDK, which MyMusic loads from
   `sdk.scdn.co`, plays Spotify's protected audio in a hidden window of a
   page of MyMusic's own. The web view decrypts it: WebView2 with
-  Widevine on Windows, WKWebView with FairPlay on macOS. WebKitGTK on
-  Linux can't, so this way is greyed out there:
-  [Spotify in MyMusic on each system](architecture/spotify-here.md)
-  tells what was tried, and what Linux could do.
+  Widevine: [Spotify in MyMusic](architecture/spotify-here.md) tells
+  what the SDK asks for.
 - **A device of its own.** The page makes MyMusic a Spotify Connect
   device, named MyMusic, which shows among your Spotify devices while it
   plays. MyMusic plays tracks on it through the Web API, as on any

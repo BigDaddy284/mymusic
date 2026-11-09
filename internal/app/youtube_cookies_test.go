@@ -93,24 +93,13 @@ func TestPastedCookies(t *testing.T) {
 }
 
 func TestYouTubeBrowsers(t *testing.T) {
-	home := t.TempDir()
-	names := func(goos string) []string {
-		var n []string
-		for _, b := range youtubeBrowsers(goos, home) {
-			n = append(n, b.Name)
-		}
-		return n
+	var got []string
+	for _, b := range (&Accounts{}).YouTubeBrowsers() {
+		got = append(got, b.Name)
 	}
 	want := []string{"Firefox", "Chrome", "Chromium", "Edge", "Brave", "Opera", "Vivaldi", "Helium", "Zen"}
-	if got := names("windows"); !slices.Equal(got, want) {
-		t.Errorf("on Windows: %q", got)
-	}
-	if got := names("darwin"); !slices.Equal(got, append(want, "Safari")) {
-		t.Errorf("on macOS: %q", got)
-	}
-	// Without a browser installed as a Flatpak.
-	if got := names("linux"); !slices.Equal(got, want) {
-		t.Errorf("on Linux: %q", got)
+	if !slices.Equal(got, want) {
+		t.Errorf("browsers: %q, want %q", got, want)
 	}
 }
 
@@ -143,33 +132,28 @@ func TestBrowserSpec(t *testing.T) {
 		{"chrome", "", "chrome"},
 		{"chrome", "Profile 1", "chrome:Profile 1"},
 		{"edge", "", "edge"},
-		{"safari", "anything", "safari"},
 	} {
-		got, err := browserOf(t, c.browser).spec(c.profile, "windows", `C:\Users\u`, getenv)
+		got, err := browserOf(t, c.browser).spec(c.profile, getenv)
 		if err != nil || got != c.want {
 			t.Errorf("%s %q: %q, %v; want %q", c.browser, c.profile, got, err, c.want)
 		}
 	}
 
 	zen, helium := browserOf(t, "zen"), browserOf(t, "helium")
-	if _, err := zen.spec("", "windows", `C:\Users\u`, getenv); err == nil || !strings.Contains(err.Error(), "profiles of Zen") {
+	if _, err := zen.spec("", getenv); err == nil || !strings.Contains(err.Error(), "profiles of Zen") {
 		t.Errorf("Zen without its folder: %v", err)
 	}
 	there[filepath.Join(env["APPDATA"], "zen")] = true
-	if got, err := zen.spec("", "windows", `C:\Users\u`, getenv); err != nil || got != "firefox:"+filepath.Join(env["APPDATA"], "zen")+"::none" {
+	if got, err := zen.spec("", getenv); err != nil || got != "firefox:"+filepath.Join(env["APPDATA"], "zen")+"::none" {
 		t.Errorf("Zen = %q, %v", got, err)
 	}
-	if got, err := zen.spec("/somewhere/zen", "linux", "/home/u", getenv); err != nil || got != "firefox:/somewhere/zen::none" {
+	if got, err := zen.spec(`D:\somewhere\zen`, getenv); err != nil || got != `firefox:D:\somewhere\zen::none` {
 		t.Errorf("Zen in a folder given = %q, %v", got, err)
 	}
-	linux := filepath.Join("/home/u", ".config", "net.imput.helium", "Default")
-	there[linux] = true
-	if got, err := helium.spec("", "linux", "/home/u", getenv); err != nil || got != "chromium:"+linux {
+	local := filepath.Join(env["LOCALAPPDATA"], "Helium", "User Data", "Default")
+	there[local] = true
+	if got, err := helium.spec("", getenv); err != nil || got != "chromium:"+local {
 		t.Errorf("Helium = %q, %v", got, err)
-	}
-	mac := zenDirs("darwin", "/Users/u", getenv)
-	if len(mac) != 1 || mac[0] != filepath.Join("/Users/u", "Library", "Application Support", "zen") {
-		t.Errorf("Zen's folders on macOS: %q", mac)
 	}
 }
 
@@ -344,10 +328,8 @@ func TestImportProblems(t *testing.T) {
 	if _, err := (&Accounts{a}).YouTubeImportCookies(context.Background(), "netscape", ""); err == nil {
 		t.Error("imported from a browser that isn't one")
 	}
-	if runtime.GOOS != "darwin" {
-		if _, err := (&Accounts{a}).YouTubeImportCookies(context.Background(), "safari", ""); err == nil {
-			t.Error("imported from Safari, away from macOS")
-		}
+	if _, err := (&Accounts{a}).YouTubeImportCookies(context.Background(), "safari", ""); err == nil {
+		t.Error("imported from Safari")
 	}
 }
 

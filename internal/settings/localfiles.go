@@ -2,7 +2,6 @@ package settings
 
 import (
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 )
@@ -41,12 +40,7 @@ func (l LocalFiles) clean() LocalFiles {
 }
 
 // SamePath reports whether two paths name the same file, as their names
-// tell: regardless of case on Windows and macOS, whose disks mostly don't
-// tell case apart.
+// tell: regardless of case, as Windows' disks don't tell case apart.
 func SamePath(a, b string) bool {
-	a, b = filepath.Clean(a), filepath.Clean(b)
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		return strings.EqualFold(a, b)
-	}
-	return a == b
+	return strings.EqualFold(filepath.Clean(a), filepath.Clean(b))
 }

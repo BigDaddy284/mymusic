@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -275,8 +274,8 @@ func TestAlbumPlayPastAI(t *testing.T) {
 func TestUpdateOffer(t *testing.T) {
 	s := newTestShell(t)
 	s.offer = &app.Release{Version: "9.9.9", Newer: true, Page: "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
-		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-linux-amd64.deb",
-		File:     "mymusic-9.9.9-linux-amd64.deb"}
+		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-windows-amd64-setup.exe",
+		File:     "mymusic-9.9.9-windows-amd64-setup.exe"}
 	tt := tester(t, s)
 	u := s.svc.System.Updates()
 	act := downloadLabel(u.Kind)
@@ -294,54 +293,26 @@ func TestUpdateOffer(t *testing.T) {
 }
 
 func TestReplacing(t *testing.T) {
-	if got := replacing("deb", "m.deb"); !strings.Contains(got, "sudo apt install ./m.deb") {
-		t.Errorf("the .deb says %q", got)
+	if got := replacing("installer", "m-setup.exe"); !strings.Contains(got, "run m-setup.exe") {
+		t.Errorf("the installer says %q", got)
 	}
-	if got := downloadLabel("appimage"); got != "download the AppImage" {
-		t.Errorf("the AppImage's download is %q", got)
+	if got := downloadLabel("portable"); got != "download the portable zip" {
+		t.Errorf("the portable copy's download is %q", got)
 	}
 	if got := downloadLabel("unknown"); got != "download it" {
 		t.Errorf("an unknown kind's download is %q", got)
 	}
-	// A Flatpak installs the next bundle over itself, where the release
-	// has one for its processor.
-	if got := replacing("flatpak", "m.flatpak"); !strings.Contains(got, "flatpak install ./m.flatpak") {
-		t.Errorf("the Flatpak says %q", got)
-	}
-	if got := replacing("flatpak", ""); got != "" {
-		t.Errorf("a Flatpak without a bundle to install says %q", got)
-	}
-	// The AUR's package updates with the system, and offers no download.
-	if got := replacing("pacman", ""); !strings.Contains(got, "yay -Syu") {
-		t.Errorf("the AUR's package says %q", got)
-	}
-	if got := downloadLabel("flatpak"); got != "download the Flatpak" {
-		t.Errorf("the Flatpak's download is %q", got)
-	}
-	if got := buildNames["flatpak"]; got != "Flatpak" {
-		t.Errorf("About calls a Flatpak %q", got)
-	}
 }
 
-// A Flatpak's sandbox has Node.js for yt-dlp, and sees nothing of the
-// system's: the tools' rows say so.
-func TestToolsInFlatpak(t *testing.T) {
-	none := tools.Tool{}
-	if got := jsRuntimeHelp(none, false); !strings.Contains(got, "Install one") {
+// The tools' rows tell how to get a JavaScript runtime for yt-dlp, or
+// which one it uses.
+func TestJSRuntimeHelp(t *testing.T) {
+	if got := jsRuntimeHelp(tools.Tool{}); !strings.Contains(got, "Install one") {
 		t.Errorf("without a runtime: %q", got)
 	}
-	if got := jsRuntimeHelp(none, true); !strings.Contains(got, "choose Find one") || strings.Contains(got, "Install one") {
-		t.Errorf("in a Flatpak, without the chosen runtime: %q", got)
-	}
 	node := tools.Tool{Found: true, Name: "node", Version: "v24.22.2"}
-	if got := jsRuntimeHelp(node, true); !strings.HasPrefix(got, "node v24.22.2 · ") {
-		t.Errorf("in a Flatpak, with its Node.js: %q", got)
-	}
-	if got := ownYTDLPHelp(true); !strings.Contains(got, "~/.var/app/io.github.bigdaddy284.mymusic") {
-		t.Errorf("in a Flatpak, Own yt-dlp says %q", got)
-	}
-	if got := ownYTDLPHelp(false); strings.Contains(got, "Flatpak") {
-		t.Errorf("outside a Flatpak, Own yt-dlp says %q", got)
+	if got := jsRuntimeHelp(node); !strings.HasPrefix(got, "node v24.22.2 · ") {
+		t.Errorf("with Node.js: %q", got)
 	}
 }
 
@@ -1432,12 +1403,9 @@ func TestSettingsKeep(t *testing.T) {
 	}
 }
 
-// TestShortcutLabel writes shortcuts as the system does.
+// TestShortcutLabel writes shortcuts as Windows does.
 func TestShortcutLabel(t *testing.T) {
 	want := map[string]string{"Mod+Shift+ArrowLeft": "Ctrl+Shift+←", "Alt+1": "Alt+1", "Space": "Space", "": ""}
-	if runtime.GOOS == "darwin" {
-		want = map[string]string{"Mod+Shift+ArrowLeft": "⌘⇧←", "Alt+1": "⌥1", "Space": "Space", "": ""}
-	}
 	for in, w := range want {
 		if got := shortcutLabel(in); got != w {
 			t.Errorf("shortcutLabel(%q) = %q, not %q", in, got, w)
@@ -1624,11 +1592,8 @@ func TestShortcutName(t *testing.T) {
 			t.Errorf("%q isn't the same as itself", c.want)
 		}
 	}
-	// Mod is Ctrl, or Cmd on macOS.
+	// Mod is Ctrl.
 	written := "Ctrl+K"
-	if runtime.GOOS == "darwin" {
-		written = "Cmd+K"
-	}
 	if !sameShortcut("Mod+K", written) || sameShortcut("Mod+K", "Mod+J") {
 		t.Errorf("sameShortcut tells Mod+K from %s, or not from Mod+J", written)
 	}
@@ -1640,8 +1605,8 @@ func TestAboutRelease(t *testing.T) {
 	s := newTestShell(t)
 	s.loads["release"] = &loaded[app.Release]{done: true, value: app.Release{Version: "9.9.9", Newer: true, Date: "2026-10-12T09:00:00Z",
 		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
-		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-linux-amd64.deb",
-		File:     "mymusic-9.9.9-linux-amd64.deb"}}
+		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-windows-amd64-setup.exe",
+		File:     "mymusic-9.9.9-windows-amd64-setup.exe"}}
 	tt := testerOf(t, s, 1280, 2400)
 	show(s, tt, "/settings/about")
 	u := s.svc.System.Updates()
@@ -1806,16 +1771,6 @@ func TestLiveTileTurns(t *testing.T) {
 	tt.Advance(liveRest + liveTurn)
 	if turned() {
 		t.Error("the tile turns over while the track is paused")
-	}
-}
-
-// TestTitleBarStyle gives the main window the system's own title bar, but
-// on macOS, whose traffic lights sit over the window.
-func TestTitleBarStyle(t *testing.T) {
-	for goos, want := range map[string]mygo.TitleBarStyle{"windows": mygo.TitleBarDefault, "linux": mygo.TitleBarDefault, "darwin": mygo.TitleBarHidden} {
-		if got := titleBarStyle(goos); got != want {
-			t.Errorf("the title bar on %s is %q, want %q", goos, got, want)
-		}
 	}
 }
 

@@ -129,12 +129,3 @@ its **details**. The keyboard reaches **details** in the toast with
 - The portable zip does not register
   [`mymusic://` links](desktop.md#mymusic-links), and Windows on Arm is
   less tested than the rest.
-- The Flatpak is new: it sees none of your home folder but the profiles
-  of the browsers installed from Flathub, read-only. So a
-  yt-dlp of your own must be in `~/.var/app/io.github.bigdaddy284.mymusic`, a
-  YouTube Music sign-in imports only from a browser that is a Flatpak too,
-  and a Discord app that isn't a Flatpak shows what plays only if it was
-  running when MyMusic started. Its settings and library are apart from
-  another copy's: the
-  [README](https://github.com/bigdaddy284/mymusic#the-flatpak) tells how to
-  bring them over.

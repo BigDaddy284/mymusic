@@ -12,7 +12,7 @@ func init() { addSettings(soundRows, 30, (*shell).loudnessRow) }
 // › Sound.
 func (s *shell) loudnessRow(c *ui.Context) {
 	even := "Turns loud tracks down to one level, from YouTube's measure of each, so none jumps out. Quiet recordings keep their level."
-	if s.set.SpotifyPlayback == settings.SpotifyPlaybackConnect || s.set.SpotifyPlayback == settings.SpotifyPlaybackHere && spotifyPlaysHere {
+	if s.set.SpotifyPlayback == settings.SpotifyPlaybackConnect || s.set.SpotifyPlayback == settings.SpotifyPlaybackHere {
 		even += " Spotify plays its own tracks at its own loudness."
 	}
 	s.row(c, "Even loudness", even, func() {

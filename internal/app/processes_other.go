@@ -1,10 +1,10 @@
-//go:build !windows && !(darwin && (amd64 || arm64))
+//go:build !windows
 
 package app
 
-// processes returns none: only Windows and macOS hear what another process
-// plays.
+// processes returns none: MyMusic hears what another process plays on
+// Windows alone.
 func processes() []proc { return nil }
 
-// webViewAudio returns 0: only Windows and macOS hear MyMusic's web views.
+// webViewAudio returns 0: MyMusic hears its web views on Windows alone.
 func webViewAudio([]proc) uint32 { return 0 }

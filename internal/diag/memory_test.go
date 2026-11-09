@@ -12,26 +12,14 @@ import (
 )
 
 // TestReadMemory reads the Go heap, and the process's memory where the
-// system tells it: Linux its resident size, Windows that and its private
-// bytes, macOS that and its footprint.
+// system tells it: Windows its working set and its private bytes.
 func TestReadMemory(t *testing.T) {
 	m := ReadMemory()
 	if m.HeapInUse == 0 || m.Sys < m.HeapInUse {
 		t.Errorf("the Go heap: %+v", m)
 	}
-	switch runtime.GOOS {
-	case "linux":
-		if m.Resident == 0 {
-			t.Errorf("no resident size: %+v", m)
-		}
-	case "windows":
-		if m.Resident == 0 || m.Private == 0 {
-			t.Errorf("no working set or private bytes: %+v", m)
-		}
-	case "darwin":
-		if m.Resident == 0 || m.Footprint == 0 {
-			t.Errorf("no resident size or footprint: %+v", m)
-		}
+	if runtime.GOOS == "windows" && (m.Resident == 0 || m.Private == 0) {
+		t.Errorf("no working set or private bytes: %+v", m)
 	}
 	if !strings.HasPrefix(m.String(), "Go heap ") || m.Process() < m.Sys {
 		t.Errorf("%q, of %d bytes", m, m.Process())

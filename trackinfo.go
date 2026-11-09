@@ -10,7 +10,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -116,17 +115,8 @@ func waitsForEngine(info app.TrackInfo, now *player.Source) bool {
 		(info.Engine == nil || !info.Engine.Ready)
 }
 
-// showInFolderLabel names the action that shows a file in the system's
-// file manager.
-func showInFolderLabel() string {
-	switch runtime.GOOS {
-	case "darwin":
-		return "Show in Finder"
-	case "linux":
-		return "Show in its folder"
-	}
-	return "Show in Explorer"
-}
+// showInFolderLabel names the action that shows a file in Explorer.
+func showInFolderLabel() string { return "Show in Explorer" }
 
 // trackInfoBody is what the dialog of Track info tells of t: its title
 // and artists, then the facts of l, its tags, and its copies.

@@ -3,7 +3,6 @@ package main
 import (
 	"os"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strings"
 	"testing"
@@ -92,9 +91,6 @@ func TestSettingsFindMatches(t *testing.T) {
 	tt := testerOf(t, s, 1280, 6000)
 	// The palette's keys, as the user would type them.
 	palette := "ctrl+k"
-	if runtime.GOOS == "darwin" {
-		palette = "cmd+k"
-	}
 	for _, c := range []struct {
 		q         string
 		want, not []string

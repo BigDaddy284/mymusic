@@ -28,8 +28,6 @@ func stored(t *testing.T, v any) []byte {
 // same values. A new setting adds its key there, with -update.
 func TestDefaultFile(t *testing.T) {
 	d := Default()
-	// The file is Windows'; TestDefaultSpotifyPlayback tells the others.
-	d.SpotifyPlayback = defaultSpotifyPlayback("windows")
 	got := stored(t, d)
 	path := filepath.Join("testdata", "default.json")
 	if *update {

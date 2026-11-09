@@ -59,11 +59,6 @@ type Manager struct {
 	Dir string
 	// HTTP downloads them.
 	HTTP *http.Client
-	// Bundled is the yt-dlp that comes with MyMusic, as Flathub's build
-	// has it, which MyMusic's package keeps up to date: while it's
-	// there, MyMusic runs it unless the user chose another, and downloads
-	// none.
-	Bundled string
 
 	mu        sync.Mutex
 	ytdlpPath string    // a path the user chose, overriding the search
@@ -98,37 +93,19 @@ func (m *Manager) Configure(ytdlpPath, jsRuntime string) {
 	m.ytdlpPath, m.jsRuntime = ytdlpPath, jsRuntime
 }
 
-// exe adds the executable suffix of the platform to name.
-func exe(name string) string {
-	if runtime.GOOS == "windows" {
-		return name + ".exe"
-	}
-	return name
-}
+// goarch is the processor yt-dlp is installed for. It is a variable for
+// tests.
+var goarch = runtime.GOARCH
 
-// managedPath is where InstallYTDLP puts yt-dlp: on macOS, in the folder
-// it unpacks it in (unpackedPath).
-func (m *Manager) managedPath() string {
-	if goos == "darwin" {
-		return m.unpackedPath()
-	}
-	return filepath.Join(m.Dir, exe("yt-dlp"))
-}
+// exe adds Windows' executable suffix to name.
+func exe(name string) string { return name + ".exe" }
 
-// bundled returns the path of the yt-dlp that comes with MyMusic while
-// it's there, else "".
-func (m *Manager) bundled() string {
-	if m.Bundled != "" && isFile(m.Bundled) {
-		return m.Bundled
-	}
-	return ""
-}
+// managedPath is where InstallYTDLP puts yt-dlp.
+func (m *Manager) managedPath() string { return filepath.Join(m.Dir, exe("yt-dlp")) }
 
 // toolDirs are the folders where installers put programs that an app
-// opened from the desktop does not find on its PATH: opened from the
-// Finder, the Dock or a desktop menu, it gets a short PATH, without
-// Homebrew's folders or the ones Deno and Bun install into. It is a
-// variable for tests.
+// opened from the desktop may not find on its PATH: the ones Deno, Bun,
+// Scoop, WinGet and Node.js install into. It is a variable for tests.
 var toolDirs = func() []string {
 	home, _ := os.UserHomeDir()
 	var dirs []string
@@ -139,20 +116,14 @@ var toolDirs = func() []string {
 	}
 	inHome(".deno", "bin")
 	inHome(".bun", "bin")
-	if runtime.GOOS == "windows" {
-		inHome("scoop", "shims")
-		if d := os.Getenv("LOCALAPPDATA"); d != "" {
-			dirs = append(dirs, filepath.Join(d, "Microsoft", "WinGet", "Links"))
-		}
-		if d := os.Getenv("ProgramFiles"); d != "" {
-			dirs = append(dirs, filepath.Join(d, "nodejs"))
-		}
-		return dirs
+	inHome("scoop", "shims")
+	if d := os.Getenv("LOCALAPPDATA"); d != "" {
+		dirs = append(dirs, filepath.Join(d, "Microsoft", "WinGet", "Links"))
 	}
-	inHome(".local", "bin")
-	inHome("bin")
-	inHome(".volta", "bin")
-	return append(dirs, "/opt/homebrew/bin", "/usr/local/bin", "/opt/local/bin", "/home/linuxbrew/.linuxbrew/bin", "/snap/bin")
+	if d := os.Getenv("ProgramFiles"); d != "" {
+		dirs = append(dirs, filepath.Join(d, "nodejs"))
+	}
+	return dirs
 }
 
 // lookPath finds a program on the PATH, else in the folders installers
@@ -181,9 +152,6 @@ func (m *Manager) YTDLP() (string, error) {
 			return chosen, nil
 		}
 		return "", missingError{chosen}
-	}
-	if p := m.bundled(); p != "" {
-		return p, nil
 	}
 	if p := m.managedPath(); isFile(p) {
 		return p, nil
@@ -244,9 +212,6 @@ type Tool struct {
 	Version string `json:"version,omitempty"`
 	// Managed is set for tools MyMusic installed, which it can update.
 	Managed bool `json:"managed,omitempty"`
-	// Bundled is set for the yt-dlp that comes with MyMusic, which
-	// MyMusic's package updates.
-	Bundled bool `json:"bundled,omitempty"`
 	// Latest is the version of the latest yt-dlp release, set when the
 	// yt-dlp found is older.
 	Latest string `json:"latest,omitempty"`
@@ -280,8 +245,8 @@ func (m *Manager) Status(ctx context.Context) Status {
 
 // version returns the first line the program at path prints for flag, as
 // version does, asking it once while its file stays the same: Settings asks
-// for the tools again at each change of them, and yt-dlp for macOS takes 8
-// s to start (#246).
+// for the tools again at each change of them, and each start of yt-dlp
+// takes a while (#246).
 func (m *Manager) version(ctx context.Context, path, flag string) string {
 	info, err := os.Stat(path)
 	if err != nil {
@@ -312,10 +277,6 @@ func (m *Manager) version(ctx context.Context, path, flag string) string {
 // MyMusic's package is as new as the package: GitHub isn't asked.
 func (m *Manager) ytdlpTool(ctx context.Context, path, v string) Tool {
 	t := Tool{Found: true, Name: "yt-dlp", Path: path, Version: v, Managed: path == m.managedPath()}
-	if path == m.Bundled {
-		t.Bundled = true
-		return t
-	}
 	if latest := m.knownLatest(ctx); older(v, latest) {
 		t.Latest = latest
 		if !t.Managed {
@@ -388,10 +349,6 @@ var updateCommands = []struct {
 	{[]string{"/chocolatey/"}, "choco upgrade yt-dlp"},
 	{[]string{"/pipx/"}, "pipx upgrade yt-dlp"},
 	{[]string{"/python", "/scripts/"}, "python -m pip install -U yt-dlp"},
-	{[]string{"/homebrew/"}, "brew upgrade yt-dlp"},
-	{[]string{"/linuxbrew/"}, "brew upgrade yt-dlp"},
-	{[]string{"/cellar/"}, "brew upgrade yt-dlp"},
-	{[]string{"/snap/"}, "sudo snap refresh yt-dlp"},
 }
 
 // updateCommand returns the command that updates the yt-dlp at path, when
@@ -427,23 +384,17 @@ var version = func(ctx context.Context, path, flag string) string {
 }
 
 // asset returns the name of the yt-dlp executable of a platform in its
-// releases: on macOS, the zip archive of it unpacked (installUnpacked).
-func asset(goos, goarch string) (string, error) {
-	switch goos + "/" + goarch {
-	case "windows/amd64":
+// releases, for Windows on goarch.
+func asset(goarch string) (string, error) {
+	switch goarch {
+	case "amd64":
 		return "yt-dlp.exe", nil
-	case "windows/arm64":
+	case "arm64":
 		return "yt-dlp_arm64.exe", nil
-	case "windows/386":
+	case "386":
 		return "yt-dlp_x86.exe", nil
-	case "linux/amd64":
-		return "yt-dlp_linux", nil
-	case "linux/arm64":
-		return "yt-dlp_linux_aarch64", nil
-	case "darwin/amd64", "darwin/arm64":
-		return "yt-dlp_macos.zip", nil
 	}
-	return "", fmt.Errorf("yt-dlp has no build for %s/%s: install it with your package manager", goos, goarch)
+	return "", fmt.Errorf("yt-dlp has no build for Windows on %s", goarch)
 }
 
 // Progress reports how many bytes of a download arrived, of total (0 when
@@ -456,10 +407,7 @@ type Progress func(done, total int64)
 // comes with MyMusic there, it downloads none: that one runs once the
 // user's choice of another is cleared.
 func (m *Manager) InstallYTDLP(ctx context.Context, progress Progress) error {
-	if m.bundled() != "" {
-		return nil
-	}
-	name, err := asset(goos, goarch)
+	name, err := asset(goarch)
 	if err != nil {
 		return err
 	}
@@ -480,9 +428,6 @@ func (m *Manager) InstallYTDLP(ctx context.Context, progress Progress) error {
 	}
 	if err := os.MkdirAll(m.Dir, 0o755); err != nil {
 		return err
-	}
-	if strings.HasSuffix(name, ".zip") {
-		return m.installUnpacked(ctx, data)
 	}
 	tmp, err := os.CreateTemp(m.Dir, ".yt-dlp-*")
 	if err != nil {
@@ -524,24 +469,14 @@ func (m *Manager) LatestYTDLP(ctx context.Context) (string, error) {
 }
 
 // UpdateYTDLP replaces the yt-dlp MyMusic installed with the latest
-// release when that is newer, or when it is macOS's single file of before,
-// and reports whether it did. It leaves alone a yt-dlp the user installed
-// or chose, which they keep up to date, and one installed before the
-// yt-dlp that comes with MyMusic, which runs in its place.
+// release when that is newer, and reports whether it did. It leaves alone
+// a yt-dlp the user installed or chose, which they keep up to date.
 func (m *Manager) UpdateYTDLP(ctx context.Context) (bool, error) {
 	m.mu.Lock()
 	chosen := m.ytdlpPath
 	m.mu.Unlock()
-	if chosen != "" || m.bundled() != "" || !isFile(m.managedPath()) {
+	if chosen != "" || !isFile(m.managedPath()) {
 		return false, nil
-	}
-	if m.singleOnMac() {
-		// The single file installed before, which starts in 8 s: the
-		// unpacked build replaces it, whatever its version (#245).
-		if err := m.InstallYTDLP(ctx, nil); err != nil {
-			return false, err
-		}
-		return true, nil
 	}
 	latest, err := m.LatestYTDLP(ctx)
 	if err != nil {

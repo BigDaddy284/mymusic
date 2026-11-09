@@ -132,14 +132,8 @@ func TestGlobalShortcutsClean(t *testing.T) {
 }
 
 func TestDefaultSpotifyPlayback(t *testing.T) {
-	for goos, want := range map[string]SpotifyPlayback{
-		"windows": SpotifyPlaybackHere,
-		"darwin":  SpotifyPlaybackHere,
-		"linux":   SpotifyPlaybackConnect,
-	} {
-		if got := defaultSpotifyPlayback(goos); got != want {
-			t.Errorf("defaultSpotifyPlayback(%q) = %q, want %q", goos, got, want)
-		}
+	if got := Default().SpotifyPlayback; got != SpotifyPlaybackHere {
+		t.Errorf("Default().SpotifyPlayback = %q, want %q", got, SpotifyPlaybackHere)
 	}
 	if c := (Settings{Playback: Playback{SpotifyPlayback: SpotifyPlaybackHere}}).Clean(); c.SpotifyPlayback != SpotifyPlaybackHere {
 		t.Errorf("Clean dropped playback here: %q", c.SpotifyPlayback)

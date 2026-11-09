@@ -1,14 +1,11 @@
 package localfiles
 
 import (
-	"context"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
 	"testing"
-	"time"
 )
 
 // TestPathsNotUTF8 keeps the path of a file whose name isn't UTF-8, as a
@@ -68,49 +65,5 @@ func TestIndexOfBefore(t *testing.T) {
 	}
 	if e, ok := x.Entry(b); !ok || e.Size != 5 {
 		t.Errorf("b: %+v, %v", e, ok)
-	}
-}
-
-// TestScanNotUTF8 scans files and a folder whose names aren't UTF-8, on
-// Linux, whose names are bytes: the index read again, as after a
-// restart, holds them, and its next scan reads none of them again.
-// Windows' names are UTF-16, which always reads as UTF-8, and macOS's
-// disks refuse such names.
-func TestScanNotUTF8(t *testing.T) {
-	if runtime.GOOS != "linux" {
-		t.Skip("only Linux names files with bytes that aren't UTF-8")
-	}
-	ti := newIndex(t)
-	song := ti.write(t, "caf\xe9.mp3", "Night|Ada Field", time.Hour)
-	folder := filepath.Join(filepath.Dir(ti.dir), "Mus\xefk")
-	if err := os.MkdirAll(folder, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	other := filepath.Join(folder, "\xff01.mp3")
-	if err := os.WriteFile(other, []byte("Day|Orin Vale"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	if n := ti.scan(t, ti.dir, folder); n != 2 {
-		t.Fatalf("read %d files, want 2", n)
-	}
-	x := ti.open(t, filepath.Join(filepath.Dir(ti.dir), "local-files.json"), filepath.Join(filepath.Dir(ti.dir), "cache", "local-art"))
-	for _, path := range []string{song, other} {
-		e, ok := x.Entry(path)
-		if !ok || e.Skipped != "" {
-			t.Fatalf("%q after a restart: %+v, %v", path, e, ok)
-		}
-		if x.Missing(TrackID(path)) {
-			t.Errorf("%q is missing after a restart", path)
-		}
-	}
-	before := ti.reads.Load()
-	if err := x.Scan(context.Background(), []string{ti.dir, folder}); err != nil {
-		t.Fatal(err)
-	}
-	if n := ti.reads.Load() - before; n != 0 || len(x.Tracks()) != 2 {
-		t.Errorf("the scan after a restart read %d files again, and holds %d", n, len(x.Tracks()))
-	}
-	if st := x.Status(); st.Folders[1].Problem != "" || st.Folders[1].Tracks != 1 {
-		t.Errorf("the folder whose name isn't UTF-8: %+v", st.Folders[1])
 	}
 }

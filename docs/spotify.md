@@ -73,11 +73,8 @@ Settings › Playback chooses:
 - **In MyMusic, from Spotify** (the default on Windows and macOS). MyMusic plays the track
   itself, with Spotify's Web Playback SDK, at Spotify's own quality, and no
   Spotify app needs to be open: MyMusic shows among your Spotify devices
-  while it plays. It needs Spotify Premium, and Windows or macOS, whose
-  webviews play Spotify's protected audio: WebView2 with Widevine, and
-  macOS's with FairPlay. WebKitGTK on Linux can't, so Settings › Playback
-  greys this way out there
-  ([what each system can do](architecture/spotify-here.md)). The
+  while it plays. It needs Spotify Premium; WebView2 plays Spotify's protected audio with
+  Widevine ([how](architecture/spotify-here.md)). The
   equalizer and crossfade leave Spotify's audio as it is, as on Spotify
   Connect: use a system-wide equalizer for it, since Spotify
   [notes](https://support.spotify.com/us/article/equalizer/) that its audio

@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-	"runtime"
 
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
@@ -360,14 +359,7 @@ func (s *shell) localItems(m *ui.Menu, t media.Track) {
 	if !ok || s.missingFile(t) {
 		return
 	}
-	label := "Show in Explorer"
-	switch runtime.GOOS {
-	case "darwin":
-		label = "Show in Finder"
-	case "linux":
-		label = "Show in its folder"
-	}
-	if m.Item(label).Chosen() {
+	if m.Item(showInFolderLabel()).Chosen() {
 		mygo.Shell.ShowItemInFolder(path)
 	}
 }

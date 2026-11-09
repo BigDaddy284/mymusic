@@ -1,15 +1,13 @@
 name: Release
 
-# Pushing a tag such as v0.2.0 builds MyMusic for macOS, Windows and Linux
+# Pushing a tag such as v0.2.0 builds MyMusic for Windows, x64 and Arm64,
 # and publishes the release: the version's section of CHANGELOG.md, the
-# downloads of .github/release-notes.md, the installers and SHA256SUMS.
-# Nix builds: every job runs in the shell of flake.nix, whose tools
-# flake.lock pins, but the Flatpak's, which packs the Linux build in
-# Flathub's container with flatpak-builder. GoReleaser publishes, with
-# .goreleaser.yaml. Run it by hand to build an existing tag again.
-# With the secrets that CONTRIBUTING.md's "Signing and Homebrew" lists, it
-# also signs the apps, has Apple notarize the Mac's, and updates the
-# Homebrew cask; without them it skips those steps.
+# downloads of .github/release-notes.md, the installers, the portable zips
+# and SHA256SUMS. Nix builds: every job runs in the shell of flake.nix,
+# whose tools flake.lock pins. GoReleaser publishes, with .goreleaser.yaml.
+# Run it by hand to build an existing tag again. With the secrets that
+# CONTRIBUTING.md's "Signing" lists, it also signs the apps; without them
+# it skips that step.
 on:
   push:
     tags: ["v*"]
@@ -53,19 +51,9 @@ jobs:
 
   build:
     needs: check
-    name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # The disk image needs macOS. Ubuntu cross-compiles the others.
-          - { name: macOS, os: macos-latest, platform: "darwin/universal", files: 1 }
-          # Two installers and two portable zips.
-          - { name: Windows, os: ubuntu-latest, platform: "windows/amd64,windows/arm64", files: 4 }
-          # For each of two architectures a .deb, an .rpm, an AppImage and an
-          # archive, and install.sh.
-          - { name: Linux, os: ubuntu-latest, platform: "linux/amd64,linux/arm64", files: 9 }
+    # Ubuntu cross-compiles the apps, and NSIS makes their installers.
+    name: Windows
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
@@ -86,73 +74,10 @@ jobs:
             nix develop --command true
           fi
       - run: nix develop --command bun install --frozen-lockfile
-      # The Developer ID certificate, and the App Store Connect key that
-      # notarizes, in a keychain of their own, which mygo build signs and
-      # notarizes with (mygo.config.ts). Without the secrets the app is
-      # signed ad hoc, as before; with some of them only, the build stops.
-      - name: The Developer ID and the notary key
-        if: matrix.name == 'macOS'
-        env:
-          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
-          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
-          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
-        run: |
-          missing=""
-          for name in MACOS_CERTIFICATE MACOS_CERTIFICATE_PASSWORD APPLE_API_KEY APPLE_API_KEY_ID APPLE_API_ISSUER; do
-            [ -n "${!name}" ] || missing="$missing $name"
-          done
-          if [ "$missing" = " MACOS_CERTIFICATE MACOS_CERTIFICATE_PASSWORD APPLE_API_KEY APPLE_API_KEY_ID APPLE_API_ISSUER" ]; then
-            echo "::notice::No Developer ID secrets: the macOS app is signed ad hoc, and not notarized"
-            exit 0
-          fi
-          if [ -n "$missing" ]; then
-            echo "::error::Signing and notarizing the macOS app needs these secrets too:$missing"
-            exit 1
-          fi
-          umask 077
-          keychain="$RUNNER_TEMP/signing.keychain-db"
-          password="$(openssl rand -base64 24)"
-          echo "::add-mask::$password"
-          security create-keychain -p "$password" "$keychain"
-          security set-keychain-settings -lut 21600 "$keychain"
-          security unlock-keychain -p "$password" "$keychain"
-          echo "$MACOS_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/developer-id.p12"
-          security import "$RUNNER_TEMP/developer-id.p12" -k "$keychain" \
-            -P "$MACOS_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
-          rm "$RUNNER_TEMP/developer-id.p12"
-          security set-key-partition-list -S apple-tool:,apple: -s -k "$password" "$keychain" > /dev/null
-          security list-keychains -d user -s "$keychain" login.keychain
-          # codesign signs with the identity's SHA-1, which names no other.
-          identity="$(security find-identity -v -p codesigning "$keychain" | awk '/"Developer ID Application: /{ print $2; exit }')"
-          if [ -z "$identity" ]; then
-            echo "::error::MACOS_CERTIFICATE holds no Developer ID Application identity"
-            security find-identity -v -p codesigning "$keychain"
-            exit 1
-          fi
-          security find-identity -v -p codesigning "$keychain" | grep "$identity"
-          # The profile that mygo build notarizes with, checked with Apple.
-          printf '%s\n' "$APPLE_API_KEY" > "$RUNNER_TEMP/notary-key.p8"
-          xcrun notarytool store-credentials mymusic-notary --keychain "$keychain" \
-            --key "$RUNNER_TEMP/notary-key.p8" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER"
-          # Nix's shell has an xcrun of its own, with the SDK of nixpkgs as
-          # DEVELOPER_DIR: build.sh puts the Mac's own first, with Xcode's.
-          tools="$RUNNER_TEMP/apple-tools"
-          mkdir -p "$tools"
-          ln -s /usr/bin/codesign "$tools/codesign"
-          printf '#!/bin/sh\nexport DEVELOPER_DIR=%s\nexec /usr/bin/xcrun "$@"\n' "'$(xcode-select -p)'" > "$tools/xcrun"
-          chmod 755 "$tools" "$tools/xcrun"
-          {
-            echo "MACOS_SIGNING_IDENTITY=$identity"
-            echo "NOTARY_KEYCHAIN=$keychain"
-            echo "APPLE_TOOLS=$tools"
-          } >> "$GITHUB_ENV"
       # The code signing certificate, which mygo build signs the apps, the
       # installers and their uninstallers with, through osslsigncode
       # (mygo.config.ts). Without the secret they are not signed, as before.
       - name: The code signing certificate
-        if: matrix.name == 'Windows'
         env:
           WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
         run: |
@@ -168,33 +93,9 @@ jobs:
           # Signs the update files; without it the build skips them.
           MYGO_UPDATER_PRIVATE_KEY: ${{ secrets.MYGO_UPDATER_PRIVATE_KEY }}
           # Opens the code signing certificate, when it has a password.
-          MYGO_WINDOWS_CERTIFICATE_PASSWORD: ${{ matrix.name == 'Windows' && secrets.WINDOWS_CERTIFICATE_PASSWORD || '' }}
-        # A build per platform, each Linux one asking for the system's loader.
-        run: nix develop --command bash .github/scripts/build.sh "${{ matrix.platform }}"
-      # Gatekeeper's verdict on the app the build signed with the Developer
-      # ID: a valid signature, and the ticket of its notarization stapled to
-      # the app and to the disk image.
-      - name: Gatekeeper accepts the app
-        if: matrix.name == 'macOS' && env.MACOS_SIGNING_IDENTITY != ''
-        run: |
-          app=build/darwin-universal/MyMusic.app
-          dmg="$(ls build/darwin-universal/*.dmg)"
-          # A tag from before signing, built again, signs ad hoc.
-          if codesign -dv "$app" 2>&1 | grep -q '^Signature=adhoc'; then
-            echo "::warning::The mygo.config.ts of $TAG signs ad hoc: the macOS app is not notarized"
-            exit 0
-          fi
-          codesign --verify --deep --strict --verbose=2 "$app"
-          xcrun stapler validate "$app"
-          xcrun stapler validate "$dmg"
-          spctl --assess --type execute --verbose=4 "$app"
-          spctl --assess --type open --context context:primary-signature --verbose=4 "$dmg"
-      # Nix's own loader would keep them from starting outside NixOS (#166).
-      - name: The Linux builds ask for the system's loader
-        if: matrix.name == 'Linux'
-        run: nix develop --command go run ./tools/elfloader build/linux-amd64 build/linux-arm64
-      - name: Package the portable zips, the RPMs and the AppImages
-        if: matrix.name != 'macOS'
+          MYGO_WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: nix develop --command bash .github/scripts/build.sh windows/amd64,windows/arm64
+      - name: Package the portable zips
         run: nix develop --command bash .github/scripts/package.sh "${TAG#v}" release
       - name: Name the downloads
         shell: bash
@@ -204,98 +105,29 @@ jobs:
           v="${TAG#v}"
           mkdir -p release
           for dir in build/*/; do
-            target="$(basename "$dir")" # darwin-universal, windows-arm64, linux-amd64
+            target="$(basename "$dir")" # windows-amd64, windows-arm64
             arch="${target#*-}"
             # What installed apps update from, under the names their manifests use.
             for f in "$dir"update-*.json "$dir"*.delta "$dir"mymusic-"$v"-"$target".tar.g[z]; do cp "$f" release/; done
-            case "$target" in
-              darwin-*)
-                for f in "$dir"*.dmg; do cp "$f" "release/mymusic-$v-macos-$arch.dmg"; done ;;
-              windows-*)
-                # mygo build names it mymusic-setup-<version>-<arch>.exe.
-                for f in "$dir"*-setup-*.exe; do cp "$f" "release/mymusic-$v-windows-$arch-setup.exe"; done ;;
-              linux-*)
-                for f in "$dir"*.deb; do cp "$f" "release/mymusic-$v-linux-$arch.deb"; done
-                # install.sh finds the archive next to it by this name.
-                cp "${dir}mymusic-$v-linux-$arch.tar.gz" release/
-                cp "${dir}install.sh" release/install.sh ;;
-            esac
+            # mygo build names it mymusic-setup-<version>-<arch>.exe.
+            for f in "$dir"*-setup-*.exe; do cp "$f" "release/mymusic-$v-windows-$arch-setup.exe"; done
           done
           ls -l release
-          # The downloads, not counting the update files, which only signed builds make.
-          count="$(ls release | { grep -v -E '^update-|\.delta$|-(darwin|windows)-[a-z0-9]+\.tar\.gz$' || true; } | wc -l | tr -d ' ')"
-          if [ "$count" -ne "${{ matrix.files }}" ]; then
-            echo "Expected ${{ matrix.files }} downloads for ${{ matrix.name }}, made $count" >&2
+          # Two installers and two portable zips, not counting the update
+          # files, which only signed builds make.
+          count="$(ls release | { grep -v -E '^update-|\.delta$|-windows-[a-z0-9]+\.tar\.gz$' || true; } | wc -l | tr -d ' ')"
+          if [ "$count" -ne 4 ]; then
+            echo "Expected 4 downloads, made $count" >&2
             exit 1
           fi
       - uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.name }}
+          name: Windows
           path: release/*
           if-no-files-found: error
 
-  # The Flatpaks of the Linux build's x64 and Arm64 archives, in Flathub's
-  # container with the GNOME runtime and flatpak-builder, on a runner of
-  # each one's architecture, installed and checked there, as ci.yml makes
-  # them on every change.
-  flatpak:
-    needs: build
-    name: Flatpak${{ matrix.arch == 'arm64' && ' (Arm64)' || '' }}
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - { arch: amd64, flatpak: x86_64, runner: ubuntu-latest }
-          # Flathub's container is made for Arm64 too.
-          - { arch: arm64, flatpak: aarch64, runner: ubuntu-24.04-arm }
-    container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51
-      options: --privileged
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ env.TAG }}
-          submodules: true # Flathub's shared modules
-      # For the metadata's releases, which tools/metainfo writes.
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
-          cache: false
-      - uses: actions/download-artifact@v8
-        with:
-          name: Linux
-          path: linux
-      - name: The app and its metadata
-        id: v
-        run: |
-          v="${TAG#v}"
-          echo "version=$v" >> "$GITHUB_OUTPUT"
-          mkdir -p packaging/flatpak/dist
-          cp "linux/mymusic-$v-linux-${{ matrix.arch }}.tar.gz" packaging/flatpak/dist/mymusic-linux-${{ matrix.arch }}.tar.gz
-          go run ./tools/metainfo -o packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
-          appstreamcli validate --no-net --explain packaging/flatpak/dist/io.github.bigdaddy284.mymusic.metainfo.xml
-      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
-        with:
-          manifest-path: packaging/flatpak/io.github.bigdaddy284.mymusic.yml
-          bundle: mymusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak
-          arch: ${{ matrix.flatpak }}
-          branch: stable
-          upload-artifact: false
-      - name: Install it
-        run: bash packaging/flatpak/check.sh "mymusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: Flatpak-${{ matrix.arch }}
-          path: mymusic-${{ steps.v.outputs.version }}-linux-${{ matrix.arch }}.flatpak
-          if-no-files-found: error
-
-  # The release waits for the Flatpaks, but goes out without one whose job
-  # failed: an outage of Flathub, or of a library's source, then holds
-  # back no other download. Run the failed jobs again to add it.
   release:
-    needs: [build, flatpak]
-    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    needs: build
     name: Publish the release
     runs-on: ubuntu-latest
     steps:
@@ -307,18 +139,6 @@ jobs:
         with:
           path: release
           merge-multiple: true
-      - name: The update files of Macs built for one architecture
-        working-directory: release
-        run: |
-          # On a Mac, `mygo build` makes an app of that Mac's architecture,
-          # which asks for update-darwin-arm64.json or
-          # update-darwin-amd64.json (#33). The universal app runs on both;
-          # its deltas update only the universal app.
-          if [ -f update-darwin-universal.json ]; then
-            for arch in arm64 amd64; do
-              jq 'del(.deltas)' update-darwin-universal.json > "update-darwin-$arch.json"
-            done
-          fi
       - name: Every app finds its update
         working-directory: release
         run: |
@@ -330,7 +150,7 @@ jobs:
             echo "No update files: the build was not signed"
             exit 0
           fi
-          # The target of each archive, as darwin-universal, has a manifest
+          # The target of each archive, as windows-amd64, has a manifest
           # of this version, which names files of this release.
           for archive in mymusic-"$v"-*.tar.gz; do
             target="${archive#mymusic-"$v"-}"
@@ -356,8 +176,7 @@ jobs:
           ls update-*.json
       - name: Release notes
         env:
-          # With these secrets, the builds sign or fail.
-          MACOS_NOTARIZED: ${{ secrets.MACOS_CERTIFICATE != '' }}
+          # With this secret, the build signs or fails.
           WINDOWS_SIGNED: ${{ secrets.WINDOWS_CERTIFICATE != '' }}
         run: |
           set -euo pipefail
@@ -368,20 +187,10 @@ jobs:
           else
             link="https://github.com/$GITHUB_REPOSITORY/commits/$TAG"
           fi
-          # The downloads, without the line of a Flatpak whose job failed.
           downloads="$RUNNER_TEMP/downloads.md"
           cp .github/release-notes.md "$downloads"
-          for arch in amd64 arm64; do
-            if [ ! -f "release/mymusic-$v-linux-$arch.flatpak" ]; then
-              echo "::warning::The release has no $arch Flatpak: its job failed"
-              sed -i "/-linux-$arch\.flatpak/d" "$downloads"
-            fi
-          done
           # Signed apps open without an allowance at their first launch: the
-          # notes leave out the lines that tell how to give it.
-          if [ "$MACOS_NOTARIZED" = true ]; then
-            sed -i '/^\*\*First launch on macOS\.\*\*/d' "$downloads"
-          fi
+          # notes leave out the line that tells how to give it.
           if [ "$WINDOWS_SIGNED" = true ]; then
             sed -i '/^\*\*First launch on Windows\.\*\*/d' "$downloads"
           fi
@@ -432,94 +241,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ env.TAG }}
         run: nix develop --command goreleaser release --clean --release-notes "$RUNNER_TEMP/notes.md"
-      # The Homebrew cask, Casks/mymusic.rb of bigdaddy284/homebrew-tap, for
-      # `brew install --cask fzn0x/tap/mymusic`: tools/cask writes it for
-      # the disk image of the release, now out, and the token of the
-      # HOMEBREW_TAP_TOKEN secret puts it in the tap. Without the secret or
-      # the tap, the release goes out without it. (GoReleaser's
-      # homebrew_casks can't write it: see .goreleaser.yaml.)
-      - name: The Homebrew cask
-        env:
-          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          TAP: bigdaddy284/homebrew-tap
-          # With these secrets, the macOS build notarizes or fails.
-          NOTARIZED: ${{ secrets.MACOS_CERTIFICATE != '' }}
-        run: |
-          set -euo pipefail
-          v="${TAG#v}"
-          if [ -z "$GH_TOKEN" ]; then
-            echo "::notice::No HOMEBREW_TAP_TOKEN secret: the Homebrew cask stays as it is"
-            exit 0
-          fi
-          if [ ! -d tools/cask ]; then
-            echo "::notice::$TAG has no tools/cask: the Homebrew cask stays as it is"
-            exit 0
-          fi
-          if ! gh api "repos/$TAP" --silent; then
-            echo "::warning::$TAP doesn't exist, or HOMEBREW_TAP_TOKEN can't reach it: the Homebrew cask stays as it is"
-            exit 0
-          fi
-          cask="$RUNNER_TEMP/mymusic.rb"
-          nix develop --command go run ./tools/cask -version "$v" \
-            -dmg "release/mymusic-$v-macos-universal.dmg" -notarized="$NOTARIZED" -o "$cask"
-          cat "$cask"
-          # Replacing the cask takes the SHA of the file it replaces.
-          path=Casks/mymusic.rb
-          sha=""
-          if found="$(gh api "repos/$TAP/contents/$path" --jq .sha 2>/dev/null)"; then
-            sha="$found"
-          fi
-          gh api --method PUT "repos/$TAP/contents/$path" --silent \
-            -f message="mymusic $v" \
-            -f content="$(base64 -w0 "$cask")" \
-            ${sha:+-f "sha=$sha"}
-          echo "$TAP's $path is of MyMusic $v"
-      # The AUR's mymusic-bin, for `yay -S mymusic-bin` on Arch Linux and
-      # its derivatives: tools/aur writes its PKGBUILD and .SRCINFO for the
-      # .deb files of the release, now out, and the key of the
-      # AUR_SSH_PRIVATE_KEY secret pushes them to the AUR, which makes the
-      # package at the first push. Without the secret, and for
-      # pre-releases, which pacman can't order, the release goes out
-      # without it.
-      - name: The AUR package
-        env:
-          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
-        run: |
-          set -euo pipefail
-          v="${TAG#v}"
-          if [ -z "$AUR_SSH_PRIVATE_KEY" ]; then
-            echo "::notice::No AUR_SSH_PRIVATE_KEY secret: the AUR package stays as it is"
-            exit 0
-          fi
-          if [ ! -d tools/aur ]; then
-            echo "::notice::$TAG has no tools/aur: the AUR package stays as it is"
-            exit 0
-          fi
-          case "$v" in *-*)
-            echo "::notice::$TAG is a pre-release: the AUR package stays as it is"
-            exit 0 ;;
-          esac
-          umask 077
-          mkdir -p ~/.ssh
-          printf '%s\n' "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur
-          # The key only signs in: a host that isn't the AUR learns nothing
-          # it could push with. Its key goes in the log, to compare with
-          # those the Arch wiki lists.
-          ssh-keyscan -t ed25519 aur.archlinux.org > ~/.ssh/known_hosts
-          ssh-keygen -lf ~/.ssh/known_hosts
-          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/aur -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
-          aur="$RUNNER_TEMP/aur"
-          git clone ssh://aur@aur.archlinux.org/mymusic-bin.git "$aur"
-          nix develop --command go run ./tools/aur -version "$v" -release release -o "$aur"
-          cat "$aur/PKGBUILD"
-          cd "$aur"
-          git add PKGBUILD .SRCINFO
-          if git diff --cached --quiet; then
-            echo "The AUR's mymusic-bin is of MyMusic $v already"
-            exit 0
-          fi
-          git -c user.name="github-actions[bot]" \
-            -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit -q -m "mymusic-bin $v"
-          git push origin HEAD:master
-          echo "The AUR's mymusic-bin is of MyMusic $v"

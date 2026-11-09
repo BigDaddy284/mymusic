@@ -3,14 +3,14 @@ import pkg from "./package.json" with { type: "json" };
 
 export default defineConfig({
   name: "MyMusic",
-  // The slug names the update archives, the Windows installer and the disk
-  // image, which release.yml and .github/scripts/package.sh look for by
-  // name. It is MyGo's default for "MyMusic": pinned so it can't move.
+  // The slug names the update archives and the Windows installer, which
+  // release.yml and .github/scripts/package.sh look for by name. It is
+  // MyGo's default for "MyMusic": pinned so it can't move.
   slug: "mymusic",
   identifier: "app.mymusic.desktop",
   version: pkg.version,
   copyright: "© 2026 MyMusic contributors, based on MixMusic, © 2026 MixMusic contributors",
-  // The icon that `mygo build` makes each platform's icons of. It isn't
+  // The icon that `mygo build` makes the Windows icons of. It isn't
   // in resources/, MyGo's place for it by default: `mygo build` ships every
   // file there beside the app, which reads none as it runs (#303).
   icon: "brand/icon.png",
@@ -30,45 +30,10 @@ export default defineConfig({
     publicKey: "y/g7m+MircfXqdGupUFNygznyyR/Y41D1YAOYw41ISU=",
     github: "bigdaddy284/mymusic",
   },
-  // The release workflow signs with the Developer ID and the App Store
-  // Connect key of its secrets, which it puts in a keychain of its own:
-  // `mygo build` signs the app with the hardened runtime and a timestamp,
-  // has Apple notarize the disk image, and staples the ticket to both.
-  // MyMusic needs no entitlements: it isn't sandboxed, uses no microphone
-  // or camera, sends no Apple events and loads only the system's
-  // frameworks; its plugins run in sobek, which makes no machine code, and
-  // its web pages in WebKit's own processes. Without the secrets, as on a
-  // contributor's Mac, the app is signed ad hoc.
-  macos: {
-    signingIdentity: process.env.MACOS_SIGNING_IDENTITY || undefined,
-    notarize: process.env.NOTARY_KEYCHAIN
-      ? { keychainProfile: "mymusic-notary", keychain: process.env.NOTARY_KEYCHAIN }
-      : undefined,
-    // macOS asks the user before MyMusic finds cast devices on the network
-    // and plays on them, with this reason.
-    infoPlist: {
-      NSLocalNetworkUsageDescription: "MyMusic finds the cast devices on your network, such as Chromecasts and Nest speakers, to play on them.",
-      // And before the visualizer first hears Spotify in MyMusic, which
-      // WebKit's own process plays: through a tap of that process, which
-      // macOS counts as recording what other apps play.
-      NSAudioCaptureUsageDescription: "MyMusic hears the Spotify tracks it plays, for its visualizer and the plugins' analyser. It never records or sends them.",
-      NSBonjourServices: ["_googlecast._tcp"],
-    },
-  },
   // The workflow's code signing certificate, whose password is
   // MYGO_WINDOWS_CERTIFICATE_PASSWORD: osslsigncode signs the app, the
   // installer and its uninstaller with it, timestamped. Unsigned without it.
   windows: {
     certificate: process.env.WINDOWS_CERTIFICATE_FILE || undefined,
-  },
-  linux: {
-    comment: "Spotify and YouTube Music in one customizable player",
-    categories: ["AudioVideo", "Audio", "Player"],
-    command: "mymusic",
-    // MyMusic plays through PulseAudio, which PipeWire serves too, or
-    // ALSA. The tray icon needs AppIndicator, and keeping sign-ins in the
-    // keyring libsecret. WebKitGTK, which MyGo depends on, shows Google's
-    // sign-in to YouTube Music.
-    depends: ["libpulse0 | libasound2 | libasound2t64", "libayatana-appindicator3-1", "libsecret-1-0"],
   },
 });

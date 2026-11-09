@@ -63,10 +63,6 @@ type Desktop struct {
 	// marked as paused and without its times, where pausing clears it at
 	// first.
 	DiscordKeepWhilePaused bool `json:"discordKeepWhilePaused"`
-	// NotchPlayer shows what plays around the camera housing of a
-	// MacBook's screen, and opens a player there (#46). It is on at
-	// first, and does nothing on other screens and systems.
-	NotchPlayer bool `json:"notchPlayer"`
 }
 
 // defaultDesktop is how a new install fits in the desktop.
@@ -78,7 +74,6 @@ func defaultDesktop() Desktop {
 	d.DiscordPresence = true
 	d.DiscordFirstLine, d.DiscordSecondLine = DefaultDiscordFirstLine, DefaultDiscordSecondLine
 	d.DiscordCover, d.DiscordTimeLeft = true, true
-	d.NotchPlayer = true
 	return d
 }
 

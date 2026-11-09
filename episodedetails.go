@@ -1,7 +1,7 @@
 package main
 
 // An episode's details, where a song shows its lyrics: the side panel, the
-// now playing page and the notch player show the show, views, day and
+// now playing page show the show, views, day and
 // length of the episode that plays, and its description, whose times play
 // it from there and whose links open in the browser.
 
@@ -209,46 +209,4 @@ func chapterAt(chapters []media.Chapter, pos, limit time.Duration) int {
 		return at > pos || at >= limit
 	})
 	return n - 1
-}
-
-// chapters shows in the notch the chapter of the episode t that plays now,
-// with those before and after it, as it shows the line of a song sung now.
-// Details that load, or fail, say so as lyrics do.
-func (n *notch) chapters(c *ui.Context, t media.Track) {
-	s := n.s
-	note := func(text string) {
-		ui.Text(c, text).FontSize(12).TextColor(notchMuted).MaxLines(3)
-	}
-	key, l := s.episodeDetailsOf(t)
-	switch {
-	case !l.done:
-		note("Looking for the details…")
-		return
-	case l.err != nil:
-		note(l.err.Error())
-		if !errors.Is(l.err, app.ErrNoEpisodeDetails) {
-			again := s.buttonBase(c.Key("notch-details-retry")).Padding(4, 10).Radius(12).Border(1, notchMuted).
-				AlignSelf(ui.Start).Label("try again").Cursor(ui.CursorPointer)
-			n.buttonLook(again, false, false)
-			again.Children(func() { ui.Text(c, "try again").FontSize(12).TextColor(notchWhite) })
-			if again.Clicked() {
-				s.forget(key)
-			}
-		}
-		return
-	}
-	chapters, limit := l.value.Chapters, s.seekLimit(t, l.value)
-	in := chapterAt(chapters, max(limit, 0), limit) + 1
-	if in == 0 {
-		note("No chapters.")
-		return
-	}
-	at := max(chapterAt(chapters[:in], s.st.Position+lyricsLead(s.st.Speed), limit), 0)
-	if at > 0 {
-		ui.Text(c, chapters[at-1].Title).FontSize(12).TextColor(notchMuted).SingleLine().MinWidth(0)
-	}
-	ui.Text(c, chapters[at].Title).FontSize(15).FontWeight(600).TextColor(notchWhite).MaxLines(2).MinWidth(0)
-	if at+1 < in {
-		ui.Text(c, chapters[at+1].Title).FontSize(12).TextColor(notchMuted).SingleLine().MinWidth(0)
-	}
 }

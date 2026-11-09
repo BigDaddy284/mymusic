@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -223,44 +222,10 @@ func (s *shell) zoomRow(c *ui.Context) {
 	}, "scale")
 }
 
-// useMenuBar gives macOS's menu bar the system's menus, but a View menu
-// whose items refresh the page and zoom MyMusic, and a Window menu with
-// Keep on Top (windowMenu). It leaves out Reload
-// and Force Reload, which do nothing in a window of native interface and
-// took ⌘R from Repeat and ⇧⌘R from Refresh this page. The items have no
-// keys of their own, so that the keys reach the window, where the user
-// may change them, as elsewhere: but Zoom In's ⌘+ (zoomInKey).
-func (s *shell) useMenuBar() {
-	if runtime.GOOS != "darwin" {
-		return
-	}
-	run := func(fn func()) func(*mygo.MenuItem, *mygo.Window) {
-		return func(*mygo.MenuItem, *mygo.Window) { s.update(fn) }
-	}
-	s.zoomIn = &mygo.MenuItem{Label: "Zoom In", Click: run(func() { s.zoomBy(1) })}
-	mygo.App.SetMenu(mygo.NewMenu([]*mygo.MenuItem{
-		{Role: mygo.RoleAppMenu},
-		{Role: mygo.RoleFileMenu},
-		{Role: mygo.RoleEditMenu},
-		{Label: "View", Submenu: []*mygo.MenuItem{
-			{Label: "Refresh This Page", Click: run(s.refreshPage)},
-			{Role: mygo.RoleToggleDevTools},
-			mygo.Separator(),
-			{Label: "Actual Size", Click: run(func() { s.setZoom(1) })},
-			s.zoomIn,
-			{Label: "Zoom Out", Click: run(func() { s.zoomBy(-1) })},
-			mygo.Separator(),
-			{Role: mygo.RoleToggleFullScreen},
-		}},
-		s.windowMenu(),
-	}))
-	s.zoomInKey()
-}
-
 // plusKeys tells whether Zoom in has the keys of +, Mod+Shift+= (alsoKeys):
 // while it keeps its own shortcut, and no other command took them. The
 // keypad's + is one of them, which MyGo gives the window as no key (#251):
-// macOS's menu takes it first, and internal/keypad on Windows and Linux.
+// internal/keypad takes it first.
 func (s *shell) plusKeys() bool {
 	for _, cmd := range s.commands() {
 		if cmd.id == "view.zoomIn" {
@@ -270,32 +235,10 @@ func (s *shell) plusKeys() bool {
 	return false
 }
 
-// zoomInKey gives View › Zoom In the key ⌘+ while Zoom in has the keys of
-// + (plusKeys), as the shortcuts change: macOS gives a menu the keys
-// before the window, by the character they type, so ⌘ and the keypad's +
-// reach it, and ⌘+ on a layout with a + key of its own.
-func (s *shell) zoomInKey() {
-	if s.zoomIn == nil {
-		return
-	}
-	key := ""
-	if s.plusKeys() {
-		key = "CmdOrCtrl+Plus"
-	}
-	if key != s.zoomInAccelerator {
-		s.zoomInAccelerator = key
-		s.zoomIn.SetAccelerator(key)
-	}
-}
-
-// useKeypad has Ctrl and the keypad's + zoom in on Windows and Linux, while
-// Zoom in has the keys of + (plusKeys): a hook of the window's thread on
-// Windows, and a handler of the GTK window's key presses on Linux, take
-// the press before MyGo, which has no key for it (#251).
+// useKeypad has Ctrl and the keypad's + zoom in, while Zoom in has the
+// keys of + (plusKeys): a hook of the window's thread takes the press
+// before MyGo, which has no key for it (#251).
 func (s *shell) useKeypad() {
-	if runtime.GOOS != "windows" && runtime.GOOS != "linux" {
-		return
-	}
 	var stop func()
 	var err error
 	mygo.RunOnMain(func() {

@@ -198,8 +198,6 @@ or animations turned off on a Linux desktop), MyMusic moves less:
   closes at once.
 - The [picture of a music video](playing-music.md#the-picture-of-music-videos)
   waits for you to press play on the cover.
-- On a [MacBook's notch](desktop.md#the-player-around-the-notch), the
-  player's panel fades in place rather than growing, and its bars rest.
 
 ## Marketplace themes
 

@@ -28,7 +28,7 @@ answer = '''
 Only for Spotify. Spotify lets an app serve up to five accounts, and only
 while its owner has Premium, so you sign in with a Spotify app of your
 own, made with an account that has Premium. Spotify tracks then play in
-MyMusic itself, on Windows and macOS, or on Spotify Connect, both with
+MyMusic itself or on Spotify Connect, both with
 Premium, or from their recording on YouTube Music, which needs no
 Premium.
 [Spotify](@/docs/spotify/index.md) walks through it.
@@ -50,9 +50,8 @@ lists what each feature sends, and where.
 question = "Where does MyMusic keep my data?"
 answer = '''
 In a data folder on your computer, which Settings › About names:
-`%AppData%\MyMusic` on Windows, `~/Library/Application Support/MyMusic`
-on macOS and `~/.config/MyMusic` on Linux. Your sign-ins stay in your
-system's credential store.
+`%AppData%\MyMusic`. Your sign-ins stay in Windows' Credential
+Manager.
 [Your data and privacy](@/docs/data-and-privacy/index.md#where-mymusic-keeps-its-data)
 tells what each file holds, and how to move or clear it.
 '''
@@ -60,35 +59,18 @@ tells what each file holds, and how to move or clear it.
 [[questions]]
 question = "How does MyMusic update?"
 answer = '''
-The installers, the portable zip, the macOS app and the Linux archive
-update themselves: MyMusic looks for a new version when it starts and
+The installer and the portable zip update themselves: MyMusic looks for a new version when it starts and
 every 6 hours, and asks before it installs one, unless you turn on
 Install updates without asking in Settings › About. Each update is
-signed, and one whose signature doesn't match is never installed. The
-`.deb`, the `.rpm`, the AppImage and the Flatpak can't replace their own
-files, so MyMusic tells you of a new version and downloads its file for
-you. [How MyMusic works](@/docs/how-it-works/index.md#mymusic-itself)
+signed, and one whose signature doesn't match is never installed.
+[How MyMusic works](@/docs/how-it-works/index.md#mymusic-itself)
 tells more.
 '''
 
 [[questions]]
-question = "Which Linux packages are there?"
+question = "Why does Windows warn me the first time?"
 answer = '''
-A `.deb` for Debian, Ubuntu and their derivatives, an `.rpm` for Fedora
-and openSUSE, and for any Linux an AppImage, a Flatpak and a `.tar.gz`
-archive whose `install.sh` installs MyMusic in your home folder, each
-for x64 and Arm64. The `.deb` and the `.rpm` install what MyMusic needs,
-and the Flatpak brings it along.
-[Getting started](@/docs/getting-started/index.md#install) tells what
-the others need.
-'''
-
-[[questions]]
-question = "Why do macOS and Windows warn me the first time?"
-answer = '''
-The macOS app isn't notarized by Apple yet, and the Windows installer
-isn't signed yet. On macOS, open it once from System Settings › Privacy &
-Security › Open Anyway; on Windows, if SmartScreen warns, choose More
+The Windows installer isn't signed yet: if SmartScreen warns, choose More
 info, then Run anyway. MyMusic's code is open on GitHub, and each
 release lists `SHA256SUMS` to check the downloads with.
 [Getting started](@/docs/getting-started/index.md#the-first-launch) has

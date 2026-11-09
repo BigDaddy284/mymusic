@@ -3,7 +3,6 @@ package settings
 import (
 	"path/filepath"
 	"reflect"
-	"runtime"
 	"testing"
 )
 
@@ -21,7 +20,7 @@ func TestLocalFilesClean(t *testing.T) {
 	if SamePath(a, b) || !SamePath(a, a+string(filepath.Separator)+".") {
 		t.Error("SamePath")
 	}
-	if upper := filepath.Join(filepath.Dir(a), "MUSIC"); SamePath(upper, filepath.Join(filepath.Dir(a), "music")) != (runtime.GOOS != "linux") {
+	if upper := filepath.Join(filepath.Dir(a), "MUSIC"); !SamePath(upper, filepath.Join(filepath.Dir(a), "music")) {
 		t.Error("SamePath of names of other cases")
 	}
 }

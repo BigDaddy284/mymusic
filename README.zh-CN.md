@@ -230,10 +230,10 @@ go test ./...                  # the app's tests
 bun run typecheck              # the plugin SDK and the community's plugins
 go run ./tools/registry -check # the community registry
 bun run build                  # the packaged app for this system, in build/
-bun run build -- -platform windows/amd64,linux/amd64,linux/arm64
+bun run build -- -platform windows/amd64,windows/arm64
 ```
 
-在 Nix shell 中，请像正式发布那样，用 `.github/scripts/build.sh linux/amd64,linux/arm64` 构建 Linux 下载包。在那里直接运行 `bun run build`，得到的 Linux 程序会要求使用 Nix 自己的加载器，只能在 NixOS 上启动。`go run ./tools/elfloader build/linux-amd64` 可以检查构建出来的程序。
+在 Nix shell 中，请像正式发布那样，用 `.github/scripts/build.sh windows/amd64,windows/arm64` 构建 Windows 下载包。
 
 [网站](https://bigdaddy284.github.io/mymusic/)的源码在 `site/` 中，用 [Zola](https://www.getzola.org) 构建，`docs/` 中的指南就是网站的 `/docs/` 页面。运行 `go run ./tools/sitedocs && zola --root site serve` 可以预览网站。正式版本在 Nix shell 中构建，由 [GoReleaser](https://goreleaser.com) 发布（`.goreleaser.yaml`）。
 

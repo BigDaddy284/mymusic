@@ -9,7 +9,6 @@ Lyrics come from Unison, LRCLIB and YouTube Music, for the track that plays, whi
 
 - **The lyrics panel** opens at the right of the window, beside the page you're on, from the Lyrics button by the player (beside Queue), or with Ctrl+Shift+L (⇧⌘L on macOS). The same keys or button close it.
 - **The now playing page** shows them larger, under the player: open it from the cover in the player bar, the card at the foot of the sidebar, or Alt+4 (⌥4).
-- **The [notch player](desktop.md#the-player-around-the-notch),** on a MacBook with a notch, shows the line sung now, with the line before and the line after, in Latin letters when you show the lyrics so.
 
 ![The lyrics panel at the right of the window, beside Library › Liked: its Synced and Plain text choice, the Translate and Romaji switches, and the lyrics of アイドル by YOASOBI, the line sung now lighting up in the accent colour](shots/lyrics.webp)
 
@@ -127,10 +126,6 @@ These are romanized on your computer, and nothing of them is sent, each by the o
 Arabic doesn't write its short vowels, which no rule can tell, so Arabic's romanization comes from Unison, which has Google romanize the lyrics with them. While Romanize is on, the lyrics of the track playing and its video ID go to Unison. Until its romanization comes, and when it can't, Arabic shows in Latin letters made on your computer, by ALA-LC's plain form.
 
 For lyrics in another script that MyMusic doesn't romanize itself, the Romanize switch shows once you turn on Translate and their translation from Unison comes with Latin letters.
-
-## The notch player's line
-
-On a MacBook with a notch, the [notch player's](desktop.md#the-player-around-the-notch) panel shows the lyrics beside the player: the line sung now, larger, the line before and the line after it, following the music. It shows them in Latin letters as you chose for their language in the panel, with the line in Latin letters under the line sung now when you show them under. Plain lyrics say "No timed lyrics.", and a podcast episode shows its chapter instead, with those before and after it.
 
 ## Credits
 
