@@ -65,19 +65,9 @@ While casting, the device fetches the audio from MyMusic, over your local
 network: MyMusic serves it only while it casts, only to that device, at
 an address no one else could guess
 ([how casting works inside](architecture/cast.md)). So the first time you
-cast, your system may ask about it:
-
-- **Windows**: Windows Defender Firewall may ask whether MyMusic may take
-  connections from your network. Allow it on private networks, such as the
-  one at home.
-- **macOS**: macOS may ask whether MyMusic may find and connect to
-  devices on your local network. Allow it; System Settings › Privacy &
-  Security › Local Network changes it later.
-- **Linux**: a firewall such as ufw or firewalld that turns away incoming
-  connections keeps the device from fetching the audio. MyMusic serves it
-  at a port it picks each time, so allow incoming connections from your
-  local network, as `sudo ufw allow from 192.168.1.0/24` does for the
-  addresses 192.168.1.x.
+cast, Windows Defender Firewall may ask whether MyMusic may take
+connections from your network. Allow it on private networks, such as the
+one at home.
 
 When the device can't reach MyMusic, MyMusic tells you: "The cast device
 couldn't reach MyMusic: let MyMusic take connections from your network in

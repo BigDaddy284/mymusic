@@ -5,7 +5,7 @@ what they show beside the main thread (`fetch`), and a window's state
 belongs to its main thread: what finishes elsewhere comes back through
 `update`.
 
-- **Refresh** (F5, ⇧⌘R on macOS, `refresh.go`) asks again for the keys
+- **Refresh** (F5, `refresh.go`) asks again for the keys
   the page shown and the side panel fetched in the frame before, as
   `fetch` collects them, and renders the plugins' views again
   (`View.Remount`). The page keeps its answers until the new ones come,
@@ -36,12 +36,10 @@ belongs to its main thread: what finishes elsewhere comes back through
   page shown (`pageScroll`) takes its scrolling first, with
   `HandleInput`, before MyGo scrolls anything. A pull starts only on a
   page at rest at its top: scrolling that came up to the top goes on to
-  its gesture's end without pulling, as Windows and Linux send a fling's
-  momentum as any scrolling, and macOS's, which MyGo marks (`Momentum`),
-  never pulls. A touchpad pulls by its distance (`Precise`), a wheel by
+  its gesture's end without pulling, as Windows sends a fling's momentum
+  as any scrolling, and momentum MyGo marks (`Momentum`) never pulls. A touchpad pulls by its distance (`Precise`), a wheel by
   its notches, three of which go far enough. A gesture ends once no
-  scrolling came for a quarter of a second, or as the fingers leave,
-  which macOS and Linux tell with an event that scrolls nothing; let go
+  scrolling came for a quarter of a second; let go
   past the threshold, the pull runs Refresh. A strip above the page's
   content, which is keyed so that it keeps its state, opens with the
   pull. Scrolling sideways, or with a modifier, as Shift+wheel, never
@@ -92,12 +90,10 @@ belongs to its main thread: what finishes elsewhere comes back through
 - **Keep on top** (`keepontop.go`): the main window opens above the
   others while `keepOnTop` is on (`WindowOptions.AlwaysOnTop`), and each
   frame of it compares the setting with what the window was told last,
-  so that the switch, the command palette, macOS's Window › Keep on Top
-  and settings.json all reach it, and tells the window once
+  so that the switch, the command palette and settings.json all reach
+  it, and tells the window once
   (`Window.SetAlwaysOnTop`, through `keepAbove`, which tests replace).
-  The Window menu's item is a checkbox whose label is fixed, as MyGo
-  builds the menu as it opens; the frame checks it as the setting
-  changes. The mini player's window is always on top, by its own options.
+  The mini player's window is always on top, by its own options.
 
 - **The top bar and the rows pinned under it** (`compacthead.go`). The
   page shown keeps where it scrolled in a `ui.ScrollState`

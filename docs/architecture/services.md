@@ -56,8 +56,7 @@
   logs what MyMusic connects through, without user names or passwords,
   and gives yt-dlp a `--proxy` where yt-dlp wouldn't find that proxy
   itself. A package that clones `http.DefaultTransport` as it
-  initializes imports it, as `internal/online` does. macOS and Linux
-  keep the environment's proxy alone.
+  initializes imports it, as `internal/online` does.
 - **`internal/match`** finds a Spotify track's recording on YouTube Music, by
   title, artists and duration, for playback without a Spotify device. It
   also finds the song of a music video, by its title and artists, which

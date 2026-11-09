@@ -33,11 +33,9 @@
   less its LAME tag's delay and padding, else its first frame's bitrate
   and its size. With ffmpeg on the PATH, the tests play a file of each
   kind it makes against its decode.
-  `internal/audio/output` plays it on the system's output, without cgo:
-  through WASAPI on Windows, an Audio Queue on macOS, and PulseAudio,
-  which PipeWire serves too, or ALSA on Linux. `Devices` lists the
-  output devices (`devices.go` puts together what each system tells, so
-  that tests give it what a system would), and a stream whose `Options`
+  `internal/audio/output` plays it on the system's output, without cgo,
+  through WASAPI. `Devices` lists the output devices (`devices.go` puts
+  together what WASAPI tells, so that tests give it what WASAPI would), and a stream whose `Options`
   name one plays on it while it's there, checks every second that it
   still is, plays on the default device meanwhile, and tells `Moved`
   each time it moves. `internal/app/outputdevice.go` keeps the device

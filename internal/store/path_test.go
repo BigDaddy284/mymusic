@@ -9,7 +9,7 @@ import (
 // The paths of these tests are made up; those that aren't UTF-8 hold a
 // byte of Latin-1.
 var (
-	// textPaths are written as they are: UTF-8, of every system's kind,
+	// textPaths are written as they are: UTF-8, of every kind,
 	// decomposed, and one that holds a replacement
 	// character of its own.
 	textPaths = []string{

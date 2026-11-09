@@ -18,10 +18,9 @@ the pages, the player bar, the queue, the lyrics, the mini player and the
 command palette. There is no browser engine inside MyMusic drawing its interface,
 as there is in an Electron app, and no web page behind the windows.
 
-A web view of the system (WebView2 on Windows, WebKit on macOS, WebKitGTK
-on Linux) opens only for three things, and only while it's needed:
+A web view of the system, WebView2, opens only for three things, and only while it's needed:
 
-- **Spotify's player**, on Windows, when Spotify tracks play in MyMusic
+- **Spotify's player**, when Spotify tracks play in MyMusic
   itself. It opens at the first Spotify track that plays there.
 - **Google's sign-in page**, when you sign in to YouTube Music.
 - **The picture of music videos**, when "Show the video of music videos"
@@ -150,15 +149,12 @@ what each of these gets.
   you chose to install updates without asking. Later asks again at the
   next start, or after a day; skip this version waits for the version
   after it.
-- **How it installs.** The installers, the portable zip, the macOS app and
-  the Linux archive replace themselves. They download the update file of
-  the release made for their system, or a smaller delta from the version
+- **How it installs.** The installer and the portable zip replace
+  themselves. They download the update file of the release made for
+  their system, or a smaller delta from the version
   before. Each is signed with MyMusic's key, whose public half is built
   into the app: a file whose signature doesn't match is never installed.
   The new version runs once MyMusic restarts.
-- **Copies that can't replace their own files**, the `.deb`, the `.rpm`,
-  and the AppImage, still look for new versions, and offer the
-  new version's file for you to install.
 
 ### yt-dlp and the JavaScript runtime
 
@@ -169,19 +165,16 @@ Tools shows both.
 - **MyMusic's own yt-dlp** is the one you install from Settings ›
   Playback or Home. MyMusic downloads it from yt-dlp's releases on
   GitHub, checks it against the checksums the release publishes, and
-  keeps it in the `bin` folder of its data folder. On macOS it installs
-  yt-dlp's unpacked build, which starts in 0.2 seconds rather than 8. A
-  minute after each start, and then once a day, MyMusic replaces it when
+  keeps it in the `bin` folder of its data folder. A minute after each
+  start, and then once a day, MyMusic replaces it when
   a newer release is out.
-- **A yt-dlp of your own**, from a package manager, pip, Homebrew or
-  winget, or the one you name under Own yt-dlp, is never changed.
+- **A yt-dlp of your own**, from a package manager, pip or winget, or the one you name under Own yt-dlp, is never changed.
   MyMusic asks GitHub for the latest release at most every 6 hours, and
   when yours is older, Home and Settings › Playback say so, with the
   command that updates it when its folder tells how you installed it.
   They also offer MyMusic's own instead.
 - **The JavaScript runtime** is yours: MyMusic installs none. It looks
   for Deno, Node.js, Bun and QuickJS, in that order, in its `bin` folder,
-  on your `PATH`, and where Homebrew, Deno, Bun, Volta, Scoop and WinGet
-  install them, or takes the one you choose under JavaScript runtime. You
-  update it the way you installed it. The Flatpak brings Node.js, which
-  updates with the Flatpak.
+  on your `PATH`, and where Deno, Bun, Volta, Scoop and WinGet install
+  them, or takes the one you choose under JavaScript runtime. You update
+  it the way you installed it.

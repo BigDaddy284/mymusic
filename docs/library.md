@@ -7,7 +7,7 @@ What MyMusic keeps itself, as your liked and disliked songs, your mixes, the art
 
 ## The Library page
 
-Library, in the sidebar or with Alt+2 (⌥2 on macOS), has these pivots, each with how many it holds:
+Library, in the sidebar or with Alt+2, has these pivots, each with how many it holds:
 
 - **Liked:** the songs you liked, of every service.
 - **Mixes:** the playlists you make in MyMusic.
@@ -21,7 +21,7 @@ Library, in the sidebar or with Alt+2 (⌥2 on macOS), has these pivots, each wi
 
 ## Liked songs
 
-Like a track with the heart in the player bar, on the now playing page, in the [mini player](desktop.md#the-mini-player) or on its row, with Add to liked songs in its menu, or with Ctrl+L (⌘L on macOS) for the track playing. The heart again, or Remove from liked songs, takes it back.
+Like a track with the heart in the player bar, on the now playing page, in the [mini player](desktop.md#the-mini-player) or on its row, with Add to liked songs in its menu, or with Ctrl+L for the track playing. The heart again, or Remove from liked songs, takes it back.
 
 - **One list for both services.** Library › Liked, Liked songs in the sidebar, Home's Liked songs tile and Alt+3 open it.
 - **Signed in, a like reaches the service too:** a Spotify track is saved to your Spotify library, and a YouTube Music track is liked on YouTube Music.
@@ -45,7 +45,7 @@ A mix is a playlist of MyMusic's own, which holds tracks of every service.
 - **Add tracks** with Add to mix in a track's menu, then the mix's name. A track the mix holds already stays out, and the toast says Already in, with Add anyway, which adds it a second time.
 - **Copy a service's playlist** with Copy into a mix you can extend, in the playlist's More menu: the mix keeps its tracks, and any track can join them. A long playlist is read whole first, which can take a while.
 - **A mix's page** has Play, Shuffle and Download, the search and Sort of its tracks, and in its More menu Rename and Delete. Deleting asks first; the tracks stay where they came from. Remove from this mix, in a track's menu there, takes it out.
-- **Put a mix in order** by dragging a track onto another, which it takes the place of: a line shows where it goes. From the keyboard, <kbd>Tab</kbd> to a track's play button, then <kbd>Alt</kbd> <kbd>↑</kbd> and <kbd>Alt</kbd> <kbd>↓</kbd> (<kbd>⌥</kbd> <kbd>↑</kbd> and <kbd>⌥</kbd> <kbd>↓</kbd> on macOS) move it a place up or down, and the focus goes with it. The mix keeps its new order at once. While its tracks show sorted or searched, they don't move: choose the mix's own order in Sort and clear the search first.
+- **Put a mix in order** by dragging a track onto another, which it takes the place of: a line shows where it goes. From the keyboard, <kbd>Tab</kbd> to a track's play button, then <kbd>Alt</kbd> <kbd>↑</kbd> and <kbd>Alt</kbd> <kbd>↓</kbd> move it a place up or down, and the focus goes with it. The mix keeps its new order at once. While its tracks show sorted or searched, they don't move: choose the mix's own order in Sort and clear the search first.
 
 Your mixes show in the sidebar under Your mixes, with how many tracks each holds, and on Home's Your mixes tile and shelf.
 
@@ -170,7 +170,7 @@ A playlist, an album, a mix or your liked songs that you downloaded download the
 
 Settings › Playback › Downloads shows how many tracks the downloads hold and their size, with Show, which opens Library › Downloads, and:
 
-- **Folder:** where they are, with open, change and, once you moved it, use the default. Moving the downloads asks first, and they wait meanwhile. By default, the folder is `%LocalAppData%\MyMusic\downloads` on Windows, `~/Library/Application Support/MyMusic/downloads` on macOS and `~/.local/share/MyMusic/downloads` on Linux: never a folder the system treats as a cache, whose files cleaning tools delete.
+- **Folder:** where they are, with open, change and, once you moved it, use the default. Moving the downloads asks first, and they wait meanwhile. By default, the folder is `%LocalAppData%\MyMusic\downloads`: never a folder the system treats as a cache, whose files cleaning tools delete.
 - **Download on metered connections:** off by default, so that downloads wait on a phone's hotspot and the like.
 - **Download songs added later:** on by default.
 

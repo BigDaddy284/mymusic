@@ -25,8 +25,8 @@ Settings › Appearance does, `act:mini` opens the mini player, which saves
 Music song a search finds to the library there, or takes it out, as its
 menu does, `act:spotify` logs whether MyMusic's own Spotify device
 could play, `act:title` logs the window's title, which the screenshots
-leave out, `act:nowplaying` the cover the system's media controls hold,
-as they tell it back on macOS, and `act:memory` and `act:heap` log the Go heap and save a
+leave out, `act:nowplaying` the cover MyMusic hands the system's media controls,
+and `act:memory` and `act:heap` log the Go heap and save a
 profile of it. Nothing plays unless the player is muted,
 or `MYMUSIC_SILENT=1` has the audio engine play into no device, which
 keeps the visualizer and the lyrics moving without a sound.

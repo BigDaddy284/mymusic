@@ -64,7 +64,7 @@ Signed in to YouTube Music, MyMusic and YouTube Music go on from each other's pl
 
 ## Spotify's episodes
 
-- **They play only from Spotify,** with ["How Spotify tracks play"](spotify.md#how-spotify-tracks-play) in Settings › Playback set to In MyMusic, from Spotify (on Windows and macOS) or On Spotify Connect, either of which needs Spotify Premium. YouTube Music has no recording of them.
+- **They play only from Spotify,** with ["How Spotify tracks play"](spotify.md#how-spotify-tracks-play) in Settings › Playback set to In MyMusic, from Spotify or On Spotify Connect, either of which needs Spotify Premium. YouTube Music has no recording of them.
 - **Where you left them:** Spotify tells MyMusic where you left an episode on another device. A sign-in to Spotify made before MyMusic had podcasts doesn't allow it: [sign in to Spotify](spotify.md#sign-in) again once, in Settings › Accounts.
 - **Speed:** Spotify plays its episodes at their own speed, so the speed button is dimmed while one plays.
 

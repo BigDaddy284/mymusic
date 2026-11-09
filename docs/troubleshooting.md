@@ -43,9 +43,9 @@ its **details**. The keyboard reaches **details** in the toast with
   installed every day, as an old one stops finding streams; one of your
   own, chosen there, you keep up to date yourself (`yt-dlp -U`, or your
   package manager).
-- **The JavaScript runtime is not found.** Opened from the Finder, the Dock
-  or a desktop menu, MyMusic does not get the `PATH` of your terminal. It
-  also looks where Homebrew, Deno, Bun, Volta, Scoop and WinGet install;
+- **The JavaScript runtime is not found.** Opened from the Start menu or
+  a shortcut, MyMusic does not get the `PATH` of your terminal. It also
+  looks where Deno, Bun, Volta, Scoop and WinGet install;
   elsewhere, choose the runtime in Settings › Playback.
 - **YouTube Music signed you out.** Settings › Accounts says so when YouTube
   [ends the session](accounts.md#when-youtube-ends-the-session), as it does
@@ -61,23 +61,14 @@ its **details**. The keyboard reaches **details** in the toast with
 - **Importing a browser's session fails.** Close the browser first: while
   it runs, it may hold its cookies, or not have saved a new sign-in yet.
   Recent Chrome on Windows seals its cookies against other programs:
-  import from Firefox there, or paste a cookie header. On macOS, reading
-  Safari's cookies takes Full Disk Access for MyMusic, in System
-  Settings › Privacy & Security. Zen and Helium are read from their
-  profile folders: give the folder when MyMusic doesn't find it. On
-  Linux, a browser installed from Flathub is in the list as "Chrome
-  (Flatpak)", and so on, read from its folder in `~/.var/app`: Firefox,
-  Chrome, Chromium, Edge and Brave.
+  import from Firefox there, or paste a cookie header. Zen and Helium are
+  read from their profile folders: give the folder when MyMusic doesn't
+  find it.
 - **Spotify plays from YouTube Music, not in MyMusic.** Spotify
-  [plays in MyMusic](spotify.md#how-spotify-tracks-play) on Windows and
-  macOS, with Premium, and with a sign-in made since MyMusic played
+  [plays in MyMusic](spotify.md#how-spotify-tracks-play) with Premium,
+  and with a sign-in made since MyMusic played
   Spotify itself: Settings › Playback asks you to sign in again when yours
   is older.
-- **The visualizer stays flat for Spotify on a Mac.** It hears Spotify in
-  MyMusic from macOS 14.2 on, once you allowed MyMusic to record what
-  other apps play, as macOS asks the first time. Allow it in System
-  Settings › Privacy & Security › Screen & System Audio Recording, then
-  play the track again. The log says why it can't hear.
 - **Spotify refuses the sign-in.** A Spotify app in development mode serves
   only while its owner has Premium, and only the accounts added under Users
   Management in its settings, by their Spotify email. Settings › Accounts
@@ -97,15 +88,6 @@ its **details**. The keyboard reaches **details** in the toast with
   then tells of them: attach them to the issue. They hold only how
   MyMusic uses its memory ([the logs folder](data-and-privacy.md#the-logs-folder)).
   It's off again at the next start.
-- **No tray icon on Linux.** The [tray](desktop.md#the-tray) needs
-  `libayatana-appindicator3` and a desktop that shows AppIndicator icons;
-  GNOME needs its AppIndicator extension. Without it, closing the window
-  quits MyMusic.
-- **Linux does not start it.** Install GTK 3, as
-  [Getting started](getting-started.md#the-first-launch) says.
-- **macOS cannot check the app,** as it is not notarized yet: open it from
-  System Settings › Privacy & Security › Open Anyway, as
-  [Getting started](getting-started.md#the-first-launch) says.
 
 ## Known issues
 
@@ -116,16 +98,13 @@ its **details**. The keyboard reaches **details** in the toast with
 - YouTube Music has no sign-in for other apps: MyMusic signs in with a
   browser session, which can do with your account what YouTube Music can.
   Treat it like a password; sign out in Settings › Accounts to delete it.
-- Spotify plays in MyMusic itself only on Windows and macOS, whose
-  webviews play Spotify's protected audio: WebKitGTK on Linux does not, so
-  Spotify Connect plays it there.
 - Spotify allows apps in development mode up to five users, while their
   owner has Premium, and lets them read less: search shows ten results of
   each kind, and the tracks of playlists you do not own stay hidden.
 - Tracks YouTube restricts to some countries, to signed-in adults or to a
   channel's members do not play, as streams are found signed out.
-- The macOS app is not notarized and the Windows installer is not signed
-  yet, so the first launch asks you to allow it.
+- The Windows installer is not signed yet, so SmartScreen may ask you to
+  allow the first launch.
 - The portable zip does not register
   [`mymusic://` links](desktop.md#mymusic-links), and Windows on Arm is
   less tested than the rest.

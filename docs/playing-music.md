@@ -7,7 +7,7 @@ This page covers finding music, the queue, the sound settings and the ways Spoti
 
 ## Search
 
-The search box at the top of the window, "Search Spotify and YouTube Music", searches both services at once. Ctrl+F (⌘F on macOS) puts the cursor in it. As you type, it suggests searches from YouTube Music; Enter, or a suggestion, opens the results. Below the searches, it suggests songs, albums, artists and playlists from YouTube Music: a song plays at once, with its radio after it when Autoplay is on, and the others open their page. The arrow keys move through both. With nothing typed, the Search page lists your recent searches, which its clear link forgets.
+The search box at the top of the window, "Search Spotify and YouTube Music", searches both services at once. Ctrl+F puts the cursor in it. As you type, it suggests searches from YouTube Music; Enter, or a suggestion, opens the results. Below the searches, it suggests songs, albums, artists and playlists from YouTube Music: a song plays at once, with its radio after it when Autoplay is on, and the others open their page. The arrow keys move through both. With nothing typed, the Search page lists your recent searches, which its clear link forgets.
 
 - **The pivots** at the top of the results are All, Songs, Videos, Albums, Artists, Playlists and Podcasts, each with how many it found. All shows the first ten songs, the first five videos, then shelves of artists, albums and playlists.
 - **Videos** are YouTube's videos that aren't songs of YouTube Music's catalog, such as DJ sets, live recordings and fans' uploads, and they play as songs do. Only YouTube Music has them.
@@ -40,7 +40,7 @@ A track that loads can't be paused or moved until you hear it: the play button s
 
 - where it comes from: Spotify, YouTube Music, a download, or a file on this computer, and of a Spotify track, the recording on YouTube Music that plays for it;
 - its format, as Opus in WebM, AAC in MP4 or FLAC, its bitrate, sample rate, bit depth (of FLAC and WAV), channels and length;
-- the file it plays from, with its size: a file on this computer, with its tags, its download, or the offline cache's copy. Show in Explorer (Show in Finder on macOS) opens the folder of a file on this computer or of a download;
+- the file it plays from, with its size: a file on this computer, with its tags, its download, or the offline cache's copy. Show in Explorer opens the folder of a file on this computer or of a download;
 - of the track playing, what MyMusic's audio engine plays: from where, its 5.1 surround audio when it plays it, and whether it converts it to 48 kHz;
 - how loud it plays: YouTube's measure of it, and how far [Even loudness](#even-loudness-volume-levelling-and-the-volume) turns it down.
 
@@ -48,7 +48,7 @@ It tells what MyMusic knows without asking a service: a track that hasn't played
 
 ## The queue and Up next
 
-The Queue button by the player, or Ctrl+J (⌘J), shows Up next at the right of the window: the track playing, then what plays after it.
+The Queue button by the player, or Ctrl+J, shows Up next at the right of the window: the track playing, then what plays after it.
 
 - **Play next,** in a track's or a list's menu, puts it right after the track playing. **Add to queue** puts it after the tracks you added, and before those of the radio.
 - **Drag** a track in Up next to move it, and use the × on its row to take it out. Clear takes out every track after the one playing. Double-click a track to play it.
@@ -58,8 +58,8 @@ The Queue button by the player, or Ctrl+J (⌘J), shows Up next at the right of 
 
 ## Shuffle and repeat
 
-- **Shuffle** (Ctrl+S, ⌘S): the tracks after the one playing play in a random order, with the tracks before it that haven't played yet among them. Your own tracks stay ahead of the radio's. Turning it off puts the queue back in its order, and the tracks you added with Play next or Add to queue back where you added them. The Shuffle buttons of albums, playlists, mixes and liked songs start at a random song you don't dislike.
-- **Repeat** (Ctrl+R, ⌘R) goes from off to Repeat: all, which plays the queue again from its start, to Repeat: one, which plays the track again, and back to off.
+- **Shuffle** (Ctrl+S): the tracks after the one playing play in a random order, with the tracks before it that haven't played yet among them. Your own tracks stay ahead of the radio's. Turning it off puts the queue back in its order, and the tracks you added with Play next or Add to queue back where you added them. The Shuffle buttons of albums, playlists, mixes and liked songs start at a random song you don't dislike.
+- **Repeat** (Ctrl+R) goes from off to Repeat: all, which plays the queue again from its start, to Repeat: one, which plays the track again, and back to off.
 - **Previous** (Ctrl+←) starts the track again once it played for more than 3 seconds, and goes to the track before otherwise. **Next** (Ctrl+→) goes to the next one.
 
 ## Autoplay and radios
@@ -107,7 +107,7 @@ MyMusic plays songs faster or slower, from half their speed to three times it, a
 - **The commands** Speed up and Slow down move the speed to the next quarter (1.1× goes up to 1.25×), and Normal speed sets 1×. They have no keys until you give them some in Settings › Shortcuts.
 - **The [mini player](desktop.md#the-mini-player)** has the speed in its menu, on a right click.
 
-The player bar shows the speed after the artists while it isn't 1×. The clock, the seek bar and synced lyrics keep the track's own time, a crossfade lasts the seconds you hear, and Last.fm counts how much of a song you heard. The system's media controls move on at the speed, and setting the rate over MPRIS on Linux sets it.
+The player bar shows the speed after the artists while it isn't 1×. The clock, the seek bar and synced lyrics keep the track's own time, a crossfade lasts the seconds you hear, and Last.fm counts how much of a song you heard. The system's media controls move on at the speed.
 
 Spotify plays its own tracks and episodes at their own speed, in MyMusic or on Spotify Connect, and live streams play as they're broadcast: for those, the speed button is dimmed, and its tip tells why. Spotify tracks played from YouTube Music take the speed.
 
@@ -117,7 +117,7 @@ Dislike a song you never want to hear again:
 
 - with the thumbs-down beside the heart, in the player bar, on the now playing page and in the mini player;
 - with Dislike in any track's menu;
-- with Ctrl+D (⌘D on macOS) for the song playing, or from any app with a [global shortcut](desktop.md#global-shortcuts) of your own.
+- with Ctrl+D for the song playing, or from any app with a [global shortcut](desktop.md#global-shortcuts) of your own.
 
 A disliked song that plays moves on at once, and a toast's undo takes the dislike back and goes back to the song where it was. From then on, the queue passes over the song as it moves on, forward and back, radios leave it out, and the play buttons of albums, playlists, mixes and artists start at their first song you don't dislike. A song you pick yourself still plays, and Up next shows the songs it skips.
 
@@ -149,7 +149,7 @@ Music videos can show their picture on the now playing page, in place of the cov
 
 - The picture is muted and follows MyMusic's own sound, pausing and seeking with it.
 - It shows only for official music videos and other uploads, never for songs or live streams.
-- It needs the system's web view, WebView2 on Windows and WebKitGTK on Linux: without one, the cover stays, and the setting says why. [Where the audio streams come from](streams.md#the-picture-of-music-videos) tells how the picture keeps in time.
+- It needs WebView2, the system's web view: without it, the cover stays, and the setting says why. [Where the audio streams come from](streams.md#the-picture-of-music-videos) tells how the picture keeps in time.
 - It's fetched as it plays, about 3 MB a minute at 360p, and under 1 MB with data saver. Nothing is fetched while it's paused or not shown: on another page, with the window hidden or minimized, or with the mini player open.
 - While your system asks for less motion, a button on the cover plays the picture.
 - A web view runs beside MyMusic while pictures show, which takes memory until a minute after the last one.
@@ -162,7 +162,7 @@ MyMusic plays on the system's default output device, and moves to the new one wh
 - **The speaker button** beside the volume chooses too, where the window is wide enough for it beside the player bar's other buttons, and while there's a choice to make: more than one device, or one chosen. It turns to the accent while a device is chosen, and its tip names it.
 - **When the device goes away,** as headphones you unplug, MyMusic plays on the system's default device and says so, and goes back to the device a second after it's back, saying so too. A device that's there but can't play, as one another app holds, gives way to the default for 10 seconds before MyMusic tries it again. Settings and the menu still show the device chosen, as not connected.
 - **Where it doesn't apply:** a [cast device](casting.md) plays what you cast on itself, and Spotify tracks that Spotify plays, in MyMusic itself or on Spotify Connect, play where Spotify plays them: in MyMusic, on the system's default device. The menu says so while one plays.
-- **What each system lists:** on Windows, its playback devices that are enabled; on macOS, its devices with outputs, as Sound settings shows them; on Linux, PulseAudio's or PipeWire's sinks, or, without either, ALSA's devices. [The audio engine](audio-engine.md#the-output-on-each-system) tells more.
+- **What it lists:** Windows' playback devices that are enabled. [The audio engine](audio-engine.md#the-output) tells more.
 
 5.1 surround, the visualizer and Even loudness work on any device.
 
@@ -180,8 +180,8 @@ Some YouTube Music tracks have a 5.1 surround mix beside their stereo one. While
 
 "How Spotify tracks play", in Settings › Playback › Spotify tracks, has three choices. Signing in to Spotify comes first: see [Spotify](spotify.md). [How Spotify tracks play](spotify-playback.md), under How it works, tells what each way does inside.
 
-- **In MyMusic, from Spotify,** the default on Windows and macOS. MyMusic plays the track itself, at Spotify's own quality, with no Spotify app open, and shows among your Spotify devices while it plays. It needs Spotify Premium, and Windows or macOS, whose web views can play Spotify's protected audio; on Linux the choice is greyed out and says why. A sign-in made before MyMusic played Spotify itself doesn't allow it: Settings › Playback then asks you to sign in again, and until you do, Spotify tracks play from YouTube Music.
-- **On Spotify Connect,** the default on Linux. A Spotify device plays the track: your Spotify app on this computer, your phone or a speaker. It needs Spotify Premium and a device with Spotify open. The Device row under the choice, or the devices button by the player, picks the device; by default, the active one. The player bar says "on Spotify".
+- **In MyMusic, from Spotify,** the default. MyMusic plays the track itself, at Spotify's own quality, with no Spotify app open, and shows among your Spotify devices while it plays. It needs Spotify Premium. A sign-in made before MyMusic played Spotify itself doesn't allow it: Settings › Playback then asks you to sign in again, and until you do, Spotify tracks play from YouTube Music.
+- **On Spotify Connect.** A Spotify device plays the track: your Spotify app on this computer, your phone or a speaker. It needs Spotify Premium and a device with Spotify open. The Device row under the choice, or the devices button by the player, picks the device; by default, the active one. The player bar says "on Spotify".
 - **In MyMusic, from YouTube Music.** MyMusic plays the track's recording on YouTube Music, with the equalizer, crossfade and the visualizer. It works without Premium. The player bar says "via YouTube Music", and Find another YouTube Music match in the track's menu looks again when the recording is wrong. In `settings.json`, this is `"spotifyPlayback": "match"`.
 
 When Spotify can't play a track the way you chose, MyMusic plays it from YouTube Music instead, and says why once. Spotify's [podcast episodes](podcasts.md) play only from Spotify, in the first two ways.

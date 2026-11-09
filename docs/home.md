@@ -16,7 +16,7 @@ The pivots at the top keep Everything, only Yours, only Spotify's or only YouTub
 
 **Edit home**, at the top of Home, lists its shelves in the order Home shows them, and keeps each change at once. **Done** shows Home again.
 
-- **Move a shelf:** drag it onto another, which it takes the place of. Or click its row, or reach it with Tab, and press Alt+Up or Alt+Down (⌥↑ and ⌥↓ on macOS) to move it a place up or down.
+- **Move a shelf:** drag it onto another, which it takes the place of. Or click its row, or reach it with Tab, and press Alt+Up or Alt+Down to move it a place up or down.
 - **Hide a shelf:** its × hides it. The shelves you hid wait under the others, under Hidden; **Show** brings one back where it was.
 - **Add a shelf:** Add a shelf adds one of these, first, where you see it:
   - one of your [mixes](library.md#mixes);

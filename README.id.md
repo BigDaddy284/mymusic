@@ -8,7 +8,7 @@
 
 <p align="center"><strong>Satu pemutar untuk YouTube Music dan Spotify.</strong></p>
 
-<p align="center">Klien YouTube Music dan Spotify untuk macOS, Windows, dan Linux. YouTube Music bisa dipakai tanpa akun. Satu pencarian, satu antrean, playlist campuran, lirik tersinkron, tema, dan plugin.</p>
+<p align="center">Klien YouTube Music dan Spotify untuk Windows. YouTube Music bisa dipakai tanpa akun. Satu pencarian, satu antrean, playlist campuran, lirik tersinkron, tema, dan plugin.</p>
 
 <p align="center"><sub>Ini terjemahan dari <a href="README.md">README berbahasa Inggris</a>. Jika ada perbedaan, yang terbaru adalah versi bahasa Inggris.</sub></p>
 
@@ -19,7 +19,7 @@
   <a href="https://github.com/bigdaddy284/mymusic/releases"><img src="https://img.shields.io/github/downloads/bigdaddy284/mymusic/total" alt="Unduhan" /></a>
   <a href="https://pkg.go.dev/github.com/bigdaddy284/mymusic"><img src="https://pkg.go.dev/badge/github.com/bigdaddy284/mymusic.svg" alt="Referensi Go" /></a>
   <a href="go.mod"><img src="https://img.shields.io/github/go-mod/go-version/bigdaddy284/mymusic" alt="Versi Go" /></a>
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey" alt="macOS, Windows, dan Linux" />
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey" alt="Windows" />
   <a href="#lisensi"><img src="https://img.shields.io/badge/license-MIT%20or%20GPL--3.0-blue" alt="MIT atau GPL-3.0" /></a>
 </p>
 
@@ -91,7 +91,7 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 ### Tiga cara memutar Spotify
 
 - **Langsung di MyMusic,** dengan kualitas Spotify, tanpa membuka aplikasi
-  Spotify (Premium, di Windows dan macOS).
+  Spotify (Premium).
 - **Lewat Spotify Connect:** di aplikasi Spotify, ponsel, atau speaker Anda.
 - **Dari YouTube Music:** MyMusic memutar rekaman lagu Spotify tersebut yang
   ada di YouTube Music, yang bisa diputar tanpa Premium.
@@ -105,7 +105,7 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 
 ### Di desktop Anda
 
-- Tombol media dan kontrol media sistem di Windows, macOS, dan Linux.
+- Tombol media dan kontrol media Windows.
 - Tombol pemutar di thumbnail taskbar Windows.
 - Kontrol di tray, notifikasi setiap kali lagu baru diputar, dan berjalan
   otomatis saat login.
@@ -130,9 +130,7 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
   pilihan Anda sendiri untuk perintah apa pun (termasuk perintah dari
   plugin), dan palet perintah (<kbd>Ctrl</kbd> <kbd>K</kbd>) untuk sisanya.
 - **File pengaturan.** Pengaturan Anda tersimpan sebagai `settings.json` di
-  folder data Anda (`%AppData%\MyMusic` di Windows,
-  `~/Library/Application Support/MyMusic` di macOS, `~/.config/MyMusic` di
-  Linux), jadi bisa Anda simpan bersama dotfiles Anda. Simpan file itu saat
+  folder data Anda (`%AppData%\MyMusic`), jadi bisa Anda simpan bersama dotfiles Anda. Simpan file itu saat
   MyMusic berjalan, dan perubahannya langsung berlaku; file ini bisa dibuka
   lewat Settings › Desktop › Settings file (Pengaturan › Desktop › File
   pengaturan).
@@ -153,103 +151,45 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 
 ## Pemasangan
 
-Unduh file untuk sistem Anda dari
+MyMusic berjalan di Windows 10 dan 11. Unduh dari
 [rilis terbaru](https://github.com/bigdaddy284/mymusic/releases/latest):
 
-| Sistem | Unduhan |
+| Windows | Unduhan |
 |---|---|
-| macOS 12 dan yang lebih baru (Apple silicon dan Intel) | [`mymusic-<version>-macos-universal.dmg`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Windows 10 dan 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Windows, portabel, tanpa instalasi | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Debian, Ubuntu, dan turunannya | [`mymusic-<version>-linux-<arch>.deb`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Fedora, openSUSE, dan turunannya | [`mymusic-<version>-linux-<arch>.rpm`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Linux apa saja, satu file | [`mymusic-<version>-linux-<arch>.AppImage`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Linux apa saja, dalam sandbox (Flatpak) | [`mymusic-<version>-linux-<arch>.flatpak`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Linux apa saja, di folder home Anda | [`mymusic-<version>-linux-<arch>.tar.gz`](https://github.com/bigdaddy284/mymusic/releases/latest), beserta `install.sh` |
+| 10 dan 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Portabel, tanpa instalasi | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` adalah `amd64` untuk x64 dan `arm64` untuk Arm. Setiap rilis
 menyertakan `SHA256SUMS` untuk memeriksa file yang Anda unduh. Anda tidak
-perlu file bernama `update-…`, `….delta`, `mymusic-<version>-macos-…`, atau
-`-windows-<arch>.tar.gz`: file-file itu dipakai aplikasi yang sudah
-terpasang untuk memperbarui dirinya.
+perlu file bernama `update-…`, `….delta`, atau `-windows-<arch>.tar.gz`:
+file-file itu dipakai aplikasi yang sudah terpasang untuk memperbarui
+dirinya.
 
-Installer, zip portabel, dan arsip Linux bisa memperbarui dirinya sendiri.
-`.deb`, `.rpm`, AppImage, dan Flatpak tidak bisa menimpa file instalasinya
-sendiri, jadi MyMusic akan memberi tahu Anda saat versi baru tersedia dan
-mengunduhkannya untuk Anda. Untuk zip portabel, ekstrak di mana saja lalu
-buka `MyMusic.exe`. Untuk AppImage, jadikan file itu bisa dijalankan
-(`chmod +x`) lalu buka. Untuk Flatpak, buka dengan pusat perangkat lunak
-(software center) Anda, atau jalankan
-`flatpak install ./mymusic-<version>-linux-<arch>.flatpak`; saat pertama
-kali, Flatpak akan mengambil runtime GNOME dari Flathub.
+Installer dan zip portabel bisa memperbarui dirinya sendiri. Untuk zip
+portabel, ekstrak di mana saja lalu buka `MyMusic.exe`.
 
 ### Pertama kali dijalankan
 
-- **macOS:** aplikasi ini belum dinotarisasi oleh Apple, jadi saat pertama
-  kali Anda membukanya, macOS akan memberi tahu bahwa aplikasi ini tidak bisa
-  diperiksa. Tetap buka aplikasinya lewat
-  System Settings › Privacy & Security › Open Anyway (Pengaturan Sistem ›
-  Privasi & Keamanan › Tetap Buka), atau jalankan perintah ini sekali di
-  Terminal:
-
-  ```sh
-  xattr -dr com.apple.quarantine /Applications/MyMusic.app
-  ```
-- **Windows:** installer ini belum ditandatangani, jadi SmartScreen mungkin
-  memberi peringatan: pilih More info (Info selengkapnya), lalu Run anyway
-  (Tetap jalankan). Masuk ke YouTube Music dan memutar Spotify di MyMusic
-  memerlukan WebView2 Runtime, yang sudah ada di Windows 11.
-- **Linux:** MyMusic memerlukan GTK 3, serta PulseAudio (PipeWire juga
-  menyediakannya) atau ALSA. Masuk ke YouTube Music memerlukan WebKitGTK
-  4.1, ikon tray memerlukan `libayatana-appindicator3`, dan menyimpan data
-  login Anda di keyring sistem memerlukan `libsecret`. `.deb` dan `.rpm`
-  sudah memasang semuanya, dan Flatpak membawanya sendiri; untuk AppImage
-  dan arsip:
-
-  ```sh
-  # Debian and Ubuntu
-  sudo apt install libgtk-3-0 libpulse0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 libsecret-1-0
-  # Fedora
-  sudo dnf install gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
-  ```
-- **Semua sistem:** MyMusic menemukan sendiri audio sebagian besar lagu
-  YouTube Music. Untuk sisanya, seperti lagu yang dibuat untuk anak-anak,
-  MyMusic memakai [yt-dlp](https://github.com/yt-dlp/yt-dlp), yang
-  dipasang MyMusic untuk Anda dari Settings › Playback (Pengaturan ›
-  Pemutaran) dan selalu diperbaruinya. yt-dlp memerlukan runtime
-  JavaScript: [Deno](https://deno.com), Node.js, Bun, atau QuickJS. Flatpak
-  sudah menyertakan Node.js.
-
-### Flatpak
-
-Flatpak menjalankan MyMusic di dalam sandbox, yang bisa melihat jaringan,
-server suara, layar, dan GPU, tetapi sama sekali tidak bisa melihat folder
-home Anda. MyMusic menyimpan pengaturan dan pustakanya di
-`~/.var/app/io.github.bigdaddy284.mymusic`, terpisah dari instalasi `.deb`,
-`.rpm`, AppImage, atau arsip, dan keduanya bisa berjalan bersamaan. Untuk
-memindahkan pengaturan dan pustaka dari instalasi lain, tutup keduanya,
-salin `settings.json`, `library.json`, `queue.json`, dan folder `addons`
-dari `~/.config/MyMusic` ke
-`~/.var/app/io.github.bigdaddy284.mymusic/config/MyMusic`, lalu masuk lagi ke
-akun-akun Anda: data login tetap tersimpan di keyring instalasi yang lain.
-
-Di Flatpak, fitur berjalan otomatis saat login diatur lewat desktop Anda,
-yang mungkin akan meminta izin Anda terlebih dahulu, dan yt-dlp milik Anda
-sendiri harus berada di `~/.var/app/io.github.bigdaddy284.mymusic`, karena
-sandbox tidak bisa melihat folder lain. Aplikasi Discord yang bukan Flatpak
-hanya menampilkan lagu yang sedang diputar jika Discord sudah berjalan saat
-MyMusic dibuka, dan hanya sampai Discord dimulai ulang; Discord versi
-Flatpak tetap berfungsi, apa pun urutannya. Versi Flatpak ini masih baru:
-ceritakan kepada kami lewat [issue](https://github.com/bigdaddy284/mymusic/issues)
-bagaimana Flatpak berjalan di desktop Anda.
+- Installer ini belum ditandatangani, jadi SmartScreen mungkin memberi
+  peringatan: pilih More info (Info selengkapnya), lalu Run anyway (Tetap
+  jalankan).
+- Masuk ke YouTube Music dan memutar Spotify di MyMusic memerlukan
+  WebView2 Runtime, yang sudah ada di Windows 11. Di Windows 10, pasang
+  dari [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
+- MyMusic menemukan sendiri audio sebagian besar lagu YouTube Music. Untuk
+  sisanya, seperti lagu yang dibuat untuk anak-anak, MyMusic memakai
+  [yt-dlp](https://github.com/yt-dlp/yt-dlp), yang dipasang MyMusic untuk
+  Anda dari Settings › Playback (Pengaturan › Pemutaran) dan selalu
+  diperbaruinya. yt-dlp memerlukan runtime JavaScript:
+  [Deno](https://deno.com), Node.js, Bun, atau QuickJS.
 
 ### Akun (semuanya opsional)
 
 - **YouTube Music:** pilih Sign in to YouTube Music (Masuk ke YouTube Music)
   di Settings › Accounts (Pengaturan › Akun), lalu masuk ke Google di jendela
   yang terbuka. Apa yang Anda ketik hanya dikirim ke Google. MyMusic
-  menyimpan sesi itu dalam keadaan terenkripsi, dengan kunci di keyring
-  sistem Anda jika tersedia.
+  menyimpan sesi itu dalam keadaan terenkripsi, dengan kunci di Credential
+  Manager (Manajer Kredensial) Windows.
 - **Spotify:** Spotify hanya mengizinkan sebuah aplikasi melayani paling
   banyak lima pengguna, dan hanya selama pemiliknya berlangganan Premium,
   jadi Anda masuk dengan aplikasi Spotify buatan Anda sendiri. Hanya butuh
@@ -271,10 +211,8 @@ membahas masalah yang umum terjadi dan masalah yang sudah diketahui.
 
 Anda memerlukan [Go](https://go.dev/dl/) 1.27.3 atau yang lebih baru,
 [Bun](https://bun.sh) 1.2 atau yang lebih baru, yang menjalankan CLI MyGo,
-dan Git. MyGo tidak memerlukan compiler C, jadi sistem apa pun bisa
-membangun MyMusic untuk semua sistem.
-
-### Windows
+dan Git. MyGo tidak memerlukan compiler C, jadi Linux juga bisa
+membangun aplikasi Windows secara silang, seperti saat membuat rilis.
 
 ```powershell
 winget install GoLang.Go
@@ -295,47 +233,11 @@ Fitur masuk akun dan pemutaran Spotify memerlukan WebView2 Runtime, yang
 sudah ada di Windows 11. Di Windows 10, pasang dari
 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-### macOS
-
-Dengan [Homebrew](https://brew.sh):
-
-```sh
-brew install go oven-sh/bun/bun
-git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
-bun install
-bun run dev
-```
-
-### Linux
-
-Pasang Go dari [go.dev/dl](https://go.dev/dl/) (paket dari distribusi
-sering kali lebih lama dari 1.27.3), lalu Bun dan library yang dipakai
-MyMusic untuk berjalan:
-
-```sh
-curl -fsSL https://bun.sh/install | bash
-# Debian and Ubuntu
-sudo apt install git libgtk-3-0 libpulse0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 libsecret-1-0
-# Fedora
-sudo dnf install git gtk3 pulseaudio-libs webkit2gtk4.1 libayatana-appindicator-gtk3 libsecret
-```
-
-Kemudian:
-
-```sh
-git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
-bun install
-bun run dev
-```
-
 ### Nix
 
-Dengan [Nix](https://nixos.org), `nix develop` menyediakan alat-alat yang
-dipakai untuk membangun rilis, pada versi yang dikunci oleh `flake.lock`:
-Go, Bun, NSIS, GoReleaser, dan Zola. `nix build` membangun MyMusic untuk
-Linux dari kode sumber, ke dalam `result/`.
+Dengan [Nix](https://nixos.org) di Linux, `nix develop` menyediakan
+alat-alat yang dipakai untuk membangun rilis, pada versi yang dikunci oleh
+`flake.lock`: Go, Bun, NSIS, osslsigncode, GoReleaser, dan Zola.
 
 ### Pengembangan
 
@@ -348,13 +250,13 @@ bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
 bun run typecheck              # the plugin SDK and the community's plugins
 go run ./tools/registry -check # the community registry
-bun run build                  # the packaged app for this system, in build/
+bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
 
-Di shell Nix, buat file unduhan Windows dengan
+Di shell Nix, buat file unduhan dengan
 `.github/scripts/build.sh windows/amd64,windows/arm64`, seperti saat membuat
-rilis.
+rilis, dan `.github/scripts/package.sh` membuat zip portabelnya.
 
 [Situs web](https://bigdaddy284.github.io/mymusic/) ada di `site/`, dibangun
 dengan [Zola](https://www.getzola.org), dan panduan di `docs/` menjadi
@@ -477,11 +379,9 @@ Yang disimpan MyMusic di komputer Anda:
   Settings › Playback (Pengaturan › Pemutaran), beserta tingkat
   kenyaringannya menurut pengukuran YouTube.
 - Sampul yang pernah Anda lihat, hingga 256 MB.
-- Data login Anda, termasuk sesi YouTube Music, di keyring sistem. Di
-  Windows, jika Credential Manager (Manajer Kredensial) tidak bisa
-  menyimpannya, data itu disimpan di file yang dienkripsi untuk akun Windows
-  Anda; di Linux tanpa keyring, di file yang hanya bisa dibaca oleh pengguna
-  Anda.
+- Data login Anda, termasuk sesi YouTube Music, di Credential Manager
+  (Manajer Kredensial). Jika Credential Manager tidak bisa menyimpannya,
+  data itu disimpan di file yang dienkripsi untuk akun Windows Anda.
 - Log, tanpa data login Anda.
 
 Halaman riwayat di pustaka bisa menghapus daftar lagu yang pernah Anda
@@ -510,16 +410,13 @@ MyMusic dibangun di atas proyek-proyek berikut:
 - **[Sobek](https://github.com/grafana/sobek)**, mesin JavaScript tempat
   setiap plugin berjalan.
 - **[Nix](https://nixos.org)**, yang mengunci versi alat-alat untuk
-  membangun rilis, dan membangun MyMusic untuk Linux dari kode sumber.
-- **[GoReleaser](https://goreleaser.com)**, yang menerbitkan rilis, dan
-  [nFPM](https://nfpm.goreleaser.com) miliknya, yang membuat paket RPM.
+  membangun rilis.
+- **[GoReleaser](https://goreleaser.com)**, yang menerbitkan rilis.
 - **[Bun](https://bun.sh)**, yang menjalankan proses build, dan
   **[TypeScript](https://www.typescriptlang.org)**, yang mengompilasi plugin
   dan memeriksa tipe pada SDK plugin.
 - **[Zola](https://www.getzola.org)**, yang membangun situs web.
-- **[NSIS](https://nsis.sourceforge.io)**, yang membuat installer Windows,
-  dan [appimagetool](https://github.com/AppImage/appimagetool), yang membuat
-  AppImage.
+- **[NSIS](https://nsis.sourceforge.io)**, yang membuat installer Windows.
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**, yang menemukan audio
   lagu-lagu yang tidak bisa ditemukan MyMusic sendiri.
 - **[LRCLIB](https://lrclib.net)**, database terbuka berisi lirik

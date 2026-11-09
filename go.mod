@@ -3,7 +3,6 @@ module github.com/bigdaddy284/mymusic
 go 1.27.3
 
 require (
-	github.com/ebitengine/purego v0.11.1
 	github.com/egoist/mygo v0.8.1
 	github.com/grafana/sobek v0.0.0-20261020081906-048a54a9653b
 	github.com/hajimehoshi/go-mp3 v0.3.4
@@ -16,6 +15,7 @@ require (
 
 require (
 	github.com/dlclark/regexp2/v2 v2.9.1 // indirect
+	github.com/ebitengine/purego v0.11.1 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
 	github.com/go-text/typesetting v0.3.5 // indirect
 	github.com/google/pprof v0.0.0-20230207041349-798e818bf904 // indirect

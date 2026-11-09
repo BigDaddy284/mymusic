@@ -148,7 +148,7 @@ of its own.
 ## Building and publishing
 
 - **[Nix](https://nixos.org)**, which pins the tools releases are built
-  with, and builds MyMusic for Linux from source.
+  with.
 - **[GoReleaser](https://goreleaser.com)**, which publishes the releases,
   and its [nFPM](https://nfpm.goreleaser.com), which makes the RPM
   packages.
