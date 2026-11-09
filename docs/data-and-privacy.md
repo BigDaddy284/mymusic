@@ -122,7 +122,6 @@ Where the credential store can't keep a secret:
 | Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyMusic while you cast |
 | Checks for updates, unless you turn them off in Settings › About | GitHub | a request for the newest release, and its download when you install it |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
-| The marketplace, when you open it | GitHub | a download of the registry, and of the add-ons you install |
 | Knowing whether the network answers | YouTube and Spotify | a request over HTTPS for an empty answer |
 
 - **Plugins** can send what they like: a plugin's permissions are shown

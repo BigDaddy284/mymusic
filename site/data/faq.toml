@@ -40,7 +40,7 @@ answer = '''
 Nothing for itself: MyMusic has no account, server, analytics or
 telemetry of its own. It talks to the services you use: YouTube Music,
 Spotify and Last.fm, Unison and LRCLIB for the lyrics of the track that
-plays, and GitHub for updates, yt-dlp and the marketplace. Your library,
+plays, and GitHub for updates and yt-dlp. Your library,
 history and searches stay on your computer.
 [Your data and privacy](@/docs/data-and-privacy/index.md#what-each-feature-sends-where)
 lists what each feature sends, and where.

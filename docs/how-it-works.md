@@ -107,14 +107,14 @@ talks to:
   pipe or socket: what plays, for your profile.
 - **Cast devices** on your network, such as Chromecasts and Nest
   speakers, which MyMusic finds and speaks to itself, in Go.
-- **GitHub**, for new versions of MyMusic, for yt-dlp, for the community
-  marketplace, and for the kanji dictionary.
+- **GitHub**, for new versions of MyMusic, for yt-dlp, and for the kanji
+  dictionary.
 
 To tell whether the network answers, MyMusic asks YouTube's and Spotify's
 addresses over HTTPS. [Your data and privacy](data-and-privacy.md) lists
 what each of these gets.
 
-## Themes, plugins and the marketplace
+## Themes and plugins
 
 - **Themes** are a `theme.json` file of colours, fonts and corners.
   MyMusic draws every theme in the layout you choose in Settings ›
@@ -129,11 +129,8 @@ what each of these gets.
   canvases are drawing calls that MyMusic paints. The permissions a
   plugin lists are shown to you, not enforced, so MyMusic asks you to
   trust a plugin before it enables it. [Plugins](plugins.md) documents the
-  API.
-- **The marketplace** reads the community's registry from this
-  repository on GitHub when you open it, and installs an add-on from the
-  repository's registry branch, where the project's CI publishes each
-  add-on once its pull request is merged.
+  API. MyMusic loads the add-ons it ships with and those you put in your
+  add-ons folders; it doesn't download any.
 
 ## Updates
 

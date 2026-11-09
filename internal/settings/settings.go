@@ -109,6 +109,6 @@ func (s Settings) Clean() Settings {
 	s.Desktop = s.Desktop.clean()
 	s.Tools = s.Tools.clean()
 	s.Keys = s.Keys.clean()
-	s.Addons = s.Addons.clean(d.Addons)
+	s.Addons = s.Addons.clean()
 	return s
 }

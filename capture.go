@@ -44,9 +44,7 @@ import (
 // plays unless the player is muted, or plays into no device
 // (MYMUSIC_SILENT).
 // MYMUSIC_CAPTURE_WAIT is how long each page gets, MYMUSIC_CAPTURE_SIZE
-// the window's size as 1280x820, MYMUSIC_CAPTURE_COMMUNITY a copy of the
-// repository's community folder for the marketplace to read, and
-// MYMUSIC_CAPTURE_QUIT quits after.
+// the window's size as 1280x820, and MYMUSIC_CAPTURE_QUIT quits after.
 func (s *shell) captureFromEnv() {
 	dir := os.Getenv("MYMUSIC_CAPTURE")
 	if dir == "" {
@@ -63,9 +61,6 @@ func (s *shell) captureFromEnv() {
 		if wi > 0 && hi > 0 {
 			s.win.SetSize(wi, hi)
 		}
-	}
-	if community := os.Getenv("MYMUSIC_CAPTURE_COMMUNITY"); community != "" {
-		s.a.ReadCommunityFrom(community)
 	}
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		log.Fatal(err)

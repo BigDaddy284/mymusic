@@ -84,18 +84,16 @@ writes to MyMusic's log, `mymusic.log` in its logs folder.
 
 MyMusic runs JavaScript, so a plugin ships what its TypeScript compiles
 to: `"main"` and `"files"` name `index.js`, and `index.ts` stays with its
-source, as the registry leaves it out. Any compiler that keeps the module an
+source. Any compiler that keeps the module an
 ES module does; with TypeScript's own:
 
 ```sh
 tsc --target ES2022 --module ESNext --moduleResolution bundler --strict index.ts
 ```
 
-The plugins of this repository's `community/plugins` are written so, and
-keep only their TypeScript: `bun run build:plugins` compiles them, as it
-does the plugin API's own `internal/plugins/api.ts`, and the Registry
-workflow publishes their JavaScript to the registry branch, where the
-marketplace downloads it. A plugin of your own may be written in
+The example plugins of this repository's `examples/plugins` are written
+so, and keep only their TypeScript: `bun run build:plugins` compiles them,
+as it does the plugin API's own `internal/plugins/api.ts`. A plugin of your own may be written in
 JavaScript straight away too: the same module, without the types.
 
 ## The API
@@ -222,9 +220,3 @@ api.ui.addTrackAction({
    folder** and put your plugin's folder there, named after its `id`.
 2. Choose **reload**, then enable it. A plugin that fails to start says why,
    in a notice and in the list; reload tries it again.
-
-## Share it
-
-[community/README.md](../community/README.md) tells how to add your plugin to
-the community registry, from which everyone can
-[install it](marketplace.md#install-and-enable-a-plugin).

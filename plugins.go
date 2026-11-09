@@ -15,9 +15,6 @@ func init() { addSettings("plugins", 10, (*shell).pluginSettings) }
 // removes. The web interface runs them, for now.
 func (s *shell) pluginSettings(c *ui.Context) {
 	s.groupWith(c, "Installed plugins", func() {
-		if s.link(c, "get-plugins", "get plugins") {
-			s.navigate("/marketplace/plugins")
-		}
 		if s.link(c, "plugins-folder", "open plugins folder") {
 			s.openFolder(addons.KindPlugin)
 		}
@@ -27,7 +24,7 @@ func (s *shell) pluginSettings(c *ui.Context) {
 		}
 	}, func() {
 		if len(s.inv.Plugins) == 0 {
-			s.hint(c, "No plugins yet. The marketplace has some, and docs/plugins.md tells how to write one.")
+			s.hint(c, "No plugins yet. Put one in the plugins folder: docs/plugins.md tells how to write one.")
 		}
 		for _, p := range s.inv.Plugins {
 			desc := strings.TrimSpace(p.Description + " by " + p.Author)
@@ -41,7 +38,7 @@ func (s *shell) pluginSettings(c *ui.Context) {
 				}
 				if !p.Builtin && s.iconButton(c, "remove-plugin-"+p.ID, "trash", "Remove "+p.Name, false, 16).Clicked() {
 					s.ask("remove "+p.Name, "The plugin and its files are deleted; what it stored stays.", "remove", func() {
-						s.uninstall(addons.KindPlugin, addons.Entry{ID: p.ID, Name: p.Name})
+						s.removePlugin(p)
 					})
 				}
 			})
@@ -70,4 +67,16 @@ func (s *shell) enablePlugin(p addons.Plugin, on bool) {
 		perms = " It asks for: " + strings.Join(p.Permissions, ", ") + "."
 	}
 	s.ask("enable "+p.Name, "Plugins can control the player, change your library and reach the internet, whatever they ask for. Enable plugins from authors you trust."+perms, "enable", set)
+}
+
+// removePlugin disables a plugin the user put in the plugins folder, and
+// deletes it.
+func (s *shell) removePlugin(p addons.Plugin) {
+	s.set.EnabledPlugins = slices.DeleteFunc(slices.Clone(s.set.EnabledPlugins), func(id string) bool { return id == p.ID })
+	s.save()
+	if _, err := s.svc.Addons.Uninstall(addons.KindPlugin, p.ID); err != nil {
+		s.notes = append(s.notes, noticeOf(err))
+		return
+	}
+	s.notes = append(s.notes, notice("Removed "+p.Name))
 }
