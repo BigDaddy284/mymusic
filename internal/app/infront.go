@@ -18,18 +18,3 @@ func (a *App) inFront() bool {
 	a.mu.Unlock()
 	return main != nil && focused(main) || mini != nil && focused(mini)
 }
-
-// playingInFront is inFront, or the player around the notch has the
-// keyboard. That is a panel on macOS, the only system it opens on, which
-// never activates MyMusic, but takes the keyboard as its panel opens and
-// gives it back as it closes: open, it shows what plays, though not
-// whether it is liked or disliked.
-func (a *App) playingInFront() bool {
-	if a.inFront() {
-		return true
-	}
-	a.notch.mu.Lock()
-	notch := a.notch.win
-	a.notch.mu.Unlock()
-	return notch != nil && focused(notch)
-}

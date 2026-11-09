@@ -281,7 +281,7 @@ func (p *Player) Report(np NowPlaying) {
 	if windowTitle(np, s.ShowInTitle) != windowTitle(prev, s.ShowInTitle) {
 		p.a.retitle()
 	}
-	if started && s.Notifications && !p.a.playingInFront() {
+	if started && s.Notifications && !p.a.inFront() {
 		go p.a.notifyTrack(*np.Track)
 	}
 }

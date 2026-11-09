@@ -11,9 +11,8 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// notes is an app with notifications on, the main window, the mini player
-// and the player around the notch made up, front the one with the
-// keyboard, and the IDs of the notifications it showed.
+// notes is an app with notifications on, the main window and the mini
+// player made up, front the one with the keyboard, and the IDs of the notifications it showed.
 type notes struct {
 	a     *App
 	front *mygo.Window
@@ -34,9 +33,6 @@ func newNotes(t *testing.T) *notes {
 	a.mu.Lock()
 	a.main, a.mini = new(mygo.Window), new(mygo.Window)
 	a.mu.Unlock()
-	a.notch.mu.Lock()
-	a.notch.win = new(mygo.Window)
-	a.notch.mu.Unlock()
 	wasFocused, wasShow := focused, showNote
 	focused = func(w *mygo.Window) bool { return w == n.front }
 	showNote = func(note *mygo.Notification) error {
@@ -118,23 +114,8 @@ func TestNotificationBehind(t *testing.T) {
 	n.a.mu.Lock()
 	n.a.main, n.a.mini = nil, nil
 	n.a.mu.Unlock()
-	n.a.notch.mu.Lock()
-	n.a.notch.win = nil
-	n.a.notch.mu.Unlock()
 	n.start()
 	n.want(t, "no window, a track starts", "now-playing")
 	n.rate()
 	n.want(t, "no window, liked and disliked", "liked", "disliked")
-}
-
-// TestNotchInFront tells nothing of the track that starts while the
-// player around the notch has the keyboard, its panel open, which shows
-// what plays; but still of a like or a dislike, which it doesn't show.
-func TestNotchInFront(t *testing.T) {
-	n := newNotes(t)
-	n.front = n.a.notch.win
-	n.start()
-	n.want(t, "a track starts")
-	n.rate()
-	n.want(t, "liked and disliked", "liked", "disliked")
 }

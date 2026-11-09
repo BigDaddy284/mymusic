@@ -139,7 +139,6 @@ func (a *App) openMain(hidden bool) *mygo.Window {
 		if mini != nil {
 			mini.Close()
 		}
-		a.closeNotch()
 		// Spotify's hidden page goes with the main window: open, it would
 		// keep MyMusic running, and playing, with no window to show it.
 		a.here.close()
@@ -149,7 +148,6 @@ func (a *App) openMain(hidden bool) *mygo.Window {
 	a.mu.Unlock()
 	// The player may have told what plays before the window opened.
 	a.retitle()
-	a.followNotch()
 	return win
 }
 
@@ -380,4 +378,16 @@ func whenReady(fn func()) {
 		return
 	}
 	mygo.App.WhenReady(fn)
+}
+
+// OpenMainWindow shows the main window, opening it again if it was
+// closed, at the page of path unless it is "", and leaves the other
+// windows as they are, as the mini player opens MyMusic.
+func (s *System) OpenMainWindow(path string) {
+	mygo.App.WhenReady(func() {
+		s.a.showMain()
+		if path != "" {
+			s.a.navigateTo(path)
+		}
+	})
 }

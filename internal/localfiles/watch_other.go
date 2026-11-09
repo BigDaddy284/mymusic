@@ -1,4 +1,4 @@
-//go:build !windows && !linux && !(darwin && (amd64 || arm64))
+//go:build !windows
 
 package localfiles
 

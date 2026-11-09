@@ -3,9 +3,8 @@ package localfiles
 // The watch of the folders of music: while MyMusic runs, the system tells
 // of what changes in them, and the index reads only that again (update),
 // once the changes settle, so that a folder copied in is read once, whole,
-// and no scan reads the folders again. Each system tells with its own API:
-// ReadDirectoryChangesW on Windows (watch_windows.go), FSEvents on macOS
-// (watch_darwin.go) and inotify on Linux (watch_linux.go). A folder that
+// and no scan reads the folders again. Windows tells with
+// ReadDirectoryChangesW (watch_windows.go). A folder that
 // can't be watched, as one on a network drive, whose changes made from
 // other computers the system doesn't hear of, is read as MyMusic starts
 // and when asked, as before, and Settings tells why.

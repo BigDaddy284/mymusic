@@ -190,20 +190,3 @@ func TestEpisodeDetailsLoading(t *testing.T) {
 		t.Error("try again didn't ask for the details again")
 	}
 }
-
-// TestNotchChapters shows in the notch the chapter of the episode that
-// plays, with those around it, and none past the episode's end.
-func TestNotchChapters(t *testing.T) {
-	s := detailsShell(t, &loaded[media.EpisodeDetails]{done: true, value: testDetails()})
-	x := newNotchTest(t, s, testHousing)
-	x.openPanel()
-	if !x.tt.HasText("Dusk") || !x.tt.HasText("The barn") || x.tt.HasText("Paper boats") {
-		t.Errorf("at the start, the notch shows %q", x.tt.Texts())
-	}
-	s.p.Seek(800 * time.Second)
-	s.settle(t, func(st player.State) bool { return st.Position >= 800*time.Second })
-	x.frame()
-	if !x.tt.HasText("Dusk") || !x.tt.HasText("The barn") || x.tt.HasText("Long after the end") {
-		t.Errorf("in the last chapter, the notch shows %q", x.tt.Texts())
-	}
-}
