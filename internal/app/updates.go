@@ -57,10 +57,7 @@ type UpdateStatus struct {
 	// of development, and installs of a package manager.
 	Enabled bool `json:"enabled"`
 	// Kind is how this copy was installed, which decides the download of
-	// a release that replaces it: "installer", "portable", "app",
-	// "archive", "deb", "rpm", "pacman" (the AUR's mymusic-bin, which
-	// pacman updates, and no download replaces), "appimage", "flatpak",
-	// "flathub" (Flathub's, which the software center updates) or
+	// a release that replaces it: "installer", "portable" or
 	// "development".
 	Kind string `json:"kind"`
 	// AutomaticChecks looks for a new version at start and every few
@@ -461,18 +458,6 @@ func releaseFile(kind, version, arch string) string {
 		return fmt.Sprintf("mymusic-%s-windows-%s-setup.exe", version, arch)
 	case "portable":
 		return fmt.Sprintf("mymusic-%s-windows-%s-portable.zip", version, arch)
-	case "app":
-		return fmt.Sprintf("mymusic-%s-macos-universal.dmg", version)
-	case "archive":
-		return fmt.Sprintf("mymusic-%s-linux-%s.tar.gz", version, arch)
-	case "deb":
-		return fmt.Sprintf("mymusic-%s-linux-%s.deb", version, arch)
-	case "rpm":
-		return fmt.Sprintf("mymusic-%s-linux-%s.rpm", version, arch)
-	case "appimage":
-		return fmt.Sprintf("mymusic-%s-linux-%s.AppImage", version, arch)
-	case "flatpak":
-		return fmt.Sprintf("mymusic-%s-linux-%s.flatpak", version, arch)
 	}
 	return ""
 }
@@ -489,43 +474,19 @@ func installKind() string {
 	if real, err := filepath.EvalSymlinks(exe); err == nil {
 		exe = real
 	}
-	return kindOf(runtime.GOOS, filepath.Dir(exe), os.Getenv("APPIMAGE") != "", func(p string) bool {
+	return kindOf(filepath.Dir(exe), func(p string) bool {
 		_, err := os.Stat(p)
 		return err == nil
 	})
 }
 
-// kindOf tells how a copy whose executable is in dir was installed on
-// goos: the Windows installer leaves its uninstaller beside it, a Flatpak
-// has /.flatpak-info at the root of its sandbox, Flathub's build
-// flathubMarker too, and the .deb, the .rpm and the AUR's mymusic-bin
-// put it in /opt/mymusic, which dpkg keeps a list of for the .deb, and
-// which pacman's database tells the AUR's by.
-func kindOf(goos, dir string, appImage bool, exists func(string) bool) string {
-	switch goos {
-	case "windows":
-		if exists(filepath.Join(dir, "Uninstall.exe")) {
-			return "installer"
-		}
-		return "portable"
-	case "darwin":
-		return "app"
+// kindOf tells how a copy whose executable is in dir was installed: the
+// installer leaves its uninstaller beside it.
+func kindOf(dir string, exists func(string) bool) string {
+	if exists(filepath.Join(dir, "Uninstall.exe")) {
+		return "installer"
 	}
-	switch {
-	case exists(flathubMarker):
-		return "flathub"
-	case exists("/.flatpak-info"):
-		return "flatpak"
-	case appImage:
-		return "appimage"
-	case dir == "/opt/mymusic" && exists("/var/lib/dpkg/info/mymusic.list"):
-		return "deb"
-	case dir == "/opt/mymusic" && exists("/var/lib/pacman/local"):
-		return "pacman"
-	case dir == "/opt/mymusic":
-		return "rpm"
-	}
-	return "archive"
+	return "portable"
 }
 
 // newerVersion reports whether version a comes after b: their numbers one

@@ -64,9 +64,6 @@ func (a *App) Start() {
 	go a.watchSettings(ctx)
 	a.tellStart()
 	a.setupTray()
-	if a.settings.Get().CloseToTray {
-		runInBackground()
-	}
 	a.applyMediaKeys(a.settings.Get().MediaKeys)
 	// The colour file New read: from now on, as it changes.
 	a.followColorFile(a.settings.Get().Clean())

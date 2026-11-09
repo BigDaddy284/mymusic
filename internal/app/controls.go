@@ -98,7 +98,7 @@ func (c *controls) shown() *nowplaying.Info {
 	}
 	info := controlsInfo(c.np, c.at)
 	if c.covers != nil {
-		info.Cover, info.CoverFile = c.covers.get(info.Artwork)
+		info.Cover = c.covers.get(info.Artwork)
 	}
 	return info
 }

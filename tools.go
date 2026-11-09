@@ -131,8 +131,7 @@ func (s *shell) toolSettings(c *ui.Context) {
 				s.installButton(c, "use-ours-settings", "use MyMusic's yt-dlp")
 			}
 		})
-		flatpak := s.svc.System.Info().Flatpak
-		s.row(c, "JavaScript runtime", jsRuntimeHelp(js, flatpak), func() {
+		s.row(c, "JavaScript runtime", jsRuntimeHelp(js), func() {
 			ids := []string{"", "deno", "node", "bun", "quickjs"}
 			labels := []string{"Find one", "Deno", "Node.js", "Bun", "QuickJS"}
 			chosen := s.set.JSRuntime
@@ -148,7 +147,7 @@ func (s *shell) toolSettings(c *ui.Context) {
 				}
 			}
 		}, "Deno Node.js Bun QuickJS")
-		s.row(c, "Own yt-dlp", ownYTDLPHelp(flatpak), func() {
+		s.row(c, "Own yt-dlp", "Use a yt-dlp of your own, such as your package manager's, instead.", func() {
 			in, _ := s.settingInput(c, "ytdlp-path", s.set.YTDLPPath, func(path string) {
 				s.set.YTDLPPath = path
 				s.save()
@@ -161,25 +160,12 @@ func (s *shell) toolSettings(c *ui.Context) {
 }
 
 // jsRuntimeHelp describes yt-dlp's JavaScript runtime, js, or tells how to
-// get one. A Flatpak's sandbox has Node.js of its own, and sees no other:
-// one chosen in settings brought over from another copy isn't there.
-func jsRuntimeHelp(js tools.Tool, flatpak bool) string {
-	switch {
-	case js.Found:
+// get one.
+func jsRuntimeHelp(js tools.Tool) string {
+	if js.Found {
 		return js.Name + " " + js.Version + " · yt-dlp uses it to solve YouTube's challenges."
-	case flatpak:
-		return "yt-dlp needs a JavaScript runtime to read most YouTube streams. The Flatpak has Node.js, and no other: choose Find one."
 	}
 	return "yt-dlp needs Deno, Node.js, Bun or QuickJS to read most YouTube streams. Install one, and MyMusic finds it."
-}
-
-// ownYTDLPHelp describes the setting of a yt-dlp of the user's own, which
-// a Flatpak finds only in its own folders.
-func ownYTDLPHelp(flatpak bool) string {
-	if flatpak {
-		return "Use a yt-dlp of your own instead. The Flatpak sees only its own folders: put it in ~/.var/app/io.github.bigdaddy284.mymusic."
-	}
-	return "Use a yt-dlp of your own, such as your package manager's, instead."
 }
 
 func init() { addSettings("playback", 70, (*shell).cacheSettings) }

@@ -90,6 +90,5 @@ func (p *Preferences) Reset() (settings.Settings, error) {
 // OpenAtLogin reports whether MyMusic starts when the user logs in.
 func (p *Preferences) OpenAtLogin() bool { return mygo.App.OpenAtLogin() }
 
-// SetOpenAtLogin makes MyMusic start when the user logs in, or not. In a
-// Flatpak, it waits for the desktop's answer, which may be the user's.
-func (p *Preferences) SetOpenAtLogin(open bool) error { return setLogin(open) }
+// SetOpenAtLogin makes MyMusic start when the user logs in, or not.
+func (p *Preferences) SetOpenAtLogin(open bool) error { return mygo.App.SetOpenAtLogin(open) }

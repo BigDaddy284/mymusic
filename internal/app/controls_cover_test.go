@@ -8,8 +8,6 @@ import (
 	"image/png"
 	"net/http"
 	"net/http/httptest"
-	"os"
-	"path/filepath"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -28,9 +26,9 @@ func pngCover(w int) []byte {
 
 // testCovers returns covers that load with load and keep their files in
 // dir, and a channel told whenever they call changed.
-func testCovers(load func(context.Context, string) ([]byte, error), dir string) (*controlsCovers, chan struct{}) {
+func testCovers(load func(context.Context, string) ([]byte, error)) (*controlsCovers, chan struct{}) {
 	changed := make(chan struct{}, 16)
-	return &controlsCovers{load: load, dir: dir, changed: func() { changed <- struct{}{} }, now: time.Now}, changed
+	return &controlsCovers{load: load, changed: func() { changed <- struct{}{} }, now: time.Now}, changed
 }
 
 // await waits for changed.
@@ -86,13 +84,13 @@ func TestControlsCoverFromTheStore(t *testing.T) {
 	}
 	// Then the network goes: the controls show the cover kept.
 	srv.Close()
-	cc, changed := testCovers(st.Bytes, "")
-	if data, _ := cc.get(url); data != nil {
+	cc, changed := testCovers(st.Bytes)
+	if data := cc.get(url); data != nil {
 		t.Error("a cover before the store read it")
 	}
 	await(t, changed)
-	if data, file := cc.get(url); !bytes.Equal(data, cover) || file != "" {
-		t.Errorf("the controls got %d bytes, in %q; want the %d of the cover kept, in no file", len(data), file, len(cover))
+	if data := cc.get(url); !bytes.Equal(data, cover) {
+		t.Errorf("the controls got %d bytes; want the %d of the cover kept", len(data), len(cover))
 	}
 	if n := srv.gets.Load(); n != 1 {
 		t.Errorf("the cover downloaded %d times", n)
@@ -105,7 +103,7 @@ func TestControlsCoverDownloadsOnce(t *testing.T) {
 	srv := newCoverServer(t, cover, release)
 	st := coverStore(t, srv)
 	url := srv.URL + "/cover.png"
-	cc, changed := testCovers(st.Bytes, "")
+	cc, changed := testCovers(st.Bytes)
 	// The controls ask first, then a window, while it downloads.
 	cc.get(url)
 	eventually(t, "the download", func() bool { return srv.gets.Load() == 1 })
@@ -116,7 +114,7 @@ func TestControlsCoverDownloadsOnce(t *testing.T) {
 	}()
 	close(release)
 	await(t, changed)
-	if data, _ := cc.get(url); !bytes.Equal(data, cover) {
+	if data := cc.get(url); !bytes.Equal(data, cover) {
 		t.Errorf("the controls got %d bytes, want %d", len(data), len(cover))
 	}
 	if data := <-page; !bytes.Equal(data, cover) {
@@ -162,91 +160,15 @@ func newFakeCovers(covers map[string][]byte) *fakeCovers {
 	return &fakeCovers{covers: covers, loads: map[string]int{}, hold: map[string]chan struct{}{}}
 }
 
-// files returns the names of the files in dir.
-func files(t *testing.T, dir string) []string {
-	t.Helper()
-	entries, err := os.ReadDir(dir)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var names []string
-	for _, e := range entries {
-		names = append(names, e.Name())
-	}
-	return names
-}
-
-func TestControlsCoverFiles(t *testing.T) {
-	a, b := pngCover(8), pngCover(12)
-	f := newFakeCovers(map[string][]byte{"https://i/a": a, "https://i/b": b})
-	dir := filepath.Join(t.TempDir(), "now-playing")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	// One of a run before.
-	if err := os.WriteFile(filepath.Join(dir, "old.jpg"), []byte("jpeg"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	cc, changed := testCovers(f.load, dir)
-	cc.get("https://i/a")
-	await(t, changed)
-	data, fileA := cc.get("https://i/a")
-	if !bytes.Equal(data, a) || filepath.Dir(fileA) != dir || filepath.Ext(fileA) != ".png" {
-		t.Fatalf("the cover's %d bytes in %q", len(data), fileA)
-	}
-	if got, err := os.ReadFile(fileA); err != nil || !bytes.Equal(got, a) {
-		t.Errorf("its file holds %d bytes (%v), want %d", len(got), err, len(a))
-	}
-	if names := files(t, dir); len(names) != 1 {
-		t.Errorf("the folder holds %q, want the cover's file alone", names)
-	}
-
-	// The next cover has a file of its own, and the first goes.
-	cc.get("https://i/b")
-	await(t, changed)
-	_, fileB := cc.get("https://i/b")
-	if fileB == "" || fileB == fileA {
-		t.Fatalf("the next cover's file %q, after %q", fileB, fileA)
-	}
-	if names := files(t, dir); len(names) != 1 || names[0] != filepath.Base(fileB) {
-		t.Errorf("the folder holds %q, want %q", names, filepath.Base(fileB))
-	}
-
-	// A cover asked for, then not, leaves the file of the one that shows.
-	hold := make(chan struct{})
-	f.mu.Lock()
-	f.hold["https://i/a"] = hold
-	f.mu.Unlock()
-	cc.get("https://i/a")
-	eventually(t, "the load", func() bool { return f.loaded("https://i/a") == 2 })
-	if _, file := cc.get("https://i/b"); file != fileB {
-		t.Errorf("back to the cover kept, its file %q, want %q", file, fileB)
-	}
-	close(hold)
-	eventually(t, "the load's end", func() bool {
-		cc.mu.Lock()
-		defer cc.mu.Unlock()
-		return len(cc.loading) == 0
-	})
-	if names := files(t, dir); len(names) != 1 || names[0] != filepath.Base(fileB) {
-		t.Errorf("the folder holds %q, want %q", names, filepath.Base(fileB))
-	}
-	select {
-	case <-changed:
-		t.Error("a cover no longer asked for came")
-	default:
-	}
-}
-
 func TestControlsCoverMissing(t *testing.T) {
 	f := newFakeCovers(map[string][]byte{})
 	c := &clock{t: time.Unix(1000, 0)}
-	cc, changed := testCovers(f.load, "")
+	cc, changed := testCovers(f.load)
 	cc.now = c.now
 	cc.get("https://i/a")
 	await(t, changed)
 	// Until a while later, the controls go without it.
-	if data, _ := cc.get("https://i/a"); data != nil {
+	if data := cc.get("https://i/a"); data != nil {
 		t.Error("a cover that didn't load")
 	}
 	c.move(coverRetry - time.Second)
@@ -260,7 +182,7 @@ func TestControlsCoverMissing(t *testing.T) {
 	c.move(time.Second)
 	cc.get("https://i/a")
 	await(t, changed)
-	if data, _ := cc.get("https://i/a"); data == nil {
+	if data := cc.get("https://i/a"); data == nil {
 		t.Error("no cover once it loads again")
 	}
 	if n := f.loaded("https://i/a"); n != 2 {
@@ -271,7 +193,7 @@ func TestControlsCoverMissing(t *testing.T) {
 func TestControlsShowTheCover(t *testing.T) {
 	cover := pngCover(8)
 	f := newFakeCovers(map[string][]byte{"https://i/544": cover})
-	cc, changed := testCovers(f.load, "")
+	cc, changed := testCovers(f.load)
 	c := &controls{native: true, covers: cc, np: NowPlaying{Track: &media.Track{
 		ID:      "yt:1",
 		Title:   "Song",

@@ -220,18 +220,11 @@ func TestLocalControlsCover(t *testing.T) {
 	}
 	changed := make(chan struct{}, 4)
 	cc := a.newControlsCovers(func() { changed <- struct{}{} })
-	if data, _ := cc.get(info.Artwork); data != nil {
+	if data := cc.get(info.Artwork); data != nil {
 		t.Fatal("a cover before it loaded")
 	}
 	await(t, changed)
-	if data, _ := cc.get(info.Artwork); !bytes.Equal(data, cover) {
+	if data := cc.get(info.Artwork); !bytes.Equal(data, cover) {
 		t.Fatalf("the controls got %d bytes, not the cover's %d", len(data), len(cover))
-	}
-	files, changedFiles := testCovers(a.coverBytes, t.TempDir())
-	files.get(info.Artwork)
-	await(t, changedFiles)
-	_, file := files.get(info.Artwork)
-	if b, err := os.ReadFile(file); err != nil || !bytes.Equal(b, cover) || filepath.Ext(file) != ".png" {
-		t.Errorf("the cover's file %q: %v", file, err)
 	}
 }

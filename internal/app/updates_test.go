@@ -41,22 +41,13 @@ func TestNewerVersion(t *testing.T) {
 func TestKindOf(t *testing.T) {
 	const installer = `C:\Users\me\AppData\Local\Programs\MyMusic`
 	for _, c := range []struct {
-		name     string
-		goos     string
-		dir      string
-		appImage bool
-		files    []string
-		want     string
+		name  string
+		dir   string
+		files []string
+		want  string
 	}{
-		{"installer", "windows", installer, false, []string{filepath.Join(installer, "Uninstall.exe")}, "installer"},
-		{"portable zip", "windows", `D:\Apps\MyMusic`, false, nil, "portable"},
-		{"app bundle", "darwin", "/Applications/MyMusic.app/Contents/MacOS", false, nil, "app"},
-		{"deb", "linux", "/opt/mymusic", false, []string{"/var/lib/dpkg/info/mymusic.list"}, "deb"},
-		{"rpm", "linux", "/opt/mymusic", false, nil, "rpm"},
-		{"AUR", "linux", "/opt/mymusic", false, []string{"/var/lib/pacman/local"}, "pacman"},
-		{"AppImage", "linux", "/tmp/.mount_MixMusXYZ/usr/bin", true, nil, "appimage"},
-		{"Flatpak", "linux", "/app/lib/mymusic", false, []string{"/.flatpak-info"}, "flatpak"},
-		{"install.sh", "linux", "/home/me/.local/share/mymusic", false, nil, "archive"},
+		{"installer", installer, []string{filepath.Join(installer, "Uninstall.exe")}, "installer"},
+		{"portable zip", `D:\Apps\MyMusic`, nil, "portable"},
 	} {
 		exists := func(p string) bool {
 			for _, f := range c.files {
@@ -66,7 +57,7 @@ func TestKindOf(t *testing.T) {
 			}
 			return false
 		}
-		if got := kindOf(c.goos, c.dir, c.appImage, exists); got != c.want {
+		if got := kindOf(c.dir, exists); got != c.want {
 			t.Errorf("%s: kindOf = %q, want %q", c.name, got, c.want)
 		}
 	}
@@ -76,13 +67,6 @@ func TestReleaseFile(t *testing.T) {
 	for kind, want := range map[string]string{
 		"installer":   "mymusic-0.3.0-windows-amd64-setup.exe",
 		"portable":    "mymusic-0.3.0-windows-amd64-portable.zip",
-		"app":         "mymusic-0.3.0-macos-universal.dmg",
-		"archive":     "mymusic-0.3.0-linux-amd64.tar.gz",
-		"deb":         "mymusic-0.3.0-linux-amd64.deb",
-		"rpm":         "mymusic-0.3.0-linux-amd64.rpm",
-		"appimage":    "mymusic-0.3.0-linux-amd64.AppImage",
-		"flatpak":     "mymusic-0.3.0-linux-amd64.flatpak",
-		"pacman":      "",
 		"development": "",
 	} {
 		if got := releaseFile(kind, "0.3.0", "amd64"); got != want {
@@ -98,9 +82,9 @@ func TestLatestRelease(t *testing.T) {
 		"published_at": "2026-10-21T10:00:00Z",
 		"body": "Playlists of your own, and an [About page](https://example.com) that shows the newest version.\r\n\r\n### Added\r\n\r\n- Make playlists.",
 		"assets": [
-			{"name": "mymusic-0.3.0-linux-amd64.deb", "browser_download_url": "https://example.com/amd64.deb"},
-			{"name": "mymusic-0.3.0-linux-arm64.deb", "browser_download_url": "https://example.com/arm64.deb"},
-			{"name": "mymusic-0.3.0-linux-amd64.flatpak", "browser_download_url": "https://example.com/amd64.flatpak"},
+			{"name": "mymusic-0.3.0-windows-amd64-setup.exe", "browser_download_url": "https://example.com/amd64-setup.exe"},
+			{"name": "mymusic-0.3.0-windows-arm64-setup.exe", "browser_download_url": "https://example.com/arm64-setup.exe"},
+			{"name": "mymusic-0.3.0-windows-amd64-portable.zip", "browser_download_url": "https://example.com/amd64-portable.zip"},
 			{"name": "update-GOOS-arm64.json", "browser_download_url": "https://example.com/v0.3.0/update-arm64.json"},
 			{"name": "update-GOOS-amd64.json", "browser_download_url": "https://example.com/v0.3.0/update-amd64.json"},
 			{"name": "SHA256SUMS", "browser_download_url": "https://example.com/SHA256SUMS"}
@@ -113,7 +97,7 @@ func TestLatestRelease(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	r, err := latestRelease(context.Background(), srv.Client(), srv.URL, "deb", "arm64", "0.2.0")
+	r, err := latestRelease(context.Background(), srv.Client(), srv.URL, "installer", "arm64", "0.2.0")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,8 +107,8 @@ func TestLatestRelease(t *testing.T) {
 		Date:     "2026-10-21T10:00:00Z",
 		Notes:    "Playlists of your own, and an About page that shows the newest version.",
 		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v0.3.0",
-		Download: "https://example.com/arm64.deb",
-		File:     "mymusic-0.3.0-linux-arm64.deb",
+		Download: "https://example.com/arm64-setup.exe",
+		File:     "mymusic-0.3.0-windows-arm64-setup.exe",
 		manifest: "https://example.com/v0.3.0/update-arm64.json",
 	}
 	if r != want {
@@ -135,28 +119,29 @@ func TestLatestRelease(t *testing.T) {
 	}
 
 	// The release has no file for this copy: only its page.
-	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "rpm", "amd64", "0.3.0")
+	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "installer", "amd64", "0.3.0")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.Newer || r.Download != "" || r.File != "" {
-		t.Errorf("latestRelease of an rpm, up to date = %+v", r)
+	if r.Newer {
+		t.Errorf("latestRelease, up to date = %+v", r)
 	}
 
-	// A Flatpak is offered the next bundle of its architecture.
-	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "flatpak", "amd64", "0.2.0")
+	// A portable copy is offered the zip of its architecture, and only the
+	// page when the release has none.
+	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "portable", "amd64", "0.2.0")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.Download != "https://example.com/amd64.flatpak" || r.File != "mymusic-0.3.0-linux-amd64.flatpak" {
-		t.Errorf("latestRelease of a Flatpak = %+v", r)
+	if r.Download != "https://example.com/amd64-portable.zip" || r.File != "mymusic-0.3.0-windows-amd64-portable.zip" {
+		t.Errorf("latestRelease of a portable copy = %+v", r)
 	}
-	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "flatpak", "arm64", "0.2.0")
+	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "portable", "arm64", "0.2.0")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !r.Newer || r.Download != "" || r.File != "" {
-		t.Errorf("latestRelease of an Arm64 Flatpak, which has no bundle = %+v", r)
+		t.Errorf("latestRelease of an Arm64 portable copy, which has no zip = %+v", r)
 	}
 }
 

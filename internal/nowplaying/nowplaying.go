@@ -1,15 +1,11 @@
 // Package nowplaying shows what MyMusic's own audio engine plays in the
-// system's media controls, and passes on what they ask: macOS's Now
-// Playing, which Control Center, the media keys and headphones reach, an
-// MPRIS player on Linux, which desktops show and pass their media keys to,
-// and Windows' media flyout, which the volume keys and Quick Settings
-// show. The webview does this for the audio it plays itself; the engine
+// system's media controls, and passes on what they ask: Windows' media
+// flyout, which the volume keys and Quick Settings show. The webview does this for the audio it plays itself; the engine
 // plays outside it.
 package nowplaying
 
 import (
 	"errors"
-	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -28,16 +24,12 @@ type Info struct {
 	Album   string
 	// Artwork is the address of an https image of the track, or of the
 	// cover of a track on this computer that MyMusic keeps, or empty,
-	// which tells covers apart: the systems take Cover, or CoverFile.
+	// which tells covers apart: Windows takes Cover.
 	Artwork string
 	// Cover is the image at Artwork, as its host sent it, once MyMusic
-	// has it: macOS and Windows show it. Show keeps it, so it mustn't
-	// change after.
-	Cover []byte
-	// CoverFile is the path of a file of Cover, which MPRIS hands the
-	// desktop, as desktops read covers from files: where CoverFiles is set.
-	CoverFile string
-	Duration  time.Duration
+	// has it. Show keeps it, so it mustn't change after.
+	Cover    []byte
+	Duration time.Duration
 	// Position is where the track was at At.
 	Position time.Duration
 	At       time.Time
@@ -48,10 +40,6 @@ type Info struct {
 	// which the position moves on: 1 is its own, as is 0.
 	Rate float64
 }
-
-// CoverFiles is set where the system's controls take a cover's file, not
-// its bytes: on Linux, MPRIS hands the desktop its address.
-const CoverFiles = runtime.GOOS == "linux"
 
 // The speeds MyMusic plays at, which the system's controls may ask.
 const (
@@ -114,7 +102,7 @@ func diff(prev, next *Info) change {
 	}
 	var c change
 	c.track = prev.ID != next.ID || prev.Title != next.Title || prev.Album != next.Album ||
-		prev.Artwork != next.Artwork || prev.cover() != next.cover() || prev.CoverFile != next.CoverFile ||
+		prev.Artwork != next.Artwork || prev.cover() != next.cover() ||
 		prev.Duration != next.Duration || !equal(prev.Artists, next.Artists)
 	c.playing = prev.Playing != next.Playing
 	if !c.track {
@@ -127,18 +115,6 @@ func diff(prev, next *Info) change {
 }
 
 func valid(s string) string { return strings.ToValidUTF8(s, "�") }
-
-// mprisNames returns the bus name of the MPRIS player, and the name of
-// the desktop entry it gives, inside the Flatpak whose ID is flatpakID,
-// or outside any when that is "". A Flatpak's sandbox lets it own only
-// names under its ID, such as org.mpris.MediaPlayer2.<ID>, and names its
-// desktop entry after the ID.
-func mprisNames(flatpakID string) (bus, desktopEntry string) {
-	if flatpakID == "" {
-		return "org.mpris.MediaPlayer2.mymusic", "mymusic"
-	}
-	return "org.mpris.MediaPlayer2." + flatpakID, flatpakID
-}
 
 func equal(a, b []string) bool {
 	if len(a) != len(b) {

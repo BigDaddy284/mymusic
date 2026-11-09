@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"strconv"
 	"strings"
@@ -30,12 +29,7 @@ type YouTubeBrowser struct {
 // where it keeps its profiles, as yt-dlp doesn't know it by name.
 type cookieBrowser struct {
 	id, name, engine string
-	dirs             func(goos, home string, getenv func(string) string) []string
-	// darwin is set for Safari, which is on macOS alone.
-	darwin bool
-	// flatpak is set for a browser installed as a Flatpak, on Linux, which
-	// lists once its folder is there.
-	flatpak bool
+	dirs             func(getenv func(string) string) []string
 }
 
 var cookieBrowsers = []cookieBrowser{
@@ -48,35 +42,20 @@ var cookieBrowsers = []cookieBrowser{
 	{id: "vivaldi", name: "Vivaldi", engine: "vivaldi"},
 	{id: "helium", name: "Helium", engine: "chromium", dirs: heliumDirs},
 	{id: "zen", name: "Zen", engine: "firefox", dirs: zenDirs},
-	{id: "safari", name: "Safari", engine: "safari", darwin: true},
 }
 
 // zenDirs are where Zen, made from Firefox, keeps its profiles: yt-dlp
 // reads the newest of those in the folder.
-func zenDirs(goos, home string, getenv func(string) string) []string {
-	switch goos {
-	case "windows":
-		return []string{filepath.Join(getenv("APPDATA"), "zen")}
-	case "darwin":
-		return []string{filepath.Join(home, "Library", "Application Support", "zen")}
-	}
-	return []string{filepath.Join(home, ".zen"), filepath.Join(home, ".config", "zen"),
-		filepath.Join(home, ".var", "app", "app.zen_browser.zen", ".zen")}
+func zenDirs(getenv func(string) string) []string {
+	return []string{filepath.Join(getenv("APPDATA"), "zen")}
 }
 
 // heliumDirs are where Helium, made from Chromium, keeps its first profile:
 // yt-dlp finds the key of its cookies in the folder above.
-func heliumDirs(goos, home string, getenv func(string) string) []string {
-	switch goos {
-	case "windows":
-		local := getenv("LOCALAPPDATA")
-		return []string{filepath.Join(local, "imput", "Helium", "User Data", "Default"),
-			filepath.Join(local, "Helium", "User Data", "Default")}
-	case "darwin":
-		return []string{filepath.Join(home, "Library", "Application Support", "net.imput.helium", "Default")}
-	}
-	return []string{filepath.Join(home, ".config", "net.imput.helium", "Default"),
-		filepath.Join(home, ".config", "helium", "Default")}
+func heliumDirs(getenv func(string) string) []string {
+	local := getenv("LOCALAPPDATA")
+	return []string{filepath.Join(local, "imput", "Helium", "User Data", "Default"),
+		filepath.Join(local, "Helium", "User Data", "Default")}
 }
 
 // isDir reports whether a folder is there. It is a variable for tests.
@@ -86,51 +65,28 @@ var isDir = func(path string) bool {
 }
 
 // YouTubeBrowsers returns the browsers whose YouTube Music session MyMusic
-// can import on this system.
+// can import.
 func (s *Accounts) YouTubeBrowsers() []YouTubeBrowser {
-	home, _ := os.UserHomeDir()
-	return youtubeBrowsers(runtime.GOOS, home)
-}
-
-// youtubeBrowsers lists the browsers of goos, but the Flatpaks of those not
-// installed as one in home.
-func youtubeBrowsers(goos, home string) []YouTubeBrowser {
-	var list []YouTubeBrowser
-	for _, b := range browsersOn(goos) {
-		if !b.flatpak || b.found(goos, home) {
-			list = append(list, YouTubeBrowser{ID: b.id, Name: b.name})
-		}
+	list := make([]YouTubeBrowser, len(cookieBrowsers))
+	for i, b := range cookieBrowsers {
+		list[i] = YouTubeBrowser{ID: b.id, Name: b.name}
 	}
 	return list
-}
-
-// found reports whether one of the browser's folders is there.
-func (b cookieBrowser) found(goos, home string) bool {
-	return b.dirs != nil && slices.ContainsFunc(b.dirs(goos, home, os.Getenv), isDir)
 }
 
 // spec returns the browser, with its profile, as yt-dlp's
 // --cookies-from-browser names it: profile is a profile's name or folder,
 // or "" for the one the browser uses. Firefox reads the cookies of no
 // container, those of the tabs the user opens unless they choose one.
-func (b cookieBrowser) spec(profile, goos, home string, getenv func(string) string) (string, error) {
+func (b cookieBrowser) spec(profile string, getenv func(string) string) (string, error) {
 	profile = strings.TrimSpace(profile)
-	if b.engine == "safari" {
-		return "safari", nil // which has no profiles
-	}
-	// A Flatpak's profile, by its name, is in its folder, which yt-dlp
-	// doesn't know.
-	if b.dirs != nil && (profile == "" || b.flatpak && !strings.ContainsAny(profile, `/\`)) {
-		dirs := b.dirs(goos, home, getenv)
+	if b.dirs != nil && profile == "" {
+		dirs := b.dirs(getenv)
 		i := slices.IndexFunc(dirs, isDir)
 		if i < 0 {
 			return "", fmt.Errorf("MyMusic didn't find the profiles of %s: give the folder of one", b.name)
 		}
-		dir := dirs[i]
-		if profile != "" {
-			dir = filepath.Join(dir, profile)
-		}
-		profile = dir
+		profile = dirs[i]
 	}
 	spec := b.engine
 	if profile != "" {
@@ -156,8 +112,6 @@ func (b cookieBrowser) problem(err error, folder bool) error {
 		return worded("MyMusic found no cookies of "+b.name+" in its folder: give the folder of one of its profiles", err)
 	case errors.Is(err, tools.ErrNoBrowserCookies):
 		return worded("MyMusic found no cookies of "+b.name+": is it installed? For a profile kept elsewhere, give its folder", err)
-	case errors.Is(err, tools.ErrCookiesDenied) && b.engine == "safari":
-		return worded("macOS keeps Safari's cookies from MyMusic: allow MyMusic Full Disk Access in System Settings › Privacy & Security, then import again", err)
 	case errors.Is(err, tools.ErrCookiesDenied):
 		return worded("the system keeps the cookies of "+b.name+" from MyMusic", err)
 	}
@@ -180,14 +134,12 @@ const cookieExportPrefix = "mymusic-cookies-"
 // folder, or "" for the one the browser uses. Of the browser's cookies,
 // MyMusic keeps those of YouTube alone, as the sign-in window does.
 func (s *Accounts) YouTubeImportCookies(ctx context.Context, browser, profile string) (AccountsStatus, error) {
-	browsers := browsersOn(runtime.GOOS)
-	i := slices.IndexFunc(browsers, func(b cookieBrowser) bool { return b.id == browser })
+	i := slices.IndexFunc(cookieBrowsers, func(b cookieBrowser) bool { return b.id == browser })
 	if i < 0 {
 		return AccountsStatus{}, fmt.Errorf("MyMusic can't import the cookies of %q", browser)
 	}
-	b := browsers[i]
-	home, _ := os.UserHomeDir()
-	spec, err := b.spec(profile, runtime.GOOS, home, os.Getenv)
+	b := cookieBrowsers[i]
+	spec, err := b.spec(profile, os.Getenv)
 	if err != nil {
 		return AccountsStatus{}, err
 	}

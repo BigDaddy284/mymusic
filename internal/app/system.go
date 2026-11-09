@@ -31,11 +31,8 @@ type Info struct {
 	DataDir     string `json:"dataDir"`
 	RedirectURI string `json:"redirectUri"`
 	// NativeAudio is set where MyMusic's own audio engine can play: on
-	// 64-bit Windows, macOS and Linux, with its audio library installed.
+	// 64-bit Windows.
 	NativeAudio bool `json:"nativeAudio"`
-	// Flatpak is set inside a Flatpak, whose sandbox sees only its own
-	// folders, and has Node.js for yt-dlp.
-	Flatpak bool `json:"flatpak"`
 }
 
 // System is what the windows need of the desktop and the app.
@@ -52,7 +49,6 @@ func (s *System) Info() Info {
 		DataDir:     s.a.opts.DataDir,
 		RedirectURI: spotify.RedirectURI,
 		NativeAudio: settings.NativeAudio && output.Available() == nil,
-		Flatpak:     inFlatpak(),
 	}
 }
 
