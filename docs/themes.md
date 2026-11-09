@@ -87,12 +87,19 @@ Every change to `theme.json` shows after a reload.
 | `youtube`, `spotify` | the marks telling where a track comes from |
 | `tile-1` … `tile-4`, `tile-text` | the flat tiles of the home page and the stats, and ink on them |
 
+A theme may also set these, as the built-in MyMusic themes do:
+
+| Token | Used for |
+|---|---|
+| `accent-2` | the far end of a gradient from `accent`, left to right, which fills the primary buttons, the play buttons and the seek bar, and, faintly, what is chosen; the user's accent or the artwork's turns it off |
+| `hover`, `pressed` | solid fills of what the pointer is over and presses, in place of tints of `text` |
+
 Keep text readable: `text-muted` on `bg`, `accent-text` on `accent` and
 `tile-text` on every tile need a contrast of at least 4.5:1. When the user
 picks an accent of their own, or lets it follow the artwork, MyMusic picks
 the accent's ink itself, and keeps the accent readable on your `bg`.
 
-The Blend, Expressive and Crate layouts fill what is chosen, as the
+The Studio, Blend, Expressive and Crate layouts fill what is chosen, as the
 current page, and their secondary buttons with `surface-3`: `text` on it
 needs 4.5:1 as well. They set the accent as small text on the panels, so
 there MyMusic darkens or lightens yours until it reads at 4.5:1 on

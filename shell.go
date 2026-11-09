@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/egoist/mygo/ui"
 	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/egoist/mygo/ui"
 )
 
 // view builds the main window: the rail, the top bar over the main pane

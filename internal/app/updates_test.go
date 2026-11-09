@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/egoist/mygo"
 	"github.com/bigdaddy284/mymusic/internal/store"
+	"github.com/egoist/mygo"
 )
 
 func TestNewerVersion(t *testing.T) {

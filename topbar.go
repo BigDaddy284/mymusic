@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/egoist/mygo/ui"
 	"github.com/bigdaddy284/mymusic/internal/media"
+	"github.com/egoist/mygo/ui"
 )
 
 // topBar holds the history arrows, the refresh button and the search box,
@@ -122,8 +122,8 @@ func (s *shell) searchField(c *ui.Context) {
 					item := cb.Item(q).Height(36).PaddingX(12).Gap(12).AlignItems(ui.Center).Radius(k.radiusSm).Cursor(ui.CursorPointer)
 					ink, mark := k.text, k.muted
 					if item.Highlighted() {
-						item.Background(k.accent)
-						ink, mark = k.accentText, k.accentText
+						ink = k.fillAccent(item, fillRest)
+						mark = ink
 					}
 					item.Children(func() {
 						ui.Icon(c, icon("search")).FontSize(14).TextColor(mark)
@@ -223,8 +223,8 @@ func (s *shell) suggestedItem(c *ui.Context, cb ui.ComboboxParts, it media.Item)
 		Label(title + ", " + line)
 	ink, mark := k.text, k.muted
 	if item.Highlighted() {
-		item.Background(k.accent)
-		ink, mark = k.accentText, k.accentText
+		ink = k.fillAccent(item, fillRest)
+		mark = ink
 	}
 	item.Children(func() {
 		s.cover(c, "suggested-art"+key, art, 32, it.Artist != nil)

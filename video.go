@@ -375,15 +375,16 @@ func (s *shell) videoSleeve(c *ui.Context, t, rec media.Track, size float32) {
 		switch {
 		case !asked:
 			// No motion the user didn't ask for: a play button asks.
-			b := s.buttonBase(c.Key("sleeve-video-play")).Size(42, 42).Radius(21).Background(k.accent).Absolute().
+			b := s.buttonBase(c.Key("sleeve-video-play")).Size(42, 42).Radius(21).Absolute().
 				Right(8).Bottom(8).Label("Play the video").Tooltip("Play the video").Cursor(ui.CursorPointer)
+			ink := k.fillAccent(b, stateOf(b))
 			if b.Clicked() {
 				if v.played == nil {
 					v.played = map[string]bool{}
 				}
 				v.played[rec.ID] = true
 			}
-			b.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(k.accentText) })
+			b.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(ink) })
 			return
 		case v.view == nil:
 			s.makeVideoView()

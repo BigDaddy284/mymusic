@@ -8,6 +8,7 @@ import (
 	"github.com/egoist/mygo/ui"
 
 	"github.com/bigdaddy284/mymusic/internal/addons"
+	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 var marketTabs = []string{"themes", "plugins"}
@@ -217,7 +218,7 @@ func (s *shell) uninstall(kind addons.Kind, e addons.Entry) {
 	switch kind {
 	case addons.KindTheme:
 		if s.set.Theme == e.ID {
-			s.set.Theme = "mix"
+			s.set.Theme = settings.DefaultTheme
 			s.save()
 		}
 	case addons.KindPlugin:

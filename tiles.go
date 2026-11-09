@@ -123,8 +123,10 @@ func (s *shell) cardTile(c *ui.Context, t ui.Element, tone int, large bool, titl
 				})
 				ui.Column(c).Gap(12).MinWidth(0).AlignItems(ui.Start).Children(func() {
 					k.labelWeight(ui.Text(c, caption).FontSize(k.bodySize()).TextColor(k.text).MaxLines(3))
-					ui.Box(c).Size(44, 44).Radius(k.round(44)).Background(k.accent).Center().Children(func() {
-						ui.Icon(c, icon("play")).FontSize(18).TextColor(k.accentText)
+					play := ui.Box(c).Size(44, 44).Radius(k.round(44)).Center()
+					ink := k.fillAccent(play, fillRest)
+					play.Children(func() {
+						ui.Icon(c, icon("play")).FontSize(18).TextColor(ink)
 					})
 				})
 			})
@@ -200,15 +202,16 @@ func (s *shell) artTile(c *ui.Context, key string, art []media.Image, title, sub
 				ui.Box(c).Absolute().Top(0).Left(0).Size(size, size).InsetShadow(0, 0, 0, 3, k.accent).Radius(k.radiusSm)
 			}
 			if playable && rise > 0.01 {
-				p := s.buttonBase(c.Key(key+"-play")).Size(42, 42).Radius(21).Background(k.accent).Absolute().Right(8).Bottom(8).
+				p := s.buttonBase(c.Key(key+"-play")).Size(42, 42).Radius(21).Absolute().Right(8).Bottom(8).
 					Label("Play " + title).Cursor(ui.CursorPointer)
+				ink := k.fillAccent(p, stateOf(p))
 				if rise < 1 {
 					p.Translate(0, 12*(1-rise)).Opacity(min(1, rise))
 				}
 				if p.Clicked() {
 					play = true
 				}
-				p.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(k.accentText) })
+				p.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(ink) })
 			}
 		})
 		ui.Column(c).Width(size).Gap(2).Children(func() {

@@ -56,6 +56,8 @@ func (s *shell) round(c *ui.Context, key, name, label string, main, disabled boo
 		Cursor(ui.CursorPointer).Disabled(disabled)
 	ink := k.text
 	switch {
+	case k.gradient:
+		ink = s.gradientRound(b, main, disabled)
 	case k.tonal:
 		ink = s.tonalRound(b, main, disabled)
 	case disabled:
@@ -101,6 +103,41 @@ func (s *shell) round(c *ui.Context, key, name, label string, main, disabled boo
 	}
 	b.Children(func() { ui.Icon(c, icon(name)).FontSize(glyph).TextColor(ink) })
 	return b
+}
+
+// gradientRound fills a transport button b as the MyMusic themes do: the
+// main one with the gradient, the others as Stills & Reels' compact
+// buttons, only while hovered or pressed. It returns its ink.
+func (s *shell) gradientRound(b ui.Element, main, disabled bool) ui.Color {
+	k := &s.lk
+	if disabled {
+		b.Opacity(0.45)
+	}
+	switch {
+	case main && disabled:
+		return k.fillAccent(b, fillRest)
+	case main:
+		return k.fillAccent(b, stateOf(b))
+	case disabled:
+	case b.Pressed():
+		b.Background(k.press)
+	case b.Hovered():
+		b.Background(k.hover)
+	}
+	return k.text
+}
+
+// controlFill is the fill of Stills & Reels' buttons in the state of b:
+// the control's colour, or the theme's hover or pressed one.
+func (s *shell) controlFill(b ui.Element) ui.Color {
+	k := &s.lk
+	switch stateOf(b) {
+	case fillPress:
+		return k.press
+	case fillHover:
+		return k.hover
+	}
+	return k.tonalFill
 }
 
 // tonalRound fills a transport button b as tonal controls do, and
@@ -205,6 +242,12 @@ func (s *shell) styledButton(b ui.Element, c *ui.Context, label string, primary 
 	b.Height(40).PaddingX(24).Radius(k.round(40)).Label(label).Cursor(ui.CursorPointer).AlignSelf(ui.Start)
 	ink := k.text
 	switch {
+	case k.gradient && primary:
+		ink = k.fillAccent(b, stateOf(b))
+	case k.gradient:
+		// Stills & Reels' buttons: the control's fill, and its own hover
+		// and pressed colours.
+		b.Background(s.controlFill(b))
 	case k.tonal && !primary && b.Pressed():
 		b.Background(k.tonalFill.Mix(k.tonalInk, 0.18))
 		ink = k.tonalInk
@@ -730,7 +773,7 @@ func (s *shell) segmented(c *ui.Context, key, label string, selected *int, label
 			ink := k.text
 			switch {
 			case i == *selected:
-				part.Background(k.selected)
+				k.fillSelected(part)
 				ink = k.selectedText
 			case part.Hovered():
 				part.Background(k.hover)

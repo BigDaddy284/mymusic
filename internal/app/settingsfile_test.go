@@ -228,13 +228,13 @@ func TestResetWhileBroken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s.Theme != "mix" || s.YTDLPPath != "/opt/yt-dlp" || prefs.File().Problem != "" {
+	if s.Theme != settings.DefaultTheme || s.YTDLPPath != "/opt/yt-dlp" || prefs.File().Problem != "" {
 		t.Errorf("Reset = %q, %q; File %+v", s.Theme, s.YTDLPPath, prefs.File())
 	}
 	if got := readSettings(t, path+".broken"); got != `{"theme": "daylight",}` {
 		t.Errorf("settings.json.broken holds %q", got)
 	}
-	if saved, err := settings.Decode([]byte(readSettings(t, path))); err != nil || saved.Theme != "mix" {
+	if saved, err := settings.Decode([]byte(readSettings(t, path))); err != nil || saved.Theme != settings.DefaultTheme {
 		t.Errorf("the file holds %q: %v", saved.Theme, err)
 	}
 }

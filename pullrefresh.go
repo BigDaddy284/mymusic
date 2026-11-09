@@ -224,7 +224,7 @@ func (s *shell) pullStrip(c *ui.Context) {
 		ui.Row(c).Gap(10).AlignItems(ui.Center).Children(func() {
 			badge := ui.Box(c).Size(28, 28).Shrink(0).Radius(14).Center()
 			if far {
-				badge.Background(k.accent)
+				k.fillAccent(badge, fillRest)
 			} else {
 				track, fill := k.border, k.accent
 				badge.Draw(func(pt *ui.Painter, r ui.Rect) { pullRing(pt, r, gone, track, fill) })

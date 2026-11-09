@@ -281,7 +281,7 @@ func (s *shell) episodeRow(c *ui.Context, key string, i int, episodes []media.Tr
 	ink, sub := k.text, k.muted
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)

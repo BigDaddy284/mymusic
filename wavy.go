@@ -34,20 +34,27 @@ const (
 
 // seekSlider is the seek bar's slider of *at, from 0 to most seconds: the
 // theme's, or the wavy one while the settings ask for it, which waves
-// while the track plays.
+// while the track plays. The MyMusic themes fill it with their gradient,
+// as Stills & Reels' sliders are.
 func (s *shell) seekSlider(c *ui.Context, at *float64, most float64) ui.Element {
-	if !s.set.WavyProgress {
+	k := &s.lk
+	var grad *ui.LinearGradient
+	if k.gradient {
+		grad = &ui.LinearGradient{From: k.gradFrom, To: k.gradTo, Angle: 90}
+	}
+	if !s.set.WavyProgress && grad == nil {
 		return ui.Slider(c.Key("seek"), at, 0, most)
 	}
-	return wavySlider(c.Key("seek"), at, 0, most, s.st.Playing && !s.st.Loading)
+	return wavySlider(c.Key("seek"), at, 0, most, s.set.WavyProgress && s.st.Playing && !s.st.Loading, grad)
 }
 
 // wavySlider is a slider of *v from lo to hi, which looks as the theme's
 // sliders do, its track and its knob, but for the part of the track the
 // accent fills: while moving is set, that is a wave, which moves along
 // unless the computer asks for less motion, and lies flat once it isn't.
-// It drags and takes the keys as the theme's does.
-func wavySlider(c *ui.Context, v *float64, lo, hi float64, moving bool) ui.Element {
+// It drags and takes the keys as the theme's does. grad, unless nil, fills
+// the flat bar in place of the accent.
+func wavySlider(c *ui.Context, v *float64, lo, hi float64, moving bool, grad *ui.LinearGradient) ui.Element {
 	t := c.Theme()
 	kw := t.Space(5)
 	// The knob moves across the content box, half of it inside the
@@ -85,7 +92,16 @@ func wavySlider(c *ui.Context, v *float64, lo, hi float64, moving bool) ui.Eleme
 		played := x - track.X
 		if rise <= 0 || played <= h {
 			p.Fill(track, t.Border, h/2)
-			p.Fill(ui.Rect{X: min(mirror(track.X), mirror(x)), Y: track.Y, W: played, H: h}, t.Accent, h/2)
+			bar := ui.Rect{X: min(mirror(track.X), mirror(x)), Y: track.Y, W: played, H: h}
+			if grad != nil {
+				g := *grad
+				if rtl {
+					g.Angle = 270
+				}
+				p.FillGradient(bar, g, h/2)
+			} else {
+				p.Fill(bar, t.Accent, h/2)
+			}
 		} else {
 			// The track shows only where the wave isn't, from under the knob
 			// on, not between the wave's crests.

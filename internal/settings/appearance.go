@@ -20,7 +20,18 @@ const (
 // theme sets its colours and faces.
 type Layout string
 
+// DefaultTheme is the theme of a new install, and DefaultLightTheme the
+// one it shows in light mode while it follows the computer: MyMusic's own,
+// the look of StackSpace and Stills & Reels.
 const (
+	DefaultTheme      = "mymusic"
+	DefaultLightTheme = "mymusic-light"
+)
+
+const (
+	// LayoutStudio has Stills & Reels' shapes: 8px buttons filled with the
+	// control's colour, 12px panels, bold headings and no springs.
+	LayoutStudio Layout = "studio"
 	// LayoutBlend has Expressive's rounded shapes and springs, and
 	// Crate's dense rows, big covers and bold headings.
 	LayoutBlend Layout = "blend"
@@ -36,7 +47,7 @@ const (
 )
 
 // Layouts are the layout designs, in the order the settings list them.
-var Layouts = []Layout{LayoutBlend, LayoutExpressive, LayoutCrate, LayoutTiles}
+var Layouts = []Layout{LayoutStudio, LayoutBlend, LayoutExpressive, LayoutCrate, LayoutTiles}
 
 // ColorSource chooses where the colours come from: the theme, or a file
 // that pywal or matugen make of the wallpaper, or one of the user's.
@@ -90,7 +101,7 @@ type Appearance struct {
 	ColorFile string `json:"colorFile"`
 	// Density is how much room the interface gives each element.
 	Density Density `json:"density"`
-	// Layout is the layout design; settings from before it have Blend's.
+	// Layout is the layout design; settings from before it have Studio's.
 	Layout Layout `json:"layout"`
 	// FontScale scales the text, from 0.85 to 1.3.
 	FontScale float64 `json:"fontScale"`
@@ -111,13 +122,15 @@ type Appearance struct {
 // defaultAppearance is how a new install looks.
 func defaultAppearance() Appearance {
 	var a Appearance
-	a.Theme = "mix"
-	a.LightTheme = "daylight"
-	a.DarkTheme = "mix"
+	a.Theme = DefaultTheme
+	a.LightTheme = DefaultLightTheme
+	a.DarkTheme = DefaultTheme
 	a.ThemeOptions = map[string]map[string]string{}
-	a.DynamicAccent = true
+	// The MyMusic themes keep their own gradient: the artwork's colour
+	// would take its place.
+	a.DynamicAccent = false
 	a.Density = DensityComfortable
-	a.Layout = LayoutBlend
+	a.Layout = LayoutStudio
 	a.Panel = "queue"
 	a.FontScale = 1
 	a.Zoom = 1

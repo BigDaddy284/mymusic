@@ -117,7 +117,7 @@ func (s *shell) queueRow(c *ui.Context, i int, it player.Item, current bool) {
 	}
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)

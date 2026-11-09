@@ -86,8 +86,8 @@ func TestPrograms(t *testing.T) {
 	z := gzip.NewWriter(&gz)
 	tw := tar.NewWriter(z)
 	for name, data := range map[string][]byte{
-		"mymusic":       program(elf.EM_X86_64, nixLoader),
-		"mymusic.png":   []byte("\x89PNG"),
+		"mymusic":        program(elf.EM_X86_64, nixLoader),
+		"mymusic.png":    []byte("\x89PNG"),
 		"share/a/b.desk": []byte("[Desktop Entry]"),
 	} {
 		tw.WriteHeader(&tar.Header{Name: name, Mode: 0o755, Size: int64(len(data)), Typeflag: tar.TypeReg})

@@ -365,7 +365,7 @@ func (s *shell) miniQueueEntry(c *ui.Context, i int, it player.Item, current boo
 	ink, sub := k.text, k.muted
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)

@@ -64,7 +64,7 @@ func (s *shell) trackRow(c *ui.Context, key string, i int, t media.Track, tracks
 	}
 	switch {
 	case current:
-		row.Background(k.selected)
+		k.fillSelected(row)
 		ink, sub = k.selectedText, k.selectedSub
 	case row.Hovered():
 		row.Background(k.hover)

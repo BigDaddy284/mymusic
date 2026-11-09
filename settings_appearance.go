@@ -20,7 +20,8 @@ import (
 // layoutChoices are the layout designs, in the order of settings.Layouts,
 // as Settings › Appearance offers them.
 var layoutChoices = []choice{
-	{"Blend", "Expressive's rounded shapes and springy motion, on Crate's dense rows, big covers in cards and bold headings. The default.", false},
+	{"Studio", "The look of StackSpace and Stills & Reels: 8px buttons filled with the control's colour, 12px panels and bold headings. The default.", false},
+	{"Blend", "Expressive's rounded shapes and springy motion, on Crate's dense rows, big covers in cards and bold headings.", false},
 	{"Expressive", "Playful and colourful: tonal fills, big rounded shapes, pill buttons, a floating player bar and springy motion. The Material themes go with it, their colours made of the cover's.", false},
 	{"Crate", "Restrained: dense rows, big covers in cards and bold, tight headings, so that the covers do the work.", false},
 	{"Tiles", "Flat tiles, giant light lowercase words and outlined boxes, as MyMusic first was.", false},

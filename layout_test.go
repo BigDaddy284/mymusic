@@ -169,7 +169,7 @@ func TestLayoutEditedInSettingsFile(t *testing.T) {
 	editSettings(t, s, `{"layout": "grid"}`)
 	s.refresh()
 	tt.Frame()
-	if s.set.Layout != settings.LayoutBlend || s.lk.row != 56 {
+	if s.set.Layout != settings.LayoutStudio || s.lk.row != 52 {
 		t.Errorf("an unknown layout gave %q, with rows of %vpx", s.set.Layout, s.lk.row)
 	}
 }

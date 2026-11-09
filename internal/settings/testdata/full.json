@@ -9,7 +9,7 @@
     }
   },
   "accent": "#ff8800",
-  "dynamicAccent": false,
+  "dynamicAccent": true,
   "colorSource": "file",
   "colorFile": "~/colors.json",
   "density": "compact",

@@ -202,7 +202,7 @@ func (s *shell) brand(c *ui.Context, collapsed bool, inner float32) float32 {
 func (s *shell) logo(c *ui.Context, room float32) {
 	k := &s.lk
 	// The mark keeps its gradient in every theme, as the app's icon does.
-	ui.Icon(c, brandMark).Size(26, 26).Shrink(0)
+	ui.Image(c, brandMark).Size(26, 26).Shrink(0)
 	size := s.wordmarkSize(c, room)
 	ui.Text(c, "MyMusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
 		SingleLine().Grow(1).MinWidth(0)
@@ -278,8 +278,12 @@ func (s *shell) navEntry(c *ui.Context, key, label string, svg *ui.SVG, path str
 		ink := k.text
 		switch {
 		case current:
-			box.Background(k.accent).Border(2, k.accent)
-			ink = k.accentText
+			if k.gradient {
+				ink = k.fillAccent(box, fillRest)
+			} else {
+				box.Background(k.accent).Border(2, k.accent)
+				ink = k.accentText
+			}
 		case pressed:
 			box.Background(k.text).Border(2, k.text)
 			ink = k.bg

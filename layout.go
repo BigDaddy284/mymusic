@@ -64,6 +64,10 @@ type layoutDesign struct {
 
 // layoutDesigns are the layout designs, by the setting's values.
 var layoutDesigns = map[settings.Layout]layoutDesign{
+	// After Stills & Reels: 8px buttons and 12px panels, filled controls,
+	// bold headings, and presses that show at once.
+	settings.LayoutStudio: {radius: 12, small: 8, row: 52, rail: 240, player: 80, gutter: 24, gap: 14, cover: 180,
+		tonal: true, cards: true, headings: headingsBold},
 	settings.LayoutTiles: {row: 52, rail: 248, player: 92, gutter: 40, gap: 16, cover: 172},
 	// After Material 3 Expressive: its contrast of shapes, 28px on tiles,
 	// dialogs and the player bar and 12px on rows and covers, its type

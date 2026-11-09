@@ -36,7 +36,7 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 		},
 		Accounts: Accounts{YouTubeChannel: "1234; x"},
 	}.Clean()
-	if s.Theme != "mix" || s.Accent != "" || s.FontScale != 1 || s.SpotifyPlayback != Default().SpotifyPlayback {
+	if s.Theme != DefaultTheme || s.Accent != "" || s.FontScale != 1 || s.SpotifyPlayback != Default().SpotifyPlayback {
 		t.Errorf("appearance and playback not repaired: %+v", s)
 	}
 	if s.Crossfade != 12 || s.Volume != 0 || len(s.Equalizer.Gains) != len(Bands) {
@@ -66,19 +66,19 @@ func TestValidID(t *testing.T) {
 
 func TestActiveTheme(t *testing.T) {
 	s := Default()
-	if got := s.ActiveTheme(true); got != "mix" {
+	if got := s.ActiveTheme(true); got != DefaultTheme {
 		t.Errorf("not following the system, dark: %q", got)
 	}
 	s.Theme = "sakura"
 	s.FollowSystem = true
-	if got := s.ActiveTheme(true); got != "mix" {
+	if got := s.ActiveTheme(true); got != DefaultTheme {
 		t.Errorf("dark appearance: %q", got)
 	}
-	if got := s.ActiveTheme(false); got != "daylight" {
+	if got := s.ActiveTheme(false); got != DefaultLightTheme {
 		t.Errorf("light appearance: %q", got)
 	}
 	s.LightTheme, s.DarkTheme = "Not An ID", ""
-	if c := s.Clean(); c.LightTheme != "daylight" || c.DarkTheme != "mix" {
+	if c := s.Clean(); c.LightTheme != DefaultLightTheme || c.DarkTheme != DefaultTheme {
 		t.Errorf("cleaned to %q and %q", c.LightTheme, c.DarkTheme)
 	}
 }
@@ -296,9 +296,9 @@ func TestSkipDisliked(t *testing.T) {
 }
 
 // TestCleanLayout gives settings from before the layout setting, and
-// those of a layout no more, Blend's.
+// those of a layout no more, Studio's.
 func TestCleanLayout(t *testing.T) {
-	for in, want := range map[Layout]Layout{"": LayoutBlend, "bogus": LayoutBlend, LayoutBlend: LayoutBlend,
+	for in, want := range map[Layout]Layout{"": LayoutStudio, "bogus": LayoutStudio, LayoutStudio: LayoutStudio, LayoutBlend: LayoutBlend,
 		LayoutExpressive: LayoutExpressive, LayoutCrate: LayoutCrate, LayoutTiles: LayoutTiles} {
 		if got := (Settings{Appearance: Appearance{Layout: in}}).Clean().Layout; got != want {
 			t.Errorf("Clean of layout %q = %q, want %q", in, got, want)

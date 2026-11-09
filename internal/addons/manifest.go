@@ -37,6 +37,12 @@ var ColorKeys = []string{
 	"tile-1", "tile-2", "tile-3", "tile-4", "tile-text",
 }
 
+// OptionalColorKeys are the colors a theme may set: "accent-2", where the
+// gradient of the main buttons, what is chosen and the seek bar ends, from
+// the accent, and "hover" and "pressed", the solid fills of what the
+// pointer is over or presses, in place of the text's tints.
+var OptionalColorKeys = []string{"accent-2", "hover", "pressed"}
+
 // OptionType is the kind of control a theme option shows.
 type OptionType string
 
@@ -164,8 +170,13 @@ func (t Theme) Validate() error {
 			errs = append(errs, fmt.Errorf("colors.%s must be a color", key))
 		}
 	}
-	for key := range t.Colors {
-		if !slices.Contains(ColorKeys, key) {
+	for key, v := range t.Colors {
+		switch {
+		case slices.Contains(OptionalColorKeys, key):
+			if !ValidColor(v) {
+				errs = append(errs, fmt.Errorf("colors.%s must be a color", key))
+			}
+		case !slices.Contains(ColorKeys, key):
 			errs = append(errs, fmt.Errorf("colors.%s is not a color themes set", key))
 		}
 	}
