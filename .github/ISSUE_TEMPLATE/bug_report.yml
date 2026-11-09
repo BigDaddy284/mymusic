@@ -28,11 +28,8 @@ body:
     attributes:
       label: System
       options:
-        - macOS, Apple silicon
-        - macOS, Intel
         - Windows 11
         - Windows 10
-        - Linux (tell which distribution below)
     validations:
       required: true
   - type: dropdown

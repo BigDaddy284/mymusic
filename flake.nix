@@ -7,27 +7,15 @@
     { self, nixpkgs }:
     let
       inherit (nixpkgs) lib;
+      # MyMusic is built for Windows alone, cross-compiled on Linux: the
+      # systems the shell runs on, not those MyMusic runs on.
       systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      linux = [
         "x86_64-linux"
         "aarch64-linux"
       ];
       each = systems: f: lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
-      version = (lib.importJSON ./package.json).version;
     in
     {
-      # MyMusic for Linux, built from source: `nix build`, or
-      # `nix run github:bigdaddy284/mymusic`.
-      packages = each linux (pkgs: rec {
-        mymusic = pkgs.callPackage ./nix/package.nix { inherit version; };
-        default = mymusic;
-      });
-
       # The tools releases are built and published with, at the versions
       # flake.lock pins: Go, Bun for `mygo build`, NSIS for the Windows
       # installers, osslsigncode, which signs the Windows apps when
@@ -37,21 +25,17 @@
       # here.
       devShells = each systems (pkgs: {
         default = pkgs.mkShell {
-          packages =
-            with pkgs;
-            [
-              go_1_27
-              bun
-              goreleaser
-              jq
-              zip
-              zola
-            ]
-            ++ lib.optionals stdenv.hostPlatform.isLinux [
-              nsis
-              osslsigncode
-              binutils
-            ];
+          packages = with pkgs; [
+            go_1_27
+            bun
+            goreleaser
+            jq
+            zip
+            zola
+            nsis
+            osslsigncode
+            binutils
+          ];
         };
       });
 
