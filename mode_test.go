@@ -238,3 +238,23 @@ func TestRandomSkipsShownVideos(t *testing.T) {
 		t.Errorf("the second search shows %q", tt.Texts())
 	}
 }
+
+// TestVideoSideBackToThePlayingVideo goes back to the watch page of the
+// video playing now, though the video moved on while Music showed.
+func TestVideoSideBackToThePlayingVideo(t *testing.T) {
+	s := newTestShell(t)
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	list := []youtube.Video{{ID: "first000001", Title: "First"}, {ID: "second00001", Title: "Second"}}
+	tt := testerOf(t, s, 1280, 820)
+	s.watch(list[0], list)
+	tt.Frame()
+	s.toggleMode()
+	tt.Frame()
+	s.videoNext(true)
+	s.toggleMode()
+	tt.Frame()
+	if vp.current.ID != "second00001" || s.router.Path() != watchPath("second00001") {
+		t.Errorf("back on Video, %q plays at %q", vp.current.ID, s.router.Path())
+	}
+}
