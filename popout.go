@@ -14,6 +14,10 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
+// popStrip is how tall the strip over the pop-out video is, which docks
+// it back.
+const popStrip = 30
+
 // popOut is the pop-out player's own state.
 type popOut struct {
 	// win is the window, while it is open; opening is set while it opens.
@@ -40,17 +44,36 @@ func (s *shell) popOutVideo() {
 	var win *mygo.Window
 	view := func(c *ui.Context) {
 		w, h := c.Size()
-		root := ui.Box(c).Fill().Background(ui.RGBA(0, 0, 0, 1))
+		white := ui.RGBA(255, 255, 255, 1)
+		root := ui.Column(c).Fill().Background(ui.RGBA(0, 0, 0, 1)).TextColor(white).Font(s.lk.body)
 		root.Children(func() {
+			// A strip over the video docks it back in the main window: but
+			// for the screen the player fills.
+			strip := float32(popStrip)
+			if vp.pop.full {
+				strip = 0
+			}
+			ui.Row(c).Height(strip).Clip().Height(popStrip).Shrink(0).PaddingX(8).Gap(8).AlignItems(ui.Center).Background(ui.RGBA(24, 24, 24, 1)).Children(func() {
+				ui.Text(c, vp.current.Title).FontSize(12).TextColor(ui.RGBA(255, 255, 255, 0.75)).SingleLine().Grow(1).MinWidth(0)
+				dock := ui.ButtonBase(c.Key("pop-dock")).Height(22).PaddingX(10).Radius(4).Label("Dock the video back in MyTube").
+					Cursor(ui.CursorPointer).Background(ui.RGBA(255, 255, 255, 0.14))
+				if dock.Hovered() {
+					dock.Background(ui.RGBA(255, 255, 255, 0.24))
+				}
+				if dock.Clicked() {
+					s.update(s.closePopOut)
+				}
+				dock.Children(func() { ui.Text(c, "Dock back").FontSize(12).TextColor(white).SingleLine() })
+			})
 			if web := vp.web; web != nil && vp.pop.win == win && win != nil {
-				ui.WebView(c.Key("pop-web"), web).Size(w, h).Label("Video: " + vp.current.Title)
+				ui.WebView(c.Key("pop-web"), web).Size(w, h-strip).Label("Video: " + vp.current.Title)
 			}
 		})
 	}
 	win = mygo.NewWindow(mygo.WindowOptions{
 		Title:           vp.current.Title,
 		Width:           480,
-		Height:          270,
+		Height:          270 + popStrip,
 		MinWidth:        240,
 		MinHeight:       135,
 		AlwaysOnTop:     true,

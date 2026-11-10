@@ -310,7 +310,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 // tells it plays.
 func (s *shell) videoStarts(st videoState) {
 	vp := &s.videos.player
-	if st.Playing && !vp.state.Playing && s.st.Playing && time.Since(vp.pausedForMusic) > 2*time.Second {
+	if st.Playing && !vp.state.Playing && s.p.State().Playing && time.Since(vp.pausedForMusic) > 2*time.Second {
 		s.p.Pause()
 		s.st.Playing = false
 	}
@@ -964,7 +964,9 @@ func (s *shell) followWatch() {
 	// The video goes on as the Music side shows, until music starts to
 	// play, which pauses it, as a video started while music plays pauses
 	// the music (playVideo): it stays where it shows, to go back to.
-	playing := s.st.Playing
+	// The player's own state: the frame's may be older, as no frame drew
+	// while the window was minimized.
+	playing := s.p.State().Playing
 	started := playing && !vp.musicPlayed
 	vp.musicPlayed = playing
 	if started && vp.current.ID != "" && vp.state.Playing {

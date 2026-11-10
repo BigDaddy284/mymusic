@@ -148,7 +148,8 @@ func TestVideoOnMusicSide(t *testing.T) {
 	if !s.showsMini() && s.router.Path() != "/" {
 		t.Error("the video doesn't show on the Music side")
 	}
-	s.st.Playing = true
+	s.p.PlayTracks(testTracks, 0)
+	s.settle(t, func(st player.State) bool { return st.Playing })
 	s.followWatch()
 	if vp.state.Playing || vp.current.ID != "a" {
 		t.Errorf("as music starts, the video plays %v, or went: %q", vp.state.Playing, vp.current.ID)
