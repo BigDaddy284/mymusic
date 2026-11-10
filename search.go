@@ -81,6 +81,7 @@ func (s *shell) searchPage(c *ui.Context, q string) {
 		}
 		switch pivot {
 		case "all":
+			s.videoResultsShelf(c, q)
 			if len(r.Artists) > 0 {
 				s.shelf(c, "artists", "Artists", func() {
 					for i, a := range r.Artists {

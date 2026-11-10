@@ -32,6 +32,11 @@ var videoLibraryTabs = []struct{ id, label string }{
 	{"liked", "Liked videos"},
 }
 
+// videoSearchChips are the filters of a search of the Video side: the
+// videos of YouTube's website, or the songs of YouTube Music, which play
+// on the music side.
+var videoSearchChips = []string{"Videos", "Songs"}
+
 // videoTrending are the topics of the Trending page, each a search of this
 // week's videos: YouTube no longer has a trending page of its own.
 var videoTrending = []string{"Music", "Gaming", "News", "Sports", "Comedy", "Film trailers", "Science", "Live"}
@@ -40,8 +45,8 @@ var videoTrending = []string{"Music", "Gaming", "News", "Sports", "Comedy", "Fil
 type videosState struct {
 	// query is what the search box holds.
 	query string
-	// homeChip and trendingChip are the filters chosen.
-	homeChip, trendingChip int
+	// homeChip, trendingChip and searchChip are the filters chosen.
+	homeChip, trendingChip, searchChip int
 	// known are the videos the pages showed, by ID, which the watch page
 	// tells of; titles the playlists' titles, by ID.
 	known  map[string]youtube.Video
@@ -167,6 +172,7 @@ func (s *shell) randomVideoSearch() {
 		return
 	}
 	vs.rolling = true
+	vs.searchChip = 0
 	go func() {
 		topic, wiki := s.svc.Videos.RandomTopic(context.Background())
 		s.update(func() {
@@ -204,7 +210,11 @@ func (s *shell) videoSearchPage(c *ui.Context, q, random string) {
 			})
 			return
 		}
-		s.pageHeader(c, q, nil, nil)
+		s.videoHeader(c, q, videoSearchChips, &s.videos.searchChip)
+		if s.videos.searchChip == 1 {
+			s.songResults(c, q)
+			return
+		}
 		switch random {
 		case "wikipedia":
 			ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 24).Children(func() {
