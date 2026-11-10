@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/egoist/mygo/ui"
 
@@ -394,22 +395,43 @@ func (s *shell) moreVideos(key string, search bool, token string) {
 	}()
 }
 
-// videoColumns returns how many cards of videos fit in a row of the pane,
-// and their width.
-func (s *shell) videoColumns(c *ui.Context) (int, float32) {
+// videoColumns returns how many cards of videos fit in a row of room
+// wide, and their width: as many as fit at 240 or more, stretched to fill
+// the row. room is the row's width the last frame measured, or, before
+// it did, what the pane leaves.
+func (s *shell) videoColumns(c *ui.Context, room float32) (int, float32) {
 	k := &s.lk
-	pane := s.paneWidth(c) - 2*k.gutter
+	if room <= 0 {
+		room = s.paneWidth(c) - 2*k.gutter
+	}
 	gap := k.gap
 	const least = 240
-	n := max(1, int((pane+gap)/(least+gap)))
-	return n, (pane - gap*float32(n-1)) / float32(n)
+	n := max(1, int((room+gap)/(least+gap)))
+	return n, float32(int((room - gap*float32(n-1)) / float32(n)))
+}
+
+// cardRow is a wrapping row of cards, as wide as the page, and the width
+// of its cards. It asks for another frame when the width it measured
+// changed, so the cards fill a window resized, or a pane opened.
+func (s *shell) cardRow(c *ui.Context, key string) (ui.Element, float32) {
+	k := &s.lk
+	row := ui.Row(c.Key(key)).FillWidth().Wrap().GapX(k.gap).GapY(1.5 * k.gap).AlignItems(ui.Start)
+	room := row.Bounds().W
+	if s.cardRooms == nil {
+		s.cardRooms = map[string]float32{}
+	}
+	if was, ok := s.cardRooms[key]; ok && was != room {
+		c.After(time.Millisecond)
+	}
+	s.cardRooms[key] = room
+	_, w := s.videoColumns(c, room)
+	return row, w
 }
 
 // videoGrid lays the videos as cards, in rows that fill the pane.
 func (s *shell) videoGrid(c *ui.Context, key string, videos []youtube.Video) {
-	k := &s.lk
-	_, w := s.videoColumns(c)
-	ui.Row(c.Key(key + "-grid")).Wrap().GapX(k.gap).GapY(1.5 * k.gap).AlignItems(ui.Start).Children(func() {
+	row, w := s.cardRow(c, key+"-grid")
+	row.Children(func() {
 		for i, v := range videos {
 			s.videoCard(c, key+"-"+count(i), v, w, videos)
 		}
@@ -521,9 +543,9 @@ func (s *shell) videoPlaylists(c *ui.Context) {
 		s.problem(c, res.err, func() { s.refetch("videos:playlists") })
 		return
 	}
-	_, w := s.videoColumns(c)
+	row, w := s.cardRow(c, "video-playlists")
 	h := float32(int(w*9/16 + 0.5))
-	ui.Row(c.Key("video-playlists")).Wrap().GapX(k.gap).GapY(1.5 * k.gap).AlignItems(ui.Start).Children(func() {
+	row.Children(func() {
 		for i, p := range res.value {
 			card := s.buttonBase(c.Key("video-playlist-" + count(i))).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).
 				Label(p.Title).Cursor(ui.CursorPointer)

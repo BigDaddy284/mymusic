@@ -3,6 +3,7 @@ package main
 import (
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
@@ -48,5 +49,39 @@ func TestVideoCardMenu(t *testing.T) {
 	tt.Frame()
 	if showsText(tt.Texts(), "Toads singing") {
 		t.Error("a video YouTube was told not to recommend is still shown")
+	}
+}
+
+// TestVideoGridFillsThePage stretches the cards to fill the page's width,
+// with the side panel open and closed.
+func TestVideoGridFillsThePage(t *testing.T) {
+	s := newTestShell(t)
+	var vids []youtube.Video
+	for i := range 12 {
+		vids = append(vids, youtube.Video{ID: "video" + count(i), Title: "Video " + count(i)})
+	}
+	s.loads["videos:search:frogs"] = &loaded[youtube.VideoPage]{done: true, value: youtube.VideoPage{Videos: vids}}
+	tt := testerOf(t, s, 1600, 900)
+	for _, panel := range []string{"queue", ""} {
+		s.panel = panel
+		show(s, tt, videoSearchPath("frogs"))
+		tt.Advance(50 * time.Millisecond)
+		first, _ := tt.Access("Video 0")
+		right := first.Bounds.X
+		for i := range vids {
+			r, _ := tt.Access("Video " + count(i))
+			if r.Bounds.Y != first.Bounds.Y {
+				break
+			}
+			right = r.Bounds.X + r.Bounds.W
+		}
+		// The cards end a gutter short of the panel, or of the window.
+		end := float32(1600)
+		if panel != "" {
+			end -= 340
+		}
+		if gap := end - right; gap > s.lk.gutter+30 {
+			t.Errorf("with the panel %q, the cards end at %.0f, %.0fpx short", panel, right, gap)
+		}
 	}
 }

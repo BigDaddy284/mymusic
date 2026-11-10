@@ -189,7 +189,10 @@ type shell struct {
 	// keys (videokeys.go).
 	videoKeys atomic.Bool
 	// afterPivots is what a page shows after its header's pivots.
-	afterPivots  func()
+	afterPivots func()
+	// cardRooms are the widths the rows of cards measured last, by row
+	// (videos.go).
+	cardRooms    map[string]float32
 	local        []media.Shelf
 	localVersion uint64
 	localBuilt   bool
