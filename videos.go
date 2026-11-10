@@ -52,8 +52,10 @@ type videosState struct {
 	moreBusy  map[string]bool
 	// rolling is set while Random asks Wikipedia for a topic.
 	rolling bool
-	// The player (watch.go).
-	player videoPlayer
+	// The player (watch.go), and the preview of the card the pointer
+	// rests on (preview.go).
+	player  videoPlayer
+	preview videoPreview
 }
 
 func videoSearchPath(q string) string    { return "/videos/search?q=" + url.QueryEscape(q) }
@@ -398,6 +400,8 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 	card.Children(func() {
 		ui.Box(c).Size(w, h).Shrink(0).Radius(k.radiusSm).Clip().Children(func() {
 			s.videoThumb(c, key+"-thumb", v, w, h)
+			s.watchedBar(c, v, w, 4)
+			s.cardPreview(c, key, v, list, hovered, w, h)
 			if hovered {
 				ui.Box(c).Absolute().Top(0).Left(0).Size(w, h).InsetShadow(0, 0, 0, 3, k.accent).Radius(k.radiusSm)
 			}
@@ -416,6 +420,30 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 				ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine()
 			}
 		})
+	})
+}
+
+// youtubeRed is the red of YouTube's bar of what was watched.
+var youtubeRed = ui.RGBA(255, 0, 51, 1)
+
+// watchedShare is how much of v was watched, from 0 to 1: here, as it was
+// left, or, when it wasn't, on any device, as YouTube tells.
+func (s *shell) watchedShare(v youtube.Video) float64 {
+	if share := s.svc.Videos.WatchedShare(v.ID); share > 0 {
+		return share
+	}
+	return min(float64(v.Watched)/100, 1)
+}
+
+// watchedBar is the red bar along the bottom of v's thumbnail, w wide and
+// h high, that tells how much of it was watched, as YouTube's does.
+func (s *shell) watchedBar(c *ui.Context, v youtube.Video, w, h float32) {
+	share := s.watchedShare(v)
+	if share <= 0 {
+		return
+	}
+	ui.Box(c).Absolute().Left(0).Bottom(0).Size(w, h).Background(ui.RGBA(255, 255, 255, 0.35)).Children(func() {
+		ui.Box(c).Size(float32(int(float64(w)*share+0.5)), h).Background(youtubeRed)
 	})
 }
 

@@ -38,6 +38,9 @@ type videoBook struct {
 	// Positions are where each video was left, in seconds, to go on
 	// from there when it plays again.
 	Positions map[string]float64 `json:"positions,omitempty"`
+	// Lengths are the videos' lengths, in seconds, as they were left,
+	// which tell how much of each was watched.
+	Lengths map[string]float64 `json:"lengths,omitempty"`
 }
 
 // positionsKept is how many videos keep where they were left.
@@ -139,8 +142,9 @@ func (vs *videoStats) watched(v youtube.Video, seconds float64) {
 	}
 }
 
-// leftAt keeps where a video was left: 0 forgets it, as at its end.
-func (vs *videoStats) leftAt(id string, seconds float64) {
+// leftAt keeps where a video was left, length seconds long: 0 forgets
+// it.
+func (vs *videoStats) leftAt(id string, seconds, length float64) {
 	if id == "" {
 		return
 	}
@@ -150,9 +154,16 @@ func (vs *videoStats) leftAt(id string, seconds float64) {
 	if seconds <= 0 {
 		if _, ok := b.Positions[id]; ok {
 			delete(b.Positions, id)
+			delete(b.Lengths, id)
 			vs.moved = true
 		}
 		return
+	}
+	if b.Lengths == nil {
+		b.Lengths = map[string]float64{}
+	}
+	if length > 0 {
+		b.Lengths[id] = length
 	}
 	if b.Positions == nil {
 		b.Positions = map[string]float64{}
@@ -160,6 +171,7 @@ func (vs *videoStats) leftAt(id string, seconds float64) {
 	if _, ok := b.Positions[id]; !ok && len(b.Positions) >= positionsKept {
 		for other := range b.Positions { // any one goes
 			delete(b.Positions, other)
+			delete(b.Lengths, other)
 			break
 		}
 	}
@@ -169,11 +181,12 @@ func (vs *videoStats) leftAt(id string, seconds float64) {
 	}
 }
 
-// position is where a video was left, 0 when it wasn't.
-func (vs *videoStats) position(id string) float64 {
+// position is where a video was left, 0 when it wasn't, and its length,
+// 0 when unknown.
+func (vs *videoStats) position(id string) (at, length float64) {
 	vs.mu.Lock()
 	defer vs.mu.Unlock()
-	return vs.book.Positions[id]
+	return vs.book.Positions[id], vs.book.Lengths[id]
 }
 
 // started tells a video starts again from its start, which counts as a
@@ -286,17 +299,30 @@ func (v *Videos) Watched(video youtube.Video, seconds float64) {
 	}
 }
 
-// LeftAt keeps where the video id was left, in seconds; 0 forgets it.
-func (v *Videos) LeftAt(id string, seconds float64) {
+// LeftAt keeps where the video id, length seconds long, was left, in
+// seconds; 0 forgets it.
+func (v *Videos) LeftAt(id string, seconds, length float64) {
 	if vs := v.a.videoStats; vs != nil {
-		vs.leftAt(id, seconds)
+		vs.leftAt(id, seconds, length)
 	}
 }
 
 // Position is where the video id was left, in seconds, 0 when it wasn't.
 func (v *Videos) Position(id string) float64 {
 	if vs := v.a.videoStats; vs != nil {
-		return vs.position(id)
+		at, _ := vs.position(id)
+		return at
+	}
+	return 0
+}
+
+// WatchedShare is how much of the video id was watched here, from 0 to 1,
+// as it was left.
+func (v *Videos) WatchedShare(id string) float64 {
+	if vs := v.a.videoStats; vs != nil {
+		if at, length := vs.position(id); at > 0 && length > 0 {
+			return min(at/length, 1)
+		}
 	}
 	return 0
 }

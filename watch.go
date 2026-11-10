@@ -131,7 +131,7 @@ func (s *shell) playVideo(v youtube.Video) {
 	// where it was left.
 	if vp.casting != nil {
 		at := s.svc.Videos.Position(v.ID)
-		if at <= videoResumeAfter {
+		if at <= videoResumeAfter || s.svc.Videos.WatchedShare(v.ID) > 0.97 {
 			at = 0
 		}
 		s.castCurrent(at)
@@ -355,12 +355,17 @@ func (s *shell) keepVideoPlace() {
 	if vp.current.ID == "" || st.Duration <= 0 || vp.settled < 4 {
 		return
 	}
+	// One watched to its end keeps its end, which its red bar fills, and
+	// starts over.
 	at := st.Time
-	if st.Ended || at < videoResumeAfter || at > st.Duration-videoResumeBefore {
+	switch {
+	case st.Ended || at > st.Duration-videoResumeBefore:
+		at = st.Duration
+	case at < videoResumeAfter:
 		at = 0
 	}
 	id := vp.current.ID
-	s.svc.Videos.LeftAt(id, at)
+	s.svc.Videos.LeftAt(id, at, st.Duration)
 }
 
 // settleVideo brings the player the user's volume, speed and captions,
@@ -383,7 +388,13 @@ func (s *shell) settleVideo() {
 		s.localVideoCommand("rate", w.VideoRate)
 		vp.state.Volume, vp.state.Muted, vp.state.Rate = w.VideoVolume, w.VideoMuted, w.VideoRate
 		// The video goes on from where it was left, as tracks do.
-		if at := s.svc.Videos.Position(vp.current.ID); at > videoResumeAfter && at < vp.state.Duration-videoResumeBefore {
+		// From where it was left here, or, when it wasn't, where YouTube
+		// tells it was left, on any device.
+		at := s.svc.Videos.Position(vp.current.ID)
+		if at == 0 && vp.current.Watched > 0 {
+			at = vp.state.Duration * float64(vp.current.Watched) / 100
+		}
+		if at > videoResumeAfter && at < vp.state.Duration-videoResumeBefore {
 			s.localVideoCommand("seek", at)
 			vp.state.Time = at
 		}
@@ -705,7 +716,10 @@ func (s *shell) videoRow(c *ui.Context, key string, v youtube.Video, current boo
 		s.playNext(v)
 	}
 	row.Children(func() {
-		ui.Box(c).Size(71, 40).Shrink(0).Radius(4).Clip().Children(func() { s.videoThumb(c, key+"-thumb", v, 71, 40) })
+		ui.Box(c).Size(71, 40).Shrink(0).Radius(4).Clip().Children(func() {
+			s.videoThumb(c, key+"-thumb", v, 71, 40)
+			s.watchedBar(c, v, 71, 3)
+		})
 		ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
 			ui.Text(c, v.Title).FontSize(k.smallSize()).SingleLine()
 			if v.Channel != "" {
@@ -867,6 +881,7 @@ func videoSpeedLabel(r float64) string {
 func (s *shell) followWatch() {
 	vp := &s.videos.player
 	defer s.followFullScreen()
+	defer s.followPreview()
 	// The video goes on as the Music side shows, until music starts to
 	// play: a video started while music plays pauses it (playVideo).
 	playing := s.st.Playing

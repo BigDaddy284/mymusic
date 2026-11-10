@@ -31,6 +31,9 @@ type Video struct {
 	Views     string        `json:"views,omitempty"`
 	Published string        `json:"published,omitempty"`
 	Thumbnail []media.Image `json:"thumbnail"`
+	// Watched is how much of it the account watched, in percent, as
+	// YouTube's red bar under the thumbnail shows it: on any device.
+	Watched int `json:"watched,omitempty"`
 }
 
 // VideoPlaylist is a playlist of YouTube's website.
@@ -276,6 +279,7 @@ func parseVideoRenderer(r node) (Video, bool) {
 		}
 	}
 	v.Thumbnail = videoThumbnail(id, r.get("thumbnail", "thumbnails"))
+	v.Watched = r.find("thumbnailOverlayResumePlaybackRenderer").get("percentDurationWatched").number()
 	return v, v.Title != ""
 }
 
@@ -343,6 +347,7 @@ func parseVideoLockup(r node) (Video, bool) {
 	image := r.get("contentImage")
 	v.Duration = badgeText(image)
 	v.Thumbnail = videoThumbnail(id, image.find("image").get("sources"))
+	v.Watched = image.find("thumbnailOverlayProgressBarViewModel").get("startPercent").number()
 	return v, id != "" && v.Title != ""
 }
 

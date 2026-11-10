@@ -23,11 +23,13 @@ func TestParseVideoPage(t *testing.T) {
 	   "ownerText":{"runs":[{"text":"A Channel","navigationEndpoint":{"browseEndpoint":{"browseId":"UC1"}}}]},
 	   "lengthText":{"simpleText":"3:12"},"shortViewCountText":{"simpleText":"12K views"},
 	   "publishedTimeText":{"simpleText":"2 years ago"},
-	   "thumbnail":{"thumbnails":[{"url":"https://i.ytimg.com/vi/vid00000001/hq720.jpg","width":720,"height":404}]}}},
+	   "thumbnail":{"thumbnails":[{"url":"https://i.ytimg.com/vi/vid00000001/hq720.jpg","width":720,"height":404}]},
+	   "thumbnailOverlays":[{"thumbnailOverlayResumePlaybackRenderer":{"percentDurationWatched":37}}]}},
 	  {"reelShelfRenderer":{"items":[{"videoRenderer":{"videoId":"short000001","title":{"runs":[{"text":"A Short"}]}}}]}},
 	  {"lockupViewModel":{"contentId":"vid00000002","contentType":"LOCKUP_CONTENT_TYPE_VIDEO",
 	   "contentImage":{"thumbnailViewModel":{"image":{"sources":[{"url":"https://i.ytimg.com/vi/vid00000002/hq.jpg","width":480,"height":270}]},
-	    "overlays":[{"thumbnailOverlayBadgeViewModel":{"thumbnailBadges":[{"thumbnailBadgeViewModel":{"text":"14:30"}}]}}]}},
+	    "overlays":[{"thumbnailOverlayBadgeViewModel":{"thumbnailBadges":[{"thumbnailBadgeViewModel":{"text":"14:30"}}]}},
+	     {"thumbnailBottomOverlayViewModel":{"progressBar":{"thumbnailOverlayProgressBarViewModel":{"startPercent":100}}}}]}},
 	   "metadata":{"lockupMetadataViewModel":{"title":{"content":"New design"},
 	    "metadata":{"contentMetadataViewModel":{"metadataRows":[
 	     {"metadataParts":[{"text":{"content":"Another Channel"}}]},
@@ -46,6 +48,9 @@ func TestParseVideoPage(t *testing.T) {
 	if lockup.ID != "vid00000002" || lockup.Title != "New design" || lockup.Channel != "Another Channel" ||
 		lockup.Duration != "14:30" || lockup.Views != "48K views" || lockup.Published != "4 years ago" {
 		t.Errorf("the new design reads %+v", lockup)
+	}
+	if old.Watched != 37 || lockup.Watched != 100 {
+		t.Errorf("watched %d%% and %d%%", old.Watched, lockup.Watched)
 	}
 	if page.Continue != "NEXT" {
 		t.Errorf("the next page's token is %q", page.Continue)

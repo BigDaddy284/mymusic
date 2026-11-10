@@ -201,3 +201,19 @@ func TestVideoCastCommands(t *testing.T) {
 		t.Error("the cast goes on with no video")
 	}
 }
+
+// TestWatchedShare fills the red bar from where a video was left here,
+// and from what YouTube tells of one that wasn't.
+func TestWatchedShare(t *testing.T) {
+	s := newTestShell(t)
+	if got := s.watchedShare(youtube.Video{ID: "aaaaaaaaaaa", Watched: 40}); got != 0.4 {
+		t.Errorf("YouTube's 40%% fills %v", got)
+	}
+	s.svc.Videos.LeftAt("aaaaaaaaaaa", 30, 120)
+	if got := s.watchedShare(youtube.Video{ID: "aaaaaaaaaaa", Watched: 40}); got != 0.25 {
+		t.Errorf("left at 30 s of 120 fills %v", got)
+	}
+	if got := s.watchedShare(youtube.Video{ID: "bbbbbbbbbbb"}); got != 0 {
+		t.Errorf("a video never watched fills %v", got)
+	}
+}
