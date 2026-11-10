@@ -1,7 +1,5 @@
 // Spectrum: a radial spectrum of what plays, as a widget of the now playing
-// page. It reads MyMusic's analyser, so it moves for what MyMusic hears:
-// tracks that play in MyMusic, and on Windows Spotify in the Spotify app on
-// this computer, not on other devices.
+// page. It reads MyMusic's analyser, so it moves for what MyMusic plays.
 
 import type { MyMusicAPI } from "../../../sdk";
 

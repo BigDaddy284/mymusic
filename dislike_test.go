@@ -244,7 +244,7 @@ func TestSkipSwitchFound(t *testing.T) {
 	}{
 		{"dislike", []string{row, dislikesNote, link}, []string{"Crossfade"}},
 		{"skip songs", []string{row}, []string{dislikesNote, "Crossfade"}},
-		{"takes no dislikes", []string{dislikesNote, link}, []string{row, "Crossfade"}},
+		{"go there too", []string{dislikesNote, link}, []string{row, "Crossfade"}},
 	} {
 		show(s, tt, settingsPath("", c.q))
 		showsOnly(t, tt, "searching "+c.q, c.want, c.not)

@@ -32,7 +32,7 @@ func sealOrSkip(t *testing.T, data, purpose []byte) []byte {
 // TestDPAPI seals a secret for the user: it opens for its purpose alone,
 // and not once damaged.
 func TestDPAPI(t *testing.T) {
-	purpose := []byte("MyMusic " + tokenSecret)
+	purpose := []byte("MyMusic " + lastfmSecret)
 	sealed := sealOrSkip(t, secret, purpose)
 	if bytes.Contains(sealed, []byte("apiKey")) {
 		t.Fatal("the secret is readable in what DPAPI sealed")

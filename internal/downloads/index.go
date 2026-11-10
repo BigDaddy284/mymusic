@@ -25,9 +25,7 @@ type index struct {
 	// Seq orders the tracks as they were asked for.
 	Seq    int64             `json:"seq"`
 	Tracks map[string]*entry `json:"tracks"`
-	// Files are the audio of the videos downloaded, by video ID: a track
-	// and another of the same recording, as a Spotify track and its match,
-	// share one.
+	// Files are the audio of the videos downloaded, by video ID.
 	Files map[string]*file `json:"files"`
 	// Parts are the downloads under way, by video ID: what the .part file
 	// is a part of, to go on with it only from the same stream.
@@ -47,8 +45,9 @@ type index struct {
 // entry is a track downloaded, or waiting to be.
 type entry struct {
 	Track media.Track `json:"track"`
-	// Recording is a Spotify track's recording on YouTube Music, once
-	// found: what downloads, and plays.
+	// Recording is the recording on YouTube Music that MyMusic 0.x
+	// downloaded for a Spotify track, which forgetSpotify makes the
+	// entry's track: it is never kept.
 	Recording *media.Track `json:"recording,omitempty"`
 	// Quality is the quality the download was asked in: "best" or
 	// "saver".
@@ -179,6 +178,7 @@ func (x *index) fill() {
 			delete(x.Art, u)
 		}
 	}
+	x.forgetSpotify()
 	x.Version = indexVersion
 }
 
@@ -200,12 +200,7 @@ func safePath(p string) bool {
 }
 
 // video returns the ID of the video whose audio plays for e, once known.
-func (e *entry) video() string {
-	if e.Recording != nil {
-		return videoOf(*e.Recording)
-	}
-	return videoOf(e.Track)
-}
+func (e *entry) video() string { return videoOf(e.Track) }
 
 // videoOf returns the ID of the video of a track of YouTube Music, or "".
 func videoOf(t media.Track) string {

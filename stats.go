@@ -44,16 +44,16 @@ func (s *shell) statsPage(c *ui.Context) {
 			ui.Span{Text: " for ", Size: size, Weight: 300},
 			ui.Span{Text: spent, Size: size, Weight: 400},
 			ui.Span{Text: ": ", Size: size, Weight: 300},
-			ui.Span{Text: fmt.Sprintf("%d from Spotify", st.Spotify), Size: size, Weight: 300, Color: k.spotify},
-			ui.Span{Text: " and ", Size: size, Weight: 300},
 			ui.Span{Text: fmt.Sprintf("%d from YouTube Music", st.YouTube), Size: size, Weight: 300, Color: k.youtube},
+			ui.Span{Text: " and ", Size: size, Weight: 300},
+			ui.Span{Text: fmt.Sprintf("%d from this computer", st.Computer), Size: size, Weight: 300, Color: k.accent},
 			ui.Span{Text: ".", Size: size, Weight: 300},
 		).MaxWidth(760).Margin(0, 0, 48)
 		s.dayChart(c, st.Daily)
 		ui.Row(c).Gap(48).Wrap().AlignItems(ui.Start).Margin(0, 0, 48).Children(func() {
 			ui.Column(c).Width(320).Children(func() {
 				s.sectionTitle(c, "The mix")
-				s.venn(c, st.Spotify, st.YouTube)
+				s.venn(c, st.Computer, st.YouTube)
 			})
 			ui.Column(c).Grow(1).Basis(320).Children(func() {
 				s.sectionTitle(c, "Top artists")
@@ -291,26 +291,26 @@ func disclosure(c *ui.Context, deg float32, ink ui.Color) {
 
 // venn draws the plays of each service as rings whose areas match,
 // overlapping as the icon's.
-func (s *shell) venn(c *ui.Context, spotify, youtube int) {
+func (s *shell) venn(c *ui.Context, computer, youtube int) {
 	k := &s.lk
-	most := float64(max(spotify, youtube, 1))
-	rs := float32(20 + 70*math.Sqrt(float64(spotify)/most))
+	most := float64(max(computer, youtube, 1))
+	rs := float32(20 + 70*math.Sqrt(float64(computer)/most))
 	ry := float32(20 + 70*math.Sqrt(float64(youtube)/most))
-	ui.Box(c).Size(300, 200).Label(fmt.Sprintf("%d plays from Spotify, %d from YouTube Music", spotify, youtube)).
+	ui.Box(c).Size(300, 200).Label(fmt.Sprintf("%d plays from this computer, %d from YouTube Music", computer, youtube)).
 		Draw(func(p *ui.Painter, r ui.Rect) {
 			cy := r.Y + 100
 			sx, yx := r.X+150-rs*0.55, r.X+150+ry*0.55
 			var a, b ui.Path
 			a.Circle(sx, cy, rs)
 			b.Circle(yx, cy, ry)
-			p.StrokePath(&a, 2, k.spotify)
+			p.StrokePath(&a, 2, k.accent)
 			p.StrokePath(&b, 2, k.youtube)
 			label := func(x float32, n int) {
 				t := fmt.Sprint(n)
 				w, h := p.MeasureText(0, ui.Span{Text: t, Size: k.subtitleSize(), Weight: 300})
 				p.Text(x-w/2, cy-h/2, t, k.subtitleSize(), k.text)
 			}
-			label(sx, spotify)
+			label(sx, computer)
 			label(yx, youtube)
 		})
 }

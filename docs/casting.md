@@ -27,17 +27,9 @@ three minutes after it was last seen. Groups of speakers aren't listed.
 
 - **YouTube Music tracks**, music videos' audio included, with their
   cover, title and artist on the device's screen.
-- **Spotify tracks** played from YouTube Music, as they are with **In
-  MyMusic, from YouTube Music** in
-  [Settings › Playback › Spotify tracks](playing-music.md#how-spotify-tracks-play):
-  the device plays their recording on YouTube Music.
 - **Your [downloads](library.md#downloads) and the
   [offline cache](library.md#the-offline-cache)**: MyMusic sends the
   device what it holds before it asks YouTube.
-
-Spotify tracks that Spotify plays, in MyMusic itself or on Spotify
-Connect, stay where they play. To cast your Spotify tracks, choose In
-MyMusic, from YouTube Music for them.
 
 ## What stays in MyMusic
 
@@ -89,6 +81,5 @@ the firewall".
 - [Live streams](playing-music.md#live-streams), such as YouTube's 24/7
   radio channels: MyMusic says "live streams don't play on cast devices
   yet".
-- Spotify tracks that Spotify plays (see above).
 - Gapless playback through the device's own queue, lyrics or the picture of
   music videos on a TV's screen, and groups of speakers.

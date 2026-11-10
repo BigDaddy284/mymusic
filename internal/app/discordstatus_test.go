@@ -13,16 +13,12 @@ import (
 )
 
 // The tracks of the Discord status's tests: a song of YouTube Music, with
-// its link, one of Spotify, without, and one on this computer, whose cover
-// Discord can't read.
+// its link, and one on this computer, whose cover Discord can't read.
 var (
 	statusYouTube = media.Track{ID: "yt:w3XzgjlKFjc", Source: media.SourceYouTube, Title: "Let It Happen",
 		Artists: []media.Ref{{Name: "Tame Impala"}}, Album: &media.Ref{Name: "Currents"}, DurationMs: 467000,
 		Artwork: []media.Image{{URL: "https://example.com/544.jpg", Width: 544}},
 		URL:     "https://music.youtube.com/watch?v=w3XzgjlKFjc"}
-	statusSpotify = media.Track{ID: "sp:4uLU6hMCjMI75M1A2tKUQC", Source: media.SourceSpotify, Title: "Teardrop",
-		Artists: []media.Ref{{Name: "Massive Attack"}}, Album: &media.Ref{Name: "Mezzanine"}, DurationMs: 330000,
-		Artwork: []media.Image{{URL: "https://i.scdn.co/image/ab67", Width: 640}}}
 	statusFile = media.Track{ID: "file:a1b2", Source: media.SourceFile, Title: "Demo",
 		Artists: []media.Ref{{Name: "Me"}}, Album: &media.Ref{Name: "Tapes"}, DurationMs: 120000,
 		Artwork: []media.Image{{URL: "mymusic-art://local/a1b2"}}}
@@ -65,10 +61,10 @@ func TestDiscordActivityChoices(t *testing.T) {
 		}), statusYouTube, true,
 			&discord.Activity{Type: discord.Listening, Details: "Let It Happen", State: "Tame Impala",
 				LargeImage: paused, LargeText: "Paused"}},
-		{"the service's badge", desktop(func(d *settings.Desktop) { d.DiscordServiceBadge = true }), statusSpotify, false,
-			&discord.Activity{Type: discord.Listening, Details: "Teardrop", State: "Massive Attack",
-				Start: start, End: start.Add(330 * time.Second), LargeImage: "https://i.scdn.co/image/ab67", LargeText: "Mezzanine",
-				SmallImage: discordBadges + "spotify.png", SmallText: "Spotify"}},
+		{"the service's badge", desktop(func(d *settings.Desktop) { d.DiscordServiceBadge = true }), statusYouTube, false,
+			&discord.Activity{Type: discord.Listening, Details: "Let It Happen", State: "Tame Impala",
+				Start: start, End: start.Add(467 * time.Second), LargeImage: "https://example.com/544.jpg", LargeText: "Currents",
+				SmallImage: discordBadges + "youtube-music.png", SmallText: "YouTube Music"}},
 		{"the badge without the cover", desktop(func(d *settings.Desktop) { d.DiscordServiceBadge, d.DiscordCover = true, false }), statusYouTube, false,
 			&discord.Activity{Type: discord.Listening, Details: "Let It Happen", State: "Tame Impala",
 				Start: start, End: start.Add(467 * time.Second), LargeImage: discordBadges + "youtube-music.png", LargeText: "YouTube Music"}},
@@ -82,18 +78,14 @@ func TestDiscordActivityChoices(t *testing.T) {
 			&discord.Activity{Type: discord.Listening, Details: "Let It Happen", State: "Tame Impala",
 				Start: start, End: start.Add(467 * time.Second), LargeImage: "https://example.com/544.jpg", LargeText: "Currents",
 				Buttons: []discord.Button{{Label: "Listen on YouTube Music", URL: "https://music.youtube.com/watch?v=w3XzgjlKFjc"}}}},
-		{"listen on Spotify, from the track's ID", desktop(func(d *settings.Desktop) { d.DiscordListenButton, d.DiscordCover = true, false }), statusSpotify, false,
-			&discord.Activity{Type: discord.Listening, Details: "Teardrop", State: "Massive Attack",
-				Start: start, End: start.Add(330 * time.Second),
-				Buttons: []discord.Button{{Label: "Listen on Spotify", URL: "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC"}}}},
 		{"a file on this computer", desktop(func(d *settings.Desktop) { d.DiscordListenButton, d.DiscordServiceBadge = true, true }), statusFile, false,
 			&discord.Activity{Type: discord.Listening, Details: "Demo", State: "Me",
 				Start: start, End: start.Add(2 * time.Minute), LargeImage: discordBadges + "computer.png", LargeText: "A file on my computer"}},
 		{"the lines chosen", desktop(func(d *settings.Desktop) {
 			d.DiscordFirstLine, d.DiscordSecondLine = "{artist} · {title}", "{album} on {service}"
-		}), statusSpotify, false,
-			&discord.Activity{Type: discord.Listening, Details: "Massive Attack · Teardrop", State: "Mezzanine on Spotify",
-				Start: start, End: start.Add(330 * time.Second), LargeImage: "https://i.scdn.co/image/ab67", LargeText: "Mezzanine"}},
+		}), statusYouTube, false,
+			&discord.Activity{Type: discord.Listening, Details: "Tame Impala · Let It Happen", State: "Currents on YouTube Music",
+				Start: start, End: start.Add(467 * time.Second), LargeImage: "https://example.com/544.jpg", LargeText: "Currents"}},
 		{"empty lines", desktop(func(d *settings.Desktop) { d.DiscordFirstLine, d.DiscordSecondLine = "", "" }), statusYouTube, false,
 			&discord.Activity{Type: discord.Listening, Start: start, End: start.Add(467 * time.Second),
 				LargeImage: "https://example.com/544.jpg", LargeText: "Currents"}},
@@ -124,7 +116,7 @@ func TestDiscordActivityEveryChoice(t *testing.T) {
 			d.DiscordCover, d.DiscordServiceBadge, d.DiscordTimeLeft = bits&1 != 0, bits&2 != 0, bits&4 != 0
 			d.DiscordListenButton, d.DiscordKeepWhilePaused = bits&8 != 0, bits&16 != 0
 		})
-		for _, track := range []media.Track{statusYouTube, statusSpotify, statusFile} {
+		for _, track := range []media.Track{statusYouTube, statusFile} {
 			for _, playing := range []bool{true, false} {
 				np := NowPlaying{Track: &track, Playing: playing, PositionMs: 1000}
 				a := DiscordActivity(d, np, statusNow)
@@ -184,7 +176,7 @@ func TestExpandDiscordLine(t *testing.T) {
 		{"{artist} · {album}", statusYouTube, "Tame Impala · Currents"},
 		{"{artist} · {album}", single, "Tame Impala"},
 		{"{album} - {title}", single, "Let It Happen"},
-		{"on {service}", statusSpotify, "on Spotify"},
+		{"on {service}", statusYouTube, "on YouTube Music"},
 		{"{service}", video, "YouTube Music"},
 		{"{service}", statusFile, "my computer"},
 		{"{Title} by {ARTIST}", statusYouTube, "Let It Happen by Tame Impala"},
@@ -229,7 +221,7 @@ func TestUnknownDiscordPlaceholders(t *testing.T) {
 // TestDiscordBadge tells the badges from the other images.
 func TestDiscordBadge(t *testing.T) {
 	for image, want := range map[string]string{
-		discordBadges + "spotify.png":       BadgeSpotify,
+		discordBadges + "spotify.png":       "",
 		discordBadges + "youtube-music.png": BadgeYouTube,
 		discordBadges + "computer.png":      BadgeComputer,
 		discordBadges + "paused.png":        BadgePaused,

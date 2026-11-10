@@ -17,8 +17,6 @@ When a track can't play, a toast says why, and MyMusic moves on to the
 next one. Its **details** shows what MyMusic tried, in turn, and why each
 try failed, with the time:
 
-- Spotify Connect, or Spotify in MyMusic, before a Spotify track plays
-  from YouTube Music;
 - YouTube's player API, then yt-dlp, which find a track's stream;
 - the stream itself, as many times as MyMusic tried it again;
 - a download or the offline cache, or a file on this computer.
@@ -64,16 +62,6 @@ its **details**. The keyboard reaches **details** in the toast with
   import from Firefox there, or paste a cookie header. Zen and Helium are
   read from their profile folders: give the folder when MyMusic doesn't
   find it.
-- **Spotify plays from YouTube Music, not in MyMusic.** Spotify
-  [plays in MyMusic](spotify.md#how-spotify-tracks-play) with Premium,
-  and with a sign-in made since MyMusic played
-  Spotify itself: Settings › Playback asks you to sign in again when yours
-  is older.
-- **Spotify refuses the sign-in.** A Spotify app in development mode serves
-  only while its owner has Premium, and only the accounts added under Users
-  Management in its settings, by their Spotify email. Settings › Accounts
-  says which it was: see
-  [Spotify](spotify.md#when-spotify-refuses-the-sign-in).
 - **settings.json has a mistake.** MyMusic tells where, as "line 4,
   column 1: a comma before } has nothing after it", and goes on with the
   settings it had, without saving to the file, until you fix it. If it
@@ -98,9 +86,6 @@ its **details**. The keyboard reaches **details** in the toast with
 - YouTube Music has no sign-in for other apps: MyMusic signs in with a
   browser session, which can do with your account what YouTube Music can.
   Treat it like a password; sign out in Settings › Accounts to delete it.
-- Spotify allows apps in development mode up to five users, while their
-  owner has Premium, and lets them read less: search shows ten results of
-  each kind, and the tracks of playlists you do not own stay hidden.
 - Tracks YouTube restricts to some countries, to signed-in adults or to a
   channel's members do not play, as streams are found signed out.
 - The Windows installer is not signed yet, so SmartScreen may ask you to

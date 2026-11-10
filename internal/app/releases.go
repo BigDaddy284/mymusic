@@ -100,8 +100,8 @@ func (b *releaseBook) open(a *App) *store.File[map[string]artistReleases] {
 }
 
 // NewReleases returns what the artists the user follows put out lately,
-// the newest first: those they follow in MyMusic, and on Spotify and
-// YouTube Music where they signed in. It asks the services for the
+// the newest first: those they follow in MyMusic, and on YouTube Music
+// where they signed in. It asks the services for the
 // releases of the artists not asked for a while (look); the others, and
 // those that fail, show as last read.
 func (c *Catalog) NewReleases(ctx context.Context) ([]media.Release, error) {
@@ -293,7 +293,7 @@ func newReleases(entries map[string]artistReleases, ids []string, now time.Time)
 }
 
 // followedArtists returns the artists the user follows, each once: in
-// MyMusic, then on Spotify and on YouTube Music, where they signed in.
+// MyMusic, then on YouTube Music, where they signed in.
 // lost holds the services whose lists failed.
 func (a *App) followedArtists(ctx context.Context) (followed []media.Artist, lost map[media.Source]bool) {
 	lists := []struct {
@@ -303,7 +303,6 @@ func (a *App) followedArtists(ctx context.Context) (followed []media.Artist, los
 		got    []media.Artist
 		err    error
 	}{
-		{source: media.SourceSpotify, on: a.spotify.SignedIn(), get: a.spotify.FollowedArtists},
 		{source: media.SourceYouTube, on: a.youtube.SignedIn(), get: a.youtube.LibraryArtists},
 	}
 	var wg sync.WaitGroup
@@ -330,8 +329,7 @@ func (a *App) followedArtists(ctx context.Context) (followed []media.Artist, los
 }
 
 // artistReleases reads an artist's releases off their service: YouTube
-// Music's page of the artist, which tells the year of each, or Spotify's
-// list of their albums, which tells their days.
+// Music's page of the artist, which tells the year of each.
 func (a *App) artistReleases(ctx context.Context, artistID string) ([]media.Release, error) {
 	source, native, err := media.ParseID(artistID)
 	if err != nil {
@@ -348,11 +346,6 @@ func (a *App) artistReleases(ctx context.Context, artistID string) ([]media.Rele
 			out = append(out, media.Release{Album: al, Released: al.Year})
 		}
 		return out, nil
-	case media.SourceSpotify:
-		if !a.spotify.SignedIn() {
-			return nil, errNotSignedIn
-		}
-		return a.spotify.ArtistReleases(ctx, native)
 	}
 	return nil, fmt.Errorf("artists of %s have no releases to read", source)
 }

@@ -84,7 +84,7 @@ Settings › About › Licenses shows each of them in the app.
 
 ## Trademarks
 
-MyMusic is not affiliated with, endorsed by or sponsored by Spotify or
-Google. It plays what these services offer their users, through the
-services' own interfaces; use it as their terms allow. Spotify and YouTube
-Music are trademarks of their owners.
+MyMusic is not affiliated with, endorsed by or sponsored by Google. It
+plays what YouTube Music offers its users, through the service's own
+interfaces; use it as its terms allow. YouTube and YouTube Music are
+trademarks of Google.

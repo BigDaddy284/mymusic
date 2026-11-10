@@ -6,9 +6,9 @@
 
 <h1 align="center">MyMusic</h1>
 
-<p align="center"><strong>一个播放器，同时播放 YouTube Music 和 Spotify。</strong></p>
+<p align="center"><strong>一个播放器，同时播放 YouTube Music 和你电脑上的音乐。</strong></p>
 
-<p align="center">适用于 Windows 的 YouTube Music 与 Spotify 客户端。YouTube Music 无需账号即可使用。统一的搜索和播放队列，还有混合歌单、同步歌词、主题和插件。</p>
+<p align="center">适用于 Windows 的 YouTube Music 与本地音乐播放器。YouTube Music 无需账号即可使用。统一的搜索和播放队列，还有混合歌单、同步歌词、主题和插件。</p>
 
 <p align="center"><sub>本文译自<a href="README.md">英文 README</a>，如有出入，以最新的英文版为准。</sub></p>
 
@@ -36,11 +36,11 @@
 
 ## 为什么选择 MyMusic
 
-如果你的音乐分散在 YouTube Music 和 Spotify 两边，通常就得用两个应用，也就有两处搜索、两个播放队列和两个音乐库。MyMusic 把这两个服务放进同一个播放器里：
+如果你的音乐分散在 YouTube Music 和电脑上的文件两边，通常就得用两个应用，也就有两处搜索、两个播放队列和两个音乐库。MyMusic 把它们放进同一个播放器里：
 
-- **统一搜索**：同时搜索 YouTube Music 和 Spotify，并在每条结果上标明它来自哪个服务。
-- **统一的播放队列和音乐库**：Spotify 的歌曲可以紧接着 YouTube Music 的歌曲播放，一个歌单里也可以同时放两边的歌。
-- **无需账号**：打开应用就能播放 YouTube Music。只有想用自己的音乐库时才需要登录。Spotify 是可选的。
+- **统一搜索**：同时搜索 YouTube Music 和你自己的音乐，并在每条结果上标明它的来源。
+- **统一的播放队列和音乐库**：电脑上的文件可以紧接着 YouTube Music 的歌曲播放，一个歌单里也可以同时放两边的歌。
+- **无需账号**：打开应用就能播放 YouTube Music。只有想用自己的音乐库时才需要登录。
 - **程序小巧**：MyMusic 是一个 Go 程序，用 GPU 自己绘制窗口。它内部不带浏览器，既不用额外下载，也不会让浏览器常驻内存。
 - **随你改造**：自带十个主题，你也可以添加自己的主题和插件，任何命令都可以设置你自己的快捷键。
 - **注重隐私**：MyMusic 没有自己的账号体系、服务器、统计分析或遥测。
@@ -50,24 +50,18 @@
 
 ### 搜索与播放
 
-- **一次搜索两个服务**：YouTube Music 和 Spotify 的结果并排显示，每条都标明来自哪个服务。YouTube Music 的结果会显示每首歌的播放次数，原版和翻唱一眼就能分清。
-- **统一播放队列**：两个服务的歌曲可以混在一起，随机播放和循环播放都跨服务生效；队列播完后，还可以让电台接着播。
+- **统一搜索**：YouTube Music 和你电脑上音乐的结果并排显示，每条都标明来源。YouTube Music 的结果会显示每首歌的播放次数，原版和翻唱一眼就能分清。
+- **统一播放队列**：YouTube Music 的歌曲和你自己的文件可以混在一起，随机播放和循环播放对它们都生效；队列播完后，还可以让电台接着播。
 - **探索**：新发行、热门歌曲、排行榜、心情与曲风，以及与正在播放的歌曲相关的歌。
 - **同步歌词**：歌词跟着歌曲走；如果你更喜欢，也可以显示纯文本。
 - **迷你播放器**：始终显示在其他窗口之上。
 
 ### 你的音乐库
 
-- **混合歌单（Mixes）**：能同时收录各个服务歌曲的歌单。可以把某个服务的歌单导入混合歌单，也可以在任意一个混合歌单里搜索和排序。
-- **喜欢的歌曲**：两个服务中你喜欢的歌汇总在同一个列表里。
+- **混合歌单（Mixes）**：能同时收录 YouTube Music 歌曲和你自己文件的歌单。可以把 YouTube Music 的歌单导入混合歌单，也可以在任意一个混合歌单里搜索和排序。
+- **喜欢的歌曲**：YouTube Music 和你电脑上你喜欢的歌汇总在同一个列表里。
 - **播放历史与收听统计**：按天查看。
-- **你的账号**：在 Google 自己的页面上登录 YouTube Music，就能使用你的首页推荐、喜欢的歌曲、歌单、专辑和艺人；可以用你的账号本身登录，也可以用它名下的某个品牌频道。登录 Spotify 可以使用你在 Spotify 上的音乐库。点喜欢、收藏专辑和歌单、关注艺人，这些操作也会同步到对应的服务。你播放的歌曲会进入你的 YouTube Music 播放记录，YouTube Music 的推荐就是根据这些记录来的。
-
-### Spotify 的三种播放方式
-
-- **直接在 MyMusic 里播放**：音质与 Spotify 相同，无需打开 Spotify 应用（需要 Premium）。
-- **通过 Spotify Connect 播放**：在你的 Spotify 应用、手机或音箱上播放。
-- **通过 YouTube Music 播放**：MyMusic 播放这首 Spotify 歌曲在 YouTube Music 上的同一录音，不需要 Premium 也能播放。
+- **你的账号**：在 Google 自己的页面上登录 YouTube Music，就能使用你的首页推荐、喜欢的歌曲、歌单、专辑和艺人；可以用你的账号本身登录，也可以用它名下的某个品牌频道。点喜欢、收藏专辑和歌单、关注艺人，这些操作也会同步到 YouTube Music。你播放的歌曲会进入你的 YouTube Music 播放记录，YouTube Music 的推荐就是根据这些记录来的。
 
 ### 音频
 
@@ -123,13 +117,12 @@ MyMusic 可在 Windows 10 和 11 上运行。从[最新版本](https://github.co
 ### 首次启动
 
 - 安装程序还没有签名，所以 SmartScreen 可能会发出警告：选择 More info（更多信息），然后选择 Run anyway（仍要运行）。
-- 登录 YouTube Music 和在 MyMusic 中播放 Spotify 需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
+- 登录 YouTube Music 需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
 - 大多数 YouTube Music 歌曲的音频，MyMusic 都能自己找到。其余的歌曲（比如面向儿童的内容），它会使用 [yt-dlp](https://github.com/yt-dlp/yt-dlp)：你可以在 Settings › Playback（设置 › 播放）中让 MyMusic 替你安装 yt-dlp，之后它也会让 yt-dlp 保持最新。yt-dlp 需要一个 JavaScript 运行时：[Deno](https://deno.com)、Node.js、Bun 或 QuickJS。
 
 ### 账号（均为可选）
 
 - **YouTube Music**：在 Settings › Accounts（设置 › 账号）中选择 Sign in to YouTube Music（登录 YouTube Music），然后在弹出的窗口中登录 Google。你输入的内容只会发送给 Google。MyMusic 会加密保存登录会话，密钥存放在 Windows 的凭据管理器（Credential Manager）中。
-- **Spotify**：Spotify 规定一个应用最多只能服务五个用户，而且只有在应用的所有者订阅了 Premium 时才行，所以你需要用自己创建的 Spotify 应用登录。只需两分钟：[docs/spotify.md](docs/spotify.md) 会一步步带你完成。
 - **Last.fm**：在 [last.fm/api/account/create](https://www.last.fm/api/account/create) 创建一个 API 账号（名称随意，不用填回调 URL），把它的 API key 和 shared secret 粘贴到 Settings › Accounts 中，然后在浏览器中授权 MyMusic。
 - **Discord**：Discord 应用运行时，你的个人资料上会显示你正在听的内容。可以在 Settings › Desktop（设置 › 桌面）中关闭。
 
@@ -154,7 +147,7 @@ bun install
 bun run dev
 ```
 
-登录和 Spotify 播放需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
+登录 YouTube Music 需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
 
 ### Nix
 
@@ -187,20 +180,19 @@ bun run build -- -platform windows/amd64,windows/arm64
                      mini player, the tray, media keys, deep links
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
-internal/player      the queue, played by the audio engine or on Spotify's devices
+internal/player      the queue, played by the audio engine or on a cast device
 internal/audio       MyMusic's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
-internal/spotify     the Spotify Web API, its sign-in and Spotify Connect
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
-internal/match       Spotify tracks matched to their YouTube Music recordings
+internal/match       the songs of YouTube Music's videos
 internal/library     liked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins
 builtin/themes       the themes MyMusic ships with
-public/              the page of Spotify's player, on Windows
+public/              the page of the picture of music videos
 sdk/                 the types of the plugin API
 examples/            example themes and plugins
 ```
@@ -234,7 +226,6 @@ brand/               MyMusic's logo, for code that draws it
 MyMusic 没有自己的账号体系、服务器、统计分析或遥测。它会与以下服务通信：
 
 - **YouTube 和 Google**：YouTube Music 的曲库、音频流和每首歌的响度（这些都在未登录状态下请求），以及封面图片；部分音频流通过 yt-dlp 获取。登录后，还有你在那里的音乐库；另外，除非你在 Settings › Accounts（设置 › 账号）中关闭，你播放的歌曲也会发送过去，进入你的 YouTube Music 播放记录。
-- **Spotify**（登录之后）：你的音乐库、你的 Spotify Connect 设备；在 MyMusic 内播放 Spotify 时，还有从 `sdk.scdn.co` 加载的 Spotify 播放器。
 - **LRCLIB**：正在播放的歌曲的标题、艺人、专辑和时长，用来查找歌词。
 - **GitHub**：启动时以及之后每隔几小时检查一次新版本，可以在 Settings › About（设置 › 关于）中关闭；以及下载 yt-dlp。
 - **Last.fm**（连接之后）：你播放的内容。
@@ -250,7 +241,7 @@ MyMusic 没有自己的账号体系、服务器、统计分析或遥测。它会
 
 在音乐库的播放历史页面可以清除播放记录，在 Settings › Playback 中可以清除缓存和封面，退出某个服务的登录会删除它的登录信息。
 
-在 Windows 上，可视化效果通过 Windows 的进程环回（process loopback）获取 Spotify 在这台电脑上播放的音频，无论是在 MyMusic 中还是在 Spotify 应用中播放；进程环回只采集那一个应用的声音。音频只在内存中分析，从不录制或发送。
+可视化效果只在内存中分析 MyMusic 播放的音频，从不录制或发送。
 
 ## 致谢
 
@@ -284,4 +275,4 @@ MyMusic 基于以下项目构建：
 
 MyMusic 采用双重许可：你可以任选 [MIT 许可证](LICENSE-MIT)或 [GNU General Public License, version 3](LICENSE-GPL) 来使用它。贡献同时以这两种许可证接受。`fonts` 中的字体采用 SIL Open Font License：[Selawik 的许可证](fonts/OFL.txt)和 [Quicksand 的许可证](fonts/quicksand-OFL.txt)。Opus 解码器移植自 libopus，采用[它的 BSD 许可证](opus/LICENSE.libopus)；AAC 解码器源自 SharpJaad，采用[它的 MIT 许可证](aac/LICENSE.sharpjaad)。
 
-MyMusic 与 Spotify 和 Google 没有任何关联，也未获得它们的认可或赞助。它通过这些服务自己的接口，播放它们向用户提供的内容；请在它们的条款允许的范围内使用。Spotify 和 YouTube Music 是其各自所有者的商标。
+MyMusic 与 Google 没有任何关联，也未获得其认可或赞助。它通过 YouTube Music 自己的接口，播放它向用户提供的内容；请在其条款允许的范围内使用。YouTube Music 是其所有者的商标。

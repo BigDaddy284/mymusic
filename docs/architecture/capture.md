@@ -23,8 +23,7 @@ scrolls the page, `act:theme:<id>` wears a theme,
 Settings › Appearance does, `act:mini` opens the mini player, which saves
 `mini.png`, `act:library:<add|remove>:<search>` saves the first YouTube
 Music song a search finds to the library there, or takes it out, as its
-menu does, `act:spotify` logs whether MyMusic's own Spotify device
-could play, `act:title` logs the window's title, which the screenshots
+menu does, `act:title` logs the window's title, which the screenshots
 leave out, `act:nowplaying` the cover MyMusic hands the system's media controls,
 and `act:memory` and `act:heap` log the Go heap and save a
 profile of it. Nothing plays unless the player is muted,

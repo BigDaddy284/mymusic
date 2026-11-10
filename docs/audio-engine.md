@@ -1,14 +1,11 @@
 # The audio engine
 <!-- docs: group=inside order=20 -->
 
-MyMusic plays YouTube Music through an audio engine of its own, written in Go. This page covers its decoders, loudness, equalizer, crossfade, speed and 5.1.
+MyMusic plays YouTube Music and the music on your computer through an audio engine of its own, written in Go. This page covers its decoders, loudness, equalizer, crossfade, speed and 5.1.
 
-The engine plays everything MyMusic plays itself: YouTube Music tracks
-and podcast episodes, live streams, and Spotify tracks played from their
-recording on YouTube Music. Spotify tracks that Spotify plays, in MyMusic
-or on Spotify Connect, play in Spotify's own player instead, which the
-engine's equalizer, crossfade and speed don't reach:
-[how Spotify tracks play](spotify-playback.md) tells why. For the code,
+The engine plays everything MyMusic plays on this computer: YouTube Music
+tracks and podcast episodes, live streams, downloads and the music on this
+computer. For the code,
 read [the audio engine's part of the architecture](architecture/audio.md)
 and [its codecs](architecture/codecs.md).
 
@@ -118,11 +115,6 @@ game or a browser keeps the computer busy (fixed in 0.5.2). The devices
 are the render endpoints that are active, by their friendly names, and
 the device chosen is its endpoint, by its ID.
 
-Spotify tracks that Spotify's own player plays don't go through the
-engine: in MyMusic, its web view plays them on the
-system's default device, whatever the device chosen, and on Spotify
-Connect, the Spotify device plays them.
-
 No C library is linked in: the output calls the system's audio libraries
 while MyMusic runs.
 
@@ -146,7 +138,7 @@ tracks down to one level, so that none jumps out.
   `loudness.json` in its cache folder, so cached and downloaded tracks
   keep their level without the network.
 - **Not measured.** Live streams have no measure, and play at their own
-  level. Spotify tracks that Spotify plays keep Spotify's own loudness.
+  level.
 
 **Volume levelling**, the switch below it and off by default, is
 different: a compressor that squeezes loud and quiet moments closer
@@ -158,10 +150,7 @@ of 250 ms, the settings of the web player MyMusic had.
 6 dB, down to -40 dB, and one press of the volume keys is about 3 dB.
 That is the Natural curve of Settings › Playback › Volume, the default.
 On Linear, the gain is the slider's position itself, so that its middle
-is -6 dB, where Natural's is -30 dB. Spotify's own player in MyMusic
-plays at the gain of the same curve, and a Spotify Connect device gets
-the square root of that gain as its volume, as MyMusic has always sent
-it. The slider keeps its position as the curve changes, and so does
+is -6 dB, where Natural's is -30 dB. The slider keeps its position as the curve changes, and so does
 settings.json, whose `volume` is the square root of the position's gain
 on Natural, whatever the curve.
 
@@ -187,9 +176,6 @@ Custom.
 | Lo-fi | -3 | 0 | +3 | +4 | +2 | 0 | -2 | -4 | -6 | -8 |
 
 The gains are in dB. The equalizer shapes only what the engine plays.
-Spotify's own player, in MyMusic or on Spotify Connect, can't be changed
-by any app, as [Spotify notes](https://support.spotify.com/us/article/equalizer/):
-use a system-wide equalizer for it.
 
 ## Crossfade and the next track
 
@@ -201,8 +187,7 @@ seconds; at 0, the default, it is off.
 - The seconds are those you hear: at 2×, a fade of 5 seconds starts 10
   seconds of the track before its end.
 - A track doesn't crossfade when it is shorter than three times the fade,
-  when it or the next is a podcast's episode, while you cast, or when
-  Spotify plays it.
+  when it or the next is a podcast's episode, or while you cast.
 - A pause in a track's last seconds holds: the next track doesn't fade in
   behind it. Played again, it fades while there's time, or the next one
   starts as it ends.
@@ -229,7 +214,7 @@ plays as it is, with nothing in between. The six channels of 5.1 are cut
 at the same places, so they stay together.
 
 The clock, the seek bar and synced lyrics keep the track's own time.
-Spotify's players and live streams keep their own speed, and the speed
+Live streams keep their own speed, and the speed
 button is dimmed for them.
 
 ## Surround sound
@@ -276,16 +261,8 @@ mono mix of what plays: the average of left and right, and of 5.1, its
 stereo downmix at the standard's levels without the LFE, so a track draws
 alike either way.
 
-Spotify plays in Spotify's own player, which the engine never hears. On
-Windows 10 build 20348 and later, MyMusic hears it anyway, in MyMusic's
-own web view or in the Spotify app on this computer, through Windows'
-process loopback, which hears one app and its children alone. It hears
-only while the
-visualizer or a plugin shows what it hears, and analyzes that audio in
-memory: it never records or sends it.
-
-Where MyMusic can't hear what plays, as on a Spotify device elsewhere,
-the visualizer draws nothing, and the log says why.
+It analyzes that audio in memory: it never records or sends it. While you
+cast, the engine plays nothing here, and the visualizer draws nothing.
 
 ## Buffering
 

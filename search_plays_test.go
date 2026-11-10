@@ -9,7 +9,7 @@ import (
 
 // TestSearchShowsPlays shows, in a search's songs, how many times each
 // played, or how many views a video has, as YouTube Music says, to tell the
-// original from the covers; Spotify's songs say none.
+// original from the covers; a song without a count says none.
 func TestSearchShowsPlays(t *testing.T) {
 	s := newTestShell(t)
 	tracks := []media.Track{
@@ -17,9 +17,9 @@ func TestSearchShowsPlays(t *testing.T) {
 		{ID: "yt-2", Source: media.SourceYouTube, Title: "Instant Crush (video)", Artists: []media.Ref{{Name: "Daft Punk"}}, Plays: 905_000_000, Video: true},
 		{ID: "yt-3", Source: media.SourceYouTube, Title: "Instant Crush (cover)", Artists: []media.Ref{{Name: "Ruben Dunn"}}, Plays: 2000},
 	}
-	spotify := media.Track{ID: "sp-1", Source: media.SourceSpotify, Title: "Instant Crush (Spotify)", Artists: []media.Ref{{Name: "Daft Punk"}}}
+	tracks = append(tracks, media.Track{ID: "yt-4", Source: media.SourceYouTube, Title: "Instant Crush (live)", Artists: []media.Ref{{Name: "Daft Punk"}}})
 	s.loads["search:crush"] = &loaded[app.SearchResponse]{done: true, value: app.SearchResponse{
-		YouTube: media.SearchResults{Tracks: tracks}, Spotify: media.SearchResults{Tracks: []media.Track{spotify}}, SpotifySignedIn: true}}
+		YouTube: media.SearchResults{Tracks: tracks}}}
 	tt := testerOf(t, s, 1280, 1800)
 	show(s, tt, searchPath("crush"))
 	for _, want := range []string{"1.2B plays", "905M views", "2K plays"} {
@@ -27,8 +27,8 @@ func TestSearchShowsPlays(t *testing.T) {
 			t.Errorf("the search doesn't say %q: %q", want, tt.Texts())
 		}
 	}
-	if !tt.HasText("Instant Crush (Spotify)") {
-		t.Fatalf("the search doesn't show Spotify's song: %q", tt.Texts())
+	if !tt.HasText("Instant Crush (live)") {
+		t.Fatalf("the search doesn't show the song without a count: %q", tt.Texts())
 	}
 	if tt.HasText("0 plays") {
 		t.Error("a song without a count says 0 plays")

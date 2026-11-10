@@ -15,8 +15,6 @@ Settings has seven sections, named across its top: Appearance, Playback,
 Accounts, Plugins, Desktop, Shortcuts and About. Each is a list of groups,
 and each group a list of rows.
 
-![Settings on its Playback section: the seven sections across the top, the search the settings box under them, and the Spotify tracks group, with In MyMusic, from Spotify, On Spotify Connect and In MyMusic, from YouTube Music, the one chosen](shots/playback.webp)
-
 ### Appearance
 
 How MyMusic looks; [Look and feel](look-and-feel.md) tells all of it.
@@ -34,7 +32,6 @@ How MyMusic plays; [Playing music](playing-music.md) tells all of it.
 
 | Group | What's there |
 |---|---|
-| [Spotify tracks](playing-music.md#how-spotify-tracks-play) | How Spotify tracks play: **In MyMusic, from Spotify** (Premium), **On Spotify Connect**, with the **Device** that plays them, or **In MyMusic, from YouTube Music**. See [Spotify](spotify.md). |
 | Sound | **[Output device](playing-music.md#the-output-device)** (System default, or a device by name), **[Quality](playing-music.md#data-saver)** (best, or data saver), **[Crossfade](playing-music.md#crossfade-and-gapless-playback)** (off, or 1 to 12 seconds), **[Even loudness](playing-music.md#even-loudness-volume-levelling-and-the-volume)**, **Volume levelling**, **Play 5.1 surround when a track has it**, **[Autoplay](playing-music.md#autoplay-and-radios)**, **[Skip songs made with AI](playing-music.md#skipping-songs-made-with-ai)** and **[Skip songs you dislike](playing-music.md#dislikes-and-skipping)**. |
 | [Speed](playing-music.md#speed) | **Songs** and **Podcasts**, each from 0.5× to 3×, at the tracks' own pitch, with **normal** to go back to 1×. |
 | [Music videos](playing-music.md#the-picture-of-music-videos) | **Show the video of music videos**, on the now playing page. |
@@ -48,7 +45,7 @@ How MyMusic plays; [Playing music](playing-music.md) tells all of it.
 
 ### Accounts
 
-Your YouTube Music, Spotify and Last.fm accounts: signing in and out, the
+Your YouTube Music and Last.fm accounts: signing in and out, the
 YouTube Music channel you use, the switch that adds what you play to your
 YouTube Music history, and the switch that pauses scrobbling.
 [Accounts](accounts.md) tells each step.
@@ -143,8 +140,7 @@ hasn't read: [the settings' part of the architecture](architecture/settings.md)
 tells how.
 
 - **A key you take out** goes back to its default, as at a new install.
-  Taking out `spotifyClientId` signs you out of Spotify, and plugins you
-  add to `enabledPlugins` start without asking.
+  Plugins you add to `enabledPlugins` start without asking.
 - **A key MyMusic doesn't know** stays until its next save, which drops
   it, and the toast says so. A value out of its range goes back into it,
   and the toast says that too.
@@ -187,7 +183,7 @@ keys.
 - <kbd>↑</kbd> and <kbd>↓</kbd> move through the list, and
   <kbd>Enter</kbd> runs the command chosen.
 - Once you type, the first item is **Search for** what you typed, which
-  [searches](playing-music.md#search) YouTube Music and Spotify, and the
+  [searches](playing-music.md#search) YouTube Music and your music, and the
   last is **Search the settings for** it.
 
 ![The command palette over the marketplace: "Type a command or a search", and the playback commands, Play or pause first, each with its group and its keys, as Space, Ctrl+→ and Ctrl+←](shots/palette.webp)
@@ -201,8 +197,8 @@ and forward arrows. It's in the command palette too.
 - The page keeps showing what it has until the answers come, with a spinner
   in the button meanwhile. If the refresh fails, as offline, the page keeps
   what it showed, and a toast says why.
-- Home, searches, albums, artists, playlists, Explore, your Spotify and
-  YouTube Music libraries, the lyrics and Settings' checks
+- Home, searches, albums, artists, playlists, Explore, your YouTube Music
+  library, the lyrics and Settings' checks
   refresh. Plugins' pages and widgets render again.
 - A playlist, an album or a mix you downloaded downloads the
   [songs added to it since](library.md#songs-added-later), as you refresh

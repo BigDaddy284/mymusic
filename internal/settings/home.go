@@ -1,6 +1,9 @@
 package settings
 
-import "unicode/utf8"
+import (
+	"strings"
+	"unicode/utf8"
+)
 
 // Home is what the home page keeps: what it told the user, and how the
 // user arranged its shelves.
@@ -48,11 +51,17 @@ func defaultHome() Home {
 }
 
 // clean is h with each shelf named once, by a key of its own, without
-// those past maxHomeShelves, and titles cut to maxHomeTitle.
+// those past maxHomeShelves, and titles cut to maxHomeTitle. The shelves
+// of Spotify MyMusic 0.x showed go: "spotify:…", and the playlists and
+// artists of Spotify the user added, "playlist:sp:…" and "artist:sp:…".
 func (h Home) clean() Home {
 	shelves := make([]HomeShelf, 0, len(h.HomeShelves))
 	seen := map[string]bool{}
 	for _, sh := range h.HomeShelves {
+		_, rest, _ := strings.Cut(sh.Key, ":")
+		if strings.HasPrefix(sh.Key, "spotify:") || strings.HasPrefix(rest, "sp:") {
+			continue
+		}
 		if sh.Key == "" || len(sh.Key) > maxHomeKey || seen[sh.Key] || len(shelves) == maxHomeShelves {
 			continue
 		}

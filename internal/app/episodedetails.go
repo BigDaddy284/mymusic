@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -32,11 +31,6 @@ func (c *Catalog) EpisodeDetails(ctx context.Context, t media.Track) (media.Epis
 	switch source {
 	case media.SourceYouTube:
 		d, err = c.a.youtube.EpisodeDetails(ctx, id)
-	case media.SourceSpotify:
-		if !c.a.spotify.SignedIn() {
-			return media.EpisodeDetails{}, detailsError{"Sign in to Spotify in Settings › Accounts to see this episode's details.", errSpotifyShows}
-		}
-		d, err = c.a.spotify.EpisodeDetails(ctx, id)
 	default:
 		err = fmt.Errorf("no episode %s: %w", t.ID, ErrNoEpisodeDetails)
 	}
@@ -56,9 +50,8 @@ func (c *Catalog) EpisodeDetails(ctx context.Context, t media.Track) (media.Epis
 // episode, or none of its details.
 func noDetails(err error) bool {
 	var yt *youtube.APIError
-	var sp *spotify.APIError
 	return errors.Is(err, youtube.ErrNotFound) || errors.Is(err, ErrNoEpisodeDetails) ||
-		errors.As(err, &yt) && yt.Status == http.StatusNotFound || errors.As(err, &sp) && sp.Status == http.StatusNotFound
+		errors.As(err, &yt) && yt.Status == http.StatusNotFound
 }
 
 // detailsError is an error of EpisodeDetails, in the interface's words.

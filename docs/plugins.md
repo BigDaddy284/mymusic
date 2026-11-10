@@ -106,7 +106,7 @@ its artists name the show.
 
 | | |
 |---|---|
-| `api.player` | the state of the player (`state()`, with the `speed` the track plays at), the transport, the queue (`playTracks`, `playNext`, `enqueue`), events (`on("trackchange" \| "statechange" \| "progress" \| "queuechange")`) and the `analyser()` of what plays, which has the reading methods of the web's AnalyserNode: MyMusic's own player, and Spotify too, in MyMusic or the Spotify app on this computer. While Settings › Playback skips the songs YouTube labels as made with AI, the player passes over them in what plugins queue too, but the track `playTracks` starts from, and one queued by itself |
+| `api.player` | the state of the player (`state()`, with the `speed` the track plays at), the transport, the queue (`playTracks`, `playNext`, `enqueue`), events (`on("trackchange" \| "statechange" \| "progress" \| "queuechange")`) and the `analyser()` of what plays, which has the reading methods of the web's AnalyserNode. While Settings › Playback skips the songs YouTube labels as made with AI, the player passes over them in what plugins queue too, but the track `playTracks` starts from, and one queued by itself |
 | `api.catalog` | search both services, and read albums, artists, playlists, radios and lyrics; while Settings › Playback skips the songs the user dislikes, radios leave them out |
 | `api.library` | liked and disliked songs (`isLiked`, `setLiked`, `isDisliked`, `setDisliked`), and the user's mixes; while Settings › Playback skips disliked songs, `api.player.next()` passes over them as Next does, and they never fire `trackchange` |
 | `api.ui` | `toast`, `navigate`, `theme`, `addSidebarItem`, `addPage`, `addTrackAction`, `addWidget`, and the elements pages show |
@@ -202,9 +202,9 @@ api.ui.addWidget({
 
 ### Tracks
 
-Tracks have an `id` whose prefix tells their service: `yt:` for YouTube
-Music, `sp:` for Spotify. A track's `source` says the same: `youtube` or
-`spotify`.
+Tracks have an `id` whose prefix tells where they come from: `yt:` for
+YouTube Music, `file:` for the music on this computer. A track's `source`
+says the same: `youtube` or `file`.
 
 ```js
 api.ui.addTrackAction({

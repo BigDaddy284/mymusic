@@ -25,8 +25,7 @@ var (
 	}
 )
 
-// addWait is how long an add to a playlist on YouTube Music waits for it,
-// which may first find a Spotify track there.
+// addWait is how long an add to a playlist on YouTube Music waits for it.
 const addWait = time.Minute
 
 // addToYouTubePlaylist adds t to p, a playlist of the user's on YouTube

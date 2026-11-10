@@ -2,7 +2,6 @@ package player
 
 import (
 	"context"
-	"errors"
 	"slices"
 	"strconv"
 	"strings"
@@ -594,7 +593,7 @@ func TestSkipAISettings(t *testing.T) {
 	if next, _ := h.p.State().UpNext(); next.Track.ID != "yt:b" {
 		t.Errorf("up next %s", next.Track.ID)
 	}
-	h.p.SettingsChanged(settings.Settings{Playback: settings.Playback{SkipAI: true, SpotifyPlayback: off.SpotifyPlayback}})
+	h.p.SettingsChanged(settings.Settings{Playback: settings.Playback{SkipAI: true}})
 	h.wait("skipping on", func(p *Player) bool { return p.skipAI && slices.Equal(marked(p.s), []string{"yt:b"}) })
 	h.on(func(p *Player) {
 		if !playing("a")(p) {
@@ -651,38 +650,12 @@ func TestForgetLabel(t *testing.T) {
 	h.wait("b playing", playing("b"))
 }
 
-// TestSkipAIFallback checks a Spotify track the player moved to, whose
-// device couldn't play it, by its recording, before it plays from there.
-func TestSkipAIFallback(t *testing.T) {
-	h, l := newLabeled(t, Saved{}, nil, func(f *fakeServices) {
-		f.prepare = onDevice
-		f.settings.SpotifyPlayback = settings.SpotifyPlaybackConnect
-	})
-	l.with(func(l *labeled) { l.ai["spotify:2"] = true })
-	h.device.playErr = errors.New("no Spotify device is active.")
-	h.p.PlayTracks([]media.Track{spotifyTrack("1"), spotifyTrack("2"), spotifyTrack("3")}, 0)
-	h.wait("1 from its recording", func(*Player) bool { return h.stream.lastLoad() == "load url:spotify:1 0s true" })
-	if got := l.checks(); len(got) != 0 {
-		t.Errorf("a track chosen was checked: %v", got)
-	}
-	h.p.Next()
-	h.wait("3 from its recording", func(*Player) bool { return h.stream.lastLoad() == "load url:spotify:3 0s true" })
-	if h.stream.has("load url:spotify:2 0s true") {
-		t.Error("2 played")
-	}
-	h.noticed("Skipped Spotify 2, whose recording on YouTube Music YouTube labels as made with AI")
-}
-
 // liveLabeled is the fake app knowing YouTube's labels, whose tracks of
 // IDs that start with "live" play as live streams.
 type liveLabeled struct{ *labeled }
 
 func (l liveLabeled) Prepare(ctx context.Context, t media.Track) (Source, error) {
 	return liveServices{l.fakeServices}.Prepare(ctx, t)
-}
-
-func (l liveLabeled) PrepareStream(ctx context.Context, t media.Track) (Source, error) {
-	return liveServices{l.fakeServices}.PrepareStream(ctx, t)
 }
 
 // newLiveLabeled is newLabeled, whose tracks of IDs that start with

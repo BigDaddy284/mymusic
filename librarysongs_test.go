@@ -49,8 +49,8 @@ func songIDs(tracks []media.Track) []string {
 // TestLibrarySongs lists the songs of the user's library on YouTube Music
 // in Library › YouTube Music, whose menus take them out, and saves other
 // songs there from their menus, without liking them: the list shows the
-// change at once, and as it was when YouTube refuses. A Spotify track's
-// menu has no such item, nor has any signed out.
+// change at once, and as it was when YouTube refuses. A liked song's menu
+// has no such item, nor has any signed out.
 func TestLibrarySongs(t *testing.T) {
 	s := newTestShell(t)
 	strobe, glosoli, teardrop := testTracks[2], testTracks[5], testTracks[1]
@@ -73,7 +73,7 @@ func TestLibrarySongs(t *testing.T) {
 		t.Fatalf("the menu of a song in the library holds %q", menu)
 	}
 	if menu := menuOf(t, tt, teardrop.Title); slices.Contains(menu, "Add to library") || slices.Contains(menu, "Remove from library") {
-		t.Errorf("the menu of a Spotify track holds %q", menu)
+		t.Errorf("the menu of a liked song holds %q", menu)
 	}
 
 	// Saved, without a like.

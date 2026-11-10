@@ -27,11 +27,11 @@ const (
 	bigDownloadBytes = 1 << 30
 )
 
-// downloadable reports whether t downloads: a track of YouTube Music, or a
-// Spotify track, as its recording there, but a live stream, which has no
-// file to keep, once playback or a download found it live.
+// downloadable reports whether t downloads: a track of YouTube Music, but
+// a live stream, which has no file to keep, once playback or a download
+// found it live.
 func (s *shell) downloadable(t media.Track) bool {
-	return (t.Source == media.SourceYouTube || t.Source == media.SourceSpotify) && !s.kept.Live(t.ID)
+	return t.Source == media.SourceYouTube && !s.kept.Live(t.ID)
 }
 
 // anyDownloadable reports whether a track of tracks downloads, at the cost
@@ -86,9 +86,6 @@ func (s *shell) download(tracks []media.Track) {
 		msg := "Downloading " + plural(len(tracks), "track")
 		if len(tracks) == 1 {
 			msg = "Downloading " + tracks[0].Title
-			if tracks[0].Source == media.SourceSpotify {
-				msg += ": its recording on YouTube Music"
-			}
 		}
 		s.notes = append(s.notes, notice(msg))
 	})
@@ -559,9 +556,7 @@ func (s *shell) jobRow(c *ui.Context, j downloads.Job) {
 		switch st.Kind {
 		case downloads.Downloading:
 			status = "downloading"
-			if j.Phase != "" {
-				status = j.Phase
-			} else if st.Progress >= 0 {
+			if st.Progress >= 0 {
 				status = fmt.Sprintf("%d%%", int(math.Round(st.Progress*100)))
 			}
 		case downloads.Failed:

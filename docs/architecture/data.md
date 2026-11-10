@@ -6,11 +6,10 @@ Everything lives in the user's data folder (`%AppData%\MyMusic`): `settings.json
 `local-files.json` (the index of the music on the computer),
 `addons/`, `bin/` (yt-dlp), the YouTube session
 (`youtube-session.bin`, encrypted with a key of the system's credential
-store, which also keeps the Spotify token and the Last.fm connection), the
+store, which also keeps the Last.fm connection), the
 scrobbles still to send, and `updater.json`, the update preferences. A
 secret the Credential Manager can't keep, as in a logon session without
-credentials, is sealed for the user with DPAPI in `spotify-token.dpapi`,
-`lastfm.dpapi` or `youtube-session-key.dpapi`. `secretStore` (`internal/app/secrets.go`) moves a
+credentials, is sealed for the user with DPAPI in `lastfm.dpapi` or `youtube-session-key.dpapi`. `secretStore` (`internal/app/secrets.go`) moves a
 secret found in a file into the credential store once it can keep it.
 `settings.json` may be edited while MyMusic runs: `App.watchSettings`
 watches it (`mygo.WatchFiles`, or a look every two seconds where it can't),

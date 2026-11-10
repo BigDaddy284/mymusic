@@ -43,9 +43,9 @@ func (s *shell) discordStatusRows(c *ui.Context) {
 		}, "discord status rich presence")
 	}
 	toggle("discord-cover", "Cover", "Show the cover on Discord", "Discord shows the cover of what plays, where its service has one online: a file on your computer shows none.", &s.set.DiscordCover)
-	toggle("discord-badge", "Service badge", "Show the service's badge on Discord", "A small mark of YouTube Music, Spotify or a file on your computer, at the cover's corner, or in its place.", &s.set.DiscordServiceBadge)
+	toggle("discord-badge", "Service badge", "Show the service's badge on Discord", "A small mark of YouTube Music or a file on your computer, at the cover's corner, or in its place.", &s.set.DiscordServiceBadge)
 	toggle("discord-time", "Time left", "Show the time left on Discord", "How long the track has played, and how long it has left.", &s.set.DiscordTimeLeft)
-	toggle("discord-listen", "Listen button", "Show a Listen button on Discord", "A button that opens the track on YouTube Music or Spotify, which the others who see your profile can click. A file on your computer has none.", &s.set.DiscordListenButton)
+	toggle("discord-listen", "Listen button", "Show a Listen button on Discord", "A button that opens the track on YouTube Music, which the others who see your profile can click. A file on your computer has none.", &s.set.DiscordListenButton)
 	toggle("discord-paused", "Keep while paused", "Keep the Discord status while paused", "A paused track stays, marked as paused, without its time. Off, pausing clears the status.", &s.set.DiscordKeepWhilePaused)
 	// The preview came before the lines: what was typed since shows in
 	// the next frame.
@@ -228,7 +228,7 @@ func (s *shell) discordPicture(c *ui.Context, a *discord.Activity) {
 var (
 	discordBadgeGround = ui.RGB(0x30, 0x30, 0x30)
 	discordBadgeInks   = map[string]ui.Color{
-		app.BadgeSpotify: ui.RGB(0x1e, 0xd7, 0x60), app.BadgeYouTube: ui.RGB(0xff, 0x40, 0x40),
+		app.BadgeYouTube:  ui.RGB(0xff, 0x40, 0x40),
 		app.BadgeComputer: ui.RGB(0xff, 0xff, 0xff), app.BadgePaused: ui.RGB(0xff, 0xff, 0xff),
 	}
 )
@@ -247,8 +247,6 @@ func discordBadgeBox(c *ui.Context, key, name, label string, size float32, round
 			return ui.Rect{X: r.X + x0*r.W, Y: r.Y + y0*r.H, W: (x1 - x0) * r.W, H: (y1 - y0) * r.H}
 		}
 		switch name {
-		case app.BadgeSpotify:
-			p.Fill(at(0.25, 0.25, 0.75, 0.75), ink, r.W/4)
 		case app.BadgeYouTube:
 			p.Fill(at(0.29, 0.29, 0.71, 0.71), ink, 0)
 		case app.BadgeComputer:

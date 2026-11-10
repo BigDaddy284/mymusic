@@ -29,17 +29,16 @@ const discordBadges = "https://raw.githubusercontent.com/bigdaddy284/mymusic/mai
 // services' and the one of a paused track.
 const (
 	BadgeYouTube  = "youtube-music"
-	BadgeSpotify  = "spotify"
 	BadgeComputer = "computer"
 	BadgePaused   = "paused"
 )
 
 // DiscordBadge names the badge that image, an image of a Discord activity,
-// is, as BadgeSpotify, or "" for another image, as a cover.
+// is, as BadgeYouTube, or "" for another image, as a cover.
 func DiscordBadge(image string) string {
 	file, ours := strings.CutPrefix(image, discordBadges)
 	name, png := strings.CutSuffix(file, ".png")
-	if ours && png && slices.Contains([]string{BadgeYouTube, BadgeSpotify, BadgeComputer, BadgePaused}, name) {
+	if ours && png && slices.Contains([]string{BadgeYouTube, BadgeComputer, BadgePaused}, name) {
 		return name
 	}
 	return ""
@@ -67,7 +66,7 @@ func DiscordActivity(d settings.Desktop, np NowPlaying, now time.Time) *discord.
 		Details: ExpandDiscordLine(d.DiscordFirstLine, t),
 		State:   ExpandDiscordLine(d.DiscordSecondLine, t),
 		// The member list says "Listening to MyMusic", whether the track
-		// is Spotify's or YouTube Music's.
+		// is YouTube Music's or a file's.
 		StatusDisplay: discord.ShowName,
 	}
 	if playing && d.DiscordTimeLeft {
@@ -218,8 +217,6 @@ func discordServiceName(t media.Track) string {
 	switch discordSource(t) {
 	case media.SourceYouTube:
 		return "YouTube Music"
-	case media.SourceSpotify:
-		return "Spotify"
 	case media.SourceFile:
 		return "my computer"
 	}
@@ -240,8 +237,6 @@ func discordServiceBadge(t media.Track) string {
 	switch discordSource(t) {
 	case media.SourceYouTube:
 		return BadgeYouTube
-	case media.SourceSpotify:
-		return BadgeSpotify
 	case media.SourceFile:
 		return BadgeComputer
 	}
@@ -254,7 +249,7 @@ func discordServiceBadge(t media.Track) string {
 func discordListen(t media.Track) (label, link string) {
 	source := discordSource(t)
 	switch source {
-	case media.SourceYouTube, media.SourceSpotify:
+	case media.SourceYouTube:
 		label = "Listen on " + discordServiceName(t)
 	default:
 		return "", ""
@@ -266,12 +261,5 @@ func discordListen(t media.Track) (label, link string) {
 	if err != nil {
 		return "", ""
 	}
-	if source == media.SourceYouTube {
-		return label, "https://music.youtube.com/watch?v=" + url.QueryEscape(native)
-	}
-	kind := "track"
-	if t.IsEpisode() {
-		kind = "episode"
-	}
-	return label, "https://open.spotify.com/" + kind + "/" + url.PathEscape(native)
+	return label, "https://music.youtube.com/watch?v=" + url.QueryEscape(native)
 }

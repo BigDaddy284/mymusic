@@ -49,7 +49,6 @@ func TestDesignLanguagesContrast(t *testing.T) {
 					{"ink on tile 4", k.tileText, k.tile(3), 4.5},
 					{"errors", k.danger, k.bg, 4.5},
 					{"YouTube's mark", k.youtube, k.bg, 3},
-					{"Spotify's mark", k.spotify, k.bg, 3},
 				}...))
 			}
 		}

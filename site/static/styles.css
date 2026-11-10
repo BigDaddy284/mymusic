@@ -45,7 +45,6 @@
   --brand: #e6007e;
   --brand-text: #ff8cc6;
   --on-brand: #ffffff;
-  --spotify: #1ed760;
   --youtube: #ff4040;
   --scrollbar: #3a3a3a;
   --scrollbar-hover: #4a4a4a;
@@ -70,7 +69,7 @@
 }
 
 /* Light: the scheme of MyMusic's Material theme (builtin/themes/material),
-   with its Spotify and YouTube marks, as the system has it unless the
+   with its YouTube mark, as the system has it unless the
    visitor chose dark, or as the visitor chose. The two blocks are the
    same: keep them so. */
 @media (prefers-color-scheme: light) {
@@ -87,7 +86,6 @@
     --brand: #b90064;
     --brand-text: #b90064;
     --on-brand: #ffffff;
-    --spotify: #1f7314;
     --youtube: #be281c;
     --scrollbar: #d3c4c7;
     --scrollbar-hover: #b8a9ac;
@@ -108,7 +106,6 @@
   --brand: #b90064;
   --brand-text: #b90064;
   --on-brand: #ffffff;
-  --spotify: #1f7314;
   --youtube: #be281c;
   --scrollbar: #d3c4c7;
   --scrollbar-hover: #b8a9ac;
@@ -430,7 +427,7 @@ h3 { font-size: 1.3125rem; font-weight: 700; line-height: 1.25; letter-spacing: 
 .marks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--ink); font-weight: 500; }
 .marks li { display: flex; align-items: center; gap: 10px; }
 .mark { flex: none; width: 12px; height: 12px; }
-.mark-spotify { background: var(--spotify); border-radius: 50%; }
+.mark-file { box-sizing: border-box; border: 1.5px solid var(--ink-2); border-radius: 50%; }
 .mark-youtube { background: var(--youtube); border-radius: 2px; }
 
 .keys { margin: 0; display: grid; gap: 10px; }

@@ -21,7 +21,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 	"github.com/bigdaddy284/mymusic/internal/tools"
@@ -148,30 +147,9 @@ func (f *fetcher) asked() []call {
 	return slices.Clone(f.calls)
 }
 
-// matcher matches Spotify tracks as its map says, counting its searches.
-type matcher struct {
-	mu      sync.Mutex
-	matches map[string]media.Track
-	n       int
-}
-
-func (m *matcher) Match(_ context.Context, t media.Track) (media.Track, error) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.n++
-	if found, ok := m.matches[t.ID]; ok {
-		return found, nil
-	}
-	return media.Track{}, match.ErrNoMatch
-}
-
 func yt(video, title string) media.Track {
 	return media.Track{ID: "yt:" + video, Source: media.SourceYouTube, Title: title, DurationMs: 200000,
 		Artwork: []media.Image{{URL: "https://img.test/" + video + "-60", Width: 60}, {URL: "https://img.test/" + video + "-800", Width: 800}}}
-}
-
-func sp(id, title string) media.Track {
-	return media.Track{ID: "sp:" + id, Source: media.SourceSpotify, Title: title, DurationMs: 200000}
 }
 
 // open opens the downloads of dir, and closes them as the test ends.
@@ -249,66 +227,6 @@ func TestAACDownload(t *testing.T) {
 	rec := httptest.NewRecorder()
 	if !m.Serve(rec, httptest.NewRequest("GET", "/yt/ccccccccccc", nil), "ccccccccccc") || rec.Header().Get("Content-Type") != "audio/mp4" {
 		t.Errorf("served as %q", rec.Header().Get("Content-Type"))
-	}
-}
-
-func TestSpotifyTrackDownloadsItsMatch(t *testing.T) {
-	f := &fetcher{}
-	rec := yt("ddddddddddd", "Teardrop")
-	mt := &matcher{matches: map[string]media.Track{"sp:tear": rec}}
-	m := open(t, t.TempDir(), Options{Fetcher: f, Matcher: mt})
-	m.Add([]media.Track{sp("tear", "Teardrop")}, "best")
-	m.Start()
-	until(t, "the download", func() bool { return kind(m, "sp:tear") == Done })
-	k, _ := m.Lookup("sp:tear")
-	if k.Video != "ddddddddddd" || k.Track.ID != rec.ID || mt.n != 1 {
-		t.Errorf("Lookup = %+v, after %d searches", k, mt.n)
-	}
-	if got := f.asked(); len(got) != 1 || got[0].video != "ddddddddddd" {
-		t.Errorf("downloads %+v", got)
-	}
-}
-
-func TestNoMatchFails(t *testing.T) {
-	f := &fetcher{}
-	m := open(t, t.TempDir(), Options{Fetcher: f, Matcher: &matcher{}})
-	m.Add([]media.Track{sp("none", "Nothing")}, "best")
-	m.Start()
-	until(t, "the failure", func() bool { return kind(m, "sp:none") == Failed })
-	if why := m.State("sp:none").Why; why != match.ErrNoMatch.Error() {
-		t.Errorf("why: %q", why)
-	}
-	if len(f.asked()) != 0 {
-		t.Error("a track without a match downloaded")
-	}
-	if st := m.Status(); st.Failed != 1 || len(st.FailedJobs) != 1 {
-		t.Errorf("status %+v", st)
-	}
-}
-
-// TestSharedVideo keeps one file for a track and another of its recording,
-// until neither is kept.
-func TestSharedVideo(t *testing.T) {
-	dir := t.TempDir()
-	f := &fetcher{}
-	video := yt("eeeeeeeeeee", "Strobe")
-	m := open(t, dir, Options{Fetcher: f, Matcher: &matcher{matches: map[string]media.Track{"sp:strobe": video}}})
-	m.Start()
-	m.Add([]media.Track{video}, "best")
-	until(t, "the first", func() bool { return kind(m, video.ID) == Done })
-	m.Add([]media.Track{sp("strobe", "Strobe")}, "best")
-	until(t, "the second", func() bool { return kind(m, "sp:strobe") == Done })
-	if n := len(f.asked()); n != 1 {
-		t.Errorf("%d downloads of one recording", n)
-	}
-	path := filepath.Join(dir, "audio", "eeeeeeeeeee.webm")
-	m.Remove(video.ID)
-	if _, err := os.Stat(path); err != nil {
-		t.Errorf("the file went with the other track still kept: %v", err)
-	}
-	m.Remove("sp:strobe")
-	if _, err := os.Stat(path); !errors.Is(err, os.ErrNotExist) {
-		t.Errorf("the file stays: %v", err)
 	}
 }
 
@@ -916,14 +834,14 @@ func TestLiveKeepsDownloaded(t *testing.T) {
 }
 
 // TestLeaveOutNoVideo leaves nothing out for no video, as the tracks
-// whose recording isn't found yet have.
+// that aren't YouTube Music's have.
 func TestLeaveOutNoVideo(t *testing.T) {
-	m := open(t, t.TempDir(), Options{Fetcher: &fetcher{}, Matcher: &matcher{}})
-	m.Add([]media.Track{sp("tear", "Teardrop")}, "best")
+	m := open(t, t.TempDir(), Options{Fetcher: &fetcher{}})
+	m.Add([]media.Track{{ID: "file:L3RlYXIubXAz", Source: media.SourceFile, Title: "Teardrop"}}, "best")
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.leaveOut("")
-	if _, ok := m.idx.Tracks["sp:tear"]; !ok || len(m.idx.Live) != 0 {
+	if _, ok := m.idx.Tracks["file:L3RlYXIubXAz"]; !ok || len(m.idx.Live) != 0 {
 		t.Errorf("left out a track of no video known: live %v", m.idx.Live)
 	}
 }

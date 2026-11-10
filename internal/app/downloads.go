@@ -26,7 +26,7 @@ func (a *App) openDownloads(folder string) {
 	if !chosen {
 		folder = a.defaultDownloads()
 	}
-	o := downloads.Options{Fetcher: a.proxy, Matcher: a.matcher, Cache: a.cache, Network: a.online, Art: a.artStore.Bytes,
+	o := downloads.Options{Fetcher: a.proxy, Cache: a.cache, Network: a.online, Art: a.artStore.Bytes,
 		Avoid: []string{filepath.Join(a.opts.CacheDir, "audio"), filepath.Join(a.opts.CacheDir, "artwork")}, Exists: chosen}
 	a.downloads = downloads.Open(folder, o)
 	a.proxy.Kept = a.downloads
@@ -167,15 +167,8 @@ func (a *App) playsOffline(t media.Track) bool {
 	if _, ok := a.downloads.Lookup(t.ID); ok {
 		return true
 	}
-	if a.matcher == nil {
-		return false
-	}
-	yt, ok := a.matcher.Matched(t)
+	video, ok := recording(t)
 	if !ok {
-		return false
-	}
-	_, video, err := media.ParseID(yt.ID)
-	if err != nil {
 		return false
 	}
 	return a.downloads.Snapshot().HasVideo(video) || a.cache != nil && a.cache.Has(video)

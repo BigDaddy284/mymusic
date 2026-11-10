@@ -1,5 +1,5 @@
-// Command mymusic is a desktop music player that brings Spotify and
-// YouTube Music together in one customizable interface.
+// Command mymusic is a desktop music player for YouTube Music and the
+// music on your computer, in one customizable interface.
 package main
 
 import (
@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/egoist/mygo"
 
@@ -19,16 +18,6 @@ import (
 
 //go:embed brand/tray.png
 var trayIcon []byte
-
-// allowAudio lets pages play sound no click started: the hidden page of
-// MyMusic's own Spotify device gets none. WebView2 takes the arguments of
-// its browser from this variable, which must be set before its first page.
-func allowAudio() {
-	const name, arg = "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required"
-	if args := os.Getenv(name); !strings.Contains(args, "--autoplay-policy") {
-		os.Setenv(name, strings.TrimSpace(args+" "+arg))
-	}
-}
 
 // version is the version of builds made without the mygo CLI, which links
 // the version of mygo.config.ts into the app.
@@ -46,7 +35,6 @@ func main() {
 	if !mygo.App.RequestSingleInstanceLock() {
 		return // the running instance takes over
 	}
-	allowAudio()
 	// The log and the crash reports, once this is the instance that runs.
 	logsDir, err := mygo.App.Path(mygo.PathLogs)
 	if err != nil {

@@ -1,7 +1,6 @@
 package media
 
 import (
-	"html"
 	"net/url"
 	"regexp"
 	"slices"
@@ -110,13 +109,9 @@ var (
 	webRe = regexp.MustCompile("https?://[^\\s<>\"'`]+")
 	// timeRe finds the times of plain text, as 1:02:03, 12:34 or 0:05.
 	timeRe = regexp.MustCompile(`\b(?:(\d{1,2}):([0-5]\d):([0-5]\d)|(\d{1,3}):([0-5]\d))\b`)
-	// tagRe finds HTML's tags, and breakRe those that end a line.
-	tagRe   = regexp.MustCompile(`<\s*/?\s*[a-zA-Z][^>]*>`)
-	breakRe = regexp.MustCompile(`(?i)<\s*(?:br\s*/?|/p|/li|/div|/h[1-6])\s*>`)
 )
 
-// ParseDescription reads a description that is plain text, as Spotify
-// gives it, line by line: its web addresses become links, and its times,
+// ParseDescription reads a description that is plain text, line by line: its web addresses become links, and its times,
 // as 12:34 or 1:02:03, times of the episode.
 func ParseDescription(text string) [][]TextRun {
 	var runs []TextRun
@@ -195,15 +190,6 @@ func trimLink(u string) string {
 		u = u[:len(u)-1]
 	}
 	return u
-}
-
-// PlainText returns the text of HTML, as Spotify's html_description: its
-// paragraphs and breaks are lines, its other tags go, and its entities are
-// the characters they stand for.
-func PlainText(s string) string {
-	s = breakRe.ReplaceAllString(s, "\n")
-	s = tagRe.ReplaceAllString(s, "")
-	return strings.TrimSpace(html.UnescapeString(s))
 }
 
 // ChaptersOf returns the chapters a description tells: its lines that

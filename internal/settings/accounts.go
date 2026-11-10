@@ -10,9 +10,6 @@ var pageIDRe = regexp.MustCompile(`^[0-9]{1,32}$`)
 
 // Accounts is how MyMusic uses the user's accounts: Settings › Accounts.
 type Accounts struct {
-	// SpotifyClientID is the Client ID of the user's Spotify app, which
-	// they sign in to Spotify with; "" until they paste one.
-	SpotifyClientID string `json:"spotifyClientId"`
 	// Scrobbling sends what plays to Last.fm, once the user connected it.
 	Scrobbling bool `json:"scrobbling"`
 	// YouTubeChannel is the brand channel the user uses YouTube Music as,
@@ -32,10 +29,9 @@ func defaultAccounts() Accounts {
 	return a
 }
 
-// clean is a without the spaces around its IDs, and without a channel
-// that isn't a page ID.
+// clean is a without a channel that isn't a page ID, nor the spaces
+// around one that is.
 func (a Accounts) clean() Accounts {
-	a.SpotifyClientID = strings.TrimSpace(a.SpotifyClientID)
 	if a.YouTubeChannel = strings.TrimSpace(a.YouTubeChannel); !pageIDRe.MatchString(a.YouTubeChannel) {
 		a.YouTubeChannel = ""
 	}

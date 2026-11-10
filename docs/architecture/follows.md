@@ -4,8 +4,7 @@ The artists the user follows, on their services or in MyMusic, and what
 they put out lately, for Home and Library › Artists.
 
 - **Follows.** Signed in to an artist's service, Follow follows them there,
-  as before: `Collection.SetFollowing` subscribes on YouTube Music, or
-  saves the artist to the Spotify library. Signed out,
+  as before: `Collection.SetFollowing` subscribes on YouTube Music. Signed out,
   `Collection.SetArtistFollowed` keeps them in `library.json`
   (`library.FollowedArtist`: their ID, name, artwork and link), as the
   shows followed are kept. Nothing moves one to the other: signing in
@@ -17,21 +16,16 @@ they put out lately, for Home and Library › Artists.
   may answer a read as it was a moment before. Tests replace
   `followOnService`.
 - **Releases.** `Catalog.NewReleases` gathers the artists followed
-  (`followedArtists`): MyMusic's, then Spotify's (`/me/following`) and
-  YouTube Music's (`FEmusic_library_corpus_artists`) where the user signed
+  (`followedArtists`): MyMusic's, then YouTube Music's (`FEmusic_library_corpus_artists`) where the user signed
   in, each once. A look (`releaseBook.look`) asks for the releases of the
   artists due: never asked, read more than `releasesFresh` (12 hours) ago,
   or failed more than `releasesRetry` (an hour) ago; at most
   `releasesPerLook` (30) of them, those never asked first, then those
   asked longest ago, `releasesAtOnce` (3) at a time. YouTube Music's come
   from the artist's page (`youtube.Client.Artist`): its Albums and Singles
-  & EPs, ten of each, which tell only their years. Spotify's come from
-  `/artists/{id}/albums`, the albums then the singles, `limit` 10, the
-  most it takes since February 2026, with `release_date` as far as
-  `release_date_precision` goes (`spotify.Client.ArtistReleases`). Neither
-  gives a feed of the releases of the artists followed: YouTube Music's
-  New releases are everyone's, and Spotify removed `/browse/new-releases`
-  in February 2026. An artist that fails keeps what was read before; one
+  & EPs, ten of each, which tell only their years. YouTube Music gives no
+  feed of the releases of the artists followed: its New releases are
+  everyone's. An artist that fails keeps what was read before; one
   the look's time ran out on isn't counted as failed.
 - **The file.** `releases.json`, in the cache folder, keeps for each
   artist when it was asked and when it answered, and their releases of

@@ -88,7 +88,7 @@ func TestSongOfAVideo(t *testing.T) {
 		},
 	} {
 		s := &songSearch{songs: items(c.songs...)}
-		got, err := New(s, nil).Song(context.Background(), c.video)
+		got, err := New(s).Song(context.Background(), c.video)
 		if err != nil || got.Title != c.want {
 			t.Errorf("%s: Song = %q, %v; want %q", c.name, got.Title, err, c.want)
 		}
@@ -100,7 +100,7 @@ func TestSongOfAVideo(t *testing.T) {
 
 func TestSongOfAVideoSearches(t *testing.T) {
 	s := &songSearch{}
-	New(s, nil).Song(context.Background(), by("Paradise (Official Video)", 260, true, "Coldplay"))
+	New(s).Song(context.Background(), by("Paradise (Official Video)", 260, true, "Coldplay"))
 	if s.query != "Paradise Coldplay" {
 		t.Errorf("searched %q", s.query)
 	}
@@ -110,11 +110,11 @@ func TestNoSongOfAVideo(t *testing.T) {
 	video := by("Time (Official Video)", 250, true, "Ann")
 	// An upload with no song: a cover, a live take.
 	s := &songSearch{songs: items(by("Time", 250, false, "Someone Else"))}
-	if _, err := New(s, nil).Song(context.Background(), video); !errors.Is(err, ErrNoMatch) {
+	if _, err := New(s).Song(context.Background(), video); !errors.Is(err, ErrNoMatch) {
 		t.Errorf("of another artist's song: err = %v", err)
 	}
 	s.songs, s.err = nil, errors.New("youtube music: HTTP 500")
-	if _, err := New(s, nil).Song(context.Background(), video); err != s.err {
+	if _, err := New(s).Song(context.Background(), video); err != s.err {
 		t.Errorf("YouTube Music down: err = %v", err)
 	}
 }

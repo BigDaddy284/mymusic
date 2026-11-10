@@ -68,7 +68,7 @@ func hasAll(t *testing.T, tt interface{ HasText(string) bool }, want ...string) 
 // stream, as MyMusic found it, and how loud it plays; Close closes it.
 func TestTrackInfoFromTheMenu(t *testing.T) {
 	s := newTestShell(t)
-	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysEngine, EvenLoudness: true, Measured: true, LKFS: -9.2, Trim: -4.8,
+	withTrackInfo(t, app.TrackInfo{EvenLoudness: true, Measured: true, LKFS: -9.2, Trim: -4.8,
 		Stream: &app.TrackStream{Codec: "Opus", Container: "WebM", Bitrate: 139.3, Size: 3_400_000, Duration: 207 * time.Second}})
 	s.loads["album:al-x"] = &loaded[media.Album]{done: true, value: media.Album{ID: "al-x", Title: "Mezzanine", Source: media.SourceYouTube, Tracks: keptTracks}}
 	tt := tester(t, s)
@@ -103,7 +103,7 @@ func TestTrackInfoOfAFile(t *testing.T) {
 	file := &app.TrackFile{Kind: app.FileMusic, Path: path, Size: 23_000_000,
 		Format: audio.Format{Container: "FLAC", Codec: "FLAC", SampleRate: 44100, BitDepth: 16, Channels: 2, Duration: 211 * time.Second},
 		Tags:   &tags.Tags{Title: "Slow Tide", Artists: []string{"The Shore"}, Album: "Low Water", Track: 1, Year: 2011}}
-	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysEngine, EvenLoudness: true, File: file})
+	withTrackInfo(t, app.TrackInfo{EvenLoudness: true, File: file})
 	var shown []string
 	was := showInFolder
 	showInFolder = func(p string) { shown = append(shown, p) }
@@ -124,30 +124,11 @@ func TestTrackInfoOfAFile(t *testing.T) {
 	// The file is gone.
 	gone := *file
 	gone.Problem, gone.Format, gone.Tags = "File not found", audio.Format{}, nil
-	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysEngine, File: &gone})
+	withTrackInfo(t, app.TrackInfo{File: &gone})
 	s.showTrackInfo(track)
 	until(t, s, tt, "the file gone", func() bool { return tt.HasText(path + " · File not found") })
 	if tt.HasText(strings.ToLower(showInFolderLabel())) || tt.HasText("44.1 kHz") {
 		t.Errorf("a file gone: %q", tt.Texts())
-	}
-}
-
-// TestTrackInfoOfSpotify tells of a track Spotify's own player plays what
-// is known, and no figures.
-func TestTrackInfoOfSpotify(t *testing.T) {
-	s := newTestShell(t)
-	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysSpotify, EvenLoudness: true})
-	tt := tester(t, s)
-	s.showTrackInfo(testTracks[1])
-	until(t, s, tt, "the dialog", func() bool { return tt.HasText("In Spotify's own player, in MyMusic") })
-	if !hasAll(t, tt, "Spotify", "As your Spotify account and Spotify's settings choose: Spotify tells MyMusic nothing of its audio.",
-		"3:31", "Spotify plays it at its own loudness.") {
-		t.Fatalf("the dialog shows %q", tt.Texts())
-	}
-	for _, figure := range []string{"kbit/s", "kHz", "Stereo", "LKFS"} {
-		if tt.HasText(figure) {
-			t.Errorf("a figure of Spotify's audio, %q: %q", figure, tt.Texts())
-		}
 	}
 }
 
@@ -156,7 +137,7 @@ func TestTrackInfoOfSpotify(t *testing.T) {
 func TestTrackInfoOfTheTrackPlaying(t *testing.T) {
 	s := newTestShell(t)
 	stream := &app.TrackStream{Codec: "AAC", Container: "MP4", Bitrate: 129.5, Size: 3_300_000, Duration: 211 * time.Second}
-	opening := app.TrackInfo{Plays: app.PlaysEngine, EvenLoudness: true, Stream: stream}
+	opening := app.TrackInfo{EvenLoudness: true, Stream: stream}
 	opened := opening
 	opened.Engine = &audio.Loaded{URL: "url:" + testTracks[0].ID, Ready: true, EvenLoudness: true,
 		Format: audio.Format{Container: "MP4", Codec: "AAC", SampleRate: 44100, Channels: 2, Duration: 211 * time.Second}}
@@ -197,14 +178,11 @@ func TestTrackFacts(t *testing.T) {
 		}
 		return m
 	}
-	spotify := testTracks[1]
-	rec := media.Track{ID: "yt:aaaaaaaaaaa", Title: "Teardrop", Artists: []media.Ref{{Name: "Massive Attack"}}}
-	got := values(trackFacts(spotify, app.TrackInfo{Plays: app.PlaysEngine, Recording: &rec, Levelling: true,
+	got := values(trackFacts(testTracks[0], app.TrackInfo{Levelling: true,
 		File: &app.TrackFile{Kind: app.FileDownload, Path: "/d/a.webm", Size: 4_000_000,
 			Format: audio.Format{Container: "WebM", Codec: "Opus", SampleRate: 48000, Channels: 2, Duration: 200 * time.Second}}}))
 	for label, want := range map[string]string{
-		"Source":   "Spotify, downloaded",
-		"Plays as": "Teardrop · Massive Attack, on YouTube Music",
+		"Source":   "YouTube Music, downloaded",
 		"Format":   "Opus in WebM",
 		"Bitrate":  "About 160 kbit/s, on average",
 		"Download": "/d/a.webm",
@@ -215,14 +193,11 @@ func TestTrackFacts(t *testing.T) {
 		}
 	}
 	// Not found yet.
-	if got := values(trackFacts(spotify, app.TrackInfo{Plays: app.PlaysEngine})); got["Format"] != "MyMusic finds its recording on YouTube Music as it plays, and tells its format then." {
-		t.Errorf("a Spotify track not found: %q", got)
-	}
-	if got := values(trackFacts(testTracks[0], app.TrackInfo{Plays: app.PlaysEngine})); got["Format"] != "MyMusic finds its stream as it plays, and tells its format then." {
+	if got := values(trackFacts(testTracks[0], app.TrackInfo{})); got["Format"] != "MyMusic finds its stream as it plays, and tells its format then." {
 		t.Errorf("a track not played: %q", got)
 	}
 	// 5.1 surround, from the cache, and a quiet track.
-	got = values(trackFacts(testTracks[0], app.TrackInfo{Plays: app.PlaysEngine, Playing: true, Surround: true, EvenLoudness: true, Measured: true, LKFS: -16,
+	got = values(trackFacts(testTracks[0], app.TrackInfo{Playing: true, Surround: true, EvenLoudness: true, Measured: true, LKFS: -16,
 		File:   &app.TrackFile{Kind: app.FileCache, Path: "/c/a.5.1.m4a"},
 		Engine: &audio.Loaded{Ready: true, Format: audio.Format{Container: "MP4", Codec: "E-AC-3", SampleRate: 48000, Channels: 6}}}))
 	for label, want := range map[string]string{
@@ -237,14 +212,13 @@ func TestTrackFacts(t *testing.T) {
 		}
 	}
 	// A live stream, with Even loudness off.
-	got = values(trackFacts(testTracks[0], app.TrackInfo{Plays: app.PlaysEngine, Measured: true, LKFS: -8,
+	got = values(trackFacts(testTracks[0], app.TrackInfo{Measured: true, LKFS: -8,
 		Stream: &app.TrackStream{Codec: "AAC", Container: "ADTS", Bitrate: 128, Live: true}}))
 	if got["Format"] != "AAC in HLS packed audio" || got["Length"] != "Live" || got["Loudness"] != "YouTube measured it at −8.0 LKFS. Even loudness is off: it plays at its own level." {
 		t.Errorf("a live stream: %q", got)
 	}
 	// WAV of floating-point samples, in mono.
-	got = values(trackFacts(media.Track{Source: media.SourceFile}, app.TrackInfo{Plays: app.PlaysEngine,
-		File: &app.TrackFile{Kind: app.FileMusic, Format: audio.Format{Container: "WAV", Codec: "PCM", SampleRate: 96000, BitDepth: 32, Float: true, Channels: 1}}}))
+	got = values(trackFacts(media.Track{Source: media.SourceFile}, app.TrackInfo{File: &app.TrackFile{Kind: app.FileMusic, Format: audio.Format{Container: "WAV", Codec: "PCM", SampleRate: 96000, BitDepth: 32, Float: true, Channels: 1}}}))
 	if got["Format"] != "PCM in WAV" || got["Bit depth"] != "32-bit floating point" || got["Channels"] != "Mono" || got["Sample rate"] != "96 kHz" {
 		t.Errorf("a WAV file: %q", got)
 	}

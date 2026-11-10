@@ -16,20 +16,18 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/romaji"
 	"github.com/bigdaddy284/mymusic/internal/romanize"
 	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/tools"
 	"github.com/bigdaddy284/mymusic/opus"
 )
 
 // Info describes the app.
 type Info struct {
-	Name        string `json:"name"`
-	Version     string `json:"version"`
-	Platform    string `json:"platform"`
-	Arch        string `json:"arch"`
-	Dev         bool   `json:"dev"`
-	DataDir     string `json:"dataDir"`
-	RedirectURI string `json:"redirectUri"`
+	Name     string `json:"name"`
+	Version  string `json:"version"`
+	Platform string `json:"platform"`
+	Arch     string `json:"arch"`
+	Dev      bool   `json:"dev"`
+	DataDir  string `json:"dataDir"`
 	// NativeAudio is set where MyMusic's own audio engine can play: on
 	// 64-bit Windows.
 	NativeAudio bool `json:"nativeAudio"`
@@ -47,7 +45,6 @@ func (s *System) Info() Info {
 		Arch:        runtime.GOARCH,
 		Dev:         mygo.IsDev(),
 		DataDir:     s.a.opts.DataDir,
-		RedirectURI: spotify.RedirectURI,
 		NativeAudio: settings.NativeAudio && output.Available() == nil,
 	}
 }

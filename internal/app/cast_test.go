@@ -389,7 +389,7 @@ func newCastApp(t *testing.T, r *casttest.Responder) (*App, *player.Player, *qui
 		return cast.Browse(ctx, cast.BrowseOptions{To: r.Addr(), Wait: 200 * time.Millisecond})
 	}
 	engine := &quietStream{}
-	p := player.New(castServices{playerServices{a}}, engine, connectDevice{a}, player.Saved{})
+	p := player.New(castServices{playerServices{a}}, engine, player.Saved{})
 	engine.p.Store(p)
 	a.goPlayer.Store(p)
 	t.Cleanup(func() {

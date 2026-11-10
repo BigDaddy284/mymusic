@@ -56,7 +56,7 @@ func TestAddToMixAlready(t *testing.T) {
 	}
 	c := &Collection{a: &App{library: lib}}
 	a := media.Track{ID: "yt:a", Source: media.SourceYouTube, Title: "A"}
-	b := media.Track{ID: "sp:b", Source: media.SourceSpotify, Title: "B"}
+	b := media.Track{ID: "file:b", Source: media.SourceFile, Title: "B"}
 	mix, err := c.CreatePlaylist("Road trip", "", []media.Track{a})
 	if err != nil {
 		t.Fatal(err)

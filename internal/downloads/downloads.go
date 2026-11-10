@@ -32,12 +32,6 @@ type Fetcher interface {
 	Download(ctx context.Context, videoID string, resume func(s stream.Stream) (int64, error), w io.Writer, progress func(done, size int64)) (stream.Stream, error)
 }
 
-// Matcher finds the recording of a Spotify track on YouTube Music:
-// *match.Matcher.
-type Matcher interface {
-	Match(ctx context.Context, t media.Track) (media.Track, error)
-}
-
 // Cache is the offline cache, which hands over the tracks it holds:
 // *stream.Cache.
 type Cache interface {
@@ -54,7 +48,6 @@ type Network interface {
 // Options are what a Manager downloads with. Each may be nil, but Fetcher.
 type Options struct {
 	Fetcher Fetcher
-	Matcher Matcher
 	Cache   Cache
 	Network Network
 	// Art returns the bytes of a cover, as its host sent them.
@@ -717,31 +710,6 @@ func (m *Manager) RetryFailed() {
 		delete(m.holds, kind)
 	}
 	m.failing = 0
-	m.wake()
-	m.changed()
-}
-
-// Rematch drops the recording found for a Spotify track, and its audio
-// when no other track plays it, and downloads the track again, as its new
-// match: the old one was wrong.
-func (m *Manager) Rematch(id string) {
-	if m == nil {
-		return
-	}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	e, ok := m.idx.Tracks[id]
-	if !ok || e.Recording == nil {
-		return
-	}
-	video := e.video()
-	e.Recording, e.Failed = nil, ""
-	if j := m.jobs[id]; j != nil {
-		j.cancel(errHeld)
-	}
-	if video != "" && !m.needed(video) && !m.busy[video] {
-		m.dropVideo(video)
-	}
 	m.wake()
 	m.changed()
 }

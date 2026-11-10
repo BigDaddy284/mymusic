@@ -25,12 +25,6 @@ func (s liveServices) Prepare(ctx context.Context, t media.Track) (Source, error
 	return src, err
 }
 
-func (s liveServices) PrepareStream(ctx context.Context, t media.Track) (Source, error) {
-	src, err := s.fakeServices.PrepareStream(ctx, t)
-	src.Live = strings.HasPrefix(t.ID, "yt:live")
-	return src, err
-}
-
 func newLiveHarness(t *testing.T, setup ...func(*fakeServices)) *harness {
 	t.Helper()
 	return newHarnessWith(t, Saved{}, func(f *fakeServices) Services { return liveServices{f} }, setup...)

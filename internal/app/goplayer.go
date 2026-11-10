@@ -1,8 +1,7 @@
 package app
 
 // The player: the queue played in Go (internal/player), through
-// MyMusic's own audio engine and Spotify's devices, with the services of
-// Player.
+// MyMusic's own audio engine, with the services of Player.
 
 import (
 	"context"
@@ -37,11 +36,7 @@ func (a *App) startGoPlayer() (*player.Player, error) {
 		return nil, err
 	}
 	a.queue = queue
-	p := player.New(playerServices{a}, engineStream{a, e}, connectDevice{a}, queue.Get())
-	p.SpotifyHere(hereDevice{&a.here})
-	l := newListener()
-	a.listen.Store(l)
-	p.Subscribe(func(player.Event) { l.follow(p.State()) })
+	p := player.New(playerServices{a}, engineStream{a, e}, queue.Get())
 	a.goPlayer.Store(p)
 	a.applyEngine(a.settings.Get().Clean())
 	return p, nil
@@ -55,8 +50,6 @@ func (a *App) applyEngine(s settings.Settings) {
 	if e == nil {
 		return
 	}
-	// The volume's curve, on which Spotify in MyMusic plays too
-	// (hereDevice.gain).
 	e.SetVolumeCurve(s.VolumeCurve)
 	var gains [len(audio.Bands)]float64
 	copy(gains[:], s.Equalizer.Gains)
@@ -143,11 +136,6 @@ func playerSource(src PlaybackSource) player.Source {
 
 func (s playerServices) Prepare(ctx context.Context, t media.Track) (player.Source, error) {
 	src, err := (&Player{s.a}).Prepare(ctx, t)
-	return playerSource(src), err
-}
-
-func (s playerServices) PrepareStream(ctx context.Context, t media.Track) (player.Source, error) {
-	src, err := (&Player{s.a}).PrepareStream(ctx, t)
 	return playerSource(src), err
 }
 
@@ -262,37 +250,6 @@ func (s engineStream) Pause()                 { s.e.Pause() }
 func (s engineStream) Seek(t time.Duration)   { s.e.Seek(t) }
 func (s engineStream) SetVolume(v float64)    { s.e.SetVolume(v) }
 func (s engineStream) SetSpeed(speed float64) { s.e.SetSpeed(speed) }
-
-// connectDevice is the Spotify Connect device of the settings, or the
-// active one, as the device of the native interface's player.
-type connectDevice struct{ a *App }
-
-func (d connectDevice) Play(ctx context.Context, t media.Track, at time.Duration) error {
-	return (&Player{d.a}).ConnectPlay(ctx, t, int(at/time.Millisecond))
-}
-
-func (d connectDevice) Pause(ctx context.Context) error  { return (&Player{d.a}).ConnectPause(ctx) }
-func (d connectDevice) Resume(ctx context.Context) error { return (&Player{d.a}).ConnectResume(ctx) }
-
-func (d connectDevice) Seek(ctx context.Context, at time.Duration) error {
-	return (&Player{d.a}).ConnectSeek(ctx, int(at/time.Millisecond))
-}
-
-func (d connectDevice) SetVolume(ctx context.Context, v float64) error {
-	return (&Player{d.a}).ConnectVolume(ctx, v)
-}
-
-func (d connectDevice) State(ctx context.Context) (*player.DeviceState, error) {
-	st, err := (&Player{d.a}).ConnectState(ctx)
-	if err != nil || st == nil {
-		return nil, err
-	}
-	return &player.DeviceState{
-		Playing:  st.Playing,
-		Progress: time.Duration(st.ProgressMs) * time.Millisecond,
-		Track:    st.Track,
-	}, nil
-}
 
 // Services are what the windows call.
 type Services struct {

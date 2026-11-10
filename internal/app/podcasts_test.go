@@ -2,78 +2,18 @@ package app
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
-	"net/http"
-	"net/url"
 	"path/filepath"
-	"slices"
-	"strings"
-	"sync"
 	"testing"
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
-// spotifyEpisode is a Spotify podcast's episode.
-var spotifyEpisode = media.Track{ID: "sp:e1", Source: media.SourceSpotify, Title: "Monday", DurationMs: 1830000,
-	Episode: &media.Episode{Show: media.Ref{ID: "sp:s1", Name: "The Daily Thing"}}}
-
-// TestSpotifyEpisodePlaysFromSpotify plays a Spotify episode on Spotify's
-// devices, by its episode URI, and refuses to look for it on YouTube
-// Music, which has no recording of it.
-func TestSpotifyEpisodePlaysFromSpotify(t *testing.T) {
-	var (
-		mu   sync.Mutex
-		uris []string
-	)
-	api := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var body struct {
-			URIs []string `json:"uris"`
-		}
-		json.NewDecoder(r.Body).Decode(&body)
-		mu.Lock()
-		uris = append(uris, body.URIs...)
-		mu.Unlock()
-		w.WriteHeader(http.StatusNoContent)
-	})
-	for mode, want := range map[settings.SpotifyPlayback]PlaybackMode{
-		settings.SpotifyPlaybackConnect: PlaybackConnect,
-		settings.SpotifyPlaybackHere:    PlaybackSpotify,
-	} {
-		s := settings.Default()
-		s.SpotifyPlayback = mode
-		p := testPlayer(t, api, s)
-		if src, err := p.Prepare(context.Background(), spotifyEpisode); err != nil || src.Mode != want {
-			t.Errorf("%s: Prepare = %+v, %v", mode, src, err)
-		}
-	}
-	s := settings.Default()
-	s.SpotifyPlayback = settings.SpotifyPlaybackMatch
-	p := testPlayer(t, api, s)
-	if _, err := p.Prepare(context.Background(), spotifyEpisode); !errors.Is(err, errSpotifyEpisode) {
-		t.Errorf("from YouTube Music: %v", err)
-	}
-	if (&Catalog{p.a}).SpotifyEpisodesPlay() {
-		t.Error("Spotify's episodes play from YouTube Music")
-	}
-	if err := p.ConnectPlay(context.Background(), spotifyEpisode, 0); err != nil {
-		t.Fatal(err)
-	}
-	song := media.Track{ID: "sp:t1", Source: media.SourceSpotify}
-	if err := p.PlayHere(context.Background(), "mymusic", spotifyEpisode, 0, song); err != nil {
-		t.Fatal(err)
-	}
-	want := []string{"spotify:episode:e1", "spotify:episode:e1", "spotify:track:t1"}
-	if !slices.Equal(uris, want) {
-		t.Errorf("played %v, want %v", uris, want)
-	}
-}
+// mondayEpisode is a YouTube Music podcast's episode.
+var mondayEpisode = media.Track{ID: "yt:e1", Source: media.SourceYouTube, Title: "Monday", DurationMs: 1830000,
+	Episode: &media.Episode{Show: media.Ref{ID: "yt:s1", Name: "The Daily Thing"}}}
 
 // TestKeepPosition keeps where the episode that plays is, as the player
 // reports it, but not while it loads, nor of a song.
@@ -86,7 +26,7 @@ func TestKeepPosition(t *testing.T) {
 	// be gone: at once, before it goes, as App.Close does.
 	t.Cleanup(func() { pos.Flush() })
 	a := &App{positions: pos}
-	ep := spotifyEpisode
+	ep := mondayEpisode
 	a.keepPosition(NowPlaying{Track: &ep, Playing: true, PositionMs: 120000, DurationMs: 1830000})
 	if got := (playerServices{a}).ResumeAt(ep); got != 115*time.Second {
 		t.Errorf("ResumeAt = %v", got)
@@ -108,127 +48,20 @@ func TestKeepPosition(t *testing.T) {
 
 // TestNoScrobbleOfEpisodes tells Last.fm of no episode.
 func TestNoScrobbleOfEpisodes(t *testing.T) {
-	ep := spotifyEpisode
+	ep := mondayEpisode
 	if id, _ := lastfmTrack(NowPlaying{Track: &ep, Playing: true}); id != "" {
 		t.Errorf("an episode is observed as %q", id)
 	}
 }
 
-// spotifyAPI is a Spotify Web API that answers each path with what
-// answers holds for it, and records the requests.
-func spotifyAPI(t *testing.T, answers map[string]string) (*spotify.Client, func() []string) {
-	t.Helper()
-	var (
-		mu  sync.Mutex
-		got []string
-	)
-	p := testPlayer(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		mu.Lock()
-		got = append(got, r.Method+" "+r.URL.Path+"?"+r.URL.RawQuery)
-		mu.Unlock()
-		body, ok := answers[r.Method+" "+r.URL.Path]
-		switch {
-		case !ok:
-			w.WriteHeader(http.StatusNotFound)
-		case body == "":
-			w.WriteHeader(http.StatusNoContent)
-		default:
-			w.Write([]byte(body))
-		}
-	}), settings.Default())
-	return p.a.spotify, func() []string {
-		mu.Lock()
-		defer mu.Unlock()
-		return slices.Clone(got)
-	}
-}
-
-// TestFollowSpotifyPodcast follows a show in MyMusic, and saves it to the
-// user's library on Spotify, signed in.
-func TestFollowSpotifyPodcast(t *testing.T) {
-	sp, requests := spotifyAPI(t, map[string]string{
-		"PUT /me/library":          "",
-		"GET /shows/s1":            `{"id": "s1", "name": "The Daily Thing", "episodes": {"items": [{"id": "e1", "name": "Monday", "type": "episode"}], "next": null}}`,
-		"GET /me/library/contains": `[true]`,
-	})
-	lib, err := library.Open(filepath.Join(t.TempDir(), "library.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	a := &App{spotify: sp, library: lib}
-	p, err := (&Catalog{a}).Podcast(context.Background(), "sp:s1")
-	if err != nil || !p.Saved || len(p.Episodes) != 1 || p.Episodes[0].Episode.Show.Name != "The Daily Thing" {
-		t.Fatalf("Podcast = %+v, %v", p, err)
-	}
-	c := &Collection{a}
-	if err := c.SetPodcastFollowed(context.Background(), p, true); err != nil {
-		t.Fatal(err)
-	}
-	if !c.Follows(p.ID) || len(c.Podcasts()) != 1 || len(c.Podcasts()[0].Episodes) != 0 {
-		t.Errorf("follows %+v", c.Podcasts())
-	}
-	saved := false
-	for _, r := range requests() {
-		if strings.HasPrefix(r, "PUT /me/library?") && strings.Contains(r, url.QueryEscape("spotify:show:s1")) {
-			saved = true
-		}
-	}
-	if !saved {
-		t.Errorf("not saved on Spotify: %q", requests())
-	}
-}
-
-// TestUnfollowSavedPodcast stops following a show the user saved on
-// Spotify only, there, and fails when Spotify refuses, but stops one they
-// followed in MyMusic even so.
-func TestUnfollowSavedPodcast(t *testing.T) {
-	show := media.Podcast{ID: "sp:s1", Source: media.SourceSpotify, Title: "The Daily Thing"}
-	collection := func(answers map[string]string) (*Collection, func() []string) {
-		sp, requests := spotifyAPI(t, answers)
-		lib, err := library.Open(filepath.Join(t.TempDir(), "library.json"))
-		if err != nil {
-			t.Fatal(err)
-		}
-		return &Collection{&App{spotify: sp, library: lib}}, requests
-	}
-	ctx := context.Background()
-	c, requests := collection(map[string]string{"DELETE /me/library": ""})
-	if err := c.SetPodcastFollowed(ctx, show, false); err != nil {
-		t.Fatal(err)
-	}
-	if got := requests(); len(got) != 1 || !strings.HasPrefix(got[0], "DELETE /me/library?") || !strings.Contains(got[0], url.QueryEscape("spotify:show:s1")) {
-		t.Errorf("not taken out on Spotify: %q", got)
-	}
-	// Spotify refuses all.
-	c, _ = collection(map[string]string{})
-	if err := c.SetPodcastFollowed(ctx, show, false); err == nil {
-		t.Error("Spotify refused, and a show followed only there stopped")
-	}
-	if err := c.SetPodcastFollowed(ctx, show, true); err != nil {
-		t.Fatal(err)
-	}
-	if err := c.SetPodcastFollowed(ctx, show, false); err != nil || c.Follows(show.ID) {
-		t.Errorf("Spotify refused a show followed in MyMusic: %v, follows %v", err, c.Follows(show.ID))
-	}
-}
-
-// TestSpotifyPodcastSignedOut asks the user to sign in to open Spotify's
-// podcasts.
-func TestSpotifyPodcastSignedOut(t *testing.T) {
-	a := &App{spotify: spotify.NewClient(spotify.NewAuth("client"))}
-	if _, err := (&Catalog{a}).Podcast(context.Background(), "sp:s1"); !errors.Is(err, errSpotifyShows) {
-		t.Errorf("Podcast = %v", err)
-	}
-}
-
 // TestSearchPodcastsFails tells why the search found nothing when YouTube
-// Music fails, and Spotify isn't signed in to.
+// Music fails.
 func TestSearchPodcastsFails(t *testing.T) {
 	yt := youtube.New()
 	yt.BaseURL = "http://127.0.0.1:9"
-	a := &App{youtube: yt, spotify: spotify.NewClient(spotify.NewAuth("client"))}
+	a := &App{youtube: yt}
 	res, err := (&Catalog{a}).SearchPodcasts(context.Background(), "daily")
-	if err == nil || len(res.Errors) != 1 || res.YouTube.Podcasts == nil || res.SpotifySignedIn {
+	if err == nil || len(res.Errors) != 1 || res.YouTube.Podcasts == nil {
 		t.Errorf("SearchPodcasts = %+v, %v", res, err)
 	}
 	if res, err := (&Catalog{a}).SearchPodcasts(context.Background(), "  "); err != nil || len(res.Errors) != 0 {

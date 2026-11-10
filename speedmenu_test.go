@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"slices"
 	"strings"
 	"testing"
@@ -214,26 +213,15 @@ func TestSpeedMenuOfEpisode(t *testing.T) {
 	}
 }
 
-// deviceServices are testPlayer's, which play Spotify tracks on the
-// Spotify device.
-type deviceServices struct{ testPlayer }
-
-func (d deviceServices) Prepare(ctx context.Context, t media.Track) (player.Source, error) {
-	if t.Source == media.SourceSpotify {
-		return player.Source{Mode: player.ModeConnect, Track: t}, nil
-	}
-	return d.testPlayer.Prepare(ctx, t)
-}
-
-// TestSpeedButtonOnSpotify dims the speed button while a Spotify device
-// plays the track, which opens no menu, and whose tip tells why, as the
-// mini player's menu does.
-func TestSpeedButtonOnSpotify(t *testing.T) {
-	s := newTestShellWith(t, nil, func(a *app.App) player.Services { return deviceServices{testPlayer{a: a}} }, player.Saved{})
-	s.p.PlayTracks([]media.Track{testTracks[1], testTracks[0]}, 0)
-	s.settle(t, func(st player.State) bool { return st.Source != nil && st.Source.Mode == player.ModeConnect })
+// TestSpeedButtonLive dims the speed button while a live stream plays,
+// which opens no menu, and whose tip tells why, as the mini player's menu
+// does.
+func TestSpeedButtonLive(t *testing.T) {
+	s := newTestShell(t)
+	s.p.PlayTracks([]media.Track{liveRadio, testTracks[0]}, 0)
+	s.settle(t, func(st player.State) bool { return st.Live && st.Playing })
 	tt := tester(t, s)
-	const label = "Speed: Spotify plays this one at its own speed"
+	const label = "Speed: this live stream plays at its own speed"
 	r, ok := tt.Find(label)
 	if !ok {
 		t.Fatalf("the speed button isn't dimmed: %q", tt.Texts())
@@ -257,56 +245,23 @@ func TestSpeedButtonOnSpotify(t *testing.T) {
 
 	mini := ui.NewTester(s.miniView, 420, 132)
 	mini.Frame()
-	if err := mini.RightClick(testTracks[1].Title); err != nil {
+	if err := mini.RightClick(liveRadio.Title); err != nil {
 		t.Fatal(err)
 	}
 	if got := mini.Menu(); !slices.Equal(got, []string{label}) {
 		t.Errorf("the mini player's menu holds %q", got)
 	}
 	if err := mini.ChooseMenuItem(label); err == nil {
-		t.Error("the mini player's menu changes the speed of a Spotify device")
+		t.Error("the mini player's menu changes the speed of a live stream")
 	}
 
-	// The song after it plays in MyMusic, at a speed the button sets.
+	// The song after it plays at a speed the button sets.
 	s.p.Next()
 	s.settle(t, func(st player.State) bool {
-		return st.Index == 1 && st.Source != nil && st.Source.Mode == player.ModeStream
+		return st.Index == 1 && st.Source != nil && !st.Live
 	})
 	tt.Frame()
 	openSpeedMenu(t, s, tt, 1, "speed of songs")
-}
-
-// TestSpeedButtonAhead dims the speed button while a Spotify track waits
-// to play on its device, as one the last run left, unless Spotify tracks
-// play from YouTube Music; and while a live stream plays.
-func TestSpeedButtonAhead(t *testing.T) {
-	s := newTestShellWith(t, nil, func(a *app.App) player.Services { return testPlayer{a: a} }, player.Saved{Tracks: []media.Track{testTracks[1]}})
-	st := s.svc.Preferences.Get()
-	st.SpotifyPlayback = settings.SpotifyPlaybackConnect
-	if _, err := s.svc.Preferences.Set(st); err != nil {
-		t.Fatal(err)
-	}
-	s.refresh()
-	tt := tester(t, s)
-	if _, ok := tt.Find("Speed: Spotify plays this one at its own speed"); !ok {
-		t.Errorf("a Spotify track on its way to the device leaves the button %q", tt.Texts())
-	}
-	st.SpotifyPlayback = settings.SpotifyPlaybackMatch
-	if _, err := s.svc.Preferences.Set(st); err != nil {
-		t.Fatal(err)
-	}
-	s.refresh()
-	tt.Frame()
-	if _, ok := tt.Find("Speed"); !ok {
-		t.Errorf("a Spotify track from YouTube Music leaves the button %q", tt.Texts())
-	}
-
-	s.p.PlayTracks([]media.Track{liveRadio}, 0)
-	s.settle(t, func(st player.State) bool { return st.Live && st.Playing })
-	tt.Frame()
-	if _, ok := tt.Find("Speed: this live stream plays at its own speed"); !ok {
-		t.Errorf("a live stream leaves the button %q", tt.Texts())
-	}
 }
 
 // TestMiniSpeedMenu sets the speed of what plays from the mini player's

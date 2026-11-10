@@ -12,42 +12,14 @@ import (
 
 var (
 	searchPivots = []string{"all", "songs", "videos", "albums", "artists", "playlists", "podcasts"}
-	searchScopes = []string{"both", "Spotify", "YouTube Music"}
+	searchScopes = []string{"everywhere", "YouTube Music"}
 )
 
-// interleave alternates the items of two lists, so both services lead.
-func interleave[T any](a, b []T) []T {
-	out := make([]T, 0, len(a)+len(b))
-	for i := 0; i < max(len(a), len(b)); i++ {
-		if i < len(a) {
-			out = append(out, a[i])
-		}
-		if i < len(b) {
-			out = append(out, b[i])
-		}
-	}
-	return out
-}
+// mergeResults are the results of YouTube Music, which every scope
+// shows: 0 adds this computer's, 1 is YouTube Music alone.
+func mergeResults(r app.SearchResponse, _ int) media.SearchResults { return r.YouTube }
 
-// mergeResults are the results of the services of scope: 0 both, 1
-// Spotify, 2 YouTube Music.
-func mergeResults(r app.SearchResponse, scope int) media.SearchResults {
-	switch scope {
-	case 1:
-		return r.Spotify
-	case 2:
-		return r.YouTube
-	}
-	return media.SearchResults{
-		Tracks:    interleave(r.Spotify.Tracks, r.YouTube.Tracks),
-		Videos:    interleave(r.Spotify.Videos, r.YouTube.Videos),
-		Albums:    interleave(r.Spotify.Albums, r.YouTube.Albums),
-		Artists:   interleave(r.Spotify.Artists, r.YouTube.Artists),
-		Playlists: interleave(r.Spotify.Playlists, r.YouTube.Playlists),
-	}
-}
-
-// searchPage searches both services at once, with the query as the page's
+// searchPage searches YouTube Music and this computer at once, with the query as the page's
 // word; with nothing to search, it shows the recent searches.
 func (s *shell) searchPage(c *ui.Context, q string) {
 	q = strings.TrimSpace(q)
@@ -78,13 +50,6 @@ func (s *shell) searchPage(c *ui.Context, q string) {
 			s.problem(c, res.err, func() { s.forget("search:" + q) })
 			return
 		}
-		if !res.value.SpotifySignedIn && s.searchScope != 2 {
-			ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 16).Children(func() {
-				ui.Text(c, "Searching YouTube Music only. ")
-				s.linkOf(c, "Sign in to Spotify", "/settings/accounts")
-				ui.Text(c, " to search it too.")
-			})
-		}
 		if len(res.value.Errors) > 0 {
 			ui.Text(c, strings.Join(res.value.Errors, " · ")).FontSize(k.smallSize()).TextColor(k.danger).Margin(0, 0, 16)
 		}
@@ -110,9 +75,6 @@ func (s *shell) searchPage(c *ui.Context, q string) {
 				videos = videos[:min(len(videos), 5)]
 			}
 			empty := "No videos match."
-			if s.searchScope == 1 {
-				empty = "Only YouTube Music has videos."
-			}
 			ui.Column(c).Margin(0, 0, 48).Children(func() {
 				s.trackList(c, "video-results", videos, trackListOptions{art: true, plays: true, empty: empty})
 			})
@@ -175,7 +137,7 @@ func (s *shell) recentSearches(c *ui.Context) {
 	s.pageHeader(c, "Search", nil, nil)
 	ui.Column(c).Gap(16).Margin(0, 0, 48).Children(func() {
 		ui.Text(c, k.words("Find anything")).FontSize(k.bigSize()).FontWeight(k.displayWeight()).Font(k.display).TextColor(k.accent)
-		ui.Text(c, "One search looks through YouTube Music and, once you sign in, Spotify.").
+		ui.Text(c, "One search looks through YouTube Music and the music on this computer.").
 			FontSize(k.subtitleSize()).FontWeight(k.leadWeight()).MaxWidth(640)
 		if s.button(c, "start-typing", "start typing", true).Clicked() {
 			s.searchBox.Focus()

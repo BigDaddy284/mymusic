@@ -19,7 +19,7 @@ func TestFollowPodcasts(t *testing.T) {
 		t.Errorf("a new library follows %v", l.Podcasts())
 	}
 	a := media.Podcast{ID: "yt:MPSPa", Title: "A", Episodes: []media.Track{{ID: "yt:e"}}, More: "next"}
-	b := media.Podcast{ID: "sp:b", Title: "B"}
+	b := media.Podcast{ID: "file:b", Title: "B"}
 	for _, p := range []media.Podcast{a, b, a} {
 		if err := l.SetFollowed(p, true); err != nil {
 			t.Fatal(err)

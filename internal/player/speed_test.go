@@ -97,30 +97,6 @@ func TestSpeedChangeApplies(t *testing.T) {
 	}
 }
 
-// TestSpeedNotOnSpotifyDevice plays a Spotify track on a Spotify device at
-// its own speed, whatever the settings say.
-func TestSpeedNotOnSpotifyDevice(t *testing.T) {
-	connectTick, connectAskEvery, connectSettle = 5*time.Millisecond, 10*time.Millisecond, 0
-	t.Cleanup(func() { connectTick, connectAskEvery, connectSettle = time.Second, 3*time.Second, 5*time.Second })
-	h := newHarness(t, Saved{}, atSpeedOf(1.5), func(f *fakeServices) { f.prepare = onDevice })
-	h.p.PlayTracks([]media.Track{spotifyTrack("1"), track("b", "B")}, 0)
-	h.wait("the device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
-	if s := h.p.State(); s.Speed != 1 {
-		t.Errorf("the device plays at %v", s.Speed)
-	}
-	h.setSpeed(2)
-	h.on(func(*Player) {})
-	if s := h.p.State(); s.Speed != 1 || h.stream.count("set speed") != 0 {
-		t.Errorf("the device plays at %v; the stream did %q", s.Speed, h.stream.copy())
-	}
-	// The next track, a stream, plays at the songs' speed.
-	h.p.Next()
-	h.wait("b playing", playing("b"))
-	if s := h.p.State(); s.Speed != 2 || h.stream.lastLoad() != "load url:yt:b 0s true speed 2" {
-		t.Errorf("b plays at %v, loaded %q", s.Speed, h.stream.lastLoad())
-	}
-}
-
 // TestCrossfadeAtSpeed fades over the seconds heard: at 2×, a fade of 5 s
 // starts 10 s of the track before its end.
 func TestCrossfadeAtSpeed(t *testing.T) {

@@ -15,7 +15,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/localfiles"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -175,18 +174,17 @@ func TestFailureReport(t *testing.T) {
 	path := filepath.Join(home, "Music", "Song.mp3")
 	inHome := strings.Replace(path, home, "~", 1)
 	pr := privacyOf(app.AccountsStatus{
-		Spotify: app.SpotifyAccount{Profile: &spotify.Profile{ID: "robin.example", Name: "Robin Example"}},
 		YouTube: app.YouTubeAccount{Account: &youtube.Account{Name: "Robin E.", Handle: "@robinmusic"}},
 		Lastfm:  app.LastfmAccount{Name: "robinlistens"},
 	}, home)
 	at := time.Date(2026, 11, 8, 14, 3, 12, 0, time.FixedZone("", 7*3600))
 	f := player.Failure{
 		At:        at,
-		Track:     media.Track{ID: "spotify:4uLU6hMCjMI75M1A2tKUQC", Source: media.SourceSpotify, Title: "Song", Artists: []media.Ref{{Name: "Artist"}}, Album: &media.Ref{Name: "Album"}},
+		Track:     media.Track{ID: "yt:4uLU6hMCjMI", Source: media.SourceYouTube, Title: "Song", Artists: []media.Ref{{Name: "Artist"}}, Album: &media.Ref{Name: "Album"}},
 		Recording: media.Track{ID: "yt:dQw4w9WgXcQ", Source: media.SourceYouTube, Title: "Song (Official Audio)", Artists: []media.Ref{{Name: "Artist"}}},
 		Steps: []player.Step{
-			{What: "Spotify Connect", Why: "Spotify refused robin.example's request: Authorization: Bearer abc.def", Times: 1},
-			{What: "Spotify in MyMusic", Why: "the player sent Bearer abc.def, api_key=\"k1\"", Times: 1},
+			{What: "the stream, signed in", Why: "YouTube refused Robin E.'s request: Authorization: Bearer abc.def", Times: 1},
+			{What: "the stream, from the cache", Why: "the player sent Bearer abc.def, api_key=\"k1\"", Times: 1},
 			{What: "the stream", Why: "GET https://rr1.googlevideo.com/videoplayback?ip=203.0.113.9&sig=xyz: dial tcp 203.0.113.9:443 and [2001:db8::1]:443 refused, token=abc Cookie: SAPISID=x; SID=y", Times: 1},
 			{What: "the stream, tried again", Why: "the file " + path + " of @robinmusic is gone", Times: 3},
 		},
@@ -195,12 +193,12 @@ func TestFailureReport(t *testing.T) {
 	got := failureReport(f, app.Info{Version: "0.5.11", Platform: "windows", Arch: "amd64"}, pr)
 	want := "MyMusic couldn't play a track\n\n" +
 		"- Track: Song, by Artist, on Album\n" +
-		"- From: Spotify, spotify:4uLU6hMCjMI75M1A2tKUQC\n" +
+		"- From: YouTube Music, yt:4uLU6hMCjMI\n" +
 		"- Played as: Song (Official Audio), by Artist, from YouTube Music, yt:dQw4w9WgXcQ\n" +
 		"- When: 2026-11-08 14:03:12 +07:00\n" +
 		"- What was tried:\n" +
-		"  1. Spotify Connect: Spotify refused (account)'s request: Authorization: (hidden)\n" +
-		"  2. Spotify in MyMusic: the player sent Bearer (hidden), api_key=(hidden)\n" +
+		"  1. The stream, signed in: YouTube refused (account)'s request: Authorization: (hidden)\n" +
+		"  2. The stream, from the cache: the player sent Bearer (hidden), api_key=(hidden)\n" +
 		"  3. The stream: GET https://rr1.googlevideo.com/videoplayback: dial tcp (address) and (address) refused, token=(hidden) Cookie: (hidden)\n" +
 		"  4. The stream, tried again, 3 times: the file " + inHome + " of (account) is gone\n" +
 		"- " + failureStopped + "\n" +

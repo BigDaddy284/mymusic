@@ -15,10 +15,9 @@ import (
 
 func init() { addSettings("accounts", 10, (*shell).accountSettings) }
 
-// accountSettings sign in and out of Spotify, YouTube Music and Last.fm.
+// accountSettings sign in and out of YouTube Music and Last.fm.
 func (s *shell) accountSettings(c *ui.Context) {
 	st := s.accounts()
-	s.spotifyAccount(c, st.Spotify)
 	s.youtubeAccount(c, st.YouTube)
 	s.lastfmAccount(c, st.Lastfm)
 }
@@ -27,11 +26,6 @@ func (s *shell) accountSettings(c *ui.Context) {
 // their forms by: their steps, fields, buttons and hints. Each form shows
 // whole, or not at all.
 const (
-	spotifyHint = "Spotify lets an app in development mode serve up to five accounts added under Users Management, while its owner has Premium. Search shows ten results of each kind, and the tracks of playlists you do not own stay hidden to apps."
-	spotifyForm = "Create an app in the Spotify developer dashboard, with the Web API, signed in with a Spotify account that has Premium. " +
-		"Add this redirect URI to it. In its settings, under Users Management, add your name and the email of the Spotify account you sign in with. " +
-		"Paste the app's Client ID here, and sign in to Spotify. Log in. " + spotifyHint
-
 	youtubeHint    = "YouTube Music needs no account: search, artists, albums, playlists and radios work signed out. Signed in, MyMusic shows your own home feed and library, and saves what you like and follow to YouTube Music. Tracks play as they do signed out: your session never goes to yt-dlp."
 	youtubeSession = "You sign in on Google's own page, in a window of MyMusic: MyMusic never sees your password, and keeps the session encrypted on this computer. YouTube Music does not offer this to apps officially, so it may stop working when YouTube changes."
 	youtubeForm    = "Sign in to YouTube Music. Log in. Google account. " + youtubeHint + " " + youtubeSession
@@ -56,103 +50,6 @@ const (
 		"Paste its API key and shared secret here, and connect. Approve MyMusic on the page that opens in your browser. " +
 		"Connect to Last.fm. Scrobble, scrobbling. Sign in, log in. " + lastfmHint
 )
-
-func (s *shell) spotifyAccount(c *ui.Context, sp app.SpotifyAccount) {
-	s.group(c, "Spotify", func() {
-		if sp.SignedIn && sp.Error == "" {
-			who := "Signed in"
-			if sp.Profile != nil {
-				who = "Signed in as " + sp.Profile.Name
-			}
-			s.row(c, who, "Search, your library and playback of Spotify.", func() {
-				if s.button(c, "spotify-out", "sign out", false).Clicked() {
-					s.signOutOfSpotify()
-				}
-			}, "sign out, log out")
-			return
-		}
-		if sp.Error != "" {
-			s.found(c, "Spotify refused the sign-in", sp.Error, func() {
-				s.alert(c, "Spotify refused the sign-in", sp.Error, nil).Margin(12, 0)
-			})
-		}
-		// The form shows whole, as its button needs its field.
-		s.found(c, "Sign in to Spotify", spotifyForm, func() {
-			if sp.RedirectURI == "" {
-				sp.RedirectURI = s.svc.System.Info().RedirectURI
-			}
-			s.steps(c,
-				func() {
-					ui.Text(c, "Create an app in the ")
-					s.linkOf(c, "Spotify developer dashboard", "https://developer.spotify.com/dashboard")
-					ui.Text(c, ", with the Web API, signed in with a Spotify account that has Premium.")
-				},
-				func() {
-					ui.Text(c, "Add this redirect URI to it: ")
-					ui.Text(c, sp.RedirectURI).Font(monospace())
-					ui.Text(c, " ")
-					if s.linkOf(c, "copy", "").Clicked() {
-						c.WriteClipboard(sp.RedirectURI)
-						s.notes = append(s.notes, notice("Copied the redirect URI"))
-					}
-				},
-				func() {
-					ui.Text(c, "In its settings, under Users Management, add your name and the email of the Spotify account you sign in with.")
-				},
-				func() { ui.Text(c, "Paste the app's Client ID here, and sign in.") },
-			)
-			var clientID *draft
-			s.row(c, "Client ID", "", func() {
-				var in ui.Element
-				in, clientID = s.settingInput(c, "client-id", s.set.SpotifyClientID, func(id string) {
-					s.set.SpotifyClientID = id
-					s.save()
-				})
-				in.Placeholder("32 letters and digits").Width(260).Label("Client ID")
-			})
-			busy := s.signingIn == "spotify"
-			label := "sign in to spotify"
-			if busy {
-				label = "waiting for the browser…"
-			}
-			ui.Row(c).Gap(8).Padding(12, 0).Children(func() {
-				// The Client ID's draft, which its row's control made, unless
-				// the search of the settings left the row out.
-				id := s.set.SpotifyClientID
-				if clientID == nil {
-					clientID = s.drafts["client-id"]
-				}
-				if clientID != nil {
-					id = strings.TrimSpace(clientID.text)
-				}
-				if s.button(c, "spotify-in", label, true).Disabled(busy || id == "").Clicked() {
-					if id != s.set.SpotifyClientID {
-						s.set.SpotifyClientID = id
-						s.save()
-					}
-					s.notes = append(s.notes, notice("Finish signing in in your browser"))
-					s.account("spotify", "Signed in to Spotify", func(ctx context.Context) error {
-						_, err := s.svc.Accounts.SpotifyLogin(ctx)
-						return err
-					})
-				}
-				// A sign-in Spotify refused stays until the user drops it: every
-				// request of Spotify fails meanwhile.
-				if sp.SignedIn && s.button(c, "spotify-out", "sign out", false).Disabled(busy).Clicked() {
-					s.signOutOfSpotify()
-				}
-			})
-			s.hint(c, spotifyHint)
-		})
-	})
-}
-
-// signOutOfSpotify asks, then has MyMusic forget the Spotify sign-in.
-func (s *shell) signOutOfSpotify() {
-	s.ask("sign out of Spotify", "MyMusic forgets your Spotify sign-in.", "sign out", func() {
-		s.account("", "", func(context.Context) error { return s.svc.Accounts.SpotifyLogout() })
-	})
-}
 
 func (s *shell) youtubeAccount(c *ui.Context, yt app.YouTubeAccount) {
 	s.group(c, "YouTube Music", func() {

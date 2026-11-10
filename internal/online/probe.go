@@ -14,10 +14,9 @@ import (
 
 // The addresses Probe asks, and how; tests change them. YouTube's answer
 // 204 with no body, where yt-dlp and YouTube Music ask; a captive portal's
-// page doesn't. Spotify's API answers anything at all.
+// page doesn't.
 var (
 	youtubeProbes = []string{"https://www.youtube.com/generate_204", "https://music.youtube.com/generate_204"}
-	spotifyProbe  = "https://api.spotify.com/v1/"
 	probeClient   = newProbeClient()
 )
 
@@ -36,19 +35,17 @@ func newProbeClient() *http.Client {
 	return c
 }
 
-// Probe asks YouTube and Spotify whether they answer, at once, and returns
-// nil as soon as one does, or why none did.
+// Probe asks YouTube and YouTube Music whether they answer, at once, and
+// returns nil as soon as one does, or why neither did.
 func Probe(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-	n := len(youtubeProbes) + 1
-	answers := make(chan error, n)
+	answers := make(chan error, len(youtubeProbes))
 	for _, u := range youtubeProbes {
-		go func() { answers <- ask(ctx, u, http.StatusNoContent) }()
+		go func() { answers <- ask(ctx, u) }()
 	}
-	go func() { answers <- ask(ctx, spotifyProbe, 0) }()
 	var errs []error
-	for range n {
+	for range youtubeProbes {
 		err := <-answers
 		if err == nil {
 			return nil
@@ -58,9 +55,8 @@ func Probe(ctx context.Context) error {
 	return errors.Join(errs...)
 }
 
-// ask asks u, and returns nil when it answers status, or anything when
-// status is 0.
-func ask(ctx context.Context, u string, status int) error {
+// ask asks u, and returns nil when it answers 204 No Content.
+func ask(ctx context.Context, u string) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u, nil)
 	if err != nil {
 		return err
@@ -70,7 +66,7 @@ func ask(ctx context.Context, u string, status int) error {
 		return err
 	}
 	res.Body.Close()
-	if status != 0 && res.StatusCode != status {
+	if res.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("%s answered HTTP %d", u, res.StatusCode)
 	}
 	return nil

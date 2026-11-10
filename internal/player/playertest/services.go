@@ -19,10 +19,6 @@ func (Services) Prepare(context.Context, media.Track) (player.Source, error) {
 	return player.Source{}, nil
 }
 
-func (Services) PrepareStream(context.Context, media.Track) (player.Source, error) {
-	return player.Source{}, nil
-}
-
 func (Services) StreamFailure(media.Track) string { return "" }
 
 func (Services) RecordPlay(media.Track) {}

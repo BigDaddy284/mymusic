@@ -107,10 +107,10 @@ func testTrack(id, title, artist, album string, source media.Source) media.Track
 
 var testTracks = []media.Track{
 	testTrack("yt:1", "Midnight City", "M83", "Hurry Up, We're Dreaming", media.SourceYouTube),
-	testTrack("spotify:2", "Teardrop", "Massive Attack", "Mezzanine", media.SourceSpotify),
+	testTrack("file:2", "Teardrop", "Massive Attack", "Mezzanine", media.SourceFile),
 	testTrack("yt:3", "Strobe", "deadmau5", "For Lack of a Better Name", media.SourceYouTube),
 	testTrack("yt:4", "Windowlicker", "Aphex Twin", "Windowlicker", media.SourceYouTube),
-	testTrack("spotify:5", "Archangel", "Burial", "Untrue", media.SourceSpotify),
+	testTrack("file:5", "Archangel", "Burial", "Untrue", media.SourceFile),
 	testTrack("yt:6", "Glósóli", "Sigur Rós", "Takk...", media.SourceYouTube),
 }
 
@@ -156,7 +156,7 @@ func newTestShellWith(t testing.TB, set func(o *app.Options), svc func(a *app.Ap
 	// after the player closed and before the folder goes.
 	t.Cleanup(a.Close)
 	stream := &testStream{}
-	p := player.New(svc(a), stream, playertest.Device{}, saved)
+	p := player.New(svc(a), stream, saved)
 	stream.mu.Lock()
 	stream.p = p
 	stream.mu.Unlock()
@@ -228,7 +228,7 @@ func TestRender(t *testing.T) {
 		{Title: "Albums for you", Source: media.SourceYouTube, Items: items},
 	}}
 	s.loads["album:al-1"] = &loaded[media.Album]{done: true, value: album}
-	s.loads["lyrics:spotify:2"] = &loaded[lyrics.Lyrics]{done: true, value: lyrics.Lyrics{Synced: true, Source: "LRCLIB", Lines: []lyrics.Line{
+	s.loads["lyrics:file:2"] = &loaded[lyrics.Lyrics]{done: true, value: lyrics.Lyrics{Synced: true, Source: "LRCLIB", Lines: []lyrics.Line{
 		{TimeMs: 0, Text: "Stones remember every tide"}, {TimeMs: 4000, Text: "Sand keeps the shape of it"},
 		{TimeMs: 9000, Text: "Quiet as the harbour light"}, {TimeMs: 14000, Text: "Slow wind over the pier"},
 		{TimeMs: 19000, Text: "Lifts me, sets me down again"}, {TimeMs: 24000, Text: "Quiet as the harbour light"}}}}
@@ -282,8 +282,7 @@ func TestRender(t *testing.T) {
 	s.panel = ""
 
 	s.loads["search:midnight"] = &loaded[app.SearchResponse]{done: true, value: app.SearchResponse{
-		YouTube: media.SearchResults{Tracks: testTracks[:3], Albums: []media.Album{album}, Artists: []media.Artist{{ID: "ar-m83", Name: "M83", Source: media.SourceYouTube}}},
-		Spotify: media.SearchResults{Tracks: testTracks[3:]}, SpotifySignedIn: true}}
+		YouTube: media.SearchResults{Tracks: testTracks, Albums: []media.Album{album}, Artists: []media.Artist{{ID: "ar-m83", Name: "M83", Source: media.SourceYouTube}}}}}
 	s.navigate(searchPath("midnight"))
 	renderTo(t, s, tt, dir, "search")
 
@@ -312,7 +311,7 @@ func TestRender(t *testing.T) {
 	brokenSettings(t, s, "{\n  \"theme\": \"aurora\",\n}")
 	renderTo(t, s, tt, dir, "settings-desktop-file-problem")
 	// The settings searched: what three sections hold, and nothing.
-	s.navigate(settingsPath("playback", "spotify"))
+	s.navigate(settingsPath("playback", "crossfade"))
 	renderTo(t, s, tall, dir, "settings-find")
 	s.navigate(settingsPath("", "aurora"))
 	renderTo(t, s, tt, dir, "settings-find-theme")

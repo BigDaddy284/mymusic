@@ -6,9 +6,9 @@
 
 <h1 align="center">MyMusic</h1>
 
-<p align="center"><strong>One player for YouTube Music and Spotify.</strong></p>
+<p align="center"><strong>One player for YouTube Music and the music on your computer.</strong></p>
 
-<p align="center">YouTube Music and Spotify client for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
+<p align="center">YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
 
 <p align="center"><sub>MyMusic is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
 
@@ -36,16 +36,16 @@
 
 ## Why MyMusic
 
-If your music is split between YouTube Music and Spotify, you usually need
-two apps, with two searches, two queues and two libraries. MyMusic puts
-both services in one player:
+If your music is split between YouTube Music and files on your computer,
+you usually need two apps, with two searches, two queues and two
+libraries. MyMusic puts both in one player:
 
-- **One search.** It looks through YouTube Music and Spotify at once, and
-  marks each result with the service it comes from.
-- **One queue and one library.** A Spotify track can play right after a
-  YouTube Music one, and a playlist can hold tracks from both.
+- **One search.** It looks through YouTube Music and your own music at
+  once, and marks each result with where it comes from.
+- **One queue and one library.** A file on your computer can play right
+  after a YouTube Music track, and a playlist can hold both.
 - **No account needed.** YouTube Music plays as soon as you open the app.
-  Sign in only if you want your own library. Spotify is optional.
+  Sign in only if you want your own library.
 - **A small program.** MyMusic is one Go program that draws its own
   windows on the GPU. There is no browser inside it to download or keep in
   memory.
@@ -60,12 +60,12 @@ both services in one player:
 
 ### Search and play
 
-- **One search for both services.** Results from YouTube Music and Spotify
-  side by side, each marked with its service. YouTube Music results show
-  how many times each track was played, so the original stands out from
-  covers.
-- **One queue.** Mix tracks of both services, shuffle and repeat across
-  them, and let a radio carry on when the queue runs out.
+- **One search.** Results from YouTube Music and the music on your
+  computer side by side, each marked with where it comes from. YouTube
+  Music results show how many times each track was played, so the original
+  stands out from covers.
+- **One queue.** Mix YouTube Music and your own files, shuffle and repeat
+  across them, and let a radio carry on when the queue runs out.
 - **Explore.** New releases, trending songs, the charts, moods and genres,
   and related songs for what plays.
 - **Synced lyrics** that follow the song, or plain text if you prefer.
@@ -73,24 +73,16 @@ both services in one player:
 
 ### Your library
 
-- **Mixes:** playlists that hold tracks from every service. Import a
-  service's playlist into a mix, and search and sort inside any of them.
-- **Liked songs** from both services in one list.
+- **Mixes:** playlists that hold YouTube Music tracks and your own files.
+  Import a YouTube Music playlist into a mix, and search and sort inside
+  any of them.
+- **Liked songs** from YouTube Music and your computer in one list.
 - **History and listening stats,** day by day.
 - **Your accounts.** Sign in to YouTube Music on Google's own page for your
   home feed, liked songs, playlists, albums and artists, as your account or
-  one of its brand channels. Sign in to Spotify for your library there.
-  Likes, saved albums and playlists, and followed artists reach the service
-  too. What you play joins your YouTube Music history, which its
+  one of its brand channels. Likes, saved albums and playlists, and
+  followed artists reach YouTube Music too. What you play joins your YouTube Music history, which its
   recommendations come from.
-
-### Spotify, three ways
-
-- **In MyMusic itself,** at Spotify's quality, with no Spotify app open
-  (Premium).
-- **On Spotify Connect:** your Spotify app, your phone or a speaker.
-- **From YouTube Music:** MyMusic plays the Spotify track's recording on
-  YouTube Music, which needs no Premium to play.
 
 ### Sound
 
@@ -173,7 +165,7 @@ zip, unpack it anywhere and open `MyMusic.exe`.
 
 - The installer isn't signed yet, so SmartScreen may warn about it:
   choose More info, then Run anyway.
-- Signing in to YouTube Music and playing Spotify in MyMusic need the
+- Signing in to YouTube Music needs the
   WebView2 Runtime, which Windows 11 includes. On Windows 10, install it
   from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
 - MyMusic finds the audio of most YouTube Music tracks itself. For the
@@ -191,10 +183,6 @@ zip, unpack it anywhere and open `MyMusic.exe`.
   Google refuses it, import the session of a browser you signed in with
   (MyMusic reads it with its yt-dlp, and keeps YouTube's cookies alone),
   or paste the Cookie header of a signed-in music.youtube.com tab.
-- **Spotify:** Spotify lets an app serve up to five users, and only while
-  its owner has Premium, so you sign in with a Spotify app of your own. It
-  takes two minutes: [docs/spotify.md](docs/spotify.md) walks you through
-  it.
 - **Last.fm:** create an API account at
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (any name, no callback URL), paste its API key and shared secret in
@@ -226,7 +214,7 @@ bun install
 bun run dev
 ```
 
-Signing in and Spotify playback need the WebView2 Runtime, which Windows 11
+Signing in to YouTube Music needs the WebView2 Runtime, which Windows 11
 includes. On Windows 10, install it from
 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
 
@@ -274,13 +262,12 @@ packages outside `internal/` are for anyone to import, and documented on
                      mini player, the tray, media keys, deep links
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
-internal/player      the queue, played by the audio engine or on Spotify's devices
+internal/player      the queue, played by the audio engine or on a cast device
 internal/audio       MyMusic's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
-internal/spotify     the Spotify Web API, its sign-in and Spotify Connect
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
-internal/match       Spotify tracks matched to their YouTube Music recordings
+internal/match       the songs of YouTube Music's videos
 internal/romaji      Japanese lyrics in romaji, kanji read by kagome
 internal/library     liked and disliked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
@@ -288,7 +275,7 @@ internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins
 builtin/themes       the themes MyMusic ships with
-public/              the page of Spotify's player, on Windows
+public/              the page of the picture of music videos
 sdk/                 the types of the plugin API
 examples/            example themes and plugins
 ```
@@ -338,9 +325,6 @@ talks to:
   through yt-dlp. Signed in, your library there, and, unless you turn it
   off in Settings › Accounts, the tracks you play, which join your YouTube
   Music history.
-- **Spotify,** once you sign in: your library, your Spotify Connect devices,
-  and Spotify's player, loaded from `sdk.scdn.co`, when Spotify plays in
-  MyMusic.
 - **Unison:** the video ID of the track that plays, or, without one, its
   title, artists, album and length, to find its lyrics. Only while you
   turn on translate, or romanize, beside the lyrics, the lyrics of the
@@ -374,10 +358,8 @@ The library's history page clears what you played, Settings › Playback
 clears the cache and the covers, and signing out of a service deletes its
 sign-in.
 
-The visualizer hears the audio of Spotify playing on this computer, in
-MyMusic or in the Spotify app, through Windows' process loopback, which
-hears only that app. It analyzes the audio in memory and never records or
-sends it.
+The visualizer analyzes the audio MyMusic plays in memory, and never
+records or sends it.
 
 ## Credits
 
@@ -458,7 +440,6 @@ derives from SharpJaad, under [its MIT license](aac/LICENSE.sharpjaad), and
 the HCT color science is a port of Material Color Utilities, under
 [its Apache license](internal/hct/LICENSE.material-color-utilities).
 
-MyMusic is not affiliated with, endorsed by or sponsored by Spotify or
-Google. It plays what these services offer their users, through the
-services' own interfaces; use it as their terms allow. Spotify and YouTube
-Music are trademarks of their owners.
+MyMusic is not affiliated with, endorsed by or sponsored by Google. It
+plays what YouTube Music offers its users, through its own interfaces; use
+it as its terms allow. YouTube Music is a trademark of its owner.

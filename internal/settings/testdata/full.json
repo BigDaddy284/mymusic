@@ -43,8 +43,6 @@
       "hidden": true
     }
   ],
-  "spotifyPlayback": "match",
-  "spotifyDevice": "device-1",
   "quality": "saver",
   "crossfade": 6,
   "normalize": true,
@@ -88,7 +86,6 @@
     "/home/me/Music/Albums",
     "/media/me/Records"
   ],
-  "spotifyClientId": "0123456789abcdef",
   "scrobbling": false,
   "youtubeChannel": "112233445566778899",
   "youtubeHistory": false,

@@ -23,7 +23,7 @@ func TestFollowArtists(t *testing.T) {
 	a := media.Artist{ID: "yt:UCa", Source: media.SourceYouTube, Name: "A", Subtitle: "2.1M subscribers",
 		Artwork: []media.Image{{URL: "https://example.com/a.jpg", Width: 120, Height: 120}}, URL: "https://music.youtube.com/channel/UCa",
 		TopTracks: []media.Track{{ID: "yt:t"}}, Albums: []media.Album{{ID: "yt:MPREa"}}, Following: true}
-	b := media.Artist{ID: "sp:b", Source: media.SourceSpotify, Name: "B"}
+	b := media.Artist{ID: "file:b", Source: media.SourceFile, Name: "B"}
 	for _, x := range []media.Artist{a, b, a} {
 		if err := l.SetArtistFollowed(x, true); err != nil {
 			t.Fatal(err)

@@ -1,5 +1,5 @@
-// Package online tells whether the network answers: whether YouTube or
-// Spotify do, as a check over HTTPS tells, or as audio arriving shows. The
+// Package online tells whether the network answers: whether YouTube
+// does, as a check over HTTPS tells, or as audio arriving shows. The
 // system's own word, which counts a network behind a captive portal as
 // online, only has it check again.
 package online

@@ -64,8 +64,8 @@ it when it's at the foot of the screen, one at a time:
   show whole. For a podcast's episode, the chapter that plays, and the
   next.
 - **Output device:** the [output devices](playing-music.md#the-output-device)
-  of your computer, and the [cast devices](casting.md) on your network and
-  your Spotify Connect devices, while the player bar shows their buttons.
+  of your computer, and the [cast devices](casting.md) on your network,
+  while the player bar shows their buttons.
   Click one to play there.
 - **The red warning sign,** after a track couldn't play since the mini
   player opened: why, as its toast's
@@ -207,9 +207,6 @@ it off with **Show what plays on Discord** in Settings › Desktop.
 - Under them, a **preview** shows your status as Discord's card does, of
   what plays, or of a song while nothing does, and follows what you choose
   below it, the lines as you type them.
-- Discord's own Spotify status comes from your Discord account's link to
-  Spotify. To show only MyMusic, turn off "Display Spotify as your status"
-  in Discord's Connections.
 - MyMusic finds Discord's Canary build too.
 
 ### What your Discord status shows
@@ -220,11 +217,11 @@ left, and a pause clears it.
 
 | Row | What it does |
 |---|---|
-| First line, Second line | What the two lines say. Type text and placeholders: `{title}`, `{artist}`, `{album}` and `{service}` (YouTube Music, Spotify or my computer), as `{artist} · {album}`. A placeholder at a line's start or end with nothing to show, as the album of a single, takes the separator beside it along. Anything else in braces shows as typed, and the row says so in red. A line holds 128 characters, as many as Discord shows; an empty one shows nothing. **reset** puts back `{title}` or `{artist}`. |
+| First line, Second line | What the two lines say. Type text and placeholders: `{title}`, `{artist}`, `{album}` and `{service}` (YouTube Music or my computer), as `{artist} · {album}`. A placeholder at a line's start or end with nothing to show, as the album of a single, takes the separator beside it along. Anything else in braces shows as typed, and the row says so in red. A line holds 128 characters, as many as Discord shows; an empty one shows nothing. **reset** puts back `{title}` or `{artist}`. |
 | Cover | The track's cover, where its service has one online. A file on your computer has none Discord can read. On at first. |
-| Service badge | A small round mark at the cover's corner: a green disc for Spotify, a red square for YouTube Music, a record for a file on your computer. Without a cover, the badge takes its place. Off at first. |
+| Service badge | A small round mark at the cover's corner: a red square for YouTube Music, a record for a file on your computer. Without a cover, the badge takes its place. Off at first. |
 | Time left | How long the track has played and how long it has left, as a bar; a live stream, how long it has played. On at first. |
-| Listen button | A **Listen on Spotify** or **Listen on YouTube Music** button that opens the track there. Discord shows it to the others who see your profile, not always to you. A file on your computer has none. Off at first. |
+| Listen button | A **Listen on YouTube Music** button that opens the track there. Discord shows it to the others who see your profile, not always to you. A file on your computer has none. Off at first. |
 | Keep while paused | A paused track stays, marked with a pause badge, whose tip says Paused, and without its time. Off, a pause clears your status, as before. |
 
 Discord reads the badges from MyMusic's GitHub repository, and an
@@ -239,7 +236,7 @@ icon shows it.
 ## Sleep
 
 MyMusic pauses as the computer goes to sleep, and stays paused when it
-wakes, ready where it was. A Spotify Connect device elsewhere plays on.
+wakes, ready where it was.
 
 ## mymusic:// links
 
@@ -253,6 +250,5 @@ track, from a browser or another app:
 | `mymusic://library`, `mymusic://explore`, `mymusic://stats`, `mymusic://settings` | opens that page |
 | `mymusic://play/<track id>` | plays a track |
 
-An ID is MyMusic's own: the service's ID after `yt:` for YouTube Music or
-`sp:` for Spotify. Opening MyMusic a second time, or a link while it runs,
+An ID is MyMusic's own: YouTube Music's ID after `yt:`. Opening MyMusic a second time, or a link while it runs,
 opens the page in the window that's there.

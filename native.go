@@ -239,13 +239,6 @@ type shell struct {
 	deleteID, deleteTitle               string
 	// covering changes the cover of a mix (mixcover.go).
 	covering mixCovering
-	// spotifyLiked are the liked songs on Spotify the library shows: the
-	// first page, of answer spotifyLikedAt of spotifyLikedOf, then those
-	// loaded past it, while loadingMore.
-	spotifyLiked   []media.Track
-	spotifyLikedOf *loaded[app.TrackPage]
-	spotifyLikedAt int
-	loadingMore    bool
 	// keeping holds the pages whose saving or following waits for the
 	// service, by their keys.
 	keeping map[string]bool
@@ -463,8 +456,8 @@ func (s *shell) drain() {
 
 // refresh reads the settings and the add-ons again, and the look they make.
 // It asks for the accounts again too, which show as they were until the
-// answer comes: forgotten, they read as signed out meanwhile, and Spotify
-// blinked out of the pages each time the app told of a change (#50).
+// answer comes: forgotten, they read as signed out meanwhile, and a
+// service blinked out of the pages each time the app told of a change (#50).
 func (s *shell) refresh() {
 	// Before the first, base is the zero value, whose theme no settings
 	// read have.

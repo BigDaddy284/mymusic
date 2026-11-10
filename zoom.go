@@ -19,11 +19,8 @@ import (
 // The room the main window needs at 100%, in DIPs of the window: the rail
 // for all its pages, and the player bar for all its buttons.
 const (
-	roomWidth = 920
-	// roomWidthDevices is the width with Spotify Connect's devices button
-	// in the player bar.
-	roomWidthDevices = 1050
-	roomHeight       = 480
+	roomWidth  = 920
+	roomHeight = 480
 	// roomPerPage is the height each page a plugin adds to the rail takes.
 	roomPerPage = 46
 )
@@ -32,9 +29,6 @@ const (
 // the window.
 func (s *shell) room(w, h float32) float64 {
 	width := float32(roomWidth)
-	if s.set.SpotifyPlayback == settings.SpotifyPlaybackConnect {
-		width = roomWidthDevices
-	}
 	if s.castShown() {
 		width += roomCast
 	}

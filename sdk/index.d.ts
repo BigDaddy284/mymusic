@@ -18,8 +18,8 @@
 // actions, widgets, commands and listeners) is removed for it when it
 // stops, and its timers stop. See docs/plugins.md.
 
-/** A service tracks come from; "local" is a mix made in MyMusic. */
-export type Source = "youtube" | "spotify" | "local";
+/** Where tracks come from; "local" is a mix made in MyMusic, "file" a file on this computer. */
+export type Source = "youtube" | "local" | "file";
 
 export interface Image {
   url: string;
@@ -33,7 +33,7 @@ export interface Ref {
   name: string;
 }
 
-/** A track. Its id starts with its service: "yt:" for YouTube Music, "sp:" for Spotify. */
+/** A track. Its id starts with where it comes from: "yt:" for YouTube Music, "file:" for a file on this computer. */
 export interface Track {
   id: string;
   source: Source;
@@ -113,8 +113,6 @@ export interface SearchResults {
 
 export interface SearchResponse {
   youtube: SearchResults;
-  spotify: SearchResults;
-  spotifySignedIn: boolean;
   errors: string[];
 }
 
@@ -159,7 +157,7 @@ export interface PlayerSnapshot {
   queue: Track[];
   /** The position of the current track in the queue, or -1. */
   index: number;
-  /** The speed the current track plays at, at its own pitch: 1 is its own speed, 1.25 a quarter faster. positionMs and durationMs are the track's own time, which moves on at this speed. Tracks Spotify plays, and live streams, are always at 1. */
+  /** The speed the current track plays at, at its own pitch: 1 is its own speed, 1.25 a quarter faster. positionMs and durationMs are the track's own time, which moves on at this speed. Live streams are always at 1. */
   speed: number;
 }
 
@@ -275,12 +273,12 @@ export interface MyMusicAPI {
     enqueue(tracks: Track[]): void;
     /** Listens to the player; returns the function that stops listening. */
     on(event: PlayerEvent, listener: () => void): () => void;
-    /** The analyser of MyMusic's own player, of fftSize 256: silence while it plays nothing. Spotify's audio, played on a Spotify Connect device, does not reach it. */
+    /** The analyser of MyMusic's own player, of fftSize 256: silence while it plays nothing. */
     analyser(): Analyser;
   };
 
   catalog: {
-    /** Searches YouTube Music, and Spotify when the user signed in. */
+    /** Searches YouTube Music. */
     search(query: string): Promise<SearchResponse>;
     album(id: string): Promise<Album>;
     artist(id: string): Promise<Artist>;
