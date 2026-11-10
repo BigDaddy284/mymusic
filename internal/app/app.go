@@ -108,10 +108,12 @@ type App struct {
 	memory     *diag.MemoryRecorder
 	memoryOnce sync.Once
 
-	settings     *store.File[settings.Settings]
-	library      *library.Library
-	positions    *library.Positions
-	videoStats   *videoStats
+	settings   *store.File[settings.Settings]
+	library    *library.Library
+	positions  *library.Positions
+	videoStats *videoStats
+	// commandHook sees the player's commands first (OnCommand).
+	commandHook  atomic.Pointer[func(PlayerCommand) bool]
 	youtube      *youtube.Client
 	lastfmStore  lastfmStore
 	youtubeStore *youtubeStore

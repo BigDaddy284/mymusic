@@ -235,9 +235,22 @@ func (a *App) startOf(np NowPlaying) bool {
 // command has the player do what the tray, the media keys, the system's
 // media controls or a deep link ask.
 func (a *App) command(cmd PlayerCommand) {
+	if fn := a.commandHook.Load(); fn != nil && (*fn)(cmd) {
+		return
+	}
 	if p := a.goPlayer.Load(); p != nil {
 		a.commandGoPlayer(p, cmd)
 	}
+}
+
+// OnCommand has fn see each command of the tray, the media keys, the
+// system's media controls and the global shortcuts first, until cancel,
+// on any goroutine: a command fn takes, returning true, doesn't reach the
+// player, as the Video side's player takes them while a video plays.
+func (a *App) OnCommand(fn func(PlayerCommand) bool) (cancel func()) {
+	f := &fn
+	a.commandHook.Store(f)
+	return func() { a.commandHook.CompareAndSwap(f, nil) }
 }
 
 // trayTip is the tray's tooltip for what plays. Windows cuts tooltips at

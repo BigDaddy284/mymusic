@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/egoist/mygo"
@@ -184,6 +185,9 @@ type shell struct {
 	// The pages' own state. local are the home page's own shelves, of the
 	// library at localVersion once localBuilt.
 	homeFilter int
+	// videoKeys is set while a video is loaded, which takes the media
+	// keys (videokeys.go).
+	videoKeys atomic.Bool
 	// afterPivots is what a page shows after its header's pivots.
 	afterPivots  func()
 	local        []media.Shelf
@@ -391,6 +395,7 @@ func (s *shell) start() {
 		s.followCast(),
 		s.followOutput(),
 		s.a.OnGlobalShortcut(s.globalPress),
+		s.a.OnCommand(s.videoTakes),
 		s.a.OnFlush(s.keepColors),
 		s.keepColors,
 		// No frame comes while the window is hidden, as in the tray, or

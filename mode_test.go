@@ -152,3 +152,27 @@ func TestVideoOnMusicSide(t *testing.T) {
 		t.Error("the video goes on as music starts")
 	}
 }
+
+// TestVideoTakesMediaKeys gives the media keys to the video while one is
+// loaded, and to the music otherwise.
+func TestVideoTakesMediaKeys(t *testing.T) {
+	s := newTestShell(t)
+	if s.videoTakes(app.PlayerCommand{Command: app.CommandToggle}) {
+		t.Error("the video took Play / Pause with no video")
+	}
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	vp.list = []youtube.Video{{ID: "a"}, {ID: "b"}}
+	vp.current = vp.list[0]
+	s.followWatch()
+	if !s.videoTakes(app.PlayerCommand{Command: app.CommandNext}) {
+		t.Fatal("the video didn't take Next")
+	}
+	if s.videoTakes(app.PlayerCommand{Command: app.CommandLike}) {
+		t.Error("the video took Like")
+	}
+	s.videoCommandOf(app.PlayerCommand{Command: app.CommandNext})
+	if vp.current.ID != "b" {
+		t.Errorf("Next plays %q", vp.current.ID)
+	}
+}

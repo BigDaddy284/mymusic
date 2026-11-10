@@ -843,6 +843,7 @@ func (s *shell) followWatch() {
 	if started && vp.current.ID != "" {
 		s.stopWatching()
 	}
+	s.videoKeys.Store(vp.current.ID != "")
 }
 
 // homeVideo is the tile of Music's home that shows the video that plays,
