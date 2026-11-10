@@ -156,3 +156,34 @@ func (s *shell) followPopScreen() {
 	full := vp.pop.full
 	go win.SetFullScreen(full)
 }
+
+// videoMoreButton is the ⋮ button at the end of the Video player bar: its
+// menu jumps to a chapter, pops the video out, or plays it as audio, and,
+// with fullApp set, fills the window with it.
+func (s *shell) videoMoreButton(c *ui.Context, has, fullApp bool) {
+	vp := &s.videos.player
+	s.iconButton(c, "v-more", "moreVertical", "More", false, 18).Disabled(!has).Menu(func(m *ui.Menu) {
+		s.chaptersMenu(m)
+		if fullApp && m.Item("Full App: fill the window with the video").Disabled(vp.popped()).Chosen() {
+			vp.fullApp = true
+		}
+		pop := "Pop out: watch in a window over your other apps"
+		if vp.popped() {
+			pop = "Bring the video back to this window"
+		}
+		if m.Item(pop).Disabled(vp.casting != nil).Chosen() {
+			if vp.popped() {
+				s.closePopOut()
+			} else {
+				s.popOutVideo()
+			}
+		}
+		if m.Item("Play as audio on the music side").Chosen() {
+			s.playVideoAudio(vp.current)
+		}
+		if m.Item("Copy the link").Chosen() {
+			copyText(youtubeWatchURL(vp.current.ID))
+			s.notes = append(s.notes, notice("Copied the link to "+vp.current.Title))
+		}
+	})
+}

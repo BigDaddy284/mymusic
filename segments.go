@@ -201,20 +201,16 @@ func (s *shell) seekMarks(c *ui.Context, w float32, duration float64) {
 	}
 }
 
-// chaptersButton is the player bar's button whose menu lists the chapters
-// of the video that plays, to jump to one: none shows without chapters.
-func (s *shell) chaptersButton(c *ui.Context, has bool) {
+// chaptersMenu lists the chapters of the video that plays, to jump to
+// one, in the player bar's menu: none shows without chapters.
+func (s *shell) chaptersMenu(m *ui.Menu) {
 	vp := &s.videos.player
 	chapters := s.videoChapters(vp.current.ID)
-	if !has || len(chapters) == 0 {
+	if len(chapters) == 0 {
 		return
 	}
 	now := videoChapterAt(chapters, vp.state.Time)
-	label := "Chapters"
-	if now >= 0 {
-		label = "Chapter: " + chapters[now].Title
-	}
-	s.iconButton(c, "v-chapters", "details", label, false, 18).Menu(func(m *ui.Menu) {
+	m.Submenu("Chapters", func(m *ui.Menu) {
 		for i, ch := range chapters {
 			if m.Item(clock(time.Duration(ch.Start*float64(time.Second))) + "  " + ch.Title).Checked(i == now).Chosen() {
 				s.videoCommand("seek", ch.Start)

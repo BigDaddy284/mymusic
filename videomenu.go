@@ -13,6 +13,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
+	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -23,6 +24,13 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 	}
 	if m.Item("Add to queue").Chosen() {
 		s.queueVideo(v)
+	}
+	if m.Item("Play as audio").Tooltip("Plays its sound on the music side, with the EQ, speed and loudness, and the screen free").Chosen() {
+		s.playVideoAudio(v)
+	}
+	if m.Item("Add to music queue").Chosen() {
+		s.p.PlayNext([]media.Track{v.Track()})
+		s.notes = append(s.notes, notice("Playing "+v.Title+" next on the music side"))
 	}
 	m.Separator()
 	signed := s.svc.Videos.SignedIn()
@@ -224,4 +232,36 @@ func orWord(word, or string) string {
 		return or
 	}
 	return word
+}
+
+// playVideoAudio plays v's sound on the music side, as a track, and stops
+// the video, which played it, from where it was.
+func (s *shell) playVideoAudio(v youtube.Video) {
+	vp := &s.videos.player
+	t := v.Track()
+	at := 0.0
+	if vp.current.ID == v.ID {
+		at = vp.state.Time
+		s.stopWatching()
+	}
+	s.p.PlayTracks([]media.Track{t}, 0)
+	if at > videoResumeAfter {
+		// The track goes on from where the video was, once it loaded: a
+		// track that loads isn't moved.
+		go func() {
+			for range 75 {
+				time.Sleep(200 * time.Millisecond)
+				st := s.p.State()
+				cur, ok := st.Current()
+				if !ok || cur.Track.ID != t.ID {
+					return
+				}
+				if !st.Loading {
+					s.p.Seek(time.Duration(at * float64(time.Second)))
+					return
+				}
+			}
+		}()
+	}
+	s.notes = append(s.notes, notice("Playing "+v.Title+" as audio"))
 }

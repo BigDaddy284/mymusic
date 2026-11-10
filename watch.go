@@ -814,7 +814,7 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 			})
 			s.videoRatingRow(c, vp.current)
 		})
-		ui.Column(c).Grow(1.6).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
+		ui.Column(c).Grow(1.3).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
 			ui.Row(c).Gap(12).Children(func() {
 				if s.iconButton(c, "v-shuffle", "shuffle", "Shuffle", s.set.VideoShuffle, 18).Clicked() {
 					s.set.VideoShuffle = !s.set.VideoShuffle
@@ -868,7 +868,7 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 				ui.Text(c, clock(time.Duration(st.Duration*float64(time.Second)))).FontSize(k.captionSize()).TextColor(k.muted).FontFeatures("tnum").Width(44)
 			})
 		})
-		ui.Row(c).Grow(1).Basis(0).MinWidth(220).Gap(4).Justify(ui.End).Children(func() { s.videoSide(c, has) })
+		ui.Row(c).Grow(1.2).Basis(0).MinWidth(220).Gap(4).Justify(ui.End).Children(func() { s.videoSide(c, has) })
 	})
 }
 
@@ -887,7 +887,6 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		s.set.VideoCaptions = !on
 		s.save()
 	}
-	s.chaptersButton(c, has)
 	if s.iconButton(c, "v-queue", "queue", "Up next", s.panel == "queue", 18).Clicked() {
 		s.togglePanel("queue")
 	}
@@ -904,7 +903,15 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		}
 	})
 	s.videoOutputButton(c, has)
-	ui.Row(c).Gap(4).Width(140).MinWidth(80).Children(func() {
+	// In a narrow window the volume's slider makes room for the buttons
+	// after it: the mute button stays.
+	winW, _ := c.Size()
+	narrow := winW < 1180
+	vol := ui.Row(c).Gap(4).Width(140).MinWidth(80)
+	if narrow {
+		vol.Width(34).MinWidth(34)
+	}
+	vol.Children(func() {
 		name, label := "volume", "Mute"
 		if st.Muted || has && st.Volume == 0 {
 			name, label = "volumeMute", "Unmute"
@@ -922,6 +929,9 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		if !has {
 			vp.volume = 1
 		}
+		if narrow {
+			return
+		}
 		if ui.Slider(c.Key("v-volume"), &vp.volume, 0, 1).Grow(1).MinWidth(0).KeepFocus().Label("Volume").Disabled(!has).Changed() {
 			v := float64(int(vp.volume*100 + 0.5))
 			s.videoCommand("volume", v)
@@ -930,20 +940,11 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 			s.save()
 		}
 	})
-	pop := "Pop out: watch in a small window over your other apps"
-	if vp.popped() {
-		pop = "Bring the video back to this window"
-	}
-	if s.iconButton(c, "v-pop-out", "external", pop, vp.popped(), 18).Disabled(!has || vp.casting != nil).Clicked() {
-		if vp.popped() {
-			s.closePopOut()
-		} else {
-			s.popOutVideo()
-		}
-	}
-	if s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has || vp.popped()).Clicked() {
+	// Narrow, Full App goes in the menu of ⋮.
+	if !narrow && s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has || vp.popped()).Clicked() {
 		vp.fullApp = true
 	}
+	s.videoMoreButton(c, has, narrow)
 }
 
 // videoSpeedLabel writes a speed as YouTube's player does: "Normal", "1.5×".

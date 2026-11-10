@@ -601,3 +601,31 @@ func parseChapters(n node) []Chapter {
 	})
 	return out
 }
+
+// Track is v as a track of the music side, which plays its sound alone:
+// a video someone uploaded, by its channel.
+func (v Video) Track() media.Track {
+	artists := []media.Ref{}
+	if v.Channel != "" {
+		ref := media.Ref{Name: v.Channel}
+		if v.ChannelID != "" {
+			ref.ID = media.ID(media.SourceYouTube, v.ChannelID)
+		}
+		artists = append(artists, ref)
+	}
+	art := v.Thumbnail
+	if len(art) == 0 {
+		art = videoThumbnail(v.ID, node{})
+	}
+	return media.Track{
+		ID:         media.ID(media.SourceYouTube, v.ID),
+		Source:     media.SourceYouTube,
+		Title:      v.Title,
+		Artists:    artists,
+		DurationMs: parseDuration(v.Duration),
+		Artwork:    art,
+		Video:      true,
+		VideoType:  media.VideoUser,
+		URL:        "https://www.youtube.com/watch?v=" + url.QueryEscape(v.ID),
+	}
+}
