@@ -85,7 +85,10 @@ func (s *shell) cardPreview(c *ui.Context, key string, v youtube.Video, list []y
 		return
 	}
 	s.loadPreview(v.ID)
-	if pv.web != nil && pv.playing == v.ID {
+	// The web view shows as soon as it plays the card's video: its page
+	// shows the thumbnail until the video plays, and a web view the window
+	// doesn't show doesn't play.
+	if pv.web != nil && pv.loaded == v.ID {
 		ui.WebView(c.Key(key+"-preview"), pv.web).Absolute().Top(0).Left(0).Size(w, h).Label("Preview: " + v.Title)
 	}
 }
