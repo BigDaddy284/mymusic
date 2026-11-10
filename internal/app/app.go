@@ -20,7 +20,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/artwork"
 	"github.com/bigdaddy284/mymusic/internal/audio"
 	"github.com/bigdaddy284/mymusic/internal/cast"
-	"github.com/bigdaddy284/mymusic/internal/diag"
 	"github.com/bigdaddy284/mymusic/internal/downloads"
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/localfiles"
@@ -103,10 +102,6 @@ type App struct {
 	// lastCrash is the crash report of the run before, until the user
 	// answers about it.
 	lastCrash string
-	// memory records how MyTube uses its memory while the user asks, in
-	// the logs folder (memory.go): made at its first use.
-	memory     *diag.MemoryRecorder
-	memoryOnce sync.Once
 
 	settings   *store.File[settings.Settings]
 	library    *library.Library
@@ -177,10 +172,6 @@ type App struct {
 	miniOpen atomic.Bool
 	// onNavigate shows the pages of the main window.
 	onNavigate *func(target string)
-	// updates keeps the user's choices of updates.
-	updates *store.File[updatePrefs]
-	// checkUpdates has MyTube look for a new version at once.
-	checkUpdates chan struct{}
 	// readingProfiles is set while the accounts' profiles are read in the
 	// background.
 	readingProfiles atomic.Bool
@@ -198,7 +189,6 @@ type App struct {
 	metered atomic.Bool
 
 	mu         sync.Mutex
-	installed  string // the version installed to run at the next start
 	lastfm     *scrobbles
 	youtubeMe  *youtube.Account
 	nowPlaying NowPlaying
@@ -213,11 +203,6 @@ type App struct {
 	// taskbar button, on Windows.
 	taskbar   *taskbar.Bar
 	mediaKeys bool
-	// offer is the new version the main window offers, until the user
-	// answers; putOff the one they put off until putOffUntil.
-	offer       *Release
-	putOff      string
-	putOffUntil time.Time
 	// profileErrs is why the accounts' profiles could not be read, until
 	// they are, or the user signs in or out.
 	profileErrs profileErrors
@@ -252,10 +237,8 @@ func New(opts Options) (*App, error) {
 	if a.videoStats, err = openVideoStats(filepath.Join(opts.DataDir, "video-stats.json")); err != nil {
 		return nil, fmt.Errorf("opening the video stats: %w", err)
 	}
-	if a.updates, err = store.Open(filepath.Join(opts.DataDir, "updater.json"), updatePrefs{}); err != nil {
-		return nil, fmt.Errorf("opening the update preferences: %w", err)
-	}
-	a.checkUpdates = make(chan struct{}, 1)
+	// The update preferences of the versions that looked for updates.
+	removeFile(filepath.Join(opts.DataDir, "updater.json"))
 	// The recordings MyTube 0.x found on YouTube Music for Spotify
 	// tracks.
 	removeFile(filepath.Join(opts.CacheDir, "matches.json"))

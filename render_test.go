@@ -424,17 +424,12 @@ func TestRenderDialogs(t *testing.T) {
 		s.refresh()
 		return s
 	}
-	offer := testOffer
 	for _, size := range []struct {
 		name  string
 		w, h  int
 		scale float64
 	}{{"", 1280, 820, 1}, {"-short", 911, 425, 1.3}, {"-shorter", 640, 360, 1.3}} {
 		s := shell("mix", size.scale)
-		s.offer = &offer
-		renderTo(t, s, testerOf(t, s, size.w, size.h), dir, "dialog-offer"+size.name)
-
-		s = shell("mix", size.scale)
 		s.ask("enable Hello", enableMessage, "enable", func() {})
 		renderTo(t, s, testerOf(t, s, size.w, size.h), dir, "dialog-question"+size.name)
 
@@ -453,7 +448,7 @@ func TestRenderDialogs(t *testing.T) {
 	}
 	for _, theme := range []string{"aurora", "glasshouse", "mochi"} {
 		s := shell(theme, 1)
-		s.offer = &offer
-		renderTo(t, s, testerOf(t, s, 1280, 820), dir, "dialog-offer-"+theme)
+		askLong(s)
+		renderTo(t, s, testerOf(t, s, 1280, 820), dir, "dialog-question-"+theme)
 	}
 }

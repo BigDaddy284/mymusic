@@ -120,22 +120,8 @@ what each of these gets.
 
 ### MyTube itself
 
-- **When it looks.** MyTube asks GitHub for its newest release 10
-  seconds after it starts, then every 6 hours, and when the computer
-  wakes after a check was due. A check that fails is tried again an hour
-  later. Settings › About › Updates has the switches: Check for updates,
-  and Install updates without asking. A development copy, run with
-  `bun run dev`, never looks.
-- **What it offers.** A new version asks to install in a pop-up, unless
-  you chose to install updates without asking. Later asks again at the
-  next start, or after a day; skip this version waits for the version
-  after it.
-- **How it installs.** The installer and the portable zip replace
-  themselves. They download the update file of the release made for
-  their system, or a smaller delta from the version
-  before. Each is signed with MyTube's key, whose public half is built
-  into the app: a file whose signature doesn't match is never installed.
-  The new version runs once MyTube restarts.
+MyTube doesn't look for new versions of itself, or install them: get a
+new one from the releases page when you want it.
 
 ### yt-dlp and the JavaScript runtime
 

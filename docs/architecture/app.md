@@ -1,9 +1,9 @@
 # The app and the desktop
 
 - **`internal/app`** gives the windows the services (`App.Services`), tells
-  them when the settings, the accounts, the add-ons or the updates change
+  them when the settings, the accounts or the add-ons change
   (`App.Watch`), makes the player, and puts MyTube on the desktop: the
-  tray, media keys, global shortcuts, deep links, notifications, updates.
+  tray, media keys, global shortcuts, deep links, notifications.
 - **`internal/nowplaying`** shows what the engine plays in the system's media
   controls, and passes on what they ask: the SystemMediaTransportControls
   of a hidden window, reached through WinRT without cgo. It downloads
@@ -22,13 +22,8 @@
 - **`internal/diag`** writes the log, `mytube.log` in the logs folder,
   rotated at a megabyte and without the cookies, hashes and tokens a line
   may hold, and has Go write a crash to `crash.log` there, which the next
-  start keeps as `crash-<time>.log` and offers to report. Its
-  `MemoryRecorder` records memory use while the user has Settings ›
-  About › Record memory use on (`internal/app`'s `memory.go`, off at each
-  start): a line of `ReadMemory` in `memory.log` each minute, the Go
-  heap's figures and the process's resident size where the system tells
-  it cheaply (`GetProcessMemoryInfo`, with its private bytes), and a heap
-  profile (`WriteHeapProfile`) when asked, and
-  once as the memory passes 1 GB, the newest five kept. Capture mode's
-  `act:memory` and `act:heap` use the same. Report a problem names the
-  files there are (`System.MemoryFiles`).
+  start keeps as `crash-<time>.log` and tells of. Capture mode's
+  `act:memory` logs `ReadMemory`, the Go heap's figures and the
+  process's resident size where the system tells it cheaply
+  (`GetProcessMemoryInfo`), and `act:heap` saves a heap profile
+  (`WriteHeapProfile`).

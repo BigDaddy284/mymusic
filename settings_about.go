@@ -1,53 +1,27 @@
 package main
 
-import (
-	"context"
+import "github.com/egoist/mygo/ui"
 
-	"github.com/egoist/mygo/ui"
-)
-
-// The groups of Settings › About: this copy of MyTube and its licenses
-// here, the updates in desktop.go.
+// The groups of Settings › About: this copy of MyTube and its licenses.
 
 func init() { addSettings("about", 10, (*shell).mytubeSettings) }
 
-// mytubeSettings tell of this copy of MyTube, and of a newer one.
+// mytubeSettings tell of this copy of MyTube, with a button that opens its
+// logs.
 func (s *shell) mytubeSettings(c *ui.Context) {
-	k := &s.lk
 	info := s.svc.System.Info()
-	u := s.svc.System.Updates()
 	s.group(c, "MyTube", func() {
 		version := "MyTube " + info.Version + " · " + info.Platform + " " + info.Arch
-		if build, ok := buildNames[u.Kind]; ok {
+		if build, ok := buildNames[s.svc.System.InstallKind()]; ok {
 			version += " · " + build
 		}
-		s.row(c, "Version", version, func() {})
-		s.releaseRow(c, u)
-		// Its links go under it, as they are many.
-		about := "YouTube Music and the music on your computer in one player, open source under the MIT license or the GNU GPL, version 3. Your data lives in " + info.DataDir + "."
-		s.found(c, "MyTube", about+" source code, contribute, report a problem, a bug, open logs folder", func() {
-			ui.Column(c).Gap(4).Padding(14, 0).Children(func() {
-				ui.Text(c, "MyTube").FontSize(k.bodySize())
-				ui.Text(c, about).FontSize(k.smallSize()).TextColor(k.muted)
-				ui.Row(c).Gap(8).Wrap().Margin(12, 0, 0).Children(func() {
-					const repo = "https://github.com/bigdaddy284/mymusic"
-					if s.button(c, "source", "source code", false).Clicked() {
-						go s.svc.System.OpenExternal(repo)
-					}
-					if s.button(c, "contribute", "contribute", false).Clicked() {
-						go s.svc.System.OpenExternal(repo + "/blob/main/CONTRIBUTING.md")
-					}
-					if s.button(c, "report", "report a problem", false).Clicked() {
-						go func() { _ = s.svc.System.OpenExternal(s.svc.System.ReportURL(context.Background())) }()
-					}
-					if s.button(c, "logs", "open logs folder", false).Clicked() {
-						if err := s.svc.System.OpenLogsFolder(); err != nil {
-							s.notes = append(s.notes, noticeOf(err))
-						}
-					}
-				})
-			})
-		})
+		s.row(c, "Version", version, func() {
+			if s.button(c, "logs", "open logs folder", false).Clicked() {
+				if err := s.svc.System.OpenLogsFolder(); err != nil {
+					s.notes = append(s.notes, noticeOf(err))
+				}
+			}
+		}, "logs folder")
 	})
 }
 

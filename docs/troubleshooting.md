@@ -4,12 +4,8 @@
 MyTube writes what goes wrong to `mytube.log`, without your sign-ins:
 [Settings › About](settings.md#about) › open logs folder shows it, beside
 the reports of any crash, in
-[the logs folder](data-and-privacy.md#the-logs-folder). Settings › About ›
-report a problem opens a new issue on GitHub with your version, system,
-tools, theme and plugins filled in; attach the log after reading it. After
-a crash, MyTube offers to report it the next time it starts.
-
-![Settings › About: the version of MyTube and whether it's the newest, with the Report a problem and Open logs folder buttons under it, and the Updates group below](shots/about.webp)
+[the logs folder](data-and-privacy.md#the-logs-folder). After a crash,
+MyTube tells you of its report the next time it starts.
 
 ## Tracks that fail to play
 
@@ -69,13 +65,6 @@ its **details**. The keyboard reaches **details** in the toast with
   saves its settings in its place. A file that doesn't read as MyTube
   starts is kept the same way, and MyTube starts with the settings of a
   new install: see [Settings](settings.md#when-it-has-a-mistake).
-- **MyTube takes too much memory.** Turn on Settings › About › Record
-  memory use, and use MyTube as when it grew: it writes how it uses its
-  memory to `memory.log` each minute, and saves a heap profile once it
-  passes 1 GB, or when you press save a heap profile. Report a problem
-  then tells of them: attach them to the issue. They hold only how
-  MyTube uses its memory ([the logs folder](data-and-privacy.md#the-logs-folder)).
-  It's off again at the next start.
 
 ## Known issues
 

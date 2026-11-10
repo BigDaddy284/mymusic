@@ -297,11 +297,3 @@ func (a *App) InstallYTDLP(ctx context.Context, progress func(done, total int64)
 	a.downloads.RetryFailed()
 	return a.tools.Status(ctx), nil
 }
-
-// InstallUpdate downloads the newest version, checks its signature and
-// puts it in place of this one, telling progress how far its download
-// went. It returns the version installed, which runs once MyTube
-// restarts.
-func (a *App) InstallUpdate(ctx context.Context, progress func(done, total int64)) (string, error) {
-	return a.installUpdate(ctx, progress)
-}

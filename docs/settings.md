@@ -87,19 +87,10 @@ themes and the plugins' commands. See
 
 | Group | What's there |
 |---|---|
-| MyTube | The **Version**, with the system and how this copy was [installed](getting-started.md#install); whether a newer version is out, with **what's new** and **install** (or its download, for a copy that can't replace itself); the folder your [data](data-and-privacy.md#where-mytube-keeps-its-data) lives in; and **source code**, **contribute**, **report a problem** and **open logs folder** (see [Troubleshooting](troubleshooting.md)). |
-| Memory use | **Record memory use**, for a report of MyTube taking too much memory: while it's on, MyTube writes how it uses its memory to `memory.log` in [the logs folder](data-and-privacy.md#the-logs-folder) each minute, and saves a heap profile there once it passes 1 GB, and **save a heap profile** saves one at once. It's off again at the next start. |
-| [Updates](how-it-works.md#mytube-itself) | **Check for updates**, at start and every few hours, and **Install updates without asking**, which downloads them in the background for the next launch. |
+| MyTube | The **Version**, with the system and how this copy was [installed](getting-started.md#install), the folder your [data](data-and-privacy.md#where-mytube-keeps-its-data) lives in, and **open logs folder** (see [Troubleshooting](troubleshooting.md)). |
 | [Recent playback errors](troubleshooting.md#tracks-that-fail-to-play) | The last 10 tracks that couldn't play since MyTube started, the latest first, with the time and why, each with **details**: what was tried, and **copy**. |
 | Licenses | The licenses of the code and the typefaces MyTube includes, each with **show**: see [License](license.md) and [Credits](credits.md). |
 
-![Settings › About: the MyTube group, with the version, MyTube 0.5.9 · windows amd64 · portable, "This is the newest version" with Check again, where your data lives, its folder covered here, and the Source code, Contribute, Report a problem and Open logs folder buttons; then Updates, with Check for updates on and Install updates without asking off](shots/about.webp)
-
-Without Install updates without asking, a new version asks in a pop-up:
-**install** it, **later**, which asks again at the next start, or **skip
-this version**.
-**report a problem** opens a new issue on GitHub with your version,
-system, theme and plugins filled in.
 
 ## Find a setting by typing
 

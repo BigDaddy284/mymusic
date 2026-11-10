@@ -63,7 +63,6 @@ func (a *App) Start() {
 	if a.applyGlobalShortcuts(false) {
 		notify()
 	}
-	a.watchUpdates()
 	a.watchNetwork()
 	a.watchCast()
 	a.downloads.Start()

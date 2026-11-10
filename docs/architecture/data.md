@@ -7,7 +7,7 @@ Everything lives in the user's data folder (`%AppData%\MyTube`): `settings.json`
 `addons/`, `bin/` (yt-dlp), the YouTube session
 (`youtube-session.bin`, encrypted with a key of the system's credential
 store, which also keeps the Last.fm connection), the
-scrobbles still to send, and `updater.json`, the update preferences. A
+and the scrobbles still to send. A
 secret the Credential Manager can't keep, as in a logon session without
 credentials, is sealed for the user with DPAPI in `lastfm.dpapi` or `youtube-session-key.dpapi`. `secretStore` (`internal/app/secrets.go`) moves a
 secret found in a file into the credential store once it can keep it.

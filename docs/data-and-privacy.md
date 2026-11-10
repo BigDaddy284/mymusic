@@ -42,7 +42,6 @@ an installed copy's data.
   and where it was.
 - `positions.json`: where you left the latest 500 podcast episodes.
 - `lastfm-queue.json`: the scrobbles still to send, as while offline.
-- `updater.json`: your choices of updates.
 - `addons/`: the themes and plugins you installed, and what plugins keep
   in `addons/.storage`.
 - `bin/`: MyTube's own yt-dlp.
@@ -75,16 +74,7 @@ an installed copy's data.
   tokens a line may hold, and the addresses of streams, which carry your
   IP address.
 - `crash-<time>.log`: the report of a crash, the last five kept. The next
-  start offers to report it, in a new GitHub issue that you read and send
-  yourself.
-- `memory.log` and `heap-<time>.pprof`, only while you
-  [record memory use](settings.md#about): a line each minute of how much
-  memory MyTube uses, its Go heap's and the whole app's as the system
-  tells it, and profiles of the Go heap, the last five kept, which tell
-  where in MyTube's code its memory was taken, and how much. They hold
-  only how MyTube uses its memory: nothing of your music, your
-  library or your accounts. Report a problem tells of them, for you to
-  attach.
+  start tells you of it, and offers to open the logs folder.
 
 ### Sign-ins
 
@@ -120,16 +110,12 @@ Where the credential store can't keep a secret:
 | Last.fm, once you connect it | Last.fm | the title, artists, album and length of what you play, and when |
 | Discord, unless you turn it off in Settings › Desktop | the Discord app on your computer | the title, artists, album and cover address of what plays, and its times, as you choose them; with the Listen button, the track's link on its service |
 | Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyTube while you cast |
-| Checks for updates, unless you turn them off in Settings › About | GitHub | a request for the newest release, and its download when you install it |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
 | Knowing whether the network answers | YouTube | a request over HTTPS for an empty answer |
 
 - **Plugins** can send what they like: a plugin's permissions are shown
   to you, not enforced, which is why MyTube asks you to trust a plugin
   before it enables it.
-- **Report a problem**, in Settings › About, opens a new GitHub issue in
-  your browser, with your version, system, tools, theme and plugins
-  filled in. Nothing goes until you send it yourself.
 
 ## What stays on your computer
 

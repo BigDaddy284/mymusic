@@ -102,9 +102,6 @@ libraries. MyTube puts both in one player:
   offline are sent once you are back online.
 - **Discord:** your profile shows what plays, with its artwork and the time
   left.
-- **Updates:** MyTube checks for a new release at start and every few
-  hours, checks its signature, and installs it when you say so, or by
-  itself if you choose.
 
 ### Make it yours
 
@@ -153,11 +150,10 @@ MyTube runs on Windows 10 and 11. Download it from the
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists
 `SHA256SUMS` to check the downloads with. You don't need the files named
-`update-…`, `….delta` or `-windows-<arch>.tar.gz`: installed apps update
-from them.
+`update-…`, `….delta` or `-windows-<arch>.tar.gz`.
 
-The installer and the portable zip update themselves. For the portable
-zip, unpack it anywhere and open `MyTube.exe`.
+MyTube doesn't update itself: download a new release when you want it. For
+the portable zip, unpack it anywhere and open `MyTube.exe`.
 
 ### The first launch
 
@@ -414,9 +410,7 @@ MyTube is built on these projects:
 
 Fixes, features, themes, plugins and bug reports are all welcome.
 
-- **Report a problem** from Settings › About › report a problem. It opens a
-  new GitHub issue with your version, system, theme and plugins filled in.
-  Or [open an issue](https://github.com/bigdaddy284/mymusic/issues/new) yourself.
+- **Report a problem** by [opening an issue](https://github.com/bigdaddy284/mymusic/issues/new).
 - **Send a change** as a pull request. [CONTRIBUTING.md](CONTRIBUTING.md)
   explains the checks to run, the commit style, and the changelog entry
   that a change people will notice needs.

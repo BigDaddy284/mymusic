@@ -328,12 +328,6 @@ type shell struct {
 	// themeCommands choose the themes, made once for the add-ons.
 	plainKeys     []plainKey
 	themeCommands []command
-	// offer is the new version the window offers, until the user answers;
-	// updating is set while it downloads, updated once it is installed.
-	offer                   *app.Release
-	updating                bool
-	updateDone, updateTotal int64
-	updated                 string
 	// The add-on installing, and the plugin whose install the user
 	// confirms.
 	// The downloads: what the pages miss of their collections, the
@@ -513,9 +507,6 @@ func (s *shell) refresh() {
 		s.themeCommands = append(s.themeCommands, command{"theme." + id, "Theme: " + t.Name, "", "themes", func() { s.chooseTheme(id) }})
 	}
 	s.refetch("accounts")
-	if s.offer == nil {
-		s.offer = s.svc.System.UpdateOffer()
-	}
 	s.restyle()
 	s.syncPlugins()
 }
@@ -679,8 +670,9 @@ func (s *shell) promptDialog(c *ui.Context) {
 	}
 }
 
-// offerCrashReport asks, when MyTube crashed the time before, to report
-// it on GitHub; either way, it doesn't ask again.
+// offerCrashReport tells, when MyTube crashed the time before, where its
+// report is, and offers to open the logs folder; either way, it doesn't
+// ask again.
 func (s *shell) offerCrashReport() {
 	report := s.svc.System.LastCrash()
 	if report == "" {
@@ -688,14 +680,11 @@ func (s *shell) offerCrashReport() {
 	}
 	s.asking = &question{
 		title:   "mytube quit unexpectedly",
-		message: "It kept a report of what happened, " + report + ", in its logs folder. Reporting it on GitHub, with that file attached, helps fix it.",
-		ok:      "report it",
+		message: "It kept a report of what happened, " + report + ", in its logs folder.",
+		ok:      "open logs folder",
 		run: func() {
 			s.svc.System.DismissCrash()
-			go func() {
-				_ = s.svc.System.OpenExternal(s.svc.System.ReportURL(context.Background()))
-				_ = s.svc.System.OpenLogsFolder()
-			}()
+			go func() { _ = s.svc.System.OpenLogsFolder() }()
 		},
 		cancel: s.svc.System.DismissCrash,
 	}

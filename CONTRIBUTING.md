@@ -164,7 +164,7 @@ release, and the page reads the latest version from GitHub's API. Once the
 release is published, set the two `data-version` spans to it, for when the
 API does not answer.
 
-Installed apps update themselves from the latest release. Its update files are
+MyTube no longer updates itself, but the release still makes update files,
 signed with the key whose public half is `updates.publicKey` in
 [mygo.config.ts](mygo.config.ts); the secret half is the repository's
 `MYGO_UPDATER_PRIVATE_KEY` secret, which the workflow signs with. Without it, the

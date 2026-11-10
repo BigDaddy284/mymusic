@@ -38,7 +38,7 @@ import (
 // does, act:title logs the window's title, which screenshots leave out,
 // act:nowplaying logs the cover the system's media controls hold,
 // act:memory logs the Go heap and the process's memory, and act:heap
-// saves a profile of the heap, as Record memory use does. Nothing
+// saves a profile of the heap. Nothing
 // plays unless the player is muted, or plays into no device
 // (MYTUBE_SILENT).
 // MYTUBE_CAPTURE_WAIT is how long each page gets, MYTUBE_CAPTURE_SIZE
