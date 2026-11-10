@@ -190,6 +190,12 @@ type shell struct {
 	videoKeys atomic.Bool
 	// afterPivots is what a page shows after its header's pivots.
 	afterPivots func()
+	// musicMiniClosed is the track the user closed the Video side's music
+	// player for (musicmini.go).
+	musicMiniClosed string
+	// autoScroll is the middle-button scrolling of the page shown
+	// (autoscroll.go).
+	autoScroll autoScroll
 	// cardRooms are the widths the rows of cards measured last, by row
 	// (videos.go).
 	cardRooms    map[string]float32

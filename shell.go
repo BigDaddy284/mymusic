@@ -79,6 +79,9 @@ func (s *shell) mainPane(c *ui.Context) {
 		// The video that plays goes on, small, as the Video side's other
 		// pages show (watch.go).
 		s.floatingMini(c)
+		// And the music that plays, as the Video side's pages show
+		// (musicmini.go).
+		s.musicMini(c)
 	})
 }
 
