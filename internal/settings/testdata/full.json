@@ -117,6 +117,5 @@
   },
   "enabledPlugins": [
     "spectrum"
-  ],
-  "registryUrl": "https://example.com/registry.json"
+  ]
 }

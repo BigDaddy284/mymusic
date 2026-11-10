@@ -42,7 +42,7 @@
 - **统一的播放队列和音乐库**：Spotify 的歌曲可以紧接着 YouTube Music 的歌曲播放，一个歌单里也可以同时放两边的歌。
 - **无需账号**：打开应用就能播放 YouTube Music。只有想用自己的音乐库时才需要登录。Spotify 是可选的。
 - **程序小巧**：MyMusic 是一个 Go 程序，用 GPU 自己绘制窗口。它内部不带浏览器，既不用额外下载，也不会让浏览器常驻内存。
-- **随你改造**：自带十个主题，社区还提供更多主题和插件，任何命令都可以设置你自己的快捷键。
+- **随你改造**：自带十个主题，你也可以添加自己的主题和插件，任何命令都可以设置你自己的快捷键。
 - **注重隐私**：MyMusic 没有自己的账号体系、服务器、统计分析或遥测。
 - **免费开源**：可按 MIT 许可证或 GPL 3.0 使用。
 
@@ -89,7 +89,6 @@
 ### 个性化
 
 - **主题**：内置十个主题，效果可以调节；浅色模式和深色模式可以各用一个主题；强调色可以自己选，也可以取自正在播放的歌曲封面。
-- **社区主题和插件**：在市场里一键安装。
 - **插件**：通过带类型的 API 添加页面、命令、歌曲操作和小组件，并按你的主题绘制。
 - **键盘优先**：常用操作都有快捷键；任何命令（包括插件的命令）都可以设置你自己的快捷键；其余操作可以用命令面板（<kbd>Ctrl</kbd> <kbd>K</kbd>）完成。
 - **设置文件**：你的设置保存在数据文件夹中的 `settings.json` 里（`%AppData%\MyMusic`），可以和你的 dotfiles 放在一起管理。在 MyMusic 运行时保存这个文件，改动会立即生效；在 Settings › Desktop › Settings file（设置 › 桌面 › 设置文件）中可以打开它。
@@ -168,8 +167,7 @@ bun run dev
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
-bun run typecheck              # the plugin SDK and the community's plugins
-go run ./tools/registry -check # the community registry
+bun run typecheck              # the plugin SDK and the example plugins
 bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
@@ -200,11 +198,11 @@ internal/library     liked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
-internal/addons      themes and plugins, and the community registry
+internal/addons      themes and plugins
 builtin/themes       the themes MyMusic ships with
 public/              the page of Spotify's player, on Windows
 sdk/                 the types of the plugin API
-community/           community themes and plugins, and their registry
+examples/            example themes and plugins
 ```
 
 可以导入的包：
@@ -219,9 +217,9 @@ lyrics/              synced lyrics from LRCLIB, and the LRC format
 brand/               MyMusic's logo, for code that draws it
 ```
 
-## 社区
+## 主题和插件
 
-任何人都可以从市场（侧边栏中的商店图标）安装社区主题和插件，你也可以添加自己的作品。
+主题和插件从你的附加组件文件夹加载，你也可以自己制作。[docs/addons.md](docs/addons.md) 介绍了如何添加。
 
 ### 制作主题
 
@@ -229,16 +227,7 @@ brand/               MyMusic's logo, for code that draws it
 
 ### 制作插件
 
-插件是用 TypeScript 或 JavaScript 编写的小模块，可以添加页面、命令、歌曲操作和小组件。[docs/plugins.md](docs/plugins.md) 是 API 的文档，还附有供编辑器使用的[类型定义](sdk/index.d.ts)。社区里的 [sleep timer](community/plugins/sleep-timer) 和 [spectrum](community/plugins/spectrum) 都是能直接运行的示例。
-
-### 分享作品
-
-1. Fork 本仓库。
-2. 添加一个文件夹：主题放在 `community/themes/<id>/`，插件放在 `community/plugins/<id>/`，插件还要包含它的 `plugin.json` 和 `index.ts`。
-3. 运行 `bun run build:plugins`、`go run ./tools/registry` 和 `go run ./tools/registry -check`。
-4. 提交一个 pull request。
-
-合并之后，CI 会把它发布到 [registry 分支](https://github.com/bigdaddy284/mymusic/tree/registry)，它就会出现在所有人的市场中。详情见 [community/README.md](community/README.md)。
+插件是用 TypeScript 或 JavaScript 编写的小模块，可以添加页面、命令、歌曲操作和小组件。[docs/plugins.md](docs/plugins.md) 是 API 的文档，还附有供编辑器使用的[类型定义](sdk/index.d.ts)。`examples/` 里的 [sleep timer](examples/plugins/sleep-timer) 和 [spectrum](examples/plugins/spectrum) 都是能直接运行的示例。
 
 ## 隐私
 
@@ -247,7 +236,7 @@ MyMusic 没有自己的账号体系、服务器、统计分析或遥测。它会
 - **YouTube 和 Google**：YouTube Music 的曲库、音频流和每首歌的响度（这些都在未登录状态下请求），以及封面图片；部分音频流通过 yt-dlp 获取。登录后，还有你在那里的音乐库；另外，除非你在 Settings › Accounts（设置 › 账号）中关闭，你播放的歌曲也会发送过去，进入你的 YouTube Music 播放记录。
 - **Spotify**（登录之后）：你的音乐库、你的 Spotify Connect 设备；在 MyMusic 内播放 Spotify 时，还有从 `sdk.scdn.co` 加载的 Spotify 播放器。
 - **LRCLIB**：正在播放的歌曲的标题、艺人、专辑和时长，用来查找歌词。
-- **GitHub**：启动时以及之后每隔几小时检查一次新版本，可以在 Settings › About（设置 › 关于）中关闭；打开市场时获取社区注册表；以及下载 yt-dlp。
+- **GitHub**：启动时以及之后每隔几小时检查一次新版本，可以在 Settings › About（设置 › 关于）中关闭；以及下载 yt-dlp。
 - **Last.fm**（连接之后）：你播放的内容。
 - **Discord**（除非你关闭）：正在播放的内容，发送给你电脑上的 Discord 应用，由它显示在你的个人资料上。
 
@@ -288,7 +277,6 @@ MyMusic 基于以下项目构建：
 
 - **报告问题**：在 Settings › About › report a problem（设置 › 关于 › 报告问题）中报告。它会新建一个 GitHub issue，并自动填好你的版本、系统、主题和插件。你也可以自己[新建 issue](https://github.com/bigdaddy284/mymusic/issues/new)。
 - **提交改动**：以 pull request 的形式提交。[CONTRIBUTING.md](CONTRIBUTING.md) 说明了需要运行的检查、提交信息的风格，以及用户能感知到的改动需要附带的更新日志条目。
-- **分享主题或插件**：见[社区](#社区)。
 
 [CONTRIBUTORS.md](CONTRIBUTORS.md) 列出了以代码、想法和问题报告帮助塑造 MyMusic 的人，感谢他们。
 

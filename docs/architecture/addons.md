@@ -1,8 +1,8 @@
 # Add-ons
 
 - **`internal/addons`** validates theme and plugin manifests, lists the
-  built-in and installed add-ons, and installs add-ons from the community
-  registry.
+  built-in add-ons and those of the user's add-ons folders, and removes
+  the user's.
 - **`internal/colorfile`** reads the colours of pywal's `colors.json`,
   matugen's JSON, MyMusic's matugen template and a `theme.json`, telling
   them apart by what they hold; `internal/app/colorfile.go` follows the

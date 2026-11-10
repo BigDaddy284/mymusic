@@ -1202,12 +1202,12 @@ func TestActionToasts(t *testing.T) {
 	s := newTestShell(t)
 	tt := tester(t, s)
 	ran := false
-	s.actionToasts = append(s.actionToasts, actionToast{message: "Installed Neon Nights", action: "use it", run: func() { ran = true }})
+	s.actionToasts = append(s.actionToasts, actionToast{message: "Disliked Neon Nights", action: "undo", run: func() { ran = true }})
 	tt.Frame()
-	if !tt.HasText("Installed Neon Nights") {
+	if !tt.HasText("Disliked Neon Nights") {
 		t.Fatalf("no toast: %q", tt.Texts())
 	}
-	click(t, s, tt, "use it")
+	click(t, s, tt, "undo")
 	if !ran {
 		t.Error("the toast's action didn't run")
 	}

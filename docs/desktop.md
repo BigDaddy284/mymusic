@@ -250,7 +250,7 @@ track, from a browser or another app:
 |---|---|
 | `mymusic://search?q=lofi+piano` | searches for "lofi piano" |
 | `mymusic://album/<id>`, `mymusic://artist/<id>`, `mymusic://playlist/<id>` | opens an album, an artist or a playlist |
-| `mymusic://library`, `mymusic://explore`, `mymusic://stats`, `mymusic://marketplace`, `mymusic://settings` | opens that page |
+| `mymusic://library`, `mymusic://explore`, `mymusic://stats`, `mymusic://settings` | opens that page |
 | `mymusic://play/<track id>` | plays a track |
 
 An ID is MyMusic's own: the service's ID after `yt:` for YouTube Music or

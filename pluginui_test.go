@@ -12,14 +12,14 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/plugins"
 )
 
-// withCommunityPlugins installs the community's plugins in the shell's app
+// withExamplePlugins installs the example plugins in the shell's app
 // and runs them, as the main window does. They run as the JavaScript their
 // TypeScript compiles to, which `bun run build:plugins` writes: without
 // it, the test skips, but fails in CI, which builds it first.
-func withCommunityPlugins(t *testing.T, s *shell, ids ...string) {
+func withExamplePlugins(t *testing.T, s *shell, ids ...string) {
 	t.Helper()
 	for _, id := range ids {
-		src := filepath.Join("community", "plugins", id)
+		src := filepath.Join("examples", "plugins", id)
 		if _, err := os.Stat(filepath.Join(src, "index.js")); err != nil {
 			if os.Getenv("CI") != "" {
 				t.Fatalf("the %s plugin isn't compiled: CI runs bun run build:plugins before the tests", id)
@@ -75,7 +75,7 @@ func until(t *testing.T, s *shell, tt *ui.Tester, what string, ok func() bool) {
 
 func TestSleepTimer(t *testing.T) {
 	s := newTestShell(t)
-	withCommunityPlugins(t, s, "sleep-timer")
+	withExamplePlugins(t, s, "sleep-timer")
 	tt := tester(t, s)
 	until(t, s, tt, "the sidebar item", func() bool { return tt.HasText("sleep timer") })
 	click(t, s, tt, "sleep timer")
@@ -115,7 +115,7 @@ func TestSleepTimer(t *testing.T) {
 
 func TestSpectrum(t *testing.T) {
 	s := newTestShell(t)
-	withCommunityPlugins(t, s, "spectrum")
+	withExamplePlugins(t, s, "spectrum")
 	s.p.PlayTracks(testTracks, 0)
 	s.settle(t, func(st player.State) bool { return st.Playing })
 	// The widget is under the lyrics, below the fold of a window of the
@@ -134,7 +134,7 @@ func TestSpectrum(t *testing.T) {
 	}
 }
 
-// TestRenderPlugins draws the community plugins to MYMUSIC_RENDER, for a
+// TestRenderPlugins draws the example plugins to MYMUSIC_RENDER, for a
 // look.
 func TestRenderPlugins(t *testing.T) {
 	dir := os.Getenv("MYMUSIC_RENDER")
@@ -142,7 +142,7 @@ func TestRenderPlugins(t *testing.T) {
 		t.Skip("MYMUSIC_RENDER names no folder")
 	}
 	s := newTestShell(t)
-	withCommunityPlugins(t, s, "sleep-timer", "spectrum")
+	withExamplePlugins(t, s, "sleep-timer", "spectrum")
 	s.p.PlayTracks(testTracks, 0)
 	s.settle(t, func(st player.State) bool { return st.Playing })
 	tt := tester(t, s)

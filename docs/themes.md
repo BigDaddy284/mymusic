@@ -7,17 +7,17 @@ draws everything with them. A theme is a folder:
 ```
 my-theme/
 ├── theme.json   the manifest: colors, fonts, radius
-└── preview.png  optional: an image for the marketplace
+└── preview.png  optional: an image of the theme
 ```
 
 ## Make one
 
 1. In Settings › Appearance, choose **open themes folder**.
 2. Copy a theme there, for example
-   [community/themes/paper-mint](../community/themes/paper-mint), into a folder
+   [examples/themes/paper-mint](../examples/themes/paper-mint), into a folder
    named after its new `id`.
 3. Change `id`, `name` and `author`, then the colors.
-4. Run **[Reload add-ons](marketplace.md#reload-add-ons)** from the command
+4. Run **[Reload add-ons](addons.md#reload-add-ons)** from the command
    palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) and pick the theme in
    [Settings › Appearance](look-and-feel.md#themes). Themes that fail to load
    are listed there, with the reason.
@@ -71,8 +71,8 @@ Every change to `theme.json` shows after a reload.
 | `colors` | every color below, as `#rgb`, `#rrggbb`, `#rrggbbaa`, `rgb()`, `rgba()`, `hsl()`, `oklch()` or `transparent` |
 | `fonts` | font-family lists, of which MyMusic uses the first the computer has: `body` for text, `display` for titles and the large lowercase words (the body's when left out) |
 | `radius` | the corner radius of tiles and cards in the Tiles layout, as `12px`; smaller things round by 60% of it |
-| `preview` | an image of the theme, for the marketplace |
-| `files` | every file of the theme: the registry installs exactly these |
+| `preview` | an image of the theme |
+| `files` | every file of the theme |
 
 ### Colors
 
@@ -309,9 +309,3 @@ all but the primary: then it falls between the first two.
 - pywal 3.3.0 on Windows writes the wallpaper's path into `colors.json`
   without escaping its backslashes, which isn't valid JSON. MyMusic reads
   the colours from it anyway.
-
-## Share it
-
-Themes in [community/themes](../community/themes) can be installed by everyone
-from the [marketplace](marketplace.md#install-a-theme).
-[community/README.md](../community/README.md) tells how to add yours.

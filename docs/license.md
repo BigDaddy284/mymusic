@@ -34,7 +34,7 @@ typefaces and the code it ports, keep licences of their own, listed below.
   MyMusic's decoders in a program of your own. The GPL fits a program
   that is under the GPL itself.
 - **Contributions** are accepted under both licences, so that the whole of
-  MyMusic stays under both. That includes the community's themes and
+  MyMusic stays under both. That includes the example themes and
   plugins: opening a pull request for one agrees to it.
 
 The Go packages anyone can import, `opus`, `aac`, `ac3`, `webm`, `mp4`,

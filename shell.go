@@ -110,10 +110,6 @@ func (s *shell) page(c *ui.Context, r *ui.Route) {
 		s.statsPage(c)
 	case r.Match("/plugin/{plugin}/{page}"):
 		s.pluginPage(c, "/plugin/"+r.Param("plugin")+"/"+r.Param("page"))
-	case r.Match("/marketplace"):
-		s.marketplacePage(c, "")
-	case r.Match("/marketplace/{tab}"):
-		s.marketplacePage(c, r.Param("tab"))
 	default:
 		s.lost(c, "This page isn't one of MyMusic's.")
 	}
@@ -154,8 +150,8 @@ func (s *shell) toasts(c *ui.Context) {
 	s.actionToasts = s.actionToasts[:0]
 }
 
-// actionToast is a toast with an action, as "use it" once a theme
-// installed.
+// actionToast is a toast with an action, as "undo" once a track is
+// disliked.
 type actionToast struct {
 	message, action string
 	run             func()

@@ -219,16 +219,12 @@ func TestSettingsFileFollows(t *testing.T) {
 	if s.panel != "queue" {
 		t.Fatalf("the panel is %q", s.panel)
 	}
-	s.loads["registry"] = &loaded[int]{done: true}
 	toolsBefore := &loaded[tools.Status]{done: true, asks: 1}
 	s.loads["tools"] = toolsBefore
-	editSettings(t, s, `{"panel": "lyrics", "registryUrl": "https://example.com/registry.json", "ytdlpPath": "/opt/yt-dlp", "zoom": 1.25}`)
+	editSettings(t, s, `{"panel": "lyrics", "ytdlpPath": "/opt/yt-dlp", "zoom": 1.25}`)
 	s.refresh()
 	if s.panel != "lyrics" {
 		t.Errorf("the panel is %q", s.panel)
-	}
-	if _, ok := s.loads["registry"]; ok {
-		t.Error("the marketplace keeps the former registry")
 	}
 	// The tools are asked again, and stay shown until the answer comes.
 	if l, _ := s.loads["tools"].(*loaded[tools.Status]); l != toolsBefore || !l.again && l.asks == 1 {

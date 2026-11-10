@@ -24,7 +24,7 @@ How MyMusic looks; [Look and feel](look-and-feel.md) tells all of it.
 | Group | What's there |
 |---|---|
 | [Layout](look-and-feel.md#layouts) | Blend, Expressive, Crate or Tiles. |
-| [Theme](look-and-feel.md#themes) | **Follow the computer**, with **In light mode** and **In dark mode**; a card for each theme; **get more themes**, which opens the marketplace, and **open themes folder**. Themes that didn't load are listed with the reason. |
+| [Theme](look-and-feel.md#themes) | **Follow the computer**, with **In light mode** and **In dark mode**; a card for each theme, and **open themes folder**. Themes that didn't load are listed with the reason. |
 | [*Theme* options](look-and-feel.md#theme-options) | The options of a built-in theme that has some, as Aurora's drifting lights and glass blur. |
 | Colour and type | **[Colours from a file](look-and-feel.md#colours-from-a-file)** (pywal, matugen or a file of your own) and its **Colour file**, **[Follow the artwork](look-and-feel.md#the-accent-and-the-artwork)**, **Accent colour**, **[Zoom](look-and-feel.md#density-text-size-and-zoom)**, **Text size**, **Density**, **Icons only in the sidebar** and **Wavy progress bar**. |
 
@@ -56,10 +56,10 @@ YouTube Music history, and the switch that pauses scrobbling.
 ### Plugins
 
 **Installed plugins**: each plugin you have, with what it is, who made it,
-a switch that enables it, and a button that removes it. **get plugins**
-opens the marketplace, **open plugins folder** opens the folder of your
-own, and **reload** finds them again. Plugins that didn't load are listed
-with the reason. [Marketplace](marketplace.md) tells more.
+a switch that enables it, and a button that removes it. **open plugins
+folder** opens the folder of your own, and **reload** finds them again.
+Plugins that didn't load are listed with the reason.
+[Themes and plugins](addons.md) tells more.
 
 ### Desktop
 
@@ -180,7 +180,7 @@ settings.json**. Meanwhile:
 <kbd>Ctrl</kbd> <kbd>K</kbd> opens the
 command palette, which lists every command: MyMusic's, a "Theme:" command
 for each [theme](look-and-feel.md#themes), and those of your
-[plugins](marketplace.md#what-a-plugin-can-do), each with its group and its
+[plugins](addons.md#what-a-plugin-can-do), each with its group and its
 keys.
 
 - Type to keep the commands whose name or group holds what you typed.
@@ -202,7 +202,7 @@ and forward arrows. It's in the command palette too.
   in the button meanwhile. If the refresh fails, as offline, the page keeps
   what it showed, and a toast says why.
 - Home, searches, albums, artists, playlists, Explore, your Spotify and
-  YouTube Music libraries, the lyrics, the marketplace and Settings' checks
+  YouTube Music libraries, the lyrics and Settings' checks
   refresh. Plugins' pages and widgets render again.
 - A playlist, an album or a mix you downloaded downloads the
   [songs added to it since](library.md#songs-added-later), as you refresh
@@ -266,7 +266,6 @@ while you're not typing in a text field. The ID is the command's name in
 | Downloads | none | `go.downloads` |
 | On this computer | none | `go.computer` |
 | Stats | none | `go.stats` |
-| Marketplace | none | `go.marketplace` |
 | Search the settings | none | `go.settingsSearch` |
 
 ### View

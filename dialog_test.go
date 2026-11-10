@@ -8,7 +8,6 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/bigdaddy284/mymusic/internal/addons"
 	"github.com/bigdaddy284/mymusic/internal/app"
 	"github.com/bigdaddy284/mymusic/internal/player"
 )
@@ -234,18 +233,6 @@ func dialogCases(s *shell) []dialogCase {
 			// The page's button is reset too: Enter presses the dialog's,
 			// which has the focus.
 			done: func(s *shell, _ *ui.Tester) bool { return s.svc.Preferences.Get().Autoplay }, last: "Put back"},
-		{name: "install plugin", title: "install An Ambient Visualiser For Late Night Listening", buttons: []string{"cancel", "install"},
-			open: func(t *testing.T, s *shell, tt *ui.Tester) {
-				s.loads["registry"] = &loaded[addons.Registry]{done: true}
-				show(s, tt, "/marketplace/plugins")
-				s.pluginToInstall = addons.Entry{ID: "ambient", Name: "An Ambient Visualiser For Late Night Listening",
-					Permissions: []string{"network", "notifications", "storage", "playback"}}
-				s.confirmingPlugin = true
-			},
-			// The install starts, and soon fails without the network.
-			press: "install", done: func(s *shell, tt *ui.Tester) bool {
-				return !s.confirmingPlugin && (s.installingAddon == "ambient" || tt.HasText("fetching the registry"))
-			}, last: "Plugins can"},
 	}
 }
 

@@ -50,8 +50,8 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 - **Program kecil.** MyMusic adalah satu program Go yang menggambar
   jendelanya sendiri di GPU. Tidak ada browser di dalamnya yang harus
   diunduh atau ditampung di memori.
-- **Bebas diubah.** Ada sepuluh tema bawaan, komunitas menambahkan tema dan
-  plugin lainnya, dan setiap perintah bisa diberi tombol pilihan Anda
+- **Bebas diubah.** Ada sepuluh tema bawaan, Anda bisa menambahkan tema dan
+  plugin sendiri, dan setiap perintah bisa diberi tombol pilihan Anda
   sendiri.
 - **Privat.** MyMusic tidak punya akun, server, analitik, atau telemetri
   sendiri.
@@ -123,7 +123,6 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 - **Tema.** Sepuluh tema bawaan dengan efek yang bisa diatur, satu tema
   untuk mode terang dan satu untuk mode gelap, serta warna aksen pilihan
   Anda sendiri atau yang diambil dari sampul lagu yang sedang diputar.
-- **Tema dan plugin komunitas,** cukup sekali klik di marketplace.
 - **Plugin** menambahkan halaman, perintah, aksi lagu, dan widget lewat API
   bertipe, dan semuanya tampil dengan tema Anda.
 - **Mengutamakan keyboard.** Pintasan untuk semua hal yang umum, tombol
@@ -248,8 +247,7 @@ terpasang, dengan nama `MyMusic Dev`.
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
-bun run typecheck              # the plugin SDK and the community's plugins
-go run ./tools/registry -check # the community registry
+bun run typecheck              # the plugin SDK and the example plugins
 bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
@@ -289,11 +287,11 @@ internal/library     liked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
-internal/addons      themes and plugins, and the community registry
+internal/addons      themes and plugins
 builtin/themes       the themes MyMusic ships with
 public/              the page of Spotify's player, on Windows
 sdk/                 the types of the plugin API
-community/           community themes and plugins, and their registry
+examples/            example themes and plugins
 ```
 
 Package yang bisa Anda impor:
@@ -308,10 +306,10 @@ lyrics/              synced lyrics from LRCLIB, and the LRC format
 brand/               MyMusic's logo, for code that draws it
 ```
 
-## Komunitas
+## Tema dan plugin
 
-Siapa pun bisa memasang tema dan plugin komunitas dari marketplace (ikon
-toko di sidebar), dan Anda juga bisa menambahkan karya Anda sendiri.
+Tema dan plugin dimuat dari folder add-on Anda, dan Anda bisa membuatnya
+sendiri. [docs/addons.md](docs/addons.md) menjelaskan cara menambahkannya.
 
 ### Membuat tema
 
@@ -327,25 +325,10 @@ Settings › Appearance.
 Plugin adalah modul kecil, ditulis dalam TypeScript atau JavaScript, yang
 menambahkan halaman, perintah, aksi lagu, dan widget.
 [docs/plugins.md](docs/plugins.md) mendokumentasikan API-nya, beserta
-[definisi tipenya](sdk/index.d.ts) untuk editor Anda. Plugin komunitas
-[sleep timer](community/plugins/sleep-timer) dan
-[spectrum](community/plugins/spectrum) adalah contoh yang benar-benar
+[definisi tipenya](sdk/index.d.ts) untuk editor Anda. Plugin
+[sleep timer](examples/plugins/sleep-timer) dan
+[spectrum](examples/plugins/spectrum) di `examples/` adalah contoh yang benar-benar
 berfungsi.
-
-### Bagikan
-
-1. Fork repositori ini.
-2. Tambahkan satu folder: `community/themes/<id>/` untuk tema, atau
-   `community/plugins/<id>/` untuk plugin, lengkap dengan `plugin.json` dan
-   `index.ts`.
-3. Jalankan `bun run build:plugins`, `go run ./tools/registry`, dan
-   `go run ./tools/registry -check`.
-4. Buka pull request.
-
-Setelah digabungkan, CI akan menerbitkannya ke
-[branch registry](https://github.com/bigdaddy284/mymusic/tree/registry), dan
-karya Anda akan muncul di marketplace semua orang. Detailnya ada di
-[community/README.md](community/README.md).
 
 ## Privasi
 
@@ -364,8 +347,7 @@ MyMusic berkomunikasi dengan:
   untuk mencari liriknya.
 - **GitHub:** pemeriksaan versi baru saat aplikasi dibuka dan setiap
   beberapa jam, yang bisa Anda matikan di Settings › About (Pengaturan ›
-  Tentang); registry komunitas saat Anda membuka marketplace; dan unduhan
-  yt-dlp.
+  Tentang); dan unduhan yt-dlp.
 - **Last.fm,** setelah Anda menghubungkannya: lagu yang Anda putar.
 - **Discord,** kecuali Anda mematikannya: lagu yang sedang diputar, dikirim
   ke aplikasi Discord di komputer Anda, yang kemudian menampilkannya di
@@ -447,7 +429,6 @@ senang hati.
   [CONTRIBUTING.md](CONTRIBUTING.md) menjelaskan pemeriksaan yang perlu
   dijalankan, gaya commit, dan entri changelog yang diperlukan untuk
   perubahan yang akan disadari pengguna.
-- **Bagikan tema atau plugin:** lihat [Komunitas](#komunitas).
 
 [CONTRIBUTORS.md](CONTRIBUTORS.md) berterima kasih kepada orang-orang yang
 kode, ide, dan laporannya ikut membentuk MyMusic.
