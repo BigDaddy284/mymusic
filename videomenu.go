@@ -75,7 +75,7 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 		Tooltip("YouTube shows this for videos of your home feed").Chosen() {
 		s.videoFeedback(v, v.Feedback.NoChannel, true)
 	}
-	if m.Item("Block "+orWord(v.Channel, "the channel")).Disabled(v.Channel == "").
+	if m.Item("Block " + orWord(v.Channel, "the channel")).Disabled(v.Channel == "").
 		Tooltip("Keeps its videos off every page: Settings › Videos lists them").Chosen() {
 		s.blockChannel(v)
 	}

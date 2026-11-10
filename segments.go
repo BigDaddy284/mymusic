@@ -197,7 +197,7 @@ func (s *shell) seekMarks(c *ui.Context, w float32, duration float64) {
 		if ch.Start <= 0 {
 			continue
 		}
-		ui.Box(c.Key("seek-chapter-"+count(i))).Absolute().Left(x(ch.Start) - 1).Top(top - 1).Size(2, 5).Background(s.lk.muted)
+		ui.Box(c.Key("seek-chapter-"+count(i))).Absolute().Left(x(ch.Start)-1).Top(top-1).Size(2, 5).Background(s.lk.muted)
 	}
 }
 

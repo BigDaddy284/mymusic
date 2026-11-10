@@ -63,7 +63,9 @@ func (s *shell) videoChannelPage(c *ui.Context, id, tab string) {
 	if playlists {
 		key += ":playlists"
 	}
-	res := fetch(s, key, func(ctx context.Context) (youtube.VideoChannel, error) { return s.svc.Videos.Channel(ctx, id, playlists) })
+	res := fetch(s, key, func(ctx context.Context) (youtube.VideoChannel, error) {
+		return s.svc.Videos.Channel(ctx, id, playlists)
+	})
 	name := vs.channelNames[id]
 	if res.done && res.err == nil && res.value.Name != "" {
 		name = res.value.Name
