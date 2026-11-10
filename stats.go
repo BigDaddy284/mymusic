@@ -19,6 +19,10 @@ var statsRanges = []struct {
 // statsPage shows what the user listened to: artists rank as circles on
 // one fixed size ramp, and each service's share shows as two rings.
 func (s *shell) statsPage(c *ui.Context) {
+	if s.mode.video {
+		s.videoStatsPage(c)
+		return
+	}
 	k := &s.lk
 	labels := make([]string, len(statsRanges))
 	for i, r := range statsRanges {
@@ -49,7 +53,7 @@ func (s *shell) statsPage(c *ui.Context) {
 			ui.Span{Text: fmt.Sprintf("%d from this computer", st.Computer), Size: size, Weight: 300, Color: k.accent},
 			ui.Span{Text: ".", Size: size, Weight: 300},
 		).MaxWidth(760).Margin(0, 0, 48)
-		s.dayChart(c, st.Daily)
+		s.dayChart(c, st.Daily, "listened")
 		ui.Row(c).Gap(48).Wrap().AlignItems(ui.Start).Margin(0, 0, 48).Children(func() {
 			ui.Column(c).Width(320).Children(func() {
 				s.sectionTitle(c, "The mix")
@@ -110,11 +114,11 @@ func describeDay(d library.DayPlays) string {
 	return fmt.Sprintf("%s: %d min, %s", dayLabel(d.Date), d.Minutes, plural(d.Plays, "play"))
 }
 
-// dayChart draws the minutes listened each day as columns in the accent. A
+// dayChart draws the minutes listened, or watched, each day as columns in the accent. A
 // day's minutes and plays show above it as the pointer comes on it, or the
 // arrow keys go to it while the chart has the focus; below, the days show
 // as a table, newest first.
-func (s *shell) dayChart(c *ui.Context, days []library.DayPlays) {
+func (s *shell) dayChart(c *ui.Context, days []library.DayPlays, verb string) {
 	k := &s.lk
 	n := len(days)
 	if n == 0 {
@@ -137,10 +141,10 @@ func (s *shell) dayChart(c *ui.Context, days []library.DayPlays) {
 		every = 7
 	}
 	s.sectionTitle(c, "Day by day")
-	ui.Text(c, "Minutes listened each day.").FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 12)
+	ui.Text(c, "Minutes "+verb+" each day.").FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 12)
 	ui.Text(c, fmt.Sprintf("%.0f min", top)).FontSize(k.captionSize()).TextColor(k.muted).FontFeatures("tnum")
 	plot := ui.Box(c).Height(160).FillWidth().Margin(4, 0, 0).BorderWidth(0, 0, 1, 0).BorderColor(k.border).
-		Label("Minutes listened each day").Description("The arrow keys go from day to day.").Focusable().
+		Label("Minutes " + verb + " each day").Description("The arrow keys go from day to day.").Focusable().
 		Draw(func(p *ui.Painter, r ui.Rect) {
 			w := r.W / float32(n)
 			for i, d := range days {

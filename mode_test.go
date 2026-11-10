@@ -106,12 +106,12 @@ func TestVideoNext(t *testing.T) {
 	if vp.current.ID != "c" {
 		t.Errorf("the end of up next without repeat plays %q", vp.current.ID)
 	}
-	vp.repeat = videoRepeatAll
+	s.set.VideoRepeat = videoRepeatAll
 	s.videoNext(true)
 	if vp.current.ID != "a" {
 		t.Errorf("repeat all goes on to %q, not the first", vp.current.ID)
 	}
-	vp.repeat = videoRepeatOne
+	s.set.VideoRepeat = videoRepeatOne
 	s.videoNext(true)
 	if vp.current.ID != "a" {
 		t.Errorf("repeat one goes on to %q", vp.current.ID)

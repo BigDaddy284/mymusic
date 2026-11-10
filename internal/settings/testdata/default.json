@@ -82,5 +82,7 @@
   "jsRuntime": "",
   "shortcuts": {},
   "globalShortcuts": {},
-  "enabledPlugins": []
+  "enabledPlugins": [],
+  "videoVolume": 100,
+  "videoRate": 1
 }
