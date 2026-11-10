@@ -24,7 +24,6 @@ var nav = []navItem{
 	{"explore", "Explore", "compass", "/explore"},
 	{"library", "Library", "library", "/library"},
 	{"stats", "Stats", "stats", "/stats"},
-	{"marketplace", "Marketplace", "store", "/marketplace"},
 	{"settings", "Settings", "settings", "/settings"},
 }
 

@@ -57,9 +57,6 @@ func init() { addSettings("appearance", 20, (*shell).themeSettings) }
 func (s *shell) themeSettings(c *ui.Context) {
 	k := &s.lk
 	s.groupWith(c, "Theme", func() {
-		if s.link(c, "more-themes", "get more themes") {
-			s.navigate("/marketplace/themes")
-		}
 		if s.link(c, "themes-folder", "open themes folder") {
 			s.openFolder(addons.KindTheme)
 		}

@@ -250,7 +250,7 @@ track, from a browser or another app:
 |---|---|
 | `mytube://search?q=lofi+piano` | searches for "lofi piano" |
 | `mytube://album/<id>`, `mytube://artist/<id>`, `mytube://playlist/<id>` | opens an album, an artist or a playlist |
-| `mytube://library`, `mytube://explore`, `mytube://stats`, `mytube://marketplace`, `mytube://settings` | opens that page |
+| `mytube://library`, `mytube://explore`, `mytube://stats`, `mytube://settings` | opens that page |
 | `mytube://play/<track id>` | plays a track |
 
 An ID is MyTube's own: the service's ID after `yt:` for YouTube Music or

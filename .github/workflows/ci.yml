@@ -44,10 +44,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/opus-vectors"
           # Windows paths start with a drive letter, which GNU tar reads as a remote host.
           cd "$RUNNER_TEMP" && tar -xzf opus-vectors.tar.gz -C opus-vectors
-      # The community plugins' JavaScript, which tests run, and the
-      # registry check reads: main keeps their TypeScript only.
+      # The example plugins' JavaScript, which tests run: main keeps their
+      # TypeScript only.
       - uses: oven-sh/setup-bun@v2
-      - name: Compile the community plugins
+      - name: Compile the example plugins
         run: |
           bun install --frozen-lockfile
           bun run build:plugins
@@ -59,12 +59,10 @@ jobs:
         run: go test ./...
         env:
           OPUS_TESTVECTORS: ${{ runner.temp }}/opus-vectors/opus_newvectors
-      - name: Community registry
-        run: go run ./tools/registry -check
       - name: Changelog fragments
         run: go run ./tools/changelog -check
 
-  # The plugin API's types, and the community's plugins against them.
+  # The plugin API's types, and the example plugins against them.
   sdk:
     name: Plugin SDK
     runs-on: ubuntu-latest
@@ -75,9 +73,8 @@ jobs:
       - run: bun run typecheck
       # The plugin API is written in TypeScript, and ships the JavaScript it
       # compiles to, which the Go side embeds: main keeps it, and it must be
-      # what its TypeScript compiles to. The community plugins compile too,
-      # into JavaScript the Registry workflow publishes, which main doesn't
-      # keep.
+      # what its TypeScript compiles to. The example plugins compile too,
+      # into JavaScript main doesn't keep.
       - name: The plugins compile, and api.js is what api.ts compiles to
         run: |
           bun run build:plugins

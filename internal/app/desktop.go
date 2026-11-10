@@ -276,7 +276,7 @@ func (a *App) applyMediaKeys(on bool) {
 }
 
 // deepLinkPathRe matches the paths deep links may open.
-var deepLinkPathRe = regexp.MustCompile(`^/(search|album|artist|playlist|library|settings|marketplace|lyrics|stats|explore|mood)(/[A-Za-z0-9:_%=-]*)?$`)
+var deepLinkPathRe = regexp.MustCompile(`^/(search|album|artist|playlist|library|settings|lyrics|stats|explore|mood)(/[A-Za-z0-9:_%=-]*)?$`)
 
 // HandleURL opens a deep link: mytube://search?q=…, mytube://album/<id>,
 // mytube://play/<track id> and the like. Register it with

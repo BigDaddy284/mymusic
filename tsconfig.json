@@ -14,7 +14,7 @@
   },
   "include": [
     "sdk",
-    "community/plugins/**/*.ts",
+    "examples/plugins/**/*.ts",
     "internal/plugins/*.ts"
   ]
 }

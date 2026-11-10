@@ -3,6 +3,3 @@ contact_links:
   - name: A security problem
     url: https://github.com/bigdaddy284/mymusic/security/advisories/new
     about: Report it privately, please.
-  - name: Share a theme or a plugin
-    url: https://github.com/bigdaddy284/mymusic/blob/main/community/README.md
-    about: Add it to the community registry with a pull request.

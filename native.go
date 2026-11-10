@@ -324,9 +324,6 @@ type shell struct {
 	updated                 string
 	// The add-on installing, and the plugin whose install the user
 	// confirms.
-	installingAddon  string
-	pluginToInstall  addons.Entry
-	confirmingPlugin bool
 	// The downloads: what the pages miss of their collections, the
 	// collection the downloads page shows, the tracks it lists, and the
 	// move of their folder under way, which moveDone of moveTotal bytes

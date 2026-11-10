@@ -1,7 +1,7 @@
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.id.md">Bahasa Indonesia</a></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="MyTube's icon: five sound bars in a blue to purple gradient on a dark rounded tile" />
+  <img src="brand/icon.png" width="112" height="112" alt="MyTube's icon: a music note in a blue to purple gradient on a dark rounded tile" />
 </p>
 
 <h1 align="center">MyTube</h1>
@@ -49,8 +49,8 @@ both services in one player:
 - **A small program.** MyTube is one Go program that draws its own
   windows on the GPU. There is no browser inside it to download or keep in
   memory.
-- **Yours to change.** Four layouts and fourteen themes come with it, the
-  community adds more themes and plugins, and any command can have a key
+- **Yours to change.** Four layouts and fourteen themes come with it, you
+  can add themes and plugins of your own, and any command can have a key
   of your own.
 - **Private.** MyTube has no account, server, analytics or telemetry of
   its own.
@@ -127,7 +127,6 @@ both services in one player:
   tune, one theme for light mode and one for dark mode, and an accent
   color of your own or taken from the artwork that plays. Material and
   Material Dark make every color of the cover's.
-- **Community themes and plugins,** one click away in the marketplace.
 - **Plugins** add pages, commands, track actions and widgets through a
   typed API, drawn in your theme.
 - **Keyboard first.** Shortcuts for everything common, a key of your own for
@@ -246,8 +245,7 @@ data stays apart from an installed MyTube, under the name
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
-bun run typecheck              # the plugin SDK and the community's plugins
-go run ./tools/registry -check # the community registry
+bun run typecheck              # the plugin SDK and the example plugins
 bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
@@ -288,11 +286,11 @@ internal/library     liked and disliked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
-internal/addons      themes and plugins, and the community registry
+internal/addons      themes and plugins
 builtin/themes       the themes MyTube ships with
 public/              the page of Spotify's player, on Windows
 sdk/                 the types of the plugin API
-community/           community themes and plugins, and their registry
+examples/            example themes and plugins
 ```
 
 The packages you can import:
@@ -308,10 +306,10 @@ lyrics/              synced lyrics from Unison and LRCLIB, and translations
 brand/               MyTube's logo, for code that draws it
 ```
 
-## Community
+## Themes and plugins
 
-Anyone can install community themes and plugins from the marketplace, the
-store icon in the sidebar, and you can add yours.
+Themes and plugins load from your add-ons folders, and you can make your
+own. [docs/addons.md](docs/addons.md) tells how to add one.
 
 ### Make a theme
 
@@ -326,24 +324,9 @@ Appearance › open themes folder) and choose it in Settings › Appearance.
 A plugin is a small module, written in TypeScript or JavaScript, that adds
 pages, commands, track actions and widgets.
 [docs/plugins.md](docs/plugins.md) documents the API, with its
-[types](sdk/index.d.ts) for your editor. The community's
-[sleep timer](community/plugins/sleep-timer) and
-[spectrum](community/plugins/spectrum) are working examples.
-
-### Share it
-
-1. Fork this repository.
-2. Add one folder: `community/themes/<id>/` for a theme, or
-   `community/plugins/<id>/` for a plugin, with its `plugin.json` and its
-   `index.ts`.
-3. Run `bun run build:plugins`, `go run ./tools/registry` and
-   `go run ./tools/registry -check`.
-4. Open a pull request.
-
-Once it is merged, CI publishes it to the
-[registry branch](https://github.com/bigdaddy284/mymusic/tree/registry), and it
-shows up in everyone's marketplace. [community/README.md](community/README.md)
-has the details.
+[types](sdk/index.d.ts) for your editor. The
+[sleep timer](examples/plugins/sleep-timer) and
+[spectrum](examples/plugins/spectrum) in `examples/` are working examples.
 
 ## Privacy
 
@@ -365,8 +348,7 @@ talks to:
 - **LRCLIB:** the title, artists, album and length of the track that plays,
   to find its lyrics.
 - **GitHub:** a check for a new version at start and every few hours,
-  which you can turn off in Settings › About; the community registry when
-  you open the marketplace; the downloads of yt-dlp; and, the first time
+  which you can turn off in Settings › About; the downloads of yt-dlp; and, the first time
   you turn on romaji beside Japanese lyrics, the dictionary of the
   readings of kanji (11.7 MB). Romaji is made on your computer: the
   lyrics aren't sent.
@@ -458,7 +440,6 @@ Fixes, features, themes, plugins and bug reports are all welcome.
 - **Send a change** as a pull request. [CONTRIBUTING.md](CONTRIBUTING.md)
   explains the checks to run, the commit style, and the changelog entry
   that a change people will notice needs.
-- **Share a theme or a plugin:** see [Community](#community).
 
 [CONTRIBUTORS.md](CONTRIBUTORS.md) thanks the people whose code, ideas and
 reports shaped MyTube.

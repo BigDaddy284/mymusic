@@ -3,12 +3,10 @@ package addons
 import (
 	"errors"
 	"io/fs"
-	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
@@ -27,20 +25,18 @@ type Inventory struct {
 	Problems []Problem `json:"problems"`
 }
 
-// Manager finds add-ons and installs them.
+// Manager finds add-ons and removes those the user put in its folder.
 type Manager struct {
 	// Dir holds the add-ons the user installed: themes/<id> and
 	// plugins/<id>.
 	Dir string
 	// Builtin holds the add-ons MyTube ships with, laid out as Dir.
 	Builtin fs.FS
-	// HTTP fetches the community registry and the add-ons it lists.
-	HTTP *http.Client
 }
 
 // NewManager returns a manager of the add-ons in dir and builtin.
 func NewManager(dir string, builtin fs.FS) *Manager {
-	return &Manager{Dir: dir, Builtin: builtin, HTTP: &http.Client{Timeout: time.Minute}}
+	return &Manager{Dir: dir, Builtin: builtin}
 }
 
 // folder returns the folder of a kind of add-on: "themes" or "plugins".

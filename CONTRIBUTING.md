@@ -1,14 +1,8 @@
 # Contributing
 <!-- docs: group=project order=10 -->
 
-Thank you for helping. There are three ways in: themes and plugins for the
-community registry, fixes and features of the app, and reports of what does
-not work.
-
-## Themes and plugins
-
-[community/README.md](community/README.md) tells how to share a theme or a
-plugin: a pull request adding one folder.
+Thank you for helping. There are two ways in: fixes and features of the
+app, and reports of what does not work.
 
 ## The app
 
@@ -30,23 +24,22 @@ Before you open a pull request:
 ```sh
 gofmt -l .                      # prints nothing
 GOOS=windows go vet ./...
-bun run build:plugins           # the community plugins' JavaScript, which tests run
+bun run build:plugins           # the example plugins' JavaScript, which tests run
 go test ./...
 bun run typecheck
-go run ./tools/registry -check
 ```
 
 [docs/architecture](docs/architecture/README.md) tells where things live. A few
 rules keep the project healthy:
 
 - **Windows only.** MyTube is built for Windows alone. Linux still compiles the code, with stubs that do nothing, because `mygo build` runs it there to write its bindings and releases are cross-compiled on Linux: `GOOS=windows go vet ./...` checks a change from Linux.
-- **The theme contract is public.** Community themes set the tokens of
+- **The theme contract is public.** Themes set the tokens of
   [docs/themes.md](docs/themes.md): colors, fonts and a radius. Rename or
   remove one only with a plan for the themes that set it, and document new
   ones there.
 - **The plugin API is public.** Change `internal/plugins/api.js`,
   `sdk/index.d.ts` and [docs/plugins.md](docs/plugins.md) together; the
-  typecheck checks the community's plugins against the types.
+  typecheck checks the example plugins against the types.
 - **Tests do not need the network.** Parsers are tested on recorded
   responses in `testdata/`; live tests run only with `MYTUBE_LIVE=1`.
   The Opus decoder's conformance test runs when `OPUS_TESTVECTORS` names
@@ -133,7 +126,7 @@ docs: explain the plugin storage
 Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`,
 `chore`. Scopes name the part changed: `app`, `player`, `ui`, `theme`,
 `themes`, `plugins`, `youtube`, `spotify`, `stream`, `match`, `lyrics`,
-`library`, `addons`, `community`, `sdk`, `tools`.
+`library`, `addons`, `examples`, `sdk`, `tools`.
 
 A change people will notice also gets an entry in the changelog: a file in
 [changelog.d](changelog.d/README.md), in the folder of its section as

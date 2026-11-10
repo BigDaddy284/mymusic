@@ -53,7 +53,7 @@ const plugins = "# Plugins\r\n" +
 	"\r\n" +
 	"A plugin adds a page. It is a folder:\r\n" +
 	"\r\n" +
-	"See [themes](themes.md#colors), [the API](../sdk/index.d.ts), [a theme](../community/themes/mint),\r\n" +
+	"See [themes](themes.md#colors), [the API](../sdk/index.d.ts), [a theme](../examples/themes/mint),\r\n" +
 	"[the README](../README.md#develop), [home](/README.md), [the web](https://example.com/a.md) and [below](#the-module).\r\n" +
 	"![The banner](banner.webp \"A banner\") and <img src=\"shots/home.webp\" alt=\"\"> and ![logo](../resources/logo.png).\r\n" +
 	"<a href='themes.md#colors'>Colors</a>, <a href=\"../sdk/index.d.ts\">types</a>, <video poster=\"/docs/shots/home.webp\"></video>\r\n" +
@@ -74,15 +74,15 @@ const plugins = "# Plugins\r\n" +
 
 func TestRun(t *testing.T) {
 	root := repo(t, map[string]string{
-		"docs/plugins.md":                  plugins,
-		"docs/themes.md":                   "# Themes `json`\n<!--docs: group=make  order=10-->\nA theme sets the colors, the typefaces and the corners of MyTube, which draws everything with them. A theme is a folder.\n\n## Colors\n",
-		"docs/zebra.md":                    "# Zebra\n\n<!-- docs: group=make -->\n\n- a list first\n\nThen prose: it ends in a colon:\n",
-		"docs/banner.webp":                 "banner",
-		"docs/shots/home.webp":             "home",
-		"resources/logo.png":               "logo",
-		"sdk/index.d.ts":                   "types",
-		"README.md":                        "readme",
-		"community/themes/mint/theme.json": "{}",
+		"docs/plugins.md":                 plugins,
+		"docs/themes.md":                  "# Themes `json`\n<!--docs: group=make  order=10-->\nA theme sets the colors, the typefaces and the corners of MyTube, which draws everything with them. A theme is a folder.\n\n## Colors\n",
+		"docs/zebra.md":                   "# Zebra\n\n<!-- docs: group=make -->\n\n- a list first\n\nThen prose: it ends in a colon:\n",
+		"docs/banner.webp":                "banner",
+		"docs/shots/home.webp":            "home",
+		"resources/logo.png":              "logo",
+		"sdk/index.d.ts":                  "types",
+		"README.md":                       "readme",
+		"examples/themes/mint/theme.json": "{}",
 		// A page made before, of a doc since deleted, and a folder of
 		// someone else's.
 		"site/content/docs/old/index.md":  "+++\n" + marker + "docs/old.md: edit that file, not this one.\n+++\n",
@@ -113,7 +113,7 @@ func TestRun(t *testing.T) {
 		"\n" +
 		"A plugin adds a page. It is a folder:\n" +
 		"\n" +
-		"See [themes](@/docs/themes/index.md#colors), [the API](https://github.com/owner/name/blob/main/sdk/index.d.ts), [a theme](https://github.com/owner/name/tree/main/community/themes/mint),\n" +
+		"See [themes](@/docs/themes/index.md#colors), [the API](https://github.com/owner/name/blob/main/sdk/index.d.ts), [a theme](https://github.com/owner/name/tree/main/examples/themes/mint),\n" +
 		"[the README](https://github.com/owner/name/blob/main/README.md#develop), [home](https://github.com/owner/name/blob/main/README.md), [the web](https://example.com/a.md) and [below](#the-module).\n" +
 		"![The banner](@/docs/plugins/banner.webp \"A banner\") and <img src=\"shots/home.webp\" alt=\"\"> and ![logo](@/docs/plugins/repo/resources/logo.png).\n" +
 		"<a href='../themes/#colors'>Colors</a>, <a href=\"https://github.com/owner/name/blob/main/sdk/index.d.ts\">types</a>, <video poster=\"shots/home.webp\"></video>\n" +

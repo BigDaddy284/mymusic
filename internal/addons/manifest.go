@@ -1,6 +1,5 @@
 // Package addons manages themes and plugins: those MyTube ships with,
-// those the user installs from the community registry, and those they put
-// in the add-ons folder themselves.
+// and those the user puts in the add-ons folder.
 //
 // A theme is a folder with a theme.json manifest, which sets the colors,
 // fonts and corners of the interface. A plugin is a folder with a
@@ -96,7 +95,7 @@ type Theme struct {
 	Radius  string   `json:"radius,omitempty"`
 	Preview string   `json:"preview,omitempty"`
 	Options []Option `json:"options"`
-	// Files lists the files of the theme, for the registry to install.
+	// Files lists the files of the theme.
 	Files []string `json:"files,omitempty"`
 
 	// Set by the app, not the manifest.

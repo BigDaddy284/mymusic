@@ -32,7 +32,6 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 		Tools: Tools{JSRuntime: "python"},
 		Addons: Addons{
 			EnabledPlugins: []string{"sleep-timer", "sleep-timer", "Bad ID", "../x"},
-			RegistryURL:    "http://insecure.example",
 		},
 		Accounts: Accounts{YouTubeChannel: "1234; x"},
 	}.Clean()
@@ -42,7 +41,7 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 	if s.Crossfade != 12 || s.Volume != 0 || len(s.Equalizer.Gains) != len(Bands) {
 		t.Errorf("ranges not clamped: %+v", s)
 	}
-	if s.JSRuntime != "" || len(s.EnabledPlugins) != 1 || s.RegistryURL != DefaultRegistryURL {
+	if s.JSRuntime != "" || len(s.EnabledPlugins) != 1 {
 		t.Errorf("tools and add-ons not repaired: %+v", s)
 	}
 	if s.YouTubeChannel != "" {
@@ -154,18 +153,6 @@ func TestCleanCopies(t *testing.T) {
 	c.EnabledPlugins[0] = "other"
 	if s.Equalizer.Gains[0] != 0 || s.ThemeOptions["mix"]["texture"] != "dots" || s.Shortcuts["player.toggle"] != "Space" || s.EnabledPlugins[0] != "spectrum" {
 		t.Errorf("changing the cleaned settings changed the settings: %v %v %v %v", s.Equalizer.Gains, s.ThemeOptions, s.Shortcuts, s.EnabledPlugins)
-	}
-}
-
-// TestRegistryURL moves settings off the web interface's registry, which
-// earlier versions kept as theirs.
-func TestRegistryURL(t *testing.T) {
-	if got := (Settings{Addons: Addons{RegistryURL: WebRegistryURL}}).Clean().RegistryURL; got != DefaultRegistryURL {
-		t.Errorf("the web interface's registry became %q", got)
-	}
-	const own = "https://example.com/my-registry.json"
-	if got := (Settings{Addons: Addons{RegistryURL: own}}).Clean().RegistryURL; got != own {
-		t.Errorf("a registry of the user's became %q", got)
 	}
 }
 

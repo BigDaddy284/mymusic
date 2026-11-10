@@ -59,7 +59,6 @@ func (s *shell) commands() []command {
 		{"go.computer", "On this computer", "", "go to", func() { s.navigate("/library/computer") }},
 		{"go.nowPlaying", "Now playing", "Alt+4", "go to", func() { s.navigate("/now-playing") }},
 		{"go.stats", "Stats", "", "go to", func() { s.navigate("/stats") }},
-		{"go.marketplace", "Marketplace", "", "go to", func() { s.navigate("/marketplace") }},
 		{"go.settings", "Settings", "Mod+,", "go to", func() { s.navigate("/settings") }},
 		{"go.settingsSearch", "Search the settings", "", "go to", s.searchSettings},
 		{"view.queue", "Show or hide the queue", "Mod+J", "view", func() { s.togglePanel("queue") }},

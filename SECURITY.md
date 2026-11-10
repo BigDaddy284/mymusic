@@ -24,10 +24,9 @@ prefer not to.
   Spotify's player on Windows, may call one Go service, for the Spotify
   token that player needs; other pages, as Google's sign-in, call none.
   Links to websites open in your browser, not in the app's window.
-- **Add-ons from the registry.** They are fetched over HTTPS, checked, size
-  limited, and installed into a temporary folder that replaces the installed
-  version only once valid. Theme manifests are checked, color by color, and
-  add-on files stay inside their folder.
+- **Add-ons.** MyTube downloads none: it loads only those it ships with
+  and those you put in your add-ons folders. Theme manifests are checked,
+  color by color, and add-on files stay inside their folder.
 - **yt-dlp.** MyTube downloads it from its official releases and checks it
   against the checksums the release publishes; it passes only validated
   video IDs to it.
@@ -40,5 +39,4 @@ tracks and make mixes, which reaches your accounts where you signed in,
 talk to any server on the internet, and add to the interface. Each runs in a
 JavaScript engine of its own, which gives it nothing more: not your files,
 nor your sign-ins. MyTube tells you so before enabling a plugin. Enable
-plugins from authors you trust; plugins of the community registry are
-reviewed before they are listed.
+plugins from authors you trust.

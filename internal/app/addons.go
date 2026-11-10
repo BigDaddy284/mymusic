@@ -1,35 +1,14 @@
 package app
 
 import (
-	"bytes"
-	"context"
-	"fmt"
-	"io"
 	"io/fs"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
-	"sync"
-	"time"
 
 	"github.com/egoist/mygo"
 
 	"github.com/bigdaddy284/mymusic/internal/addons"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
-// registryTTL is how long a fetched registry is reused.
-const registryTTL = 10 * time.Minute
-
-var registryCache struct {
-	sync.Mutex
-	url     string
-	at      time.Time
-	content addons.Registry
-}
-
-// Addons lists, installs and removes themes and plugins, and keeps what
+// Addons lists and removes themes and plugins, and keeps what
 // plugins store.
 type Addons struct{ a *App }
 
@@ -44,34 +23,6 @@ func (s *Addons) Reload() addons.Inventory {
 	s.a.rereadColorFile()
 	notify()
 	return inv
-}
-
-// Registry returns the community registry of themes and plugins.
-func (s *Addons) Registry(ctx context.Context, refresh bool) (addons.Registry, error) {
-	url := s.a.settings.Get().Clean().RegistryURL
-	registryCache.Lock()
-	defer registryCache.Unlock()
-	if !refresh && registryCache.url == url && time.Since(registryCache.at) < registryTTL {
-		return registryCache.content, nil
-	}
-	r, err := s.a.addons.FetchRegistry(ctx, url)
-	if err != nil {
-		return addons.Registry{}, err
-	}
-	registryCache.url, registryCache.at, registryCache.content = url, time.Now(), r
-	return r, nil
-}
-
-// Install installs, or updates, an add-on of the community registry.
-func (s *Addons) Install(ctx context.Context, kind addons.Kind, id string) (addons.Inventory, error) {
-	r, err := s.Registry(ctx, false)
-	if err != nil {
-		return addons.Inventory{}, err
-	}
-	if err := s.a.addons.Install(ctx, r, kind, id); err != nil {
-		return addons.Inventory{}, err
-	}
-	return s.Reload(), nil
 }
 
 // Uninstall removes an add-on the user installed.
@@ -95,50 +46,6 @@ func (s *Addons) OpenFolder(kind addons.Kind) error {
 // AddonFiles returns the files of an add-on, for the native interface's
 // plugins.
 func (a *App) AddonFiles(kind addons.Kind, id string) (fs.FS, error) { return a.addons.Files(kind, id) }
-
-// ReadCommunityFrom has the marketplace read the community registry, and
-// the files of the add-ons it lists, from dir, a copy of the repository's
-// community folder, instead of from GitHub: for screenshots of add-ons not
-// published yet. Call it before the marketplace opens.
-func (a *App) ReadCommunityFrom(dir string) {
-	a.addons.HTTP.Transport = communityDir(dir)
-}
-
-// communityDir answers the requests for the community folder on GitHub,
-// and for the add-ons the registry branch publishes from it, from a folder
-// on disk, and passes the others on. The folder's plugins must be compiled
-// (`bun run build:plugins`), as the registry branch's are.
-type communityDir string
-
-func (d communityDir) RoundTrip(r *http.Request) (*http.Response, error) {
-	base := settings.DefaultRegistryURL[:strings.LastIndex(settings.DefaultRegistryURL, "/")+1]
-	name, ok := strings.CutPrefix(r.URL.String(), base)
-	if !ok {
-		name, ok = strings.CutPrefix(r.URL.String(), addons.CommunityFilesURL)
-	}
-	if !ok {
-		return http.DefaultTransport.RoundTrip(r)
-	}
-	if !filepath.IsLocal(filepath.FromSlash(name)) {
-		return nil, fmt.Errorf("not a file of the community folder: %s", name)
-	}
-	data, err := os.ReadFile(filepath.Join(string(d), filepath.FromSlash(name)))
-	status := http.StatusOK
-	if err != nil {
-		status, data = http.StatusNotFound, nil
-	}
-	return &http.Response{
-		Status:        http.StatusText(status),
-		StatusCode:    status,
-		Proto:         "HTTP/1.1",
-		ProtoMajor:    1,
-		ProtoMinor:    1,
-		Header:        http.Header{},
-		Body:          io.NopCloser(bytes.NewReader(data)),
-		ContentLength: int64(len(data)),
-		Request:       r,
-	}, nil
-}
 
 // Storage returns every value a plugin keeps.
 func (s *Addons) Storage(plugin string) (map[string]string, error) { return s.a.storage.All(plugin) }

@@ -90,9 +90,8 @@ your themes, light ones first. MyTube then wears one theme while your
 computer is in light mode and the other while it is in dark mode, and
 switches as the computer does. They start as Daylight and Mix.
 
-While Follow the computer is on, clicking a theme card, or "use it" in the
-[marketplace](marketplace.md#install-a-theme), sets the theme of the mode
-the computer is in now.
+While Follow the computer is on, clicking a theme card sets the theme of
+the mode the computer is in now.
 
 ## The accent and the artwork
 
@@ -197,18 +196,12 @@ accessibility settings), MyTube moves less:
 - The [picture of a music video](playing-music.md#the-picture-of-music-videos)
   waits for you to press play on the cover.
 
-## Marketplace themes
-
-The community makes more themes, which you install from the marketplace:
-the Marketplace in the sidebar, or "get more themes" in Settings ›
-Appearance › Theme. A theme you install joins the theme cards; "use it",
-on its card in the marketplace or in the toast after the install, wears
-it. [Marketplace](marketplace.md) tells more.
+## More themes
 
 To make a theme of your own, start from [Themes](themes.md): it lists
 every colour, font and corner a theme sets, and shows a complete one. Put
 its folder in the themes folder ("open themes folder" in Settings ›
 Appearance › Theme), and run
-**[Reload add-ons](marketplace.md#reload-add-ons)** from the command
+**[Reload add-ons](addons.md#reload-add-ons)** from the command
 palette. A theme that fails to load is listed under the theme cards, with
 the reason.

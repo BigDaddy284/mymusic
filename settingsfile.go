@@ -55,10 +55,6 @@ func (s *shell) followSettings(old settings.Settings) {
 	if old.YTDLPPath != s.set.YTDLPPath || old.JSRuntime != s.set.JSRuntime {
 		s.refetch("tools")
 	}
-	if old.RegistryURL != s.set.RegistryURL {
-		// Its answer is the former registry's.
-		s.forget("registry")
-	}
 	// The mini player reads out a zoom it chose itself.
 	if old.Zoom != s.set.Zoom && s.main && !s.miniChose(s.set.Zoom) {
 		s.zoomToast = true

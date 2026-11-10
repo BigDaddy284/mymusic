@@ -30,8 +30,7 @@ and `act:memory` and `act:heap` log the Go heap and save a
 profile of it. Nothing plays unless the player is muted,
 or `MYTUBE_SILENT=1` has the audio engine play into no device, which
 keeps the visualizer and the lyrics moving without a sound.
-`MYTUBE_CAPTURE_COMMUNITY=<dir>` has the marketplace read the community
-registry from a copy of `community/`, for add-ons not on GitHub yet. The
+The
 site's screenshots are made this way, from a throwaway profile, at
 1536x900 (`MYTUBE_CAPTURE_SIZE=1552x909`: the size includes the
 window's invisible borders). `go test . -run Render` with
