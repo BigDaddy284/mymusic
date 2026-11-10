@@ -636,7 +636,12 @@ func (s *shell) playlistGrid(c *ui.Context, key string, lists []youtube.VideoPla
 func (s *shell) videoSearchField(c *ui.Context) {
 	k := &s.lk
 	vs := &s.videos
-	box := ui.Row(c).Height(36).MaxWidth(520).Grow(1).Shrink(1).MinWidth(160).Gap(8).PaddingX(12).
+	// With tabs, the box leaves them more of the bar.
+	most := float32(520)
+	if len(s.set.VideoTabs) > 0 {
+		most = 380
+	}
+	box := ui.Row(c).Height(36).MaxWidth(most).Grow(1).Shrink(1).MinWidth(160).Gap(8).PaddingX(12).
 		Radius(k.round(36)).Background(k.bg).Cursor(ui.CursorText)
 	if box.Clicked() {
 		s.searchBox.Focus()

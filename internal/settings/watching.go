@@ -32,7 +32,23 @@ type Watching struct {
 	// ShowShorts shows YouTube's Shorts among the videos; off, they're left
 	// out of every page.
 	ShowShorts bool `json:"showShorts,omitempty"`
+	// VideoTabs are the videos kept in tabs along the top bar of the Video
+	// side, to come back to, in their order.
+	VideoTabs []VideoTab `json:"videoTabs,omitempty"`
 }
+
+// VideoTab is a video kept in a tab: what the tab shows of it, and what
+// plays it again.
+type VideoTab struct {
+	ID        string `json:"id"`
+	Title     string `json:"title"`
+	Channel   string `json:"channel,omitempty"`
+	ChannelID string `json:"channelId,omitempty"`
+	Duration  string `json:"duration,omitempty"`
+}
+
+// MaxVideoTabs is how many tabs the top bar keeps.
+const MaxVideoTabs = 30
 
 // The actions of a kind of segment.
 const (
@@ -110,6 +126,16 @@ func (w Watching) clean() Watching {
 	}
 	w.BlockedChannels = cleanList(w.BlockedChannels)
 	w.BlockedWords = cleanList(w.BlockedWords)
+	var tabs []VideoTab
+	seen := map[string]bool{}
+	for _, t := range w.VideoTabs {
+		if t.ID == "" || seen[t.ID] || len(tabs) == MaxVideoTabs {
+			continue
+		}
+		seen[t.ID] = true
+		tabs = append(tabs, t)
+	}
+	w.VideoTabs = tabs
 	return w
 }
 

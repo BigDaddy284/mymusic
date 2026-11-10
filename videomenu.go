@@ -25,6 +25,9 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 	if m.Item("Add to queue").Chosen() {
 		s.queueVideo(v)
 	}
+	if m.Item("Keep in a tab").Disabled(s.hasVideoTab(v.ID)).Tooltip("Keeps it along the top bar, to come back to").Chosen() {
+		s.addVideoTab(v)
+	}
 	if m.Item("Play as audio").Tooltip("Plays its sound on the music side, with the EQ, speed and loudness, and the screen free").Chosen() {
 		s.playVideoAudio(v)
 	}
