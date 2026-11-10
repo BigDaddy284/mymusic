@@ -159,19 +159,11 @@ release, and the page reads the latest version from GitHub's API. Once the
 release is published, set the two `data-version` spans to it, for when the
 API does not answer.
 
-MyTube no longer updates itself, but the release still makes update files,
-signed with the key whose public half is `updates.publicKey` in
-[mygo.config.ts](mygo.config.ts); the secret half is the repository's
-`MYGO_UPDATER_PRIVATE_KEY` secret, which the workflow signs with. Without it, the
-release has no update files and apps stay on the version they have.
-
 ### Signing
 
 The workflow signs the Windows apps and installers once their secrets are
 in the repository; without them it says so in a notice and skips that
-part, and the release goes out as before. `mygo build` signs, before it
-makes the update archives, so that updates install the signed app too:
-see the comments of [mygo.config.ts](mygo.config.ts) and of the workflow.
+part, and the release goes out as before: see the comments of [mygo.config.ts](mygo.config.ts) and of the workflow.
 
 | Secret | What it holds |
 |---|---|
@@ -199,10 +191,8 @@ too. The release notes leave it out by themselves.
 
 The [website](site/templates/index.html) and the docs' pages are built with
 [Zola](https://www.getzola.org) from `site/` and `docs/` (see
-[site/zola.toml](site/zola.toml)), and
-[pages.yml](.github/workflows/pages.yml) publishes them to GitHub Pages, at
-https://bigdaddy284.github.io/mymusic/, whenever what they're built from
-changes on main.
+[site/zola.toml](site/zola.toml)). CI builds them to check their links;
+nothing publishes them.
 
 ## Reports
 

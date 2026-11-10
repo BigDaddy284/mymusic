@@ -10,9 +10,9 @@ MyTube puts both in one window: one search looks through YouTube Music and your 
 Download the file for Windows 10 or 11, on x64 or Arm, from the
 [latest release](https://github.com/bigdaddy284/mymusic/releases/latest): the installer, `mytube-<version>-windows-<arch>-setup.exe`, or the portable zip, `mytube-<version>-windows-<arch>-portable.zip`, which you unpack anywhere and start with `MyTube.exe`.
 
-`<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists `SHA256SUMS` to check the downloads with, and files you don't need, which installed copies update from. The [README](../README.md#install) has the full table of downloads.
+`<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists `SHA256SUMS` to check the downloads with. The [README](../README.md#install) has the full table of downloads.
 
-The installer and the portable zip update themselves: MyTube looks for a new version at start and every few hours, and asks before it installs one, unless you let it install updates by itself. [Settings › About](settings.md#about) shows your version and the newest one.
+MyTube doesn't update itself: download a new release when you want it. [Settings › About](settings.md#about) shows your version.
 
 ## The first launch
 

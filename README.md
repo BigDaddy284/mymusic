@@ -12,7 +12,6 @@
 
 <p align="center">
   <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/pages.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/pages.yml/badge.svg" alt="Website" /></a>
   <a href="https://github.com/bigdaddy284/mymusic/releases/latest"><img src="https://img.shields.io/github/v/release/bigdaddy284/mymusic" alt="Latest release" /></a>
   <a href="https://github.com/bigdaddy284/mymusic/releases"><img src="https://img.shields.io/github/downloads/bigdaddy284/mymusic/total" alt="Downloads" /></a>
   <a href="https://pkg.go.dev/github.com/bigdaddy284/mymusic"><img src="https://pkg.go.dev/badge/github.com/bigdaddy284/mymusic.svg" alt="Go Reference" /></a>
@@ -145,8 +144,7 @@ MyTube runs on Windows 10 and 11. Download it from the
 | Portable, no installation | [`mytube-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists
-`SHA256SUMS` to check the downloads with. You don't need the files named
-`update-…`, `….delta` or `-windows-<arch>.tar.gz`.
+`SHA256SUMS` to check the downloads with.
 
 MyTube doesn't update itself: download a new release when you want it. For
 the portable zip, unpack it anywhere and open `MyTube.exe`.

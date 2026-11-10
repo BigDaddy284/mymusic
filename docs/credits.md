@@ -22,7 +22,7 @@ of its own.
   web view, from the pages and the player bar to the mini player. It gives
   MyTube its windows, menus, tray, web views, file watching and
   credential store, and its command line packages the app, with its
-  installers and the signed updates it updates itself from.
+  installers.
 - **[Go](https://go.dev)**, the language of the app, with
   [purego](https://github.com/ebitengine/purego), which calls the
   system's libraries without cgo, for the audio output and the media

@@ -3,7 +3,7 @@ import pkg from "./package.json" with { type: "json" };
 
 export default defineConfig({
   name: "MyTube",
-  // The slug names the update archives and the Windows installer, which
+  // The slug names the Windows installer, which
   // release.yml and .github/scripts/package.sh look for by name. It is
   // MyGo's default for "MyTube": pinned so it can't move.
   slug: "mytube",
@@ -22,13 +22,6 @@ export default defineConfig({
   bindings: ".mygo/bindings.ts",
   out: "build",
   urlSchemes: ["mytube"],
-  // Apps update themselves from the releases of the repository, signed with
-  // the key whose public half is here (the secret one is the
-  // MYGO_UPDATER_PRIVATE_KEY secret of the release workflow).
-  updates: {
-    publicKey: "y/g7m+MircfXqdGupUFNygznyyR/Y41D1YAOYw41ISU=",
-    github: "bigdaddy284/mymusic",
-  },
   // The workflow's code signing certificate, whose password is
   // MYGO_WINDOWS_CERTIFICATE_PASSWORD: osslsigncode signs the app, the
   // installer and its uninstaller with it, timestamped. Unsigned without it.
