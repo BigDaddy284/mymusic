@@ -24,6 +24,12 @@ func (s *shell) sidePanel(c *ui.Context) {
 		panel.BorderWidth(0, 0, 0, 1).BorderColor(k.border)
 	}
 	panel.Children(func() {
+		if s.mode.video {
+			// The Video side has up next alone: its lyrics are captions,
+			// which show over the video.
+			s.videoQueuePanel(c)
+			return
+		}
 		if s.panel == "queue" {
 			s.queuePanel(c)
 		} else {

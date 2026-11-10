@@ -36,6 +36,8 @@ func section(path string) string {
 		return "home"
 	case "mood":
 		return "explore"
+	case "watch":
+		return "videos"
 	}
 	return first
 }
@@ -56,6 +58,9 @@ func (s *shell) railFolded() bool {
 func (s *shell) railWidth() float32 {
 	if s.railFolded() {
 		return 76
+	}
+	if w := float32(s.set.SidebarWidth); w > 0 {
+		return clampWidth(w, railLeast, railMost)
 	}
 	return s.lk.rail
 }
@@ -91,7 +96,7 @@ func (s *shell) rail(c *ui.Context) {
 	k := &s.lk
 	collapsed := s.railFolded()
 	path := s.router.Path()
-	current := section(path)
+	entries0, current := s.navItems(path)
 	pad := float32(16)
 	if collapsed {
 		pad = 17
@@ -104,14 +109,17 @@ func (s *shell) rail(c *ui.Context) {
 		// Where the rail is short, and only there, as the mixes grow from
 		// nothing into the rest, the entries give some of their height.
 		ui.Column(c).Gap(4).MinHeight(navLeast).Children(func() {
-			for _, n := range nav {
+			for _, n := range entries0 {
 				s.navEntry(c, "nav-"+n.id, k.words(n.label), icon(n.icon), n.path, n.id == current)
 			}
 			for _, it := range items {
 				s.navEntry(c, "plugin-"+it.ID, k.words(it.Label), s.svgOf(it.Icon), it.Path, path == it.Path)
 			}
 		})
-		if !collapsed {
+		if !collapsed && s.mode.video {
+			s.videoLists(c, path)
+			least += mixesLeast
+		} else if !collapsed {
 			s.mixes(c, path)
 			least += mixesLeast
 		} else {
@@ -198,16 +206,13 @@ func (s *shell) brand(c *ui.Context, collapsed bool, inner float32) float32 {
 	return tall + 40
 }
 
-// railName is the name at the head of the sidebar, beside the Music mark.
-const railName = "Music"
-
 // logo is the Music mark, and its name in what is left of room DIPs.
 func (s *shell) logo(c *ui.Context, room float32) {
 	k := &s.lk
 	// The mark keeps its gradient in every theme, as the app's icon does.
-	ui.Image(c, brandMark).Size(26, 26).Shrink(0)
+	s.modeMark(c, 26)
 	size := s.wordmarkSize(c, room)
-	ui.Text(c, railName).FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
+	ui.Text(c, s.railTitle()).FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
 		SingleLine().Grow(1).MinWidth(0)
 }
 
@@ -225,6 +230,7 @@ func (s *shell) railButton(c *ui.Context, collapsed bool) {
 // wordmarkFit is the size of MyTube's name in the rail, the face, weight
 // and room it was measured for, and its width at 24.
 type wordmarkFit struct {
+	name   string
 	font   string
 	weight int
 	room   float32
@@ -238,11 +244,11 @@ type wordmarkFit struct {
 // face, weight and room, not every frame.
 func (s *shell) wordmarkSize(c *ui.Context, room float32) float32 {
 	k := &s.lk
-	f := wordmarkFit{font: k.display, weight: k.displayWeight(), room: room}
-	if s.wordmark.size > 0 && s.wordmark.font == f.font && s.wordmark.weight == f.weight && s.wordmark.room == f.room {
+	f := wordmarkFit{name: s.railTitle(), font: k.display, weight: k.displayWeight(), room: room}
+	if s.wordmark.size > 0 && s.wordmark.name == f.name && s.wordmark.font == f.font && s.wordmark.weight == f.weight && s.wordmark.room == f.room {
 		return s.wordmark.size
 	}
-	f.width, _ = c.MeasureText(0, ui.Span{Text: railName, Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
+	f.width, _ = c.MeasureText(0, ui.Span{Text: f.name, Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
 	f.size = fitSize(24, f.width, room)
 	s.wordmark = f
 	return f.size
@@ -407,7 +413,9 @@ func (s *shell) sideLink(c *ui.Context, key, title string, n int, to, path strin
 	}
 	link.Children(func() {
 		ui.Text(c, title).FontSize(k.bodySize()).TextColor(ink).SingleLine().Grow(1).MinWidth(0)
-		ui.Text(c, count(n)).FontSize(k.smallSize()).TextColor(k.accent).FontFeatures("tnum")
+		if n >= 0 {
+			ui.Text(c, count(n)).FontSize(k.smallSize()).TextColor(k.accent).FontFeatures("tnum")
+		}
 	})
 }
 

@@ -139,8 +139,9 @@ func cookieHeader(cookies []*http.Cookie, now time.Time) string {
 }
 
 // signRequest adds the user's cookies and signature to a request, when the
-// client is signed in, and reports whether it did.
-func (c *Client) signRequest(req *http.Request, now time.Time) bool {
+// client is signed in, and reports whether it did. origin is the website
+// the request is made as, which the signature names.
+func (c *Client) signRequest(req *http.Request, now time.Time, origin string) bool {
 	c.mu.Lock()
 	cookies, page, user := c.cookies, c.pageID, c.authUser
 	c.mu.Unlock()
@@ -148,9 +149,9 @@ func (c *Client) signRequest(req *http.Request, now time.Time) bool {
 		return false
 	}
 	req.Header.Set("Cookie", cookieHeader(cookies, now))
-	req.Header.Set("Authorization", authorization(cookies, now, defaultBaseURL))
+	req.Header.Set("Authorization", authorization(cookies, now, origin))
 	req.Header.Set("X-Goog-AuthUser", strconv.Itoa(user))
-	req.Header.Set("X-Origin", defaultBaseURL)
+	req.Header.Set("X-Origin", origin)
 	if page != "" {
 		req.Header.Set("X-Goog-PageId", page)
 	}

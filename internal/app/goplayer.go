@@ -262,6 +262,7 @@ type Services struct {
 	System      *System
 	Downloads   *Downloads
 	LocalFiles  *LocalFiles
+	Videos      *Videos
 }
 
 // Services returns the app's services.
@@ -276,6 +277,7 @@ func (a *App) Services() Services {
 		System:      &System{a},
 		Downloads:   &Downloads{a},
 		LocalFiles:  &LocalFiles{a},
+		Videos:      &Videos{a},
 	}
 }
 

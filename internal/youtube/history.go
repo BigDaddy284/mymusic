@@ -105,7 +105,7 @@ func (c *Client) ping(ctx context.Context, u *url.URL) error {
 	req.Header.Set("User-Agent", userAgent)
 	req.Header.Set("Origin", defaultBaseURL)
 	req.Header.Set("Referer", defaultBaseURL+"/")
-	c.signRequest(req, time.Now())
+	c.signRequest(req, time.Now(), defaultBaseURL)
 	res, err := c.HTTP.Do(req)
 	if err != nil {
 		return fmt.Errorf("youtube music: %w", err)

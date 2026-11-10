@@ -680,6 +680,9 @@ func (s *shell) paneWidth(c *ui.Context) float32 {
 
 // panelWidth is the side panel's width, narrower in narrow windows.
 func (s *shell) panelWidth(c *ui.Context) float32 {
+	if pw := float32(s.set.PanelWidth); pw > 0 {
+		return clampWidth(pw, panelLeast, panelMost)
+	}
 	if w, _ := c.Size(); w < 1100 {
 		return 300
 	}

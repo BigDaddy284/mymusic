@@ -175,6 +175,10 @@ type shell struct {
 	liveSince time.Time
 	// video is the picture of music videos on the now playing page.
 	video videoView
+	// videos is the Video page's own state (videos.go).
+	videos videosState
+	// mode is the side shown, Music or Video (mode.go).
+	mode appMode
 	// home is Home's own state, as the user arranges it (homeedit.go).
 	home homeArrange
 	// The pages' own state. local are the home page's own shelves, of the
