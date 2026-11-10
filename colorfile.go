@@ -16,7 +16,7 @@ import (
 type palette struct {
 	bg, surface, surface2, surface3, border color.NRGBA
 	text, muted, accent, accentText         color.NRGBA
-	danger, success, youtube, spotify       color.NRGBA
+	danger, success, youtube                color.NRGBA
 	tiles                                   [4]color.NRGBA
 	tileText                                color.NRGBA
 }
@@ -26,7 +26,7 @@ func paletteOf(tok func(name string) color.NRGBA) palette {
 	p := palette{
 		bg: tok("bg"), surface: tok("surface"), surface2: tok("surface-2"), surface3: tok("surface-3"), border: tok("border"),
 		text: tok("text"), muted: tok("text-muted"), accent: tok("accent"), accentText: tok("accent-text"),
-		danger: tok("danger"), success: tok("success"), youtube: tok("youtube"), spotify: tok("spotify"),
+		danger: tok("danger"), success: tok("success"), youtube: tok("youtube"),
 		tileText: tok("tile-text"),
 	}
 	for i := range p.tiles {
@@ -51,7 +51,7 @@ func (p *palette) keepReadable(whiteTiles bool) {
 	p.muted = readableAt(p.muted, bg, 4.5)
 	p.danger = readableAt(p.danger, bg, 4.5)
 	p.accent = readableAt(p.accent, bg, 3)
-	p.success, p.youtube, p.spotify = readableAt(p.success, bg, 3), readableAt(p.youtube, bg, 3), readableAt(p.spotify, bg, 3)
+	p.success, p.youtube = readableAt(p.success, bg, 3), readableAt(p.youtube, bg, 3)
 	if ink := over(p.accentText, p.accent); contrast(ink, p.accent) >= 4.5 {
 		p.accentText = ink
 	} else {

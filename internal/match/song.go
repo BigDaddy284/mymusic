@@ -14,8 +14,7 @@ import (
 // that is the same song, by one of the video's artists. YouTube Music
 // makes the radio of a video out of videos, and the radio of its song out
 // of songs. It returns ErrNoMatch when YouTube Music has no such song, as
-// for covers, mashups and other uploads. Unlike Match, it remembers
-// nothing.
+// for covers, mashups and other uploads.
 func (m *Matcher) Song(ctx context.Context, video media.Track) (media.Track, error) {
 	query := CleanTitle(video.Title)
 	if len(video.Artists) > 0 {

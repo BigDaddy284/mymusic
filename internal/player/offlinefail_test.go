@@ -1,26 +1,11 @@
 package player
 
 import (
-	"context"
 	"errors"
 	"strings"
 	"testing"
 	"time"
-
-	"github.com/bigdaddy284/mymusic/internal/media"
 )
-
-// fileServices are keptServices whose kept tracks are found again without
-// the network, as a file on this computer or a download is, unless the
-// fake's streamErr fails them, as a file gone.
-type fileServices struct{ keptServices }
-
-func (s fileServices) PrepareStream(ctx context.Context, t media.Track) (Source, error) {
-	if s.kept[t.ID] {
-		return s.fakeServices.PrepareStream(ctx, t)
-	}
-	return s.keptServices.PrepareStream(ctx, t)
-}
 
 func newFileHarness(t *testing.T, net *fakeNet, setup func(*fakeServices), kept ...string) *harness {
 	t.Helper()
@@ -32,7 +17,7 @@ func newFileHarness(t *testing.T, net *fakeNet, setup func(*fakeServices), kept 
 		setup = func(*fakeServices) {}
 	}
 	return newHarnessWith(t, Saved{}, func(f *fakeServices) Services {
-		return fileServices{keptServices{netServices{f, net}, set}}
+		return keptServices{netServices{f, net}, set}
 	}, setup)
 }
 
@@ -62,7 +47,8 @@ func TestKeptTrackFails(t *testing.T) {
 		})
 		t.Run(network+", gone", func(t *testing.T) {
 			longWaits(t, 3)
-			h := newFileHarness(t, newNet(up), func(f *fakeServices) { f.streamErr = errors.New("File not found") }, "a", "b")
+			prepare, tries := foundOnce("yt:a", errors.New("File not found"))
+			h := newFileHarness(t, newNet(up), func(f *fakeServices) { f.prepare = prepare }, "a", "b")
 			h.p.PlayTracks(tracks("a", "b"), 0)
 			h.wait("a playing", playing("a"))
 			h.p.Time(42*time.Second, 200*time.Second)
@@ -72,11 +58,9 @@ func TestKeptTrackFails(t *testing.T) {
 			if n := h.notices(); len(n) != 1 || n[0].Message != "Couldn't play Song a: File not found" {
 				t.Errorf("notices %+v", n)
 			}
-			h.svc.with(func(f *fakeServices) {
-				if f.streamed != 1 {
-					t.Errorf("looked for the file %d times", f.streamed)
-				}
-			})
+			if n := tries(); n != 1 {
+				t.Errorf("looked for the file %d times", n)
+			}
 		})
 	}
 }

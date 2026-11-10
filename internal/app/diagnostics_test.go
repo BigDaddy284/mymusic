@@ -20,7 +20,6 @@ func TestReportURL(t *testing.T) {
 	s := settings.Default()
 	s.Theme = "aurora"
 	s.EnabledPlugins = []string{"sleep-timer"}
-	s.SpotifyClientID = "client-id-of-the-user"
 	file, err := store.Open(filepath.Join(dir, "settings.json"), s)
 	if err != nil {
 		t.Fatal(err)
@@ -47,9 +46,6 @@ func TestReportURL(t *testing.T) {
 		if !strings.Contains(more, want) {
 			t.Errorf("the report lacks %q:\n%s", want, more)
 		}
-	}
-	if strings.Contains(raw, "client-id-of-the-user") {
-		t.Error("the report holds the user's Spotify app")
 	}
 }
 

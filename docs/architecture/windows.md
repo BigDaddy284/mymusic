@@ -13,12 +13,12 @@ belongs to its main thread: what finishes elsewhere comes back through
   tile and shelves read the library as it is, and need no refresh.
 - **Home's arrangement** (`homelayout.go`, `homeshelves.go`,
   `homeedit.go`). Home's shelves come in groups: the user's own, at once,
-  then Spotify's and YouTube Music's, each as its fetch answers, then
+  then YouTube Music's, as its fetch answers, then
   each shelf the user added, on its own. A shelf's key stays the same in
   every language and from day to day (`shelfKeys`): its source and
   `media.Shelf.Key`, which YouTube Music's parser takes from the browse
   ID its header opens, with the parameters of a page of its own (`FE…`),
-  and Spotify's and the library's give by kind; else its title.
+  and the library's gives by kind; else its title.
   `homeShelves` in settings.json lists keys in the user's order, hidden
   or not, and `homePlaces` shows those first, then each group's others in
   the group's order, so that a service's new shelves come after them; a
@@ -125,9 +125,7 @@ belongs to its main thread: what finishes elsewhere comes back through
   with `MoveInPlaylist`; YouTube Music hears of each move after the one
   before, as `ACTION_MOVE_VIDEO_BEFORE`, by the entries' places in the
   playlist (`setVideoId`), and when it refuses one the page reads the
-  playlist again. Spotify's playlists don't move: its API moves items by
-  their positions, which the list of a playlist doesn't keep, as it
-  leaves out what isn't a track.
+  playlist again.
 
 - **Artwork** downloads only for what shows in the window, scaled to the
   size it shows at, and the images shown most recently are kept, up to 48

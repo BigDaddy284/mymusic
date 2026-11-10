@@ -16,11 +16,10 @@ type Episode struct {
 	// service tells.
 	Released string `json:"released,omitempty"`
 	// ResumeMs is where the user left the episode on its service: only
-	// a sign-in tells, and Spotify's one that lets MyMusic read it.
+	// a sign-in tells.
 	ResumeMs int `json:"resumeMs,omitempty"`
 	// ToldAt is when YouTube Music told ResumeMs and Played, as the
-	// episode was read: zero when it told nothing, as signed out, and for
-	// Spotify's, which a place MyMusic keeps of its own always outranks.
+	// episode was read: zero when it told nothing, as signed out.
 	ToldAt time.Time `json:"toldAt,omitzero"`
 	// Played is set once the user heard the episode to its end, as its
 	// service tells.
@@ -35,8 +34,7 @@ type Podcast struct {
 	ID     string `json:"id"`
 	Source Source `json:"source"`
 	Title  string `json:"title"`
-	// Authors are who makes the show, as YouTube Music links its channel:
-	// Spotify has told apps no publisher since February 2026.
+	// Authors are who makes the show, as YouTube Music links its channel.
 	Authors     []Ref   `json:"authors"`
 	Description string  `json:"description,omitempty"`
 	Artwork     []Image `json:"artwork"`

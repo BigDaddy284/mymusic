@@ -141,9 +141,6 @@ func (s *shell) artistLibrary(c *ui.Context) {
 	col := s.svc.Collection
 	accounts := s.accounts()
 	var services []serviceArtists
-	if accounts.Spotify.SignedIn {
-		services = append(services, serviceArtists{"spotify", "Followed on Spotify", fetch(s, "spotify:artists", col.SpotifyArtists)})
-	}
 	if accounts.YouTube.SignedIn {
 		services = append(services, serviceArtists{"youtube", "Followed on YouTube Music", fetch(s, "youtube:artists", col.YouTubeArtists)})
 	}

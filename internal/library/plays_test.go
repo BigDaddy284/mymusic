@@ -12,13 +12,13 @@ func TestPlayCounts(t *testing.T) {
 	if got := l.PlayCounts(); len(got) != 0 {
 		t.Errorf("an empty history counts %v", got)
 	}
-	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("sp:b", media.SourceSpotify, "B")
+	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("file:b", media.SourceFile, "B")
 	for _, p := range []media.Track{a, b, a, a} {
 		if err := l.RecordPlay(p); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if got, want := l.PlayCounts(), map[string]int{"yt:a": 3, "sp:b": 1}; !maps.Equal(got, want) {
+	if got, want := l.PlayCounts(), map[string]int{"yt:a": 3, "file:b": 1}; !maps.Equal(got, want) {
 		t.Errorf("counts = %v, want %v", got, want)
 	}
 	if err := l.ClearHistory(); err != nil {

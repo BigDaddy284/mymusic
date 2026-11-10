@@ -62,12 +62,10 @@ func (p *Player) checkOnline(offline, online func()) {
 
 // wait has the current track wait for the network at at, and play from
 // there once it answers when willPlay. The engine lets go of it
-// meanwhile, and a Spotify device the player left for it pauses: what the
-// device tells of its own track would move this one, or end it.
+// meanwhile.
 func (p *Player) wait(at time.Duration, willPlay bool) {
 	p.loaded = false
 	p.stream.Unload()
-	p.connect.stop(true)
 	p.s.Position = at
 	p.s.Playing, p.s.Loading, p.s.Buffering = false, false, false
 	p.waitFor(willPlay, false, func(play bool) { p.playAt(p.s.Index, p.s.Position, play) })
@@ -209,7 +207,7 @@ func (p *Player) Woke() {
 			if err := n.WaitOnline(ctx); err != nil {
 				return Source{}, err
 			}
-			return p.svc.PrepareStream(ctx, cur.Track)
+			return p.svc.Prepare(ctx, cur.Track)
 		}, func(Source, error) {})
 	})
 }
@@ -217,7 +215,7 @@ func (p *Player) Woke() {
 // Sleeping takes in the computer going to sleep. What MyMusic plays
 // itself pauses, a track that loads stays paused once loaded, and a track
 // that waits for the network doesn't play once it's back: the computer
-// may wake somewhere quiet. A Spotify Connect device elsewhere plays on.
+// may wake somewhere quiet.
 func (p *Player) Sleeping() {
 	p.do(func() {
 		switch {
@@ -226,7 +224,7 @@ func (p *Player) Sleeping() {
 			p.emit(StateChange)
 		case p.s.Loading:
 			p.playAt(p.s.Index, p.s.Position, false)
-		case p.s.Playing && (p.s.Source == nil || p.s.Source.Mode != ModeConnect):
+		case p.s.Playing:
 			p.pause()
 		}
 	})

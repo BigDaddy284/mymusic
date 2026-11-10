@@ -103,7 +103,7 @@ func TestLocalTracksPlay(t *testing.T) {
 	}
 	f.Close()
 	os.Remove(filepath.Join(music, "Shore", "02 Low Water.flac"))
-	if _, err := (&Player{a}).PrepareStream(context.Background(), tracks[1]); !errors.Is(err, errFileMissing) {
+	if _, err := (&Player{a}).Prepare(context.Background(), tracks[1]); !errors.Is(err, errFileMissing) {
 		t.Errorf("a file gone: %v", err)
 	}
 	if !l.Missing(tracks[1].ID) || l.Missing(tracks[0].ID) {
@@ -117,18 +117,12 @@ func TestLocalTracksPlay(t *testing.T) {
 }
 
 // TestLocalTracksGoNowhere sends a track on this computer to no service:
-// no recording of it on YouTube Music, no radio, no cast device, and no
+// no radio, no cast device, and no
 // scrobble without an artist.
 func TestLocalTracksGoNowhere(t *testing.T) {
 	a, _ := localApp(t)
 	scanned(t, a)
 	tr := (&LocalFiles{a}).Tracks()[0]
-	if _, err := a.matcher.Match(context.Background(), tr); err == nil {
-		t.Error("a track on this computer was matched")
-	}
-	if _, ok := a.matcher.Matched(tr); ok {
-		t.Error("a track on this computer has a match")
-	}
 	if _, err := (&Catalog{a}).Radio(context.Background(), tr); err == nil {
 		t.Error("a radio of a track on this computer started")
 	}

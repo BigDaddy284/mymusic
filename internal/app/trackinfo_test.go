@@ -11,7 +11,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/audio"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
@@ -44,7 +43,7 @@ func TestTrackInfoOfAFile(t *testing.T) {
 	f := info.File
 	want := audio.Format{Container: "FLAC", Codec: "FLAC", SampleRate: 44100, BitDepth: 16, Channels: 2, Duration: 200 * time.Millisecond}
 	path := filepath.Join(music, "Shore", "01 Slow Tide.flac")
-	if info.Plays != PlaysEngine || info.Playing || f == nil || f.Kind != FileMusic || f.Path != path || f.Format != want || f.Problem != "" {
+	if info.Playing || f == nil || f.Kind != FileMusic || f.Path != path || f.Format != want || f.Problem != "" {
 		t.Fatalf("info %+v, file %+v", info, f)
 	}
 	fi, err := os.Stat(path)
@@ -74,7 +73,7 @@ func TestTrackInfoOfATrackPlaying(t *testing.T) {
 	if !info.Playing || info.Engine == nil || info.Engine.Format != format || !info.Measured || info.LKFS != -9 || info.Trim != -5 || info.Surround {
 		t.Errorf("playing: %+v, %+v", info, info.Engine)
 	}
-	if info.Recording != nil || info.File != nil {
+	if info.File != nil {
 		t.Errorf("a track of YouTube Music: %+v", info)
 	}
 	// The engine plays another track: a crossfade's, or the next one.
@@ -113,21 +112,14 @@ func TestTrackInfoOfSurround(t *testing.T) {
 	}
 }
 
-// TestTrackInfoOfADownload tells of the download a Spotify track plays
-// from: its recording's audio.
+// TestTrackInfoOfADownload tells of the download a track plays from.
 func TestTrackInfoOfADownload(t *testing.T) {
 	a := newQuietApp(t, nil)
-	st := a.settings.Get()
-	st.SpotifyPlayback = settings.SpotifyPlaybackMatch
-	if err := a.settings.Set(st); err != nil {
-		t.Fatal(err)
-	}
-	rec := ytTrack("eeeeeeeeeee")
-	kept := media.Track{ID: "sp:kept", Source: media.SourceSpotify, Title: "Kept"}
-	withDownloads(t, a, matches{"sp:kept": rec}, kept)
+	kept := ytTrack("eeeeeeeeeee")
+	withDownloads(t, a, kept)
 	a.loudness.keep("eeeeeeeeeee", -20)
 	info := infoOf(t, a, kept, nil)
-	if info.Plays != PlaysEngine || info.Recording == nil || info.Recording.ID != rec.ID || info.File == nil || info.File.Kind != FileDownload {
+	if info.File == nil || info.File.Kind != FileDownload {
 		t.Fatalf("a download: %+v, %+v", info, info.File)
 	}
 	if f := info.File.Format; f.Codec != "Opus" || f.Container != "WebM" || info.File.Tags != nil {
@@ -158,30 +150,6 @@ func TestTrackInfoOfAStream(t *testing.T) {
 	want := TrackStream{Codec: "AAC", Container: "MP4", Bitrate: 129.5, Size: 2000, Duration: 200 * time.Second}
 	if info.Stream == nil || *info.Stream != want {
 		t.Errorf("a stream found: %+v", info.Stream)
-	}
-}
-
-// TestTrackInfoOfSpotify tells of a track Spotify's own player plays,
-// which MyMusic hears nothing of, as the settings ask, and as it plays.
-func TestTrackInfoOfSpotify(t *testing.T) {
-	a := newQuietApp(t, nil)
-	st := a.settings.Get()
-	st.SpotifyPlayback = settings.SpotifyPlaybackConnect
-	if err := a.settings.Set(st); err != nil {
-		t.Fatal(err)
-	}
-	tr := media.Track{ID: "sp:teardrop", Source: media.SourceSpotify, Title: "Teardrop"}
-	if info := infoOf(t, a, tr, nil); info.Plays != PlaysConnect || info.File != nil || info.Stream != nil {
-		t.Errorf("on a device: %+v", info)
-	}
-	if info := infoOf(t, a, tr, &player.Source{Mode: player.ModeSpotify, Track: tr}); info.Plays != PlaysSpotify || !info.Playing {
-		t.Errorf("in MyMusic: %+v", info)
-	}
-	// Played from YouTube Music, as when no device answers.
-	rec := ytTrack("fffffffffff")
-	now := &player.Source{Mode: player.ModeStream, URL: streamURL("fffffffffff"), Track: rec}
-	if info := infoOf(t, a, tr, now); info.Plays != PlaysEngine || info.Recording == nil || info.Recording.ID != rec.ID {
-		t.Errorf("from its recording: %+v", info)
 	}
 }
 

@@ -1,7 +1,7 @@
 package app
 
 // The system's media controls show what MyMusic's own audio engine plays,
-// which they control: a Spotify device shows there what it plays itself.
+// which they control.
 
 import (
 	"errors"

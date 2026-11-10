@@ -27,17 +27,10 @@ func (c *Catalog) ReadOn(ctx context.Context, p media.Playlist, onPage func(medi
 }
 
 func (a *App) readOn(ctx context.Context, p media.Playlist, onPage func(media.Playlist)) (media.Playlist, error) {
-	var read media.PageFunc
-	switch p.Source {
-	case media.SourceYouTube:
-		read = a.youtube.PlaylistPage
-	case media.SourceSpotify:
-		read = a.spotify.PlaylistPage
-	}
-	if read == nil || p.More == "" {
+	if p.Source != media.SourceYouTube || p.More == "" {
 		return p, nil
 	}
-	err := p.ReadOn(ctx, read, onPage)
+	err := p.ReadOn(ctx, a.youtube.PlaylistPage, onPage)
 	return p, err
 }
 

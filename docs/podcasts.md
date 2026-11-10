@@ -1,13 +1,13 @@
 # Podcasts
 <!-- docs: group=using order=40 -->
 
-MyMusic finds and plays podcasts from YouTube Music and Spotify, follows shows, and starts each episode where you left it, here or on another device.
+MyMusic finds and plays podcasts from YouTube Music, follows shows, and starts each episode where you left it, here or on another device.
 
-YouTube Music's podcasts play with no account. Spotify's play [from Spotify itself](spotify.md#how-spotify-tracks-play), which needs Spotify Premium.
+YouTube Music's podcasts play with no account.
 
 ## Find shows and episodes
 
-[Search](playing-music.md#search) for a show or an episode, then choose the Podcasts pivot of the results. It shows the shows found as tiles, then the episodes found, each with its show's name. The services choice above the results keeps both services, only Spotify's or only YouTube Music's. MyMusic asks the services for podcasts only once you open the pivot.
+[Search](playing-music.md#search) for a show or an episode, then choose the Podcasts pivot of the results. It shows the shows found as tiles, then the episodes found, each with its show's name. MyMusic asks YouTube Music for podcasts only once you open the pivot.
 
 - **A show's tile** opens its page. Its play button plays the episode you left partway, or else the newest one. Its menu has Open, Play and Copy link.
 - **An episode's row** plays it, with the episodes after it in the list: double-click the row, or click its cover.
@@ -23,8 +23,6 @@ YouTube Music's podcasts play with no account. Spotify's play [from Spotify itse
 
 ![The page of the Lex Fridman Podcast, a YouTube Music show: its cover, its authors and description, the Play and Following buttons and the More button, then its episodes, newest first, each with the day it came out and its length](shots/show.webp)
 
-A Spotify show's page says so when Spotify tracks play from YouTube Music: Spotify's podcasts play only from Spotify, so choose In MyMusic, from Spotify or On Spotify Connect in [Settings › Playback](playing-music.md#how-spotify-tracks-play).
-
 ## An episode's menu
 
 An episode's menu, from its … button or a right click, has Play, Play next and Add to queue, [Add to liked songs](library.md#liked-songs), [Dislike](playing-music.md#dislikes-and-skipping) and [Add to mix](library.md#mixes), Go to podcast, which opens its show, and Mark as played or Mark as unplayed. Open in its service and Copy link follow. Episodes don't start radios, and they don't download.
@@ -33,12 +31,12 @@ An episode's menu, from its … button or a right click, has Play, Play next and
 
 Follow a show with Follow on its page.
 
-- **[Signed in](accounts.md) to its service,** following saves the show there too: on YouTube Music or on Spotify. Signed out, MyMusic keeps it on its own.
+- **[Signed in](accounts.md) to its service,** following saves the show on YouTube Music too. Signed out, MyMusic keeps it on its own.
 - **A show you saved on the service,** as in another profile or on your phone, says Following on its page, and Following stops following it there too.
 - **[Library](library.md#the-library-page) › Podcasts** lists:
   - **Keep listening:** the episodes you left partway, with how much is left of each;
   - **Following:** the shows you follow in MyMusic;
-  - **Saved on Spotify** and **Saved on YouTube Music:** the shows saved on each service you signed in to, past those you follow here.
+  - **Saved on YouTube Music:** the shows saved there, once you signed in, past those you follow here.
 
 ![Library › Podcasts with three shows under Following: the Lex Fridman Podcast, Dissect and Ongoing History of New Music, each with its cover, its authors and the mark of its service](shots/podcasts.webp)
 
@@ -62,12 +60,6 @@ Signed in to YouTube Music, MyMusic and YouTube Music go on from each other's pl
 - **To your phone:** while an episode plays, MyMusic tells YouTube Music how far you got, as YouTube Music's own player does, so that YouTube Music on your phone goes on from there.
 - **The switch:** ["Add what you play to your history"](accounts.md#your-youtube-music-history), in Settings › Accounts, governs this too. Turned off, or signed out, nothing goes to YouTube Music.
 
-## Spotify's episodes
-
-- **They play only from Spotify,** with ["How Spotify tracks play"](spotify.md#how-spotify-tracks-play) in Settings › Playback set to In MyMusic, from Spotify or On Spotify Connect, either of which needs Spotify Premium. YouTube Music has no recording of them.
-- **Where you left them:** Spotify tells MyMusic where you left an episode on another device. A sign-in to Spotify made before MyMusic had podcasts doesn't allow it: [sign in to Spotify](spotify.md#sign-in) again once, in Settings › Accounts.
-- **Speed:** Spotify plays its episodes at their own speed, so the speed button is dimmed while one plays.
-
 ## Episode details and chapters
 
 Where a song shows its lyrics, an episode shows its details: in the [side panel](lyrics.md#where-lyrics-show), which then says Details (the same button by the player, or Ctrl+Shift+L), and on the now playing page, under the player.
@@ -76,7 +68,7 @@ Where a song shows its lyrics, an episode shows its details: in the [side panel]
 - **Times** in the description, as 12:34 or 1:02:03, play the episode from there.
 - **Links** open in your browser.
 - **Chapters:** lines that start or end with a time are chapters, and the chapter that plays lights up as the episode goes on.
-- **Where they come from:** YouTube Music's Details tab, or Spotify, asked for the first time they show, and kept: a refresh doesn't ask again.
+- **Where they come from:** YouTube Music's Details tab, asked for the first time they show, and kept: a refresh doesn't ask again.
 
 ![Now playing an episode of the Lex Fridman Podcast, at 1:09 of 3:34:26: its cover with the visualizer on the left, and under the player its details: the show, 1.3M views, Oct 26 and 3 hr 34 min, then its description with its links](shots/episode.webp)
 

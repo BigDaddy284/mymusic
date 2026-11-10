@@ -31,7 +31,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/romaji"
 	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 	"github.com/bigdaddy284/mymusic/internal/taskbar"
@@ -113,9 +112,6 @@ type App struct {
 	library      *library.Library
 	positions    *library.Positions
 	youtube      *youtube.Client
-	auth         *spotify.Auth
-	spotify      *spotify.Client
-	tokens       tokenStore
 	lastfmStore  lastfmStore
 	youtubeStore *youtubeStore
 	tools        *tools.Manager
@@ -162,12 +158,6 @@ type App struct {
 	// queue as kept between runs.
 	goPlayer atomic.Pointer[player.Player]
 	queue    *store.File[player.Saved]
-	// listen hears what the player plays outside the engine, with the
-	// player.
-	listen atomic.Pointer[listener]
-	// here is MyMusic's own Spotify device, which the player plays
-	// Spotify tracks on where it can.
-	here spotifyHere
 	// cast is the cast devices found, and the one the player plays on.
 	cast castState
 	// output is the audio output device the engine plays on.
@@ -204,7 +194,6 @@ type App struct {
 	installed  string // the version installed to run at the next start
 	lastfm     *scrobbles
 	youtubeMe  *youtube.Account
-	spotifyMe  *spotify.Profile
 	nowPlaying NowPlaying
 	// started is the ID of the track whose start the reports told last
 	// (startOf).
@@ -240,7 +229,6 @@ type App struct {
 // New opens what the app keeps in opts.DataDir and opts.CacheDir.
 func New(opts Options) (*App, error) {
 	a := &App{opts: opts, lastCrash: opts.LastCrash}
-	a.here.a = a
 	var err error
 	if a.settings, err = store.OpenWith(filepath.Join(opts.DataDir, "settings.json"), settings.Default(), settings.Decode); err != nil {
 		return nil, fmt.Errorf("opening settings: %w", err)
@@ -258,10 +246,9 @@ func New(opts Options) (*App, error) {
 		return nil, fmt.Errorf("opening the update preferences: %w", err)
 	}
 	a.checkUpdates = make(chan struct{}, 1)
-	matches, err := store.Open(filepath.Join(opts.CacheDir, "matches.json"), map[string]media.Track{})
-	if err != nil {
-		return nil, fmt.Errorf("opening matches: %w", err)
-	}
+	// The recordings MyMusic 0.x found on YouTube Music for Spotify
+	// tracks.
+	removeFile(filepath.Join(opts.CacheDir, "matches.json"))
 	loudness, err := store.Open(filepath.Join(opts.CacheDir, "loudness.json"), map[string]float64{})
 	if err != nil {
 		return nil, fmt.Errorf("opening loudness: %w", err)
@@ -273,17 +260,6 @@ func New(opts Options) (*App, error) {
 	s := a.settings.Get().Clean()
 
 	a.youtube = youtube.New()
-	a.auth = spotify.NewAuth(s.SpotifyClientID)
-	a.spotify = spotify.NewClient(a.auth)
-	a.tokens = tokenStore{newSecretStore(opts.DataDir, tokenSecret, "spotify-token.json", "spotify-token.dpapi")}
-	a.spotify.OnToken = func(t spotify.Token) {
-		if err := a.tokens.Save(t); err != nil {
-			log.Printf("mymusic: keeping the Spotify token: %v", err)
-		}
-	}
-	if t, err := a.tokens.Load(); err == nil {
-		a.spotify.SetToken(t)
-	}
 	a.lastfmStore = lastfmStore{newSecretStore(opts.DataDir, lastfmSecret, "lastfm.json", "lastfm.dpapi")}
 	a.openLastfm()
 	a.tools = tools.New(filepath.Join(opts.DataDir, "bin"))
@@ -308,7 +284,7 @@ func New(opts Options) (*App, error) {
 	a.youtubeStore = newYouTubeStore(opts.DataDir)
 	a.openYouTube()
 	a.proxy.Cache = a.cache
-	a.matcher = match.New(a.youtube, matches)
+	a.matcher = match.New(a.youtube)
 	a.labels = newLabelCache(a.youtube.MadeWithAI, aiLabels, time.Now)
 	userAgent := "MyMusic/" + opts.Version + " (https://github.com/bigdaddy284/mymusic)"
 	a.lyrics = lyrics.New(userAgent)
@@ -339,9 +315,6 @@ func (a *App) apply(s settings.Settings) {
 	a.cache.SetLimit(int64(s.CacheSizeMB) << 20)
 	a.downloads.SetMetered(a.metered.Load(), s.DownloadOnMetered)
 	a.followLocalFiles(s)
-	if a.auth.ClientID() != s.SpotifyClientID {
-		a.auth.SetClientID(s.SpotifyClientID)
-	}
 	if mygo.App.IsReady() {
 		a.applyMediaKeys(s.MediaKeys)
 	}
@@ -358,9 +331,6 @@ func (a *App) apply(s settings.Settings) {
 		p.SettingsChanged(s)
 		a.applyEngine(s)
 	}
-	if s.SpotifyPlayback != settings.SpotifyPlaybackHere {
-		a.here.close()
-	}
 	if a.youtube.SignedIn() && a.youtube.Channel() != s.YouTubeChannel {
 		a.youtube.SetChannel(s.YouTubeChannel)
 	}
@@ -368,11 +338,9 @@ func (a *App) apply(s settings.Settings) {
 	a.retitle()
 }
 
-// Bind registers what the page of MyMusic's own Spotify device calls, and
-// the stream scheme, at which the page of the picture of music videos
-// fetches it. It must run before mygo.App.Run.
+// Bind registers the stream scheme, at which the page of the picture of
+// music videos fetches it. It must run before mygo.App.Run.
 func (a *App) Bind() {
-	mygo.Bind(&SpotifyPage{a})
 	a.handleVideo()
 }
 

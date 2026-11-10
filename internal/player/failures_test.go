@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // failedOnce waits for the player to keep n failures, and returns them,
@@ -89,19 +88,15 @@ func (steppedErr) Steps() iter.Seq2[string, string] {
 	}
 }
 
-// TestFailureSteps keeps the steps an error tells, of a Spotify track
-// whose Spotify Connect device couldn't play it, nor YouTube Music.
+// TestFailureSteps keeps the steps an error tells, of a track whose
+// stream YouTube's player API couldn't find, nor yt-dlp.
 func TestFailureSteps(t *testing.T) {
 	h := newHarness(t, Saved{}, func(f *fakeServices) {
-		f.settings.SpotifyPlayback = settings.SpotifyPlaybackConnect
-		f.prepare = onDevice
-		f.streamErr = steppedErr{}
+		f.prepare = func(media.Track) (Source, error) { return Source{}, steppedErr{} }
 	})
-	h.device.playErr = errors.New("no Spotify device is active.")
-	h.p.PlayTracks([]media.Track{spotifyTrack("1")}, 0)
+	h.p.PlayTracks(tracks("1"), 0)
 	f := h.failedOnce(1)
 	want := []Step{
-		{"Spotify Connect", "no Spotify device is active.", 1},
 		{"YouTube's player API", "LOGIN_REQUIRED", 1},
 		{"yt-dlp", "this track is private", 1},
 	}

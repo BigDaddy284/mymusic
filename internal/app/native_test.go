@@ -15,8 +15,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/audio"
 	"github.com/bigdaddy284/mymusic/internal/match"
-	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
@@ -115,18 +113,14 @@ func TestPrepareStreamOfALiveVideo(t *testing.T) {
 		runs.Add(1)
 		return fmt.Appendf(nil, `{"url": "%s/live/index.m3u8", "protocol": "m3u8_native", "live_status": "is_live"}`, server.URL), nil
 	}
-	matches, err := store.Open(filepath.Join(t.TempDir(), "matches.json"), map[string]media.Track{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	a := &App{resolver: r, cache: stream.NewCache(t.TempDir(), 1<<20), matcher: match.New(nil, matches), proxy: stream.NewProxy(r), settings: testSettings(t)}
+	a := &App{resolver: r, cache: stream.NewCache(t.TempDir(), 1<<20), matcher: match.New(nil), proxy: stream.NewProxy(r), settings: testSettings(t)}
 	a.loudness = openBook(t, filepath.Join(t.TempDir(), "loudness.json"), func(context.Context, string) (float64, error) {
 		t.Error("asked how loud a live stream is")
 		return 0, stream.ErrNoLoudness
 	})
 	p := &Player{a: a}
 	for range 2 {
-		src, err := p.PrepareStream(context.Background(), ytTrack("liveRadio01"))
+		src, err := p.Prepare(context.Background(), ytTrack("liveRadio01"))
 		if err != nil || !src.Live || src.Cached || !strings.HasSuffix(src.URL, "/live/liveRadio01") {
 			t.Fatalf("source %+v, %v", src, err)
 		}

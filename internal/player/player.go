@@ -1,7 +1,5 @@
 // Package player plays MyMusic's queue: one queue of tracks of every
-// service, played by MyMusic's own audio engine, or on a Spotify device,
-// a Spotify Connect device or MyMusic itself, as each track needs. It
-// plays as the web interface's player did, of which it is the port.
+// service, played by MyMusic's own audio engine. It plays as the web interface's player did, of which it is the port.
 //
 // One goroutine owns the player's state: commands and the engines' events
 // take turns on it, and what waits on the network, as preparing a track,
@@ -37,12 +35,6 @@ type Mode string
 const (
 	// ModeStream plays a track's audio in MyMusic's own engine.
 	ModeStream Mode = "stream"
-	// ModeConnect plays a Spotify track on a Spotify Connect device.
-	ModeConnect Mode = "connect"
-	// ModeSpotify plays a Spotify track in MyMusic, as a Spotify device of
-	// its own, which needs a web page: the native interface plays it from
-	// YouTube Music instead.
-	ModeSpotify Mode = "spotify"
 )
 
 // Source is how a track plays.
@@ -54,8 +46,7 @@ type Source struct {
 	// place of URL's while the settings ask for 5.1: "" for a track
 	// YouTube has none of.
 	SurroundURL string
-	// Track is the track that plays: for a Spotify track played from
-	// YouTube Music, its recording there.
+	// Track is the track that plays.
 	Track media.Track
 	// Live is set for the stream of a live video, as it goes on: it has no
 	// length, and can't seek.
@@ -129,8 +120,7 @@ type State struct {
 	// ends of itself, but when its broadcast does.
 	Live bool
 	// Speed is the speed the current track plays at, at its own pitch: 1 is
-	// its own speed. What MyMusic's own engine plays takes the settings'
-	// speed of its kind; Spotify plays its own tracks at their own.
+	// its own speed: the settings' speed of its kind.
 	Speed float64
 	// Remote is set while the streams play on a device away from the
 	// computer, as a cast device (SetOutput): Volume and Muted are its own.
@@ -275,10 +265,8 @@ type Offline interface {
 
 // Services are what the player asks of the app.
 type Services interface {
-	// Prepare finds how track plays; PrepareStream how it plays from
-	// YouTube Music.
+	// Prepare finds how track plays.
 	Prepare(ctx context.Context, track media.Track) (Source, error)
-	PrepareStream(ctx context.Context, track media.Track) (Source, error)
 	// StreamFailure tells why the stream of track failed, or "".
 	StreamFailure(track media.Track) string
 	// RecordPlay counts a play of track.
@@ -404,15 +392,10 @@ func savedWindow(n, index int) (from, to int) {
 // Player plays the queue. Its methods are safe for concurrent use, and
 // return at once: the player does what they ask on its own goroutine.
 type Player struct {
-	svc     Services
-	stream  Stream
-	connect *connectEngine
-	// remote is the Spotify Connect device Spotify tracks play on, and
-	// here MyMusic's own Spotify device, nil where it can't play Spotify
-	// itself; connect plays on one of them.
-	remote, here Device
-	ctx          context.Context
-	cancel       context.CancelFunc
+	svc    Services
+	stream Stream
+	ctx    context.Context
+	cancel context.CancelFunc
 
 	mu      sync.Mutex
 	tasks   []func()
@@ -452,8 +435,6 @@ type Player struct {
 	prefetched  string
 	crossfading bool
 	failures    int
-	// warned holds what fellBack told, to tell it once.
-	warned map[string]bool
 	// failed keeps the tracks that couldn't play, and what was tried of
 	// the current one (failures.go).
 	failed failing
@@ -502,10 +483,8 @@ type Player struct {
 	reporting   throttle
 	saving      throttle
 	volumeTimer *time.Timer
-	// spotifyMode is the settings' Spotify playback the current track
-	// started with; skipDisliked and skipAI whether the settings skip the
-	// tracks the user disliked, and those YouTube labels as made with AI.
-	spotifyMode  settings.SpotifyPlayback
+	// skipDisliked and skipAI are whether the settings skip the tracks the
+	// user disliked, and those YouTube labels as made with AI.
 	skipDisliked bool
 	skipAI       bool
 	// passing is what the player keeps of passing over entries as it moves
@@ -527,9 +506,9 @@ type Player struct {
 	engine Stream
 }
 
-// New returns a player of the queue saved, which plays through stream and
-// device. It doesn't play until asked.
-func New(svc Services, stream Stream, device Device, saved Saved) *Player {
+// New returns a player of the queue saved, which plays through stream. It
+// doesn't play until asked.
+func New(svc Services, stream Stream, saved Saved) *Player {
 	p := &Player{
 		svc:       svc,
 		stream:    stream,
@@ -539,12 +518,9 @@ func New(svc Services, stream Stream, device Device, saved Saved) *Player {
 		saving:    throttle{every: saveEvery},
 	}
 	p.ctx, p.cancel = context.WithCancel(context.Background())
-	p.remote = device
-	p.connect = &connectEngine{p: p, device: device, tickEvery: connectTick, askEvery: connectAskEvery, askDefault: connectAskEvery,
-		settle: connectSettle, settleDefault: connectSettle, goOn: connectGoOn}
 	st := svc.Settings()
 	p.s = State{Index: -1, Repeat: RepeatOff, Volume: volume.Of(st.Volume), Speed: 1}
-	p.spotifyMode, p.skipDisliked, p.skipAI = st.SpotifyPlayback, st.SkipDisliked, st.SkipAI
+	p.skipDisliked, p.skipAI = st.SkipDisliked, st.SkipAI
 	p.surround = st.Surround
 	p.curve = st.VolumeCurve
 	if len(saved.Tracks) > 0 {
@@ -593,33 +569,8 @@ func New(svc Services, stream Stream, device Device, saved Saved) *Player {
 	return p
 }
 
-// SpotifyHere has the player play the Spotify tracks that play in
-// MyMusic itself on d, MyMusic's own Spotify device; nil, as at first,
-// has them play from YouTube Music.
-func (p *Player) SpotifyHere(d Device) {
-	p.do(func() {
-		p.here = d
-		// A Spotify track that plays on the device isn't passed over for
-		// the label of its recording on YouTube Music.
-		p.reflag()
-	})
-}
-
-// HereChanged takes in MyMusic's own Spotify device telling that what it
-// plays changed, as its track ended or it went on to the next: the player
-// asks it at once, rather than at its next report.
-func (p *Player) HereChanged() {
-	p.do(func() {
-		if p.here != nil && p.connect.device == p.here {
-			p.connect.changed()
-		}
-	})
-}
-
-// Close stops the player's goroutine and its following of a Spotify
-// device. The engines stay as they are.
+// Close stops the player's goroutine. The engines stay as they are.
 func (p *Player) Close() {
-	p.do(func() { p.connect.stop(false) })
 	p.mu.Lock()
 	p.closed = true
 	p.mu.Unlock()

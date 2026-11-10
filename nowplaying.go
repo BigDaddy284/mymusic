@@ -91,7 +91,7 @@ func (s *shell) related(c *ui.Context, t media.Track) {
 
 // visualizer draws the spectrum of what plays over the foot of the sleeve,
 // in the accent, at every frame while it plays. Where MyMusic hears
-// nothing, as of a Spotify device elsewhere, it draws nothing.
+// nothing, as while it casts, it draws nothing.
 func (s *shell) visualizer(c *ui.Context, size float32) {
 	k := &s.lk
 	ui.Box(c).Absolute().Left(0).Bottom(0).Size(size, size/3).PassThrough().Label("Visualizer").Draw(func(p *ui.Painter, r ui.Rect) {

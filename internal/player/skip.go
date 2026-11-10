@@ -52,9 +52,6 @@ type passState struct {
 // skippedEntry is an entry passed over, and why.
 type skippedEntry struct {
 	uid, title, why string
-	// spotify is set for a Spotify track, of which YouTube labels the
-	// recording on YouTube Music.
-	spotify bool
 }
 
 // move is the player moving on by itself, forward or back, past the
@@ -262,8 +259,7 @@ func (p *Player) passOver(m *move, it Item, why string) {
 	if slices.ContainsFunc(p.passing.skipped, func(s skippedEntry) bool { return s.uid == it.UID }) {
 		return
 	}
-	p.passing.skipped = append(p.passing.skipped, skippedEntry{uid: it.UID, title: it.Track.Title, why: why,
-		spotify: it.Track.Source == media.SourceSpotify})
+	p.passing.skipped = append(p.passing.skipped, skippedEntry{uid: it.UID, title: it.Track.Title, why: why})
 }
 
 // what names what the move m passed over, for its notices: the songs
@@ -284,8 +280,6 @@ func (m *move) what() string {
 func (p *Player) stopMove(m *move, why string) {
 	p.passing.skipped = nil
 	if m.held {
-		// A Spotify device left in the middle of its track pauses.
-		p.connect.stop(true)
 		p.s.Loading, p.s.Buffering = false, false
 		p.stopAtEnd(true)
 	} else {
@@ -344,8 +338,6 @@ func (p *Player) tellSkipped() {
 	}
 	var msg string
 	switch {
-	case len(s) == 1 && s[0].spotify:
-		msg = "Skipped " + s[0].title + ", whose recording on YouTube Music YouTube labels as made with AI"
 	case len(s) == 1:
 		msg = "Skipped " + s[0].title + ", which YouTube labels as made with AI"
 	case ai < len(s):

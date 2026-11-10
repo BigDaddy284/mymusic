@@ -3,7 +3,7 @@
   "version": "0.5.10",
   "private": true,
   "type": "module",
-  "description": "YouTube Music and Spotify client for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.",
+  "description": "YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.",
   "license": "MIT OR GPL-3.0-only",
   "author": "MyMusic contributors",
   "scripts": {

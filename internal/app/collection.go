@@ -2,18 +2,13 @@ package app
 
 import (
 	"context"
-	"errors"
-	"log"
 
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
-var errSpotifyOnly = errors.New("only Spotify tracks can be added to a Spotify playlist")
-
 // Collection is the user's library: liked and disliked tracks and
-// playlists mixing every service, the history, and their Spotify library.
+// playlists mixing every source, and the history.
 type Collection struct{ a *App }
 
 // Liked returns the liked tracks, the last liked first.
@@ -33,35 +28,15 @@ func (c *Collection) LikedIDs() []string {
 	return ids
 }
 
-// SetLiked likes or unlikes a track. Spotify tracks are also saved to, or
-// removed from, the user's Spotify library when they signed in, and YouTube
-// Music tracks liked or unliked on YouTube Music. Liking a disliked track
+// SetLiked likes or unlikes a track, and YouTube Music's on YouTube Music
+// too when the user signed in. Liking a disliked track
 // takes the dislike back; the player hears of that from the caller.
 func (c *Collection) SetLiked(ctx context.Context, track media.Track, liked bool) error {
 	if err := c.a.library.SetLiked(track, liked); err != nil {
 		return err
 	}
 	c.a.syncYouTubeLike(ctx, track, liked)
-	c.a.syncSpotifyLike(ctx, track, liked)
 	return nil
-}
-
-// syncSpotifyLike saves a Spotify track to the user's Spotify library, or
-// removes it, when they signed in.
-func (a *App) syncSpotifyLike(ctx context.Context, track media.Track, liked bool) {
-	if track.Source != media.SourceSpotify || !a.spotify.SignedIn() {
-		return
-	}
-	uri := spotify.TrackURI(track)
-	var err error
-	if liked {
-		err = a.spotify.Save(ctx, uri)
-	} else {
-		err = a.spotify.Remove(ctx, uri)
-	}
-	if err != nil {
-		log.Printf("mymusic: syncing a like with Spotify: %v", err)
-	}
 }
 
 // Disliked returns the disliked tracks, the last disliked first.
@@ -69,18 +44,13 @@ func (c *Collection) Disliked() []media.Track { return c.a.library.Disliked() }
 
 // SetDisliked dislikes a track, or takes the dislike back, in MyMusic's
 // library, and on YouTube Music for its tracks when the user signed in.
-// Spotify takes no dislikes: a Spotify track the dislike unliked leaves
-// the user's Spotify library, as an unlike does. The player hears of the
-// dislike from the caller, which tells it as the user asks.
+// The player hears of the dislike from the caller, which tells it as the
+// user asks.
 func (c *Collection) SetDisliked(ctx context.Context, track media.Track, disliked bool) error {
-	unliked, err := c.a.library.SetDisliked(track, disliked)
-	if err != nil {
+	if _, err := c.a.library.SetDisliked(track, disliked); err != nil {
 		return err
 	}
 	c.a.syncYouTubeDislike(ctx, track, disliked)
-	if unliked {
-		c.a.syncSpotifyLike(ctx, track, false)
-	}
 	return nil
 }
 
@@ -125,27 +95,9 @@ func (c *Collection) DeletePlaylist(id string) error {
 	return nil
 }
 
-// AddToPlaylist appends tracks to a playlist made in MyMusic, or to a
-// Spotify playlist the user may edit.
+// AddToPlaylist appends tracks to a playlist made in MyMusic.
 func (c *Collection) AddToPlaylist(ctx context.Context, id string, tracks []media.Track) error {
-	source, native, err := media.ParseID(id)
-	if err != nil {
-		return err
-	}
-	if source == media.SourceSpotify {
-		var uris []string
-		for _, t := range tracks {
-			if t.Source == media.SourceSpotify {
-				_, tid, _ := media.ParseID(t.ID)
-				uris = append(uris, spotify.URI("track", tid))
-			}
-		}
-		if len(uris) == 0 {
-			return errSpotifyOnly
-		}
-		return c.a.spotify.AddToPlaylist(ctx, native, uris...)
-	}
-	native, err = localID(id)
+	native, err := localID(id)
 	if err != nil {
 		return err
 	}
@@ -202,31 +154,3 @@ func (c *Collection) Searches() []string { return c.a.library.Searches() }
 
 // ClearSearches forgets the recent searches.
 func (c *Collection) ClearSearches() error { return c.a.library.ClearSearches() }
-
-// TrackPage is a page of a long list of tracks.
-type TrackPage struct {
-	Tracks []media.Track `json:"tracks"`
-	Total  int           `json:"total"`
-}
-
-// SpotifyLikedTracks returns a page of the user's liked songs on Spotify.
-func (c *Collection) SpotifyLikedTracks(ctx context.Context, offset int) (TrackPage, error) {
-	tracks, total, err := c.a.spotify.SavedTracks(ctx, offset)
-	return TrackPage{Tracks: tracks, Total: total}, err
-}
-
-// SpotifyPlaylists returns the playlists the user made or follows on
-// Spotify.
-func (c *Collection) SpotifyPlaylists(ctx context.Context) ([]media.Playlist, error) {
-	return c.a.spotify.MyPlaylists(ctx, c.a.spotifyUserID(ctx))
-}
-
-// SpotifyAlbums returns the albums the user saved on Spotify.
-func (c *Collection) SpotifyAlbums(ctx context.Context) ([]media.Album, error) {
-	return c.a.spotify.SavedAlbums(ctx)
-}
-
-// SpotifyArtists returns the artists the user follows on Spotify.
-func (c *Collection) SpotifyArtists(ctx context.Context) ([]media.Artist, error) {
-	return c.a.spotify.FollowedArtists(ctx)
-}

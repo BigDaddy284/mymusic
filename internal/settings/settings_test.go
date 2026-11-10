@@ -24,10 +24,9 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 			FontScale: 5,
 		},
 		Playback: Playback{
-			SpotifyPlayback: "nonsense",
-			Crossfade:       60,
-			Volume:          -1,
-			Equalizer:       Equalizer{Gains: []float64{99, -99}},
+			Crossfade: 60,
+			Volume:    -1,
+			Equalizer: Equalizer{Gains: []float64{99, -99}},
 		},
 		Tools: Tools{JSRuntime: "python"},
 		Addons: Addons{
@@ -35,7 +34,7 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 		},
 		Accounts: Accounts{YouTubeChannel: "1234; x"},
 	}.Clean()
-	if s.Theme != DefaultTheme || s.Accent != "" || s.FontScale != 1 || s.SpotifyPlayback != Default().SpotifyPlayback {
+	if s.Theme != DefaultTheme || s.Accent != "" || s.FontScale != 1 {
 		t.Errorf("appearance and playback not repaired: %+v", s)
 	}
 	if s.Crossfade != 12 || s.Volume != 0 || len(s.Equalizer.Gains) != len(Bands) {
@@ -127,15 +126,6 @@ func TestGlobalShortcutsClean(t *testing.T) {
 	}
 	if n := len(s.Clean().GlobalShortcuts); n != 32 {
 		t.Errorf("%d of 40 global shortcuts kept, want 32", n)
-	}
-}
-
-func TestDefaultSpotifyPlayback(t *testing.T) {
-	if got := Default().SpotifyPlayback; got != SpotifyPlaybackHere {
-		t.Errorf("Default().SpotifyPlayback = %q, want %q", got, SpotifyPlaybackHere)
-	}
-	if c := (Settings{Playback: Playback{SpotifyPlayback: SpotifyPlaybackHere}}).Clean(); c.SpotifyPlayback != SpotifyPlaybackHere {
-		t.Errorf("Clean dropped playback here: %q", c.SpotifyPlayback)
 	}
 }
 

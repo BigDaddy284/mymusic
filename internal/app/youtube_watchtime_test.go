@@ -223,7 +223,7 @@ func TestWatchtimeEndsFirst(t *testing.T) {
 }
 
 // TestWatchtimeNotSent sends nothing signed out, with the history setting
-// off, or once it turns off, nor of a song or a Spotify episode.
+// off, or once it turns off, nor of a song or a live stream.
 func TestWatchtimeNotSent(t *testing.T) {
 	play := func(w *watching) {
 		w.at(0, episodeNow(60, true))
@@ -263,13 +263,12 @@ func TestWatchtimeNotSent(t *testing.T) {
 		t.Errorf("after the setting turned off: %d reports, then %d", sent, len(got))
 	}
 
-	// A song, a live stream and a Spotify episode aren't followed.
+	// A song and a live stream aren't followed.
 	w = newWatching(t, true, true)
 	song := media.Track{ID: "yt:song", Source: media.SourceYouTube, Title: "A made-up song", DurationMs: 200000}
 	live := episodeNow(60, true)
 	live.Live = true
-	sp := spotifyEpisode
-	for _, np := range []NowPlaying{{Track: &song, Playing: true, PositionMs: 60000}, live, {Track: &sp, Playing: true, PositionMs: 60000}} {
+	for _, np := range []NowPlaying{{Track: &song, Playing: true, PositionMs: 60000}, live} {
 		w.at(0, np)
 		w.a.watchtime.mu.Lock()
 		cur := w.a.watchtime.cur

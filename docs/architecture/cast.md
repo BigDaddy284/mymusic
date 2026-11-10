@@ -38,7 +38,7 @@ cover on a screen.
   there, where it was, playing or paused as it was. On a cast device the
   volume is the device's, which the settings don't keep, and tracks don't
   crossfade: it plays one stream at a time, and the player sends the next
-  as one ends. Spotify tracks that play on a Spotify device stay there.
+  as one ends.
 - **The app** (`internal/app/cast*.go`) looks for devices a few seconds
   after start, then every 45 s and as the cast menu opens, and lists those
   seen in the last 3 minutes. `castOut` turns the player's stream commands

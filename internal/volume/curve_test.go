@@ -38,22 +38,6 @@ func TestLinear(t *testing.T) {
 	}
 }
 
-// TestShare sends a Spotify Connect device the square root of the gain on
-// each curve: on Natural, what Saved keeps, as before.
-func TestShare(t *testing.T) {
-	for p := 0.0; p <= 1; p += 0.05 {
-		if Natural.Share(p) != Saved(p) {
-			t.Errorf("at %.2f, Natural sends %v, not %v", p, Natural.Share(p), Saved(p))
-		}
-		if s := Linear.Share(p); math.Abs(s*s-Linear.Gain(p)) > 1e-12 {
-			t.Errorf("at %.2f, Linear sends %v for a gain of %v", p, s, Linear.Gain(p))
-		}
-	}
-	if s := Linear.Share(0.5); math.Abs(s-0.707) > 0.001 {
-		t.Errorf("Linear's middle sends Spotify Connect %.3f, want 0.707", s)
-	}
-}
-
 // TestSavedWhateverTheCurve keeps a position as settings.json keeps it
 // whatever the curve: changing the curve leaves the slider where it was.
 func TestSavedWhateverTheCurve(t *testing.T) {

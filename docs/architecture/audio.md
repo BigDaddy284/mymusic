@@ -46,18 +46,9 @@
   `outputMenu` in the root package's `outputdevice.go` show the choice.
   `MYMUSIC_AUDIO=1 go test ./internal/audio/output -run TestStream`
   plays on the default device by its ID, and on one that isn't there.
-  It also hears what a process and its children play, through WASAPI's
-  process loopback: `internal/app`'s listener hears
-  Spotify there, in MyMusic's webview, or the Spotify app on Windows,
-  into a `Tap`, the analyser of the engine for audio outside it, which
-  the visualizer and the plugins' analyser read while Spotify plays. It
-  hears only while they read it.
 - **`internal/volume`** has the volume's curves, which Settings › Playback
   › Volume chooses between (#383): Natural, each tenth of the slider 6 dB
   down to -40 dB, and Linear, whose gain is the slider's position. The
   player keeps the position, as settings.json does whatever the curve
   (`Saved`, `Of`). The app gives the engine the curve
-  (`Engine.SetVolumeCurve`, in `applyEngine`), Spotify's page in MyMusic
-  the gain of the position on it (`hereDevice.gain`), and a Spotify
-  Connect device the square root of that gain (`connectPercent`). As the
-  curve changes, the player sends the device that plays the volume again.
+  (`Engine.SetVolumeCurve`, in `applyEngine`).

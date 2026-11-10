@@ -61,12 +61,3 @@ func TestWebLink(t *testing.T) {
 		}
 	}
 }
-
-// TestPlainText reads HTML as plain text: lines at its paragraphs and
-// breaks, no tags, and its entities as characters.
-func TestPlainText(t *testing.T) {
-	got := PlainText(`<p>Owls &amp; bats</p><p>Part one<br/>at <a href="https://example.com">our site</a> &lt;3</p>`)
-	if want := "Owls & bats\nPart one\nat our site <3"; got != want {
-		t.Errorf("PlainText = %q, want %q", got, want)
-	}
-}

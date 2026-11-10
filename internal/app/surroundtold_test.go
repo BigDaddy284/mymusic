@@ -34,7 +34,7 @@ func TestSurroundToldReachesThePlayer(t *testing.T) {
 	}
 	stream := &quietStream{}
 	svc := toldServices{endingServices{offlineServices{playerServices{a}}, &plays{}}}
-	p := player.New(svc, stream, connectDevice{a}, player.Saved{})
+	p := player.New(svc, stream, player.Saved{})
 	stream.p.Store(p)
 	a.goPlayer.Store(p)
 	t.Cleanup(func() {

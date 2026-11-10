@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"slices"
 
 	"github.com/egoist/mygo/ui"
 
@@ -14,7 +13,7 @@ import (
 var librarySections = []struct{ id, label string }{
 	{"liked", "Liked"}, {"mixes", "Mixes"}, {"podcasts", "Podcasts"}, {"artists", "Artists"}, {"downloads", "Downloads"},
 	{"computer", "On this computer"}, {"history", "History"},
-	{"disliked", "Disliked"}, {"spotify", "Spotify"}, {"youtube", "YouTube Music"},
+	{"disliked", "Disliked"}, {"youtube", "YouTube Music"},
 }
 
 // libraryPage shows liked songs, the user's mixes, the history, the songs
@@ -25,7 +24,7 @@ func (s *shell) libraryPage(c *ui.Context, tab string) {
 	disliked := s.svc.Collection.Disliked()
 	var ids, labels []string
 	for _, sec := range librarySections {
-		if (sec.id == "spotify" && !accounts.Spotify.SignedIn) || (sec.id == "youtube" && !accounts.YouTube.SignedIn) ||
+		if (sec.id == "youtube" && !accounts.YouTube.SignedIn) ||
 			(sec.id == "disliked" && len(disliked) == 0) {
 			continue
 		}
@@ -82,8 +81,6 @@ func (s *shell) libraryPage(c *ui.Context, tab string) {
 			s.history(c)
 		case "disliked":
 			s.dislikedSongs(c, disliked)
-		case "spotify":
-			s.spotifyLibrary(c)
 		case "youtube":
 			s.youtubeLibrary(c)
 		}
@@ -100,7 +97,7 @@ func (s *shell) likedSongs(c *ui.Context) {
 	liked := s.svc.Collection.Liked()
 	if len(liked) == 0 {
 		ui.Text(c, k.words("Nothing liked yet")).FontSize(k.bigSize()).FontWeight(k.displayWeight()).Font(k.display).TextColor(k.accent)
-		ui.Text(c, "Tap the heart on any track, from Spotify or YouTube Music: they all gather here, in one list.").
+		ui.Text(c, "Tap the heart on any track, on YouTube Music or on this computer: they all gather here, in one list.").
 			FontSize(k.subtitleSize()).FontWeight(k.leadWeight()).MaxWidth(640)
 		return
 	}
@@ -264,57 +261,6 @@ func (s *shell) serviceLibrary(c *ui.Context, key string,
 		})
 	}
 	liked(c)
-}
-
-func (s *shell) spotifyLibrary(c *ui.Context) {
-	col := s.svc.Collection
-	s.serviceLibrary(c, "spotify",
-		fetch(s, "spotify:playlists", col.SpotifyPlaylists),
-		fetch(s, "spotify:albums", col.SpotifyAlbums),
-		fetch(s, "spotify:artists", col.SpotifyArtists),
-		func(c *ui.Context) {
-			s.sectionTitle(c, "Liked on Spotify")
-			first := fetch(s, "spotify:liked", func(ctx context.Context) (app.TrackPage, error) { return col.SpotifyLikedTracks(ctx, 0) })
-			switch {
-			case !first.done:
-				s.loading(c)
-				return
-			case first.err != nil:
-				s.problem(c, first.err, func() { s.forget("spotify:liked") })
-				return
-			}
-			// The pages loaded past the first follow the first page that
-			// came last: one of a refresh, a try again or another account
-			// starts the list again.
-			if s.spotifyLikedOf != first || s.spotifyLikedAt != first.answers {
-				s.spotifyLiked, s.spotifyLikedOf, s.spotifyLikedAt = slices.Clip(first.value.Tracks), first, first.answers
-			}
-			tracks := s.spotifyLiked
-			s.trackList(c, "spotify-liked", tracks, trackListOptions{art: true, album: true, empty: "No liked songs on Spotify."})
-			if len(tracks) < first.value.Total {
-				label := "load more · " + count(len(tracks)) + " of " + count(first.value.Total)
-				if s.button(c, "spotify-more", label, false).Disabled(s.loadingMore).Clicked() {
-					s.loadingMore = true
-					go func(at, offset int) {
-						page, err := col.SpotifyLikedTracks(context.Background(), offset)
-						s.update(func() { s.tookSpotifyLiked(first, at, page, err) })
-					}(first.answers, len(tracks))
-				}
-			}
-		})
-}
-
-// tookSpotifyLiked adds a page of liked songs on Spotify that load more
-// brought, unless the first page it came after is gone: answer at of
-// first.
-func (s *shell) tookSpotifyLiked(first *loaded[app.TrackPage], at int, page app.TrackPage, err error) {
-	s.loadingMore = false
-	switch {
-	case err != nil:
-		s.notes = append(s.notes, noticeOf(err))
-	case s.spotifyLikedOf == first && s.spotifyLikedAt == at:
-		s.spotifyLiked = append(s.spotifyLiked, page.Tracks...)
-	}
 }
 
 func (s *shell) youtubeLibrary(c *ui.Context) {

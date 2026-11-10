@@ -116,7 +116,6 @@ func (s *shell) podcastPage(c *ui.Context, id string) {
 	p := res.value
 	pages := s.episodesOf(key, res)
 	episodes := pages.episodes
-	k := &s.lk
 	s.pageScroll(c, func() {
 		s.pageHeader(c, p.Title, nil, nil)
 		facts := []fact{{text: "podcast"}, {artists: p.Authors}}
@@ -137,13 +136,6 @@ func (s *shell) podcastPage(c *ui.Context, id string) {
 			}
 		}
 		s.collectionHead(c, h)
-		if p.Source == media.SourceSpotify && !s.svc.Catalog.SpotifyEpisodesPlay() {
-			ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 16).Children(func() {
-				ui.Text(c, "Spotify's podcasts play only from Spotify: choose In MyMusic, from Spotify or On Spotify Connect in ")
-				s.linkOf(c, "Settings › Playback", "/settings/playback")
-				ui.Text(c, ".")
-			})
-		}
 		s.episodeList(c, "episodes", episodes, episodeListOptions{empty: "No episodes yet."})
 		if pages.more != "" {
 			ui.Row(c).Margin(16, 0, 0).Children(func() {
@@ -210,11 +202,7 @@ func (s *shell) followPodcast(key string, p media.Podcast, saved *bool, on bool)
 // savedOn returns the podcasts the user saved on the service source, asked
 // for once for Library › Podcasts and the shows' pages.
 func (s *shell) savedOn(source media.Source) *loaded[[]media.Podcast] {
-	get := s.svc.Collection.YouTubePodcasts
-	if source == media.SourceSpotify {
-		get = s.svc.Collection.SpotifyPodcasts
-	}
-	return fetch(s, string(source)+":podcasts", get)
+	return fetch(s, string(source)+":podcasts", s.svc.Collection.YouTubePodcasts)
 }
 
 // savedChanged writes into the podcasts saved on p's service, as fetched,
@@ -486,17 +474,7 @@ func (s *shell) mergedPodcasts(res *loaded[app.PodcastSearch]) media.PodcastResu
 	m := &s.podcasts.search
 	if m.of != res || m.at != res.answers || m.scope != s.searchScope {
 		m.of, m.at, m.scope = res, res.answers, s.searchScope
-		switch r := res.value; s.searchScope {
-		case 1:
-			m.merged = r.Spotify
-		case 2:
-			m.merged = r.YouTube
-		default:
-			m.merged = media.PodcastResults{
-				Podcasts: interleave(r.Spotify.Podcasts, r.YouTube.Podcasts),
-				Episodes: interleave(r.Spotify.Episodes, r.YouTube.Episodes),
-			}
-		}
+		m.merged = res.value.YouTube
 	}
 	return m.merged
 }
@@ -527,7 +505,7 @@ func (s *shell) podcastLibrary(c *ui.Context) {
 	following := s.svc.Collection.Podcasts()
 	if len(following) == 0 {
 		ui.Text(c, k.words("Nothing followed yet")).FontSize(k.bigSize()).FontWeight(k.displayWeight()).Font(k.display).TextColor(k.accent)
-		ui.Text(c, "Follow a podcast from its page, from Spotify or YouTube Music, and it waits here.").
+		ui.Text(c, "Follow a podcast from its page, from YouTube Music, and it waits here.").
 			FontSize(k.subtitleSize()).FontWeight(k.leadWeight()).MaxWidth(640).Margin(0, 0, 48)
 	} else {
 		s.sectionTitle(c, "Following")
@@ -540,9 +518,6 @@ func (s *shell) podcastLibrary(c *ui.Context) {
 		})
 	}
 	accounts := s.accounts()
-	if accounts.Spotify.SignedIn {
-		s.savedPodcasts(c, "spotify", "Saved on Spotify", s.savedOn(media.SourceSpotify))
-	}
 	if accounts.YouTube.SignedIn {
 		s.savedPodcasts(c, "youtube", "Saved on YouTube Music", s.savedOn(media.SourceYouTube))
 	}

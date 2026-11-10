@@ -62,7 +62,7 @@ type homeShelf struct {
 }
 
 // homeGroups returns Home's groups in their own order: the user's own
-// shelves, then Spotify's and YouTube Music's, then those the user added
+// shelves, then YouTube Music's, then those the user added
 // in layout, which show only where they put them.
 func (s *shell) homeGroups(layout []settings.HomeShelf) []*homeGroup {
 	yours := &homeGroup{key: "home-yours", done: true}
@@ -86,7 +86,6 @@ func (s *shell) homeGroups(layout []settings.HomeShelf) []*homeGroup {
 		key    string
 		get    func(ctx context.Context) ([]media.Shelf, error)
 	}{
-		{media.SourceSpotify, "home:spotify", s.svc.Catalog.SpotifyHome},
 		{media.SourceYouTube, "home:youtube", s.svc.Catalog.YouTubeHome},
 	} {
 		l := fetch(s, sv.key, sv.get)

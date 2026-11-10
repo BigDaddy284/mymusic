@@ -124,7 +124,7 @@ func TestPlayerVideo(t *testing.T) {
 	for _, other := range []media.Track{
 		{ID: "yt:w3XzgjlKFjc", Source: media.SourceYouTube, Title: "a song"},
 		{ID: "yt:w3XzgjlKFjc", Source: media.SourceYouTube, Title: "an episode", Video: true, VideoType: "MUSIC_VIDEO_TYPE_PODCAST_EPISODE"},
-		{ID: media.ID(media.SourceSpotify, "abc"), Source: media.SourceSpotify, Title: "a Spotify track", Video: true},
+		{ID: media.ID(media.SourceFile, "abc"), Source: media.SourceFile, Title: "a file", Video: true},
 	} {
 		if _, err := p.Video(context.Background(), other, 630, 354, []string{"vp9"}); !errors.Is(err, errNotMusicVideo) {
 			t.Errorf("%s: %v", other.Title, err)

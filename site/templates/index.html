@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MyMusic: Spotify and YouTube Music in one desktop player</title>
-  <meta name="description" content="A free, open-source desktop player for Windows: one search, queue and library for Spotify and YouTube Music, with lyrics and podcasts." />
+  <title>MyMusic: YouTube Music and your own music in one desktop player</title>
+  <meta name="description" content="A free, open-source desktop player for Windows: one search, queue and library for YouTube Music and the music on your computer, with lyrics and podcasts." />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fff8f8" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
@@ -14,8 +14,8 @@
   {%- set base = config.extra.canonical_url | trim_end(pat='/') %}
   {%- set root = base ~ "/" %}
   {%- set image = base ~ "/assets/og.jpg" %}
-  {%- set social_title = "MyMusic: Spotify and YouTube Music in one desktop player" %}
-  {%- set social_description = "One search, one queue and one library across Spotify and YouTube Music, with lyrics, podcasts and downloads, in a free, open-source desktop player you can theme and extend." %}
+  {%- set social_title = "MyMusic: YouTube Music and your own music in one desktop player" %}
+  {%- set social_description = "One search, one queue and one library across YouTube Music and the music on your computer, with lyrics, podcasts and downloads, in a free, open-source desktop player you can theme and extend." %}
   {%- set social_url = root %}
   {%- set social_kind = "website" %}
   {%- set social_base = base %}
@@ -25,7 +25,7 @@
     {"@type": "SoftwareApplication",
      "name": "MyMusic",
      "url": {{ root | json_encode | safe }},
-     "description": "A free, open-source desktop player for Spotify and YouTube Music: one search, one queue and one library across both, with synced lyrics, podcasts, downloads, themes and plugins.",
+     "description": "A free, open-source desktop player for YouTube Music and the music on your computer: one search, one queue and one library across both, with synced lyrics, podcasts, downloads, themes and plugins.",
      "applicationCategory": "MultimediaApplication",
      "operatingSystem": "Windows 10 and 11",
      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -135,8 +135,8 @@
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <h1 id="hero-title">Spotify and YouTube&nbsp;Music <br class="hero-break" />in one player.</h1>
-        <p class="hero-sub">One search across both services, one queue that mixes them and one library that keeps them, with synced lyrics, podcasts and downloads, in a free, open-source desktop player you can theme and extend.</p>
+        <h1 id="hero-title">YouTube&nbsp;Music and your music <br class="hero-break" />in one player.</h1>
+        <p class="hero-sub">One search across YouTube Music and your own files, one queue that mixes them and one library that keeps them, with synced lyrics, podcasts and downloads, in a free, open-source desktop player you can theme and extend.</p>
         <div class="actions">
           <a class="btn btn-filled btn-large" data-download href="https://github.com/bigdaddy284/mymusic/releases/latest">
             <svg class="icon" width="20" height="20" aria-hidden="true"><use href="#i-download" /></svg>
@@ -169,7 +169,7 @@
               </div>
               <label class="app-search">
                 <svg width="18" height="18" aria-hidden="true"><use href="#a-search" /></svg>
-                <input type="search" placeholder="Search Spotify and YouTube Music" autocomplete="off" spellcheck="false" aria-label="Search the songs of this demo" data-search />
+                <input type="search" placeholder="Search YouTube Music and your music" autocomplete="off" spellcheck="false" aria-label="Search the songs of this demo" data-search />
               </label>
               <span class="app-hint" aria-hidden="true" data-mod-hint>Ctrl+K</span>
             </header>
@@ -307,22 +307,22 @@
     <section class="merge" id="one-queue" aria-labelledby="merge-title" data-merge>
       <div class="merge-sticky">
         <div class="merge-head">
-          <h2 id="merge-title">Two services, one queue</h2>
-          <p class="lead">Your Spotify tracks and your YouTube Music tracks no longer need two apps. They line up in one queue, in the order you choose.</p>
+          <h2 id="merge-title">Your music and YouTube Music, one queue</h2>
+          <p class="lead">The music on your computer and YouTube Music's no longer need two apps. They line up in one queue, in the order you choose.</p>
           <p class="merge-note">The tracks and covers here are made up for this page.</p>
         </div>
         <div class="merge-stage" data-merge-stage>
-          <p class="merge-label merge-label-spotify" aria-hidden="true"><span class="mark mark-spotify"></span>Spotify</p>
+          <p class="merge-label merge-label-file" aria-hidden="true"><span class="mark mark-file"></span>This computer</p>
           <p class="merge-label merge-label-youtube" aria-hidden="true"><span class="mark mark-youtube"></span>YouTube Music</p>
           <p class="merge-label merge-label-queue" aria-hidden="true"><svg class="icon" width="16" height="16"><use href="#i-queue" /></svg>Up next in MyMusic</p>
-          <ol class="merge-list" aria-label="One queue of Spotify and YouTube Music tracks (made up for this page)">
-            <li class="merge-row" data-src="spotify" style="--row-art: #ec8051"><img src="assets/covers/cover-2.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Paper Planets</strong><span><span class="mark mark-spotify" aria-hidden="true"></span>Velvet Ferries</span></span></li>
+          <ol class="merge-list" aria-label="One queue of tracks on this computer and on YouTube Music (made up for this page)">
+            <li class="merge-row" data-src="file" style="--row-art: #ec8051"><img src="assets/covers/cover-2.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Paper Planets</strong><span><span class="mark mark-file" aria-hidden="true"></span>Velvet Ferries</span></span></li>
             <li class="merge-row" data-src="youtube" style="--row-art: #52e4ea"><img src="assets/covers/cover-1.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Neon Tide</strong><span><span class="mark mark-youtube" aria-hidden="true"></span>Kaori Ume</span></span></li>
-            <li class="merge-row" data-src="spotify" style="--row-art: #7769d3"><img src="assets/covers/cover-3.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Slow Static</strong><span><span class="mark mark-spotify" aria-hidden="true"></span>Mira Vale</span></span></li>
+            <li class="merge-row" data-src="file" style="--row-art: #7769d3"><img src="assets/covers/cover-3.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Slow Static</strong><span><span class="mark mark-file" aria-hidden="true"></span>Mira Vale</span></span></li>
             <li class="merge-row" data-src="youtube" style="--row-art: #d96472"><img src="assets/covers/cover-4.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Kitsune Run</strong><span><span class="mark mark-youtube" aria-hidden="true"></span>Hoshino Club</span></span></li>
-            <li class="merge-row" data-src="spotify" style="--row-art: #92d369"><img src="assets/covers/cover-5.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Glass Garden</strong><span><span class="mark mark-spotify" aria-hidden="true"></span>Juniper Lane</span></span></li>
+            <li class="merge-row" data-src="file" style="--row-art: #92d369"><img src="assets/covers/cover-5.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Glass Garden</strong><span><span class="mark mark-file" aria-hidden="true"></span>Juniper Lane</span></span></li>
             <li class="merge-row" data-src="youtube" style="--row-art: #e99453"><img src="assets/covers/cover-6.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Afterglow Avenue</strong><span><span class="mark mark-youtube" aria-hidden="true"></span>Oriel Bloom</span></span></li>
-            <li class="merge-row" data-src="spotify" style="--row-art: #5181ec"><img src="assets/covers/cover-7.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Little Satellites</strong><span><span class="mark mark-spotify" aria-hidden="true"></span>Coral &amp; the Comets</span></span></li>
+            <li class="merge-row" data-src="file" style="--row-art: #5181ec"><img src="assets/covers/cover-7.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Little Satellites</strong><span><span class="mark mark-file" aria-hidden="true"></span>Coral &amp; the Comets</span></span></li>
             <li class="merge-row" data-src="youtube" style="--row-art: #51a8ec"><img src="assets/covers/cover-8.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Summer Signal</strong><span><span class="mark mark-youtube" aria-hidden="true"></span>Aoi Kanata</span></span></li>
           </ol>
         </div>
@@ -331,8 +331,8 @@
 
     <section class="section" id="features" aria-labelledby="features-title">
       <div class="section-head">
-        <h2 id="features-title">One player for both services</h2>
-        <p class="lead">Every page of MyMusic works across Spotify and YouTube Music. Pick one to see it.</p>
+        <h2 id="features-title">One player for all your music</h2>
+        <p class="lead">Every page of MyMusic works across YouTube Music and the music on your computer. Pick one to see it.</p>
       </div>
 
       <div class="tabs" data-tabs style="--glow: #d671a1">
@@ -352,24 +352,24 @@
           </figure>
 
           <div class="panel" role="tabpanel" id="panel-search" aria-labelledby="tab-search" data-shot="search" data-alt="MyMusic's search page for YOASOBI: pivots for songs, videos, albums, artists, playlists and podcasts, and the songs YouTube Music finds, each marked with its service.">
-            <h3>One search box for both services</h3>
-            <p>Suggestions come as you type, and the songs, albums, artists, playlists and podcasts of Spotify and YouTube Music land in the same lists, each with a mark of where it comes from. YouTube's videos, such as DJ sets and live recordings, have a list of their own.</p>
+            <h3>One search box for all of it</h3>
+            <p>Suggestions come as you type, and the songs, albums, artists, playlists and podcasts of YouTube Music and the music on your computer land in the same lists, each with a mark of where it comes from. YouTube's videos, such as DJ sets and live recordings, have a list of their own.</p>
             <ul class="marks">
-              <li><span class="mark mark-spotify" aria-hidden="true"></span>A disc for Spotify</li>
+              <li><span class="mark mark-file" aria-hidden="true"></span>A ring for the music on your computer</li>
               <li><span class="mark mark-youtube" aria-hidden="true"></span>A square for YouTube Music</li>
             </ul>
-            <p class="note">YouTube Music needs no account. Spotify joins the same search once you sign in with an app of your own; <a href="{{ get_url(path='@/docs/spotify/index.md') }}">the guide</a> takes two minutes.</p>
+            <p class="note">YouTube Music needs no account. Add your music folders in Settings, and their songs join the same search; <a href="{{ get_url(path='@/docs/local-music/index.md') }}">the guide</a> tells how.</p>
           </div>
 
-          <div class="panel" role="tabpanel" id="panel-queue" aria-labelledby="tab-queue" data-shot="home" data-alt="MyMusic's home page: Jump back in, Add Spotify, Liked songs and Your mixes as rounded cards, and Recently played under them." hidden>
-            <h3>Tracks of both, in one queue</h3>
-            <p>Play next or add to the queue from any track, album or playlist, then drag to reorder. Shuffle, repeat, crossfade and speed work across both services, a radio carries on when the queue runs out, and the songs you dislike are passed over.</p>
-            <p class="note">With Premium, Spotify tracks play in MyMusic, one after another without a gap, or on a Spotify Connect device. Without it, MyMusic plays their recording from YouTube Music. A cast button sends what plays to a Chromecast or a Google speaker on your network.</p>
+          <div class="panel" role="tabpanel" id="panel-queue" aria-labelledby="tab-queue" data-shot="now-playing" data-alt="MyMusic's now playing page for アイドル, its synced lyrics beside the cover, and Up next listing the tracks that follow." hidden>
+            <h3>All your tracks, in one queue</h3>
+            <p>Play next or add to the queue from any track, album or playlist, then drag to reorder. Shuffle, repeat, crossfade and speed work across all of them, a radio carries on when the queue runs out, and the songs you dislike are passed over.</p>
+            <p class="note">Tracks play in MyMusic's own audio engine, one after another without a gap. A cast button sends what plays to a Chromecast or a Google speaker on your network.</p>
           </div>
 
           <div class="panel" role="tabpanel" id="panel-library" aria-labelledby="tab-library" data-shot="liked" data-alt="The library's liked songs, with Play, Shuffle and Download, and pivots for mixes, podcasts, downloads and history." hidden>
             <h3>Liked songs, mixes, podcasts and downloads</h3>
-            <p>Like songs from either service and keep them together. Mixes hold tracks of both, and a Spotify or YouTube Music playlist imports into one. Library › Podcasts keeps the shows you follow, and Library › Downloads what plays without the network.</p>
+            <p>Like songs from YouTube Music or your computer and keep them together. Mixes hold tracks of both, and a YouTube Music playlist imports into one. Library › Podcasts keeps the shows you follow, and Library › Downloads what plays without the network.</p>
             <p class="note">Your history and listening stats, day by day, sit beside them. Playlists of up to 20,000 tracks load in full.</p>
           </div>
 
@@ -396,9 +396,9 @@
             <p class="note">Every key is yours to change, and global shortcuts of your own work from any app. The tray, media keys, notifications, a mini player and start at login do the everyday work while the window stays closed.</p>
           </div>
 
-          <div class="panel" role="tabpanel" id="panel-accounts" aria-labelledby="tab-accounts" data-shot="accounts" data-alt="Settings › Accounts, with the four steps to sign in to Spotify." hidden>
+          <div class="panel" role="tabpanel" id="panel-accounts" aria-labelledby="tab-accounts" data-shot="accounts" data-alt="Settings › Accounts › YouTube Music, signed out, with its three ways to sign in." hidden>
             <h3>Your own music comes along</h3>
-            <p>Sign in to YouTube Music on Google's own page, or import the sign-in of a browser you use, for your home feed and library, and to Spotify with an app of your own. Likes and saves reach the service too.</p>
+            <p>Sign in to YouTube Music on Google's own page, or import the sign-in of a browser you use, for your home feed and library. Likes and saves reach the service too.</p>
             <p class="note">Last.fm gets every track you hear, and Discord shows what plays on your profile.</p>
           </div>
         </div>
@@ -423,7 +423,7 @@
         </li>
         <li class="tile">
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-mic" /></svg>Podcasts</h3>
-          <p>Shows and episodes from YouTube Music and Spotify, in search and in Library › Podcasts. An episode starts where you left it, on another device too, with a speed of its own.</p>
+          <p>Shows and episodes from YouTube Music, in search and in Library › Podcasts. An episode starts where you left it, on another device too, with a speed of its own.</p>
         </li>
         <li class="tile">
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-download" /></svg>Downloads</h3>
@@ -578,7 +578,6 @@
         <h3>What it needs</h3>
         <dl>
           <div><dt>YouTube Music</dt><dd>yt-dlp, which MyMusic installs for you from Settings › Playback, and a JavaScript runtime on your PATH: Deno, Node.js, Bun or QuickJS.</dd></div>
-          <div><dt>Spotify</dt><dd>An app of your own from the Spotify developer dashboard, made with a Spotify account that has Premium. <a href="{{ get_url(path='@/docs/spotify/index.md') }}">The guide</a> walks through it.</dd></div>
           <div><dt>First launch</dt><dd>The Windows installer is not signed yet: if SmartScreen warns, choose More info › Run anyway.</dd></div>
         </dl>
         <p class="note">Check each file against <code>SHA256SUMS</code> in the release. Older versions are on the <a href="https://github.com/bigdaddy284/mymusic/releases">releases page</a> too. <a href="{{ get_url(path='@/docs/troubleshooting/index.md') }}">Troubleshooting</a> helps when something doesn't work.</p>
@@ -623,7 +622,7 @@
         <svg class="brand-mark" width="22" height="22" aria-hidden="true"><use href="#i-rings" /></svg>
         <span>MyMusic</span>
       </a>
-      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. Spotify and YouTube Music are trademarks of their owners; MyMusic is not made by either.</p>
+      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. YouTube Music is a trademark of Google; MyMusic is not made by Google.</p>
       <a class="btn btn-filled" data-download href="https://github.com/bigdaddy284/mymusic/releases/latest">
         <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-download" /></svg>
         <span data-download-label>Download</span>

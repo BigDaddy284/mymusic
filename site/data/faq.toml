@@ -23,23 +23,11 @@ how.
 '''
 
 [[questions]]
-question = "Do I need Spotify Premium?"
-answer = '''
-Only for Spotify. Spotify lets an app serve up to five accounts, and only
-while its owner has Premium, so you sign in with a Spotify app of your
-own, made with an account that has Premium. Spotify tracks then play in
-MyMusic itself or on Spotify Connect, both with
-Premium, or from their recording on YouTube Music, which needs no
-Premium.
-[Spotify](@/docs/spotify/index.md) walks through it.
-'''
-
-[[questions]]
 question = "What does MyMusic collect?"
 answer = '''
 Nothing for itself: MyMusic has no account, server, analytics or
-telemetry of its own. It talks to the services you use: YouTube Music,
-Spotify and Last.fm, Unison and LRCLIB for the lyrics of the track that
+telemetry of its own. It talks to the services you use: YouTube Music
+and Last.fm, Unison and LRCLIB for the lyrics of the track that
 plays, and GitHub for updates and yt-dlp. Your library,
 history and searches stay on your computer.
 [Your data and privacy](@/docs/data-and-privacy/index.md#what-each-feature-sends-where)

@@ -7,14 +7,12 @@ import (
 	"log"
 	"slices"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/localfiles"
 	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 	"github.com/bigdaddy284/mymusic/lyrics"
 )
@@ -25,12 +23,9 @@ const shelfTimeout = 15 * time.Second
 // Catalog searches and browses every service.
 type Catalog struct{ a *App }
 
-// SearchResponse holds what each service found.
+// SearchResponse holds what YouTube Music found.
 type SearchResponse struct {
 	YouTube media.SearchResults `json:"youtube"`
-	Spotify media.SearchResults `json:"spotify"`
-	// SpotifySignedIn tells whether Spotify was searched.
-	SpotifySignedIn bool `json:"spotifySignedIn"`
 	// Errors are the services' errors, for those that failed.
 	Errors []string `json:"errors"`
 }
@@ -39,33 +34,19 @@ func emptyResults() media.SearchResults {
 	return media.SearchResults{Tracks: []media.Track{}, Videos: []media.Track{}, Albums: []media.Album{}, Artists: []media.Artist{}, Playlists: []media.Playlist{}}
 }
 
-// Search searches YouTube Music, and Spotify when the user signed in.
+// Search searches YouTube Music.
 func (c *Catalog) Search(ctx context.Context, query string) (SearchResponse, error) {
 	query = strings.TrimSpace(query)
-	res := SearchResponse{YouTube: emptyResults(), Spotify: emptyResults(), SpotifySignedIn: c.a.spotify.SignedIn(), Errors: []string{}}
+	res := SearchResponse{YouTube: emptyResults(), Errors: []string{}}
 	if query == "" {
 		return res, nil
 	}
-	var (
-		wg           sync.WaitGroup
-		ytErr, spErr error
-	)
-	wg.Go(func() { res.YouTube, ytErr = c.a.youtube.SearchAll(ctx, query) })
-	if res.SpotifySignedIn {
-		wg.Go(func() { res.Spotify, spErr = c.a.spotify.Search(ctx, query) })
+	found, err := c.a.youtube.SearchAll(ctx, query)
+	if err != nil {
+		res.Errors = append(res.Errors, err.Error())
+		return res, err
 	}
-	wg.Wait()
-	if ytErr != nil {
-		res.YouTube = emptyResults()
-		res.Errors = append(res.Errors, ytErr.Error())
-	}
-	if spErr != nil {
-		res.Spotify = emptyResults()
-		res.Errors = append(res.Errors, spErr.Error())
-	}
-	if ytErr != nil && (spErr != nil || !res.SpotifySignedIn) {
-		return res, ytErr
-	}
+	res.YouTube = found
 	c.a.library.AddSearch(query)
 	return res, nil
 }
@@ -78,23 +59,6 @@ func (c *Catalog) Suggestions(ctx context.Context, input string) (media.Suggesti
 		return media.Suggestions{Searches: c.a.library.Searches()}, nil
 	}
 	return c.a.youtube.Suggestions(ctx, input)
-}
-
-// SpotifyHome returns Spotify's shelves of the home page, made of the
-// user's library there, or none while they aren't signed in. The home
-// page shows the user's own first, from LocalShelves, then these, then
-// YouTube Music's.
-func (c *Catalog) SpotifyHome(ctx context.Context) ([]media.Shelf, error) {
-	if !c.a.spotify.SignedIn() {
-		return nil, nil
-	}
-	ctx, cancel := context.WithTimeout(ctx, shelfTimeout)
-	defer cancel()
-	me, err := c.a.spotifyProfile(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return c.a.spotify.Home(ctx, me.ID)
 }
 
 // YouTubeHome returns YouTube Music's shelves of the home page: the
@@ -136,12 +100,6 @@ func (c *Catalog) Album(ctx context.Context, id string) (media.Album, error) {
 	switch source {
 	case media.SourceYouTube:
 		return c.a.youtube.Album(ctx, native)
-	case media.SourceSpotify:
-		a, err := c.a.spotify.Album(ctx, native)
-		if err == nil {
-			a.Saved = c.a.spotifyHas(ctx, spotify.URI("album", native))
-		}
-		return a, err
 	case media.SourceFile:
 		if a, ok := c.a.localFiles.Album(id); ok {
 			return a, nil
@@ -160,12 +118,6 @@ func (c *Catalog) Artist(ctx context.Context, id string) (media.Artist, error) {
 	switch source {
 	case media.SourceYouTube:
 		return c.a.youtube.Artist(ctx, native)
-	case media.SourceSpotify:
-		a, err := c.a.spotify.Artist(ctx, native)
-		if err == nil {
-			a.Following = c.a.spotifyHas(ctx, spotify.URI("artist", native))
-		}
-		return a, err
 	case media.SourceFile:
 		if a, ok := c.a.localFiles.Artist(id); ok {
 			return a, nil
@@ -192,12 +144,6 @@ func (a *App) playlist(ctx context.Context, id string) (media.Playlist, error) {
 	switch source {
 	case media.SourceYouTube:
 		return a.youtube.Playlist(ctx, native)
-	case media.SourceSpotify:
-		p, err := a.spotify.Playlist(ctx, native, a.spotifyUserID(ctx))
-		if err == nil && !p.Editable {
-			p.Saved = a.spotifyHas(ctx, spotify.URI("playlist", native))
-		}
-		return p, err
 	case media.SourceLocal:
 		return a.library.Playlist(native)
 	}
@@ -212,8 +158,7 @@ var songWait = 5 * time.Second
 // a song are looked up for a song to carry on from.
 const relayTries = 3
 
-// Radio returns tracks like the one given, to play after it. Spotify
-// tracks start the radio of their YouTube Music recording.
+// Radio returns tracks like the one given, to play after it.
 //
 // YouTube Music makes the radio of a music video out of videos, so a video
 // starts the radio of its song. An upload without a song, such as a
@@ -255,14 +200,13 @@ func withoutDisliked(tracks, disliked []media.Track) []media.Track {
 	return out
 }
 
-// radioOf returns YouTube Music's radio of track, or of its recording
-// there.
+// radioOf returns YouTube Music's radio of track.
 func (c *Catalog) radioOf(ctx context.Context, track media.Track) ([]media.Track, error) {
-	seed, err := c.a.matcher.Match(ctx, track)
+	seed, err := onYouTube(track)
 	if err != nil {
 		return nil, err
 	}
-	skip := []string{track.ID, seed.ID}
+	skip := []string{seed.ID}
 	if seed.Video {
 		song, err := c.songOf(ctx, seed)
 		switch {
@@ -480,18 +424,10 @@ func missed(unison, lrclib error) error {
 	return lrclib
 }
 
-// videoID returns the ID of a track's recording on YouTube, to look its
-// lyrics up by: its own, or that of the YouTube Music recording matched
-// to it before; "" when there is none yet.
+// videoID returns the ID of a track's video on YouTube, to look its
+// lyrics up by, or "" for a track that isn't YouTube Music's.
 func (c *Catalog) videoID(t media.Track) string {
-	yt, ok := t, t.Source == media.SourceYouTube
-	if !ok && c.a.matcher != nil {
-		yt, ok = c.a.matcher.Matched(t)
-	}
-	if !ok {
-		return ""
-	}
-	if source, id, err := media.ParseID(yt.ID); err == nil && source == media.SourceYouTube {
+	if source, id, err := media.ParseID(t.ID); err == nil && source == media.SourceYouTube {
 		return id
 	}
 	return ""
@@ -521,15 +457,11 @@ type lyricsError struct {
 func (e lyricsError) Error() string { return e.text }
 func (e lyricsError) Unwrap() error { return e.err }
 
-// youtubeLyrics returns YouTube Music's lyrics of a track, or of its
-// recording there.
+// youtubeLyrics returns YouTube Music's lyrics of a track.
 func (c *Catalog) youtubeLyrics(ctx context.Context, track media.Track) (lyrics.Lyrics, error) {
-	yt := track
-	if track.Source != media.SourceYouTube {
-		var err error
-		if yt, err = c.a.matcher.Match(ctx, track); err != nil {
-			return lyrics.Lyrics{}, err
-		}
+	yt, err := onYouTube(track)
+	if err != nil {
+		return lyrics.Lyrics{}, err
 	}
 	_, videoID, err := media.ParseID(yt.ID)
 	if err != nil {
@@ -571,10 +503,9 @@ func (c *Catalog) Mood(ctx context.Context, params string) (MoodPage, error) {
 }
 
 // Related returns what YouTube Music relates to a track: songs, playlists,
-// other performances and similar artists. A Spotify track shows what
-// relates to its recording on YouTube Music.
+// other performances and similar artists.
 func (c *Catalog) Related(ctx context.Context, track media.Track) ([]media.Shelf, error) {
-	seed, err := c.a.matcher.Match(ctx, track)
+	seed, err := onYouTube(track)
 	if err != nil {
 		return nil, err
 	}

@@ -11,15 +11,23 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
-// youtubeVideoID returns the video of a track on YouTube Music: its own, or
-// that of its recording there for a Spotify track.
-func (a *App) youtubeVideoID(ctx context.Context, t media.Track) (string, error) {
+// errNotOnYouTube is why a track that isn't YouTube Music's, as one on
+// this computer, has nothing of YouTube Music's.
+var errNotOnYouTube = errors.New("a track on this computer isn't looked for on YouTube Music")
+
+// onYouTube returns t, when it's YouTube Music's, or errNotOnYouTube.
+func onYouTube(t media.Track) (media.Track, error) {
 	if t.Source != media.SourceYouTube {
-		rec, err := a.matcher.Match(ctx, t)
-		if err != nil {
-			return "", err
-		}
-		t = rec
+		return media.Track{}, errNotOnYouTube
+	}
+	return t, nil
+}
+
+// youtubeVideoID returns the video of a track on YouTube Music.
+func (a *App) youtubeVideoID(t media.Track) (string, error) {
+	t, err := onYouTube(t)
+	if err != nil {
+		return "", err
 	}
 	_, id, err := media.ParseID(t.ID)
 	return id, err
@@ -39,8 +47,7 @@ func youtubePlaylistID(id string) (string, error) {
 }
 
 // CreateYouTubePlaylist makes a playlist on YouTube Music, private to the
-// account, of tracks of any service: Spotify tracks go in as their
-// recordings on YouTube Music, and those without one stay out. The
+// account, of the tracks given: those not on YouTube Music stay out. The
 // playlist is the user's, to add to and to delete.
 func (c *Collection) CreateYouTubePlaylist(ctx context.Context, title string, tracks []media.Track) (media.Playlist, error) {
 	if !c.a.youtube.SignedIn() {
@@ -48,7 +55,7 @@ func (c *Collection) CreateYouTubePlaylist(ctx context.Context, title string, tr
 	}
 	var ids []string
 	for _, t := range tracks {
-		if id, err := c.a.youtubeVideoID(ctx, t); err == nil {
+		if id, err := c.a.youtubeVideoID(t); err == nil {
 			ids = append(ids, id)
 		}
 	}
@@ -89,7 +96,7 @@ func (c *Collection) addToYouTube(ctx context.Context, playlistID string, track 
 	if err != nil {
 		return err
 	}
-	video, err := c.a.youtubeVideoID(ctx, track)
+	video, err := c.a.youtubeVideoID(track)
 	if err != nil {
 		return err
 	}

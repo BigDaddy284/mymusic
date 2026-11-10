@@ -11,8 +11,8 @@ prefer not to.
 
 ## What MyMusic protects
 
-- **Your sign-ins.** The Spotify token, the Last.fm connection and the key
-  of the YouTube Music session live in Windows' Credential Manager. A
+- **Your sign-ins.** The Last.fm connection and the key of the YouTube
+  Music session live in Windows' Credential Manager. A
   sign-in the Credential Manager can't keep, as in a logon session without
   credentials, is encrypted for your Windows account (DPAPI) in MyMusic's
   data folder instead. Where an administrator's policy stops the
@@ -20,9 +20,9 @@ prefer not to.
   may keep them all the same. Like the credential store, this keeps them
   from the computer's other users, not from programs you run.
   MyMusic never sees your passwords.
-- **Its windows.** MyMusic draws its own windows. Its one web page,
-  Spotify's player on Windows, may call one Go service, for the Spotify
-  token that player needs; other pages, as Google's sign-in, call none.
+- **Its windows.** MyMusic draws its own windows. Its one web page, the
+  picture of music videos, may fetch only the video it shows from MyMusic;
+  other pages, as Google's sign-in, call nothing of MyMusic's.
   Links to websites open in your browser, not in the app's window.
 - **Add-ons.** MyMusic downloads none: it loads only those it ships with
   and those you put in your add-ons folders. Theme manifests are checked,

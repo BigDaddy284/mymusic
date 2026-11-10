@@ -66,8 +66,10 @@ type waveFormat struct {
 	subFormat      guid
 }
 
+// iUnknownVtbl is IUnknown's part of a vtable: QueryInterface and AddRef,
+// which MyMusic doesn't call, then Release.
 type iUnknownVtbl struct {
-	queryInterface, addRef, release uintptr
+	_, _, release uintptr
 }
 
 type iMMDeviceEnumerator struct{ vtbl *iMMDeviceEnumeratorVtbl }

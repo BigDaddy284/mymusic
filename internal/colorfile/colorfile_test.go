@@ -273,7 +273,7 @@ func TestMatugenTemplate(t *testing.T) {
 	if err != nil || c.Format != FormatTokens || len(c.Mode("dark")) != 15 || len(c.Mode("light")) != 15 {
 		t.Fatalf("the rendered template: %+v, %v", c, err)
 	}
-	for _, key := range []string{"success", "youtube", "spotify"} {
+	for _, key := range []string{"success", "youtube"} {
 		if _, ok := c.Mode("dark")[key]; ok {
 			t.Errorf("the template sets %s, which stays the theme's", key)
 		}

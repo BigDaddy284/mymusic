@@ -35,7 +35,7 @@ func TestParseThemeValid(t *testing.T) {
 func TestParseThemeRejects(t *testing.T) {
 	for name, edit := range map[string][2]string{
 		"bad id":           {`"id": "test-theme"`, `"id": "../evil"`},
-		"missing color":    {`"spotify": "#1db954"`, `"spotifyy": "#1db954"`},
+		"missing color":    {`"youtube": "#f00"`, `"youtubee": "#f00"`},
 		"css injection":    {`"bg": "#000"`, `"bg": "#000; } body { display: none"`},
 		"bad font":         {`"Inter, system-ui, sans-serif"`, `"Inter; } * { color: red"`},
 		"preview escape":   {`"preview": "preview.png"`, `"preview": "../../preview.png"`},

@@ -4,8 +4,8 @@
 MyMusic finds the audio streams of YouTube Music tracks itself, through YouTube's player API, and with yt-dlp for the rest. Here are the formats and rules.
 
 Every track MyMusic plays in its own engine is a YouTube video: YouTube
-Music's songs, music videos, uploads, podcast episodes and live streams,
-and Spotify tracks played from their recording on YouTube Music. This page
+Music's songs, music videos, uploads, podcast episodes and live streams.
+This page
 tells how MyMusic gets their audio, and what it does when YouTube makes
 that hard. For the code, read
 [the streams' part of the architecture](architecture/stream.md).
@@ -246,8 +246,7 @@ MyMusic keeps audio on disk two ways:
   `audio/<video id>.webm`, or `.m4a` for a track in AAC, its cover in
   `art/`, and an `index.json` of what it holds. Its paths are relative, so
   the folder moves whole.
-- **Spotify tracks** download as their recording on YouTube Music. A live
-  stream doesn't download.
+- A live stream doesn't download.
 
 ## Proxies
 

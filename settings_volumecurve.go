@@ -26,5 +26,4 @@ func (s *shell) volumeSettings(c *ui.Context) {
 
 // volumeCurveDescription tells what the curves do.
 const volumeCurveDescription = "Natural gives the volume slider even steps of loudness: each tenth of it is 6 dB. " +
-	"On Linear, the level grows evenly along the slider, so its middle is half the level, 6 dB down. " +
-	"Spotify tracks play on the same curve."
+	"On Linear, the level grows evenly along the slider, so its middle is half the level, 6 dB down."

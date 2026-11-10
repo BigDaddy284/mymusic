@@ -52,7 +52,7 @@ func TestSettingsOrder(t *testing.T) {
 	for path, texts := range map[string][]string{
 		"/settings/appearance": {"layout", "Layout", "theme", "Follow the computer", "mix options", "colour and type",
 			"Colours from a file", "Follow the artwork", "Accent colour", "Zoom", "Text size", "Density", "Icons only in the sidebar"},
-		"/settings/playback": {"spotify tracks", "How Spotify tracks play", "sound", "Quality", "Crossfade", "Even loudness",
+		"/settings/playback": {"sound", "Quality", "Crossfade", "Even loudness",
 			"Volume levelling", "Play 5.1 surround when a track has it", "Autoplay", "Skip songs made with AI",
 			"Skip songs you dislike", "speed", "music videos", "equalizer", "lyrics", "offline cache", "downloads", "tools"},
 	} {

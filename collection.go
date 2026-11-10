@@ -165,13 +165,7 @@ func (s *shell) pageProblem(c *ui.Context, title string, err error, key string) 
 // signedIn reports whether the user is signed in to a service.
 func (s *shell) signedIn(source media.Source) bool {
 	st := s.accounts()
-	switch source {
-	case media.SourceSpotify:
-		return st.Spotify.SignedIn
-	case media.SourceYouTube:
-		return st.YouTube.SignedIn
-	}
-	return false
+	return source == media.SourceYouTube && st.YouTube.SignedIn
 }
 
 // edit changes something on its service, then shows the page of key

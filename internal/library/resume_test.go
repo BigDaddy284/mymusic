@@ -48,7 +48,7 @@ func TestToldPlace(t *testing.T) {
 		{"our own report there", told("yt:e", monday, 10, false), 30, told("yt:e", tuesday, 30.5, false), 30*time.Minute - rewind},
 		{"an older read", told("yt:e", tuesday, 40, false), 30, told("yt:e", monday, 5, false), 30*time.Minute - rewind},
 		{"played here, unchanged there", told("yt:e", monday, 40, false), 60, told("yt:e", tuesday, 40, false), 0},
-		{"Spotify's", episode("sp:e"), 30, func() media.Track { t := episode("sp:e"); t.Episode.ResumeMs = 3000000; return t }(), 30*time.Minute - rewind},
+		{"told without a time", episode("yt:e"), 30, func() media.Track { t := episode("yt:e"); t.Episode.ResumeMs = 3000000; return t }(), 30*time.Minute - rewind},
 	} {
 		p, _ := openPositions(t)
 		switch {

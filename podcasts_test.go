@@ -15,7 +15,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // testShow is a podcast of YouTube Music with three episodes, and more.
@@ -152,21 +151,6 @@ func TestSavedPodcastFollowed(t *testing.T) {
 	}
 }
 
-// TestSavedSpotifyPodcastFollowed says "following" on the page of a show
-// saved on Spotify, signed in there, as the shows saved there tell.
-func TestSavedSpotifyPodcastFollowed(t *testing.T) {
-	s := newTestShell(t)
-	s.loads["accounts"] = &loaded[app.AccountsStatus]{done: true, value: app.AccountsStatus{Spotify: app.SpotifyAccount{SignedIn: true}}}
-	sp := media.Podcast{ID: "sp:s1", Source: media.SourceSpotify, Title: "The Daily Thing", Authors: []media.Ref{}, Episodes: []media.Track{}}
-	s.loads["podcast:sp:s1"] = &loaded[media.Podcast]{done: true, value: sp}
-	s.loads["spotify:podcasts"] = &loaded[[]media.Podcast]{done: true, value: []media.Podcast{sp}}
-	tt := testerOf(t, s, 1280, 1000)
-	show(s, tt, podcastPath("sp:s1"))
-	if _, ok := tt.Find("following"); !ok {
-		t.Errorf("a show saved on Spotify: %q", tt.Texts())
-	}
-}
-
 // showsText reports whether a text of the window holds sub, in any case:
 // the layouts write the words of the pages in their own.
 func showsText(texts []string, sub string) bool {
@@ -208,11 +192,9 @@ func TestEpisodeMenu(t *testing.T) {
 func TestPodcastSearch(t *testing.T) {
 	s := newPodcastShell(t)
 	s.loads["search:night"] = &loaded[app.SearchResponse]{done: true, value: app.SearchResponse{
-		YouTube: media.SearchResults{Tracks: []media.Track{}, Albums: []media.Album{}, Artists: []media.Artist{}, Playlists: []media.Playlist{}},
-		Spotify: media.SearchResults{Tracks: []media.Track{}, Albums: []media.Album{}, Artists: []media.Artist{}, Playlists: []media.Playlist{}}}}
+		YouTube: media.SearchResults{Tracks: []media.Track{}, Albums: []media.Album{}, Artists: []media.Artist{}, Playlists: []media.Playlist{}}}}
 	s.loads["search-podcasts:night"] = &loaded[app.PodcastSearch]{done: true, value: app.PodcastSearch{
-		YouTube: media.PodcastResults{Podcasts: []media.Podcast{testShow.Summary()}, Episodes: testShow.Episodes[:2]},
-		Spotify: media.EmptyPodcastResults()}}
+		YouTube: media.PodcastResults{Podcasts: []media.Podcast{testShow.Summary()}, Episodes: testShow.Episodes[:2]}}}
 	s.searchPivot = slices.Index(searchPivots, "podcasts")
 	tt := testerOf(t, s, 1280, 1000)
 	show(s, tt, searchPath("night"))
@@ -256,23 +238,6 @@ func TestPodcastsLibrary(t *testing.T) {
 	}
 }
 
-// TestSpotifyPodcastFromYouTube says, on a Spotify show's page, that its
-// episodes don't play from YouTube Music.
-func TestSpotifyPodcastFromYouTube(t *testing.T) {
-	s := newTestShell(t)
-	if _, err := s.svc.Preferences.Update(func(st *settings.Settings) { st.SpotifyPlayback = settings.SpotifyPlaybackMatch }); err != nil {
-		t.Fatal(err)
-	}
-	sp := media.Podcast{ID: "sp:s1", Source: media.SourceSpotify, Title: "The Daily Thing", Authors: []media.Ref{},
-		Episodes: []media.Track{{ID: "sp:e1", Source: media.SourceSpotify, Title: "Monday", Episode: &media.Episode{Released: "2026-11"}}}}
-	s.loads["podcast:sp:s1"] = &loaded[media.Podcast]{done: true, value: sp}
-	tt := testerOf(t, s, 1280, 1000)
-	show(s, tt, podcastPath("sp:s1"))
-	if !showsText(tt.Texts(), "Settings › Playback") || !tt.HasText("Monday") || !showsText(tt.Texts(), "Nov 2026") {
-		t.Errorf("the page shows %q", tt.Texts())
-	}
-}
-
 func TestReleasedLabel(t *testing.T) {
 	now := time.Date(2026, 11, 3, 0, 0, 0, 0, time.UTC)
 	for in, want := range map[string]string{"2026-10-26": "Oct 26", "2025-12-29": "Dec 29, 2025", "2026-10": "Oct 2026", "2019": "2019", "": ""} {
@@ -293,8 +258,7 @@ func TestRenderPodcasts(t *testing.T) {
 	s.loads["podcast:"+testShow.ID] = &loaded[media.Podcast]{done: true, value: testShow}
 	s.loads["search:night"] = &loaded[app.SearchResponse]{done: true}
 	s.loads["search-podcasts:night"] = &loaded[app.PodcastSearch]{done: true, value: app.PodcastSearch{
-		YouTube: media.PodcastResults{Podcasts: []media.Podcast{testShow.Summary()}, Episodes: testShow.Episodes},
-		Spotify: media.EmptyPodcastResults()}}
+		YouTube: media.PodcastResults{Podcasts: []media.Podcast{testShow.Summary()}, Episodes: testShow.Episodes}}}
 	tt := testerOf(t, s, 1280, 820)
 	show(s, tt, podcastPath(testShow.ID))
 	renderTo(t, s, tt, dir, "podcast")

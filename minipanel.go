@@ -521,8 +521,8 @@ func (s *shell) miniChapters(c *ui.Context, t media.Track) {
 }
 
 // miniOutput lists where what plays can play: the output devices of this
-// computer, then the cast devices on the network and the Spotify Connect
-// devices, as the player bar's buttons list them where it shows them.
+// computer, then the cast devices on the network, as the player bar's
+// buttons list them where it shows them.
 func (s *shell) miniOutput(c *ui.Context) {
 	ui.Scroll(c).Grow(1).MinHeight(0).Padding(0, 4, 8).Children(func() {
 		shown := false
@@ -533,10 +533,6 @@ func (s *shell) miniOutput(c *ui.Context) {
 		if s.castShown() {
 			shown = true
 			s.miniCastDevices(c)
-		}
-		if s.set.SpotifyPlayback == settings.SpotifyPlaybackConnect {
-			shown = true
-			s.miniConnectDevices(c)
 		}
 		if !shown {
 			s.miniNote(c, "MyMusic plays on the system's default device.")
@@ -628,35 +624,6 @@ func (s *shell) miniCastDevices(c *ui.Context) {
 			}
 			if s.miniChoice(c, "mini-cast-"+d.ID, d.Name, detail, on && casting.ID == d.ID, connecting) {
 				s.castTo(d)
-			}
-		}
-	})
-}
-
-// miniConnectDevices are the Spotify Connect devices that can play Spotify
-// tracks, as the player bar's devices button lists them.
-func (s *shell) miniConnectDevices(c *ui.Context) {
-	chosen := s.set.SpotifyDevice
-	devices := fetch(s, "devices", s.svc.Player.Devices)
-	s.miniSection(c, "mini-connect", "Spotify Connect", func() {
-		if s.miniChoice(c, "mini-connect-active", "The active device", "", chosen == "", false) {
-			s.setDevice("")
-		}
-		switch {
-		case !devices.done:
-			s.miniNote(c, "Looking for devices…")
-		case devices.err != nil:
-			s.miniNote(c, devices.err.Error())
-		case len(devices.value) == 0:
-			s.miniNote(c, "Open Spotify on a device to see it here")
-		}
-		for _, d := range devices.value {
-			detail := ""
-			if d.Active {
-				detail = "active"
-			}
-			if s.miniChoice(c, "mini-connect-"+d.ID, d.Name, detail, chosen == d.ID, d.Restricted) {
-				s.setDevice(d.ID)
 			}
 		}
 	})

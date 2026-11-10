@@ -14,10 +14,9 @@ export default defineConfig({
   // in resources/, MyGo's place for it by default: `mygo build` ships every
   // file there beside the app, which reads none as it runs (#303).
   icon: "brand/icon.png",
-  // MyGo draws the windows itself, in Go (the root package): the only pages
-  // are that of MyMusic's own Spotify device, public/spotify.html, and that
-  // of the picture of music videos, public/video.html with video.js, which
-  // `mygo build` embeds as they are. They call Go without a generated
+  // MyGo draws the windows itself, in Go (the root package): the only page
+  // is that of the picture of music videos, public/video.html with
+  // video.js, which `mygo build` embeds as it is. They call Go without a generated
   // client, so `mygo dev` writes it out of the way.
   frontendDist: "public",
   bindings: ".mygo/bindings.ts",

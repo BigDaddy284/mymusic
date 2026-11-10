@@ -18,7 +18,7 @@ func TestDisliked(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("sp:b", media.SourceSpotify, "B")
+	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("file:b", media.SourceFile, "B")
 	if err := l.SetLiked(a, true); err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func TestDisliked(t *testing.T) {
 	if unliked, err := l.SetDisliked(b, true); err != nil || unliked {
 		t.Fatalf("disliking a track not liked: unliked %v, %v", unliked, err)
 	}
-	if d := l.Disliked(); len(d) != 2 || d[0].ID != "sp:b" || d[1].ID != "yt:a" || d[1].Title != a.Title {
+	if d := l.Disliked(); len(d) != 2 || d[0].ID != "file:b" || d[1].ID != "yt:a" || d[1].Title != a.Title {
 		t.Errorf("disliked = %+v", d)
 	}
 
@@ -40,7 +40,7 @@ func TestDisliked(t *testing.T) {
 	if err := l.SetLiked(b, true); err != nil {
 		t.Fatal(err)
 	}
-	if l.IsDisliked("sp:b") || !l.IsLiked("sp:b") {
+	if l.IsDisliked("file:b") || !l.IsLiked("file:b") {
 		t.Error("liking a disliked track left it disliked")
 	}
 	// Unliking takes no dislike back, and leaves no other track.

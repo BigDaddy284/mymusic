@@ -47,7 +47,6 @@ Every change to `theme.json` shows after a reload.
     "danger": "#ff5a4f",
     "success": "#a4e600",
     "youtube": "#ff4040",
-    "spotify": "#1ed760",
     "tile-1": "#00bde3",
     "tile-2": "#e6007e",
     "tile-3": "#a4e600",
@@ -84,7 +83,7 @@ Every change to `theme.json` shows after a reload.
 | `text`, `text-muted` | ink, and secondary ink; outlined controls are drawn in `text` |
 | `accent`, `accent-text` | everything live: the playing row, the selection, the active page, primary buttons, and ink on them |
 | `danger`, `success` | errors and confirmations |
-| `youtube`, `spotify` | the marks telling where a track comes from |
+| `youtube` | the mark of YouTube Music's tracks |
 | `tile-1` … `tile-4`, `tile-text` | the flat tiles of the home page and the stats, and ink on them |
 
 A theme may also set these, as the built-in MyMusic themes do:
@@ -177,8 +176,8 @@ wallpaper's colours. The theme cards keep showing each theme's own colours.
 - **Readable text.** Colours made from a wallpaper can be anything, so
   MyMusic changes the ones that don't read, keeping their hue: text,
   muted text and danger get 4.5:1 on the ground, the ink on the accent and
-  on every tile 4.5:1, and the accent, success and the YouTube Music and
-  Spotify marks 3:1. Your file's exact colours may differ a little on
+  on every tile 4.5:1, and the accent, success and the YouTube Music mark
+  3:1. Your file's exact colours may differ a little on
   screen for that.
 - **Glass.** Where a theme's surfaces show its ground through, as Aurora's
   and Glasshouse's, they stay glass in the file's colours.
@@ -282,7 +281,7 @@ A path may start with `~`, your home folder; one that Windows Explorer's
 | `accent` | the most vivid of `color1` to `color6` | `primary` |
 | `accent-text` | black or white | `on_primary` |
 | `danger` | the theme's | `error` |
-| `success`, `youtube`, `spotify` | the theme's | the theme's |
+| `success`, `youtube` | the theme's | the theme's |
 | `tile-1` to `tile-4` | the four most vivid of `color1` to `color6` | `primary`, `tertiary`, `secondary`, `source_color` |
 | `tile-text` | black or white, whichever reads on all four | `on_primary` |
 

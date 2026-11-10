@@ -40,9 +40,10 @@ type DayPlays struct {
 type Stats struct {
 	Plays   int `json:"plays"`
 	Minutes int `json:"minutes"`
-	// YouTube and Spotify count the plays of each service's tracks.
+	// YouTube counts the plays of YouTube Music's tracks, and Computer
+	// those of the music on the user's computer.
 	YouTube    int           `json:"youtube"`
-	Spotify    int           `json:"spotify"`
+	Computer   int           `json:"computer"`
 	TopTracks  []TrackPlays  `json:"topTracks"`
 	TopArtists []ArtistPlays `json:"topArtists"`
 	// Days is the number of days counted; 0 counts the whole history.
@@ -82,8 +83,8 @@ func (l *Library) Stats(days int) Stats {
 		switch p.Track.Source {
 		case media.SourceYouTube:
 			s.YouTube++
-		case media.SourceSpotify:
-			s.Spotify++
+		case media.SourceFile:
+			s.Computer++
 		}
 		if tp := tracks[p.Track.ID]; tp != nil {
 			tp.Plays++

@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/match"
-	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/stream"
@@ -66,7 +65,7 @@ func TestPrepareStreamTellsSurround(t *testing.T) {
 	}
 	for i := range 2 { // found now, then found before
 		for _, id := range []string{"bbbbbbbbbbb", "ccccccccccc"} {
-			src, err := n.p.PrepareStream(ctx, ytTrack(id))
+			src, err := n.p.Prepare(ctx, ytTrack(id))
 			want := ""
 			if videos[id] {
 				want = surroundURL(id)
@@ -97,7 +96,7 @@ func TestPrepareStreamTellsSurround(t *testing.T) {
 	runs := n.runs.Load()
 	for _, on := range []bool{false, true} {
 		n.p.a.settings = testSettings(t, func(s *settings.Settings) { s.Surround = on })
-		src, err := n.p.PrepareStream(ctx, ytTrack("ddddddddddd"))
+		src, err := n.p.Prepare(ctx, ytTrack("ddddddddddd"))
 		if err != nil || src.SurroundURL != surroundURL("ddddddddddd") || !src.Cached {
 			t.Errorf("5.1 %v, cached in both: %+v, %v", on, src, err)
 		}
@@ -108,12 +107,12 @@ func TestPrepareStreamTellsSurround(t *testing.T) {
 	// Cached in stereo only: with 5.1 off it plays from the cache, telling
 	// no 5.1 audio, which takes asking.
 	n.p.a.settings = testSettings(t)
-	if src, err := n.p.PrepareStream(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != "" || !src.Cached || n.runs.Load() != runs {
+	if src, err := n.p.Prepare(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != "" || !src.Cached || n.runs.Load() != runs {
 		t.Errorf("5.1 off, cached in stereo: %+v, %v, %d runs", src, err, n.runs.Load()-runs)
 	}
 	// With 5.1 on, it asks, and plays its 5.1 audio from the network.
 	n.p.a.settings = testSettings(t, func(s *settings.Settings) { s.Surround = true })
-	if src, err := n.p.PrepareStream(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != surroundURL("eeeeeeeee5e") || src.Cached {
+	if src, err := n.p.Prepare(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != surroundURL("eeeeeeeee5e") || src.Cached {
 		t.Errorf("5.1 on, cached in stereo: %+v, %v", src, err)
 	}
 	// While yt-dlp takes long, it plays from the cache, in stereo, after
@@ -137,7 +136,7 @@ func TestPrepareStreamTellsSurround(t *testing.T) {
 		return run(ctx, args...)
 	}
 	started := time.Now()
-	if src, err := n.p.PrepareStream(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != "" || !src.Cached || time.Since(started) > 2*time.Second {
+	if src, err := n.p.Prepare(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != "" || !src.Cached || time.Since(started) > 2*time.Second {
 		t.Errorf("5.1 on, cached in stereo, yt-dlp slow: %+v, %v, after %v", src, err, time.Since(started))
 	}
 	n.hang.Store(false)
@@ -146,7 +145,7 @@ func TestPrepareStreamTellsSurround(t *testing.T) {
 	n.net.Store(false)
 	n.ytdlp.Store(false)
 	n.p.a.online.Check(ctx)
-	if src, err := n.p.PrepareStream(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != "" || !src.Cached {
+	if src, err := n.p.Prepare(ctx, ytTrack("eeeeeeeee5e")); err != nil || src.SurroundURL != "" || !src.Cached {
 		t.Errorf("5.1 on, cached in stereo, offline: %+v, %v", src, err)
 	}
 }
@@ -167,7 +166,7 @@ func TestPrepareStreamOfALiveVideoInStereo(t *testing.T) {
 			"acodec": "ac-3", "vcodec": "none", "abr": 384, "audio_channels": 6, "filesize": 9000}]}`, time.Now().Add(6*time.Hour).Unix()), nil
 	}
 	for i := range 2 { // found now, then found before
-		src, err := n.p.PrepareStream(context.Background(), ytTrack("liveRadio01"))
+		src, err := n.p.Prepare(context.Background(), ytTrack("liveRadio01"))
 		if err != nil || !src.Live || src.SurroundURL != "" || src.Cached || !strings.HasSuffix(src.URL, "/live/liveRadio01") {
 			t.Errorf("%d: %+v, %v", i, src, err)
 		}
@@ -179,15 +178,13 @@ func TestPrepareStreamOfALiveVideoInStereo(t *testing.T) {
 
 // TestPrepareStreamDownloadInStereo plays a track downloaded from its
 // download, with 5.1 on, in stereo: downloads hold no 5.1 audio, and it
-// doesn't wait for yt-dlp. A track whose recording is downloaded for
-// another plays from that download unless YouTube has 5.1 audio of it,
-// which plays from the network, as for a track cached in stereo.
+// doesn't wait for yt-dlp.
 func TestPrepareStreamDownloadInStereo(t *testing.T) {
 	n := newNetTest(t)
 	n.net.Store(true)
 	n.ytdlp.Store(true)
 	a := n.p.a
-	a.matcher = match.New(nil, nil) // a search would panic
+	a.matcher = match.New(nil) // a search would panic
 	a.settings = testSettings(t, func(s *settings.Settings) { s.Surround = true })
 	var surround atomic.Bool
 	surround.Store(true)
@@ -195,29 +192,11 @@ func TestPrepareStreamDownloadInStereo(t *testing.T) {
 		n.runs.Add(1)
 		return surroundYTDLP(surround.Load()), nil
 	}
-	withDownloads(t, a, matches{"sp:kept": ytTrack("eeeeeeeeeee")}, ytTrack("fffffffffff"),
-		media.Track{ID: "sp:kept", Source: media.SourceSpotify, Title: "Kept"})
+	withDownloads(t, a, ytTrack("fffffffffff"))
 	ctx := context.Background()
 	runs := n.runs.Load()
-	src, err := n.p.PrepareStream(ctx, ytTrack("fffffffffff"))
+	src, err := n.p.Prepare(ctx, ytTrack("fffffffffff"))
 	if err != nil || src.SurroundURL != "" || !src.Cached || !strings.HasSuffix(src.URL, "/yt/fffffffffff") || n.runs.Load() != runs {
 		t.Errorf("a download, 5.1 on: %+v, %v, %d runs", src, err, n.runs.Load()-runs)
-	}
-	// The recording of the Spotify track downloaded, played as itself.
-	src, err = n.p.PrepareStream(ctx, ytTrack("eeeeeeeeeee"))
-	if err != nil || src.SurroundURL == "" || src.Cached || !strings.HasSuffix(src.URL, "/yt/eeeeeeeeeee") {
-		t.Errorf("downloaded for another track, of 5.1 audio: %+v, %v", src, err)
-	}
-	surround.Store(false)
-	a.resolver.Forget("eeeeeeeeeee")
-	src, err = n.p.PrepareStream(ctx, ytTrack("eeeeeeeeeee"))
-	if err != nil || src.SurroundURL != "" || !src.Cached {
-		t.Errorf("downloaded for another track, of no 5.1 audio: %+v, %v", src, err)
-	}
-	a.settings = testSettings(t)
-	runs = n.runs.Load()
-	src, err = n.p.PrepareStream(ctx, ytTrack("eeeeeeeeeee"))
-	if err != nil || src.SurroundURL != "" || !src.Cached || n.runs.Load() != runs {
-		t.Errorf("downloaded for another track, 5.1 off: %+v, %v, %d runs", src, err, n.runs.Load()-runs)
 	}
 }

@@ -38,8 +38,7 @@ type TrackState struct {
 }
 
 // Kept is a track downloaded: the video whose audio plays for it, the
-// track that plays, which is a Spotify track's recording on YouTube Music,
-// and its file.
+// track, and its file.
 type Kept struct {
 	Video string
 	Track media.Track
@@ -51,9 +50,6 @@ type Kept struct {
 type Job struct {
 	Track media.Track
 	State TrackState
-	// Phase tells what a download under way does, when it isn't fetching
-	// the audio: "finding its recording on YouTube Music".
-	Phase string
 }
 
 // CollectionView is a collection downloaded, and how many of its tracks
@@ -98,8 +94,6 @@ type Snapshot struct {
 	states  map[string]TrackState
 	running map[string]*job
 	kept    map[string]Kept
-	// originals are the tracks downloaded, as they were asked for.
-	originals map[string]media.Track
 	// files are the downloaded audio by video ID, and art the covers kept
 	// by their addresses: absolute paths. live are the videos found live,
 	// by ID.
@@ -129,14 +123,13 @@ func (s *Snapshot) Version() uint64 {
 	return s.version
 }
 
-// Track returns a track downloaded, as it was asked for: a Spotify track
-// as Spotify's.
+// Track returns a track downloaded.
 func (s *Snapshot) Track(id string) (media.Track, bool) {
 	if s == nil {
 		return media.Track{}, false
 	}
-	t, ok := s.originals[id]
-	return t, ok
+	k, ok := s.kept[id]
+	return k.Track, ok
 }
 
 // Any reports whether the downloads hold or wait for anything.
@@ -264,7 +257,7 @@ func (m *Manager) Status() Status { return m.Snapshot().Status() }
 // caller holds mu.
 func (m *Manager) publish() {
 	m.seq++
-	s := &Snapshot{version: m.seq, originals: map[string]media.Track{}, states: make(map[string]TrackState, len(m.idx.Tracks)), running: make(map[string]*job, len(m.jobs)),
+	s := &Snapshot{version: m.seq, states: make(map[string]TrackState, len(m.idx.Tracks)), running: make(map[string]*job, len(m.jobs)),
 		kept: map[string]Kept{}, files: make(map[string]string, len(m.idx.Files)), art: make(map[string]string, len(m.idx.Art)),
 		byID: map[string]int{}}
 	for video, f := range m.idx.Files {
@@ -297,12 +290,7 @@ func (m *Manager) publish() {
 		switch {
 		case m.done(e):
 			s.states[id] = TrackState{Kind: Done}
-			t := e.Track
-			if e.Recording != nil {
-				t = *e.Recording
-			}
-			s.kept[id] = Kept{Video: e.video(), Track: t, Path: s.files[e.video()]}
-			s.originals[id] = e.Track
+			s.kept[id] = Kept{Video: e.video(), Track: e.Track, Path: s.files[e.video()]}
 			st.Tracks++
 			done = append(done, e)
 		case e.Failed != "":
@@ -329,7 +317,7 @@ func (m *Manager) publish() {
 	}
 	slices.SortFunc(running, func(a, b *job) int { return cmp.Compare(a.seq, b.seq) })
 	for _, j := range running {
-		st.Jobs = append(st.Jobs, Job{Track: j.track, State: TrackState{Kind: Downloading, Progress: -1}, Phase: j.phaseNow()})
+		st.Jobs = append(st.Jobs, Job{Track: j.track, State: TrackState{Kind: Downloading, Progress: -1}})
 	}
 	bySeq := func(a, b queued) int { return cmp.Compare(a.seq, b.seq) }
 	slices.SortFunc(waiting, bySeq)
@@ -372,18 +360,15 @@ func (m *Manager) publish() {
 
 // job is a download under way.
 type job struct {
-	id        string
-	seq       int64
-	track     media.Track
-	recording *media.Track
-	quality   string
-	video     string
-	ctx       context.Context
-	cancel    context.CancelCauseFunc
-	// done and size are how far it came, size -1 until known; phase is
-	// what it does, which mu guards.
+	id      string
+	seq     int64
+	track   media.Track
+	quality string
+	video   string
+	ctx     context.Context
+	cancel  context.CancelCauseFunc
+	// done and size are how far it came, size -1 until known.
 	done, size atomic.Int64
-	phase      string
 	// from is where the download went on from, in its part.
 	from atomic.Int64
 }
@@ -400,5 +385,3 @@ func (j *job) progress() float64 {
 	}
 	return min(float64(j.done.Load())/float64(size), 1)
 }
-
-func (j *job) phaseNow() string { return j.phase }
