@@ -41,7 +41,7 @@ func TestDPAPI(t *testing.T) {
 	if err != nil || !bytes.Equal(got, secret) {
 		t.Fatalf("unprotect = %q, %v", got, err)
 	}
-	if _, err := (dpapi{}).unprotect(sealed, []byte("MyMusic "+lastfmSecret)); err == nil {
+	if _, err := (dpapi{}).unprotect(sealed, []byte("MyMusic "+youtubeKeySecret)); err == nil {
 		t.Error("another purpose opened it")
 	}
 	damaged := bytes.Clone(sealed)
