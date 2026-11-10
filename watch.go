@@ -100,6 +100,8 @@ type videoPlayer struct {
 	seeking bool
 	seekTo  float64
 	volume  float64
+	// segments follows SponsorBlock's segments of the video (segments.go).
+	segments segmentState
 }
 
 // watch plays v, with list as up next, on the watch page.
@@ -281,6 +283,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 				s.svc.Videos.ReportWatching(vp.current.ID, st.Time, st.Playing, st.Rate, st.Duration <= 0)
 			}
 			s.settleVideo()
+			s.followSegments()
 			s.keepVideoPlace()
 			if st.Esc {
 				s.leaveFullApp()
@@ -786,15 +789,21 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 		// sits in the middle of the bar on top of the seek row.
 		top := max(0, (k.player-videoControlsHeight)/2)
 		ui.Column(c).Grow(1).Basis(0).MinWidth(220).Gap(1).AlignSelf(ui.Start).Margin(top, 0, 0, 0).Children(func() {
-			title, sub := "Nothing playing", "Pick a video, or press Random"
-			if vp.current.ID != "" {
-				title, sub = vp.current.Title, vp.current.Channel
+			if vp.current.ID == "" {
+				ui.Text(c, "Nothing playing").FontSize(k.bodySize()).SingleLine().MinWidth(0)
+				ui.Text(c, "Pick a video, or press Random").FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+				return
 			}
-			ui.Text(c, title).FontSize(k.bodySize()).SingleLine().MinWidth(0)
-			ui.Text(c, sub).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
-			if vp.current.ID != "" {
-				s.videoRatingRow(c, vp.current)
-			}
+			ui.Text(c, vp.current.Title).FontSize(k.bodySize()).SingleLine().MinWidth(0)
+			// The channel opens its page; the chapter that plays follows it.
+			ui.Row(c).Gap(0).MinWidth(0).Children(func() {
+				s.channelLink(c, "v-channel", vp.current, k.smallSize())
+				chapters := s.videoChapters(vp.current.ID)
+				if i := videoChapterAt(chapters, st.Time); i >= 0 {
+					ui.Text(c, " · "+chapters[i].Title).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0).Shrink(1)
+				}
+			})
+			s.videoRatingRow(c, vp.current)
 		})
 		ui.Column(c).Grow(1.6).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
 			ui.Row(c).Gap(12).Children(func() {
@@ -833,7 +842,14 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 			ui.Row(c).Gap(8).FillWidth().MaxWidth(640).Children(func() {
 				ui.Text(c, clock(time.Duration(vp.seekTo*float64(time.Second)))).FontSize(k.captionSize()).TextColor(k.muted).
 					FontFeatures("tnum").Width(44).TextAlign(ui.End)
-				seek := s.seekSlider(c, &vp.seekTo, max(st.Duration, 1)).Grow(1).MinWidth(0).KeepFocus().Label("Seek").Disabled(!has || st.Duration <= 0)
+				// The segments and chapters mark the track, under the bar.
+				var seek ui.Element
+				track := ui.Box(c.Key("v-seek-track")).Grow(1).MinWidth(0)
+				tw := track.Bounds().W
+				track.Children(func() {
+					s.seekMarks(c, tw, st.Duration)
+					seek = s.seekSlider(c, &vp.seekTo, max(st.Duration, 1)).FillWidth().KeepFocus().Label("Seek").Disabled(!has || st.Duration <= 0)
+				})
 				_, _, held := seek.Dragged()
 				if has && !held && (vp.seeking || seek.Changed()) {
 					s.videoCommand("seek", vp.seekTo)
@@ -862,6 +878,7 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		s.set.VideoCaptions = !on
 		s.save()
 	}
+	s.chaptersButton(c, has)
 	if s.iconButton(c, "v-queue", "queue", "Up next", s.panel == "queue", 18).Clicked() {
 		s.togglePanel("queue")
 	}

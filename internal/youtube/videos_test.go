@@ -15,7 +15,7 @@ func decode(t *testing.T, s string) node {
 }
 
 // TestParseVideoPage reads videos of both designs YouTube's website
-// serves, leaves out Shorts, and finds the token of the next page.
+// serves, marks Shorts, and finds the token of the next page.
 func TestParseVideoPage(t *testing.T) {
 	n := decode(t, `{"contents":{"sectionListRenderer":{"contents":[
 	 {"itemSectionRenderer":{"contents":[
@@ -37,10 +37,13 @@ func TestParseVideoPage(t *testing.T) {
 	  {"continuationItemRenderer":{"continuationEndpoint":{"continuationCommand":{"token":"NEXT"}}}}
 	 ]}}]}}}`)
 	page := parseVideoPage(n)
-	if len(page.Videos) != 2 {
+	if len(page.Videos) != 3 {
 		t.Fatalf("read %d videos: %+v", len(page.Videos), page.Videos)
 	}
-	old, lockup := page.Videos[0], page.Videos[1]
+	old, short, lockup := page.Videos[0], page.Videos[1], page.Videos[2]
+	if old.Short || !short.Short || short.ID != "short000001" || lockup.Short {
+		t.Errorf("Shorts marked: %v, %v, %v", old.Short, short.Short, lockup.Short)
+	}
 	if old.ID != "vid00000001" || old.Title != "Old design" || old.Channel != "A Channel" || old.ChannelID != "UC1" ||
 		old.Duration != "3:12" || old.Views != "12K views" || old.Published != "2 years ago" || len(old.Thumbnail) != 1 {
 		t.Errorf("the old design reads %+v", old)
@@ -89,6 +92,23 @@ func TestParseVideoDetails(t *testing.T) {
 	}
 }
 
+// TestParseChapters reads a watch page's chapters from its seek bar.
+func TestParseChapters(t *testing.T) {
+	n := decode(t, `{"playerOverlays":{"playerOverlayRenderer":{"decoratedPlayerBarRenderer":{"decoratedPlayerBarRenderer":{"playerBar":{"multiMarkersPlayerBarRenderer":{"markersMap":[{"key":"DESCRIPTION_CHAPTERS","value":{"chapters":[
+	 {"chapterRenderer":{"title":{"simpleText":"Intro"},"timeRangeStartMillis":0}},
+	 {"chapterRenderer":{"title":{"simpleText":"The build"},"timeRangeStartMillis":95000}}]}}]}}}}}},
+	 "engagementPanels":[{"macroMarkersListItemRenderer":{"title":{"simpleText":"Other"},"onTap":{"watchEndpoint":{"startTimeSeconds":3}}}}]}`)
+	got := parseChapters(n)
+	if len(got) != 2 || got[0].Title != "Intro" || got[1].Start != 95 {
+		t.Errorf("chapters %+v", got)
+	}
+	panel := decode(t, `{"engagementPanels":[{"macroMarkersListItemRenderer":{"title":{"simpleText":"Start"},"onTap":{"watchEndpoint":{"startTimeSeconds":0}}}},
+	 {"macroMarkersListItemRenderer":{"title":{"simpleText":"End"},"onTap":{"watchEndpoint":{"startTimeSeconds":60}}}}]}`)
+	if got := parseChapters(panel); len(got) != 2 || got[1].Title != "End" {
+		t.Errorf("panel chapters %+v", got)
+	}
+}
+
 // TestParseVideoFeedback reads the tokens of Not interested and Don't
 // recommend channel of a video's menu, of both designs.
 func TestParseVideoFeedback(t *testing.T) {
@@ -108,5 +128,22 @@ func TestParseVideoFeedback(t *testing.T) {
 	  "rendererContext":{"commandContext":{"onTap":{"innertubeCommand":{"feedbackEndpoint":{"feedbackToken":"NC2"}}}}}}}]}}}}}}}}}}`)
 	if f := parseVideoFeedback(lockup); f.NotInterested != "NI2" || f.NoChannel != "NC2" {
 		t.Errorf("the lockup's feedback %+v", f)
+	}
+}
+
+// TestParseVideoChannel reads a channel's header, of the newer design,
+// and its videos.
+func TestParseVideoChannel(t *testing.T) {
+	n := decode(t, `{"header":{"pageHeaderRenderer":{"content":{"pageHeaderViewModel":{
+	  "title":{"dynamicTextViewModel":{"text":{"content":"Some Channel"}}},
+	  "image":{"decoratedAvatarViewModel":{"avatar":{"avatarViewModel":{"image":{"sources":[{"url":"https://yt3/a.jpg","width":72,"height":72}]}}}}},
+	  "metadata":{"contentMetadataViewModel":{"metadataRows":[{"metadataParts":[{"text":{"content":"@some"}}]},
+	   {"metadataParts":[{"text":{"content":"1.2M subscribers"}},{"text":{"content":"340 videos"}}]}]}}}}}},
+	 "contents":{"richGridRenderer":{"contents":[{"richItemRenderer":{"content":{"videoRenderer":{"videoId":"vid00000009","title":{"runs":[{"text":"Latest"}]}}}}}]}},
+	 "frameworkUpdates":{"entityBatchUpdate":{"mutations":[{"payload":{"subscriptionStateEntity":{"subscribed":true}}}]}}}`)
+	ch := parseVideoChannel(n)
+	if ch.Name != "Some Channel" || ch.Handle != "@some" || ch.Subscribers != "1.2M subscribers" || ch.Count != "340 videos" ||
+		len(ch.Avatar) != 1 || !ch.Subscribed || len(ch.Videos.Videos) != 1 || ch.Videos.Videos[0].Channel != "Some Channel" {
+		t.Errorf("channel %+v", ch)
 	}
 }

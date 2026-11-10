@@ -143,6 +143,9 @@ func (s *shell) page(c *ui.Context, r *ui.Route) {
 	case r.Match("/videos/playlist/{id}"):
 		r.Title("Playlist")
 		s.videoPlaylistPage(c, r.Param("id"))
+	case r.Match("/videos/channel/{id}"):
+		r.Title("Channel")
+		s.videoChannelPage(c, r.Param("id"), r.Query("tab"))
 	case r.Match("/watch/{id}"):
 		r.Title("Video")
 		s.watchPage(c, r.Param("id"))

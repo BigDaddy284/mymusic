@@ -62,6 +62,11 @@ type videosState struct {
 	// ratings are the account's ratings of videos the user set here, by
 	// video: "like", "dislike", or "" (videorating.go).
 	ratings map[string]string
+	// channelNames are the names of channels opened, by ID, which their
+	// page shows while it loads; subscribed the subscriptions the user
+	// changed here (videochannel.go).
+	channelNames map[string]string
+	subscribed   map[string]bool
 	// The player (watch.go), and the preview of the card the pointer
 	// rests on (preview.go).
 	player  videoPlayer
@@ -479,7 +484,7 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 			ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
 				k.labelWeight(ui.Text(c, v.Title).FontSize(k.bodySize()).SingleLine().MinWidth(0))
 				if v.Channel != "" {
-					ui.Text(c, v.Channel).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+					s.channelLink(c, key+"-channel", v, k.smallSize())
 				}
 				if line := videoFacts(v); line != "" {
 					ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
@@ -544,7 +549,6 @@ func (s *shell) videoThumb(c *ui.Context, key string, v youtube.Video, w, h floa
 
 // videoPlaylists shows the account's playlists of YouTube's website.
 func (s *shell) videoPlaylists(c *ui.Context) {
-	k := &s.lk
 	res := s.videoPlaylistsLoad()
 	switch {
 	case !res.done:
@@ -554,11 +558,18 @@ func (s *shell) videoPlaylists(c *ui.Context) {
 		s.problem(c, res.err, func() { s.refetch("videos:playlists") })
 		return
 	}
-	row, w := s.cardRow(c, "video-playlists")
+	s.playlistGrid(c, "video-playlists", res.value)
+}
+
+// playlistGrid lays playlists of YouTube's website as cards, in rows that
+// fill the pane: clicked, one opens its page.
+func (s *shell) playlistGrid(c *ui.Context, key string, lists []youtube.VideoPlaylist) {
+	k := &s.lk
+	row, w := s.cardRow(c, key)
 	h := float32(int(w*9/16 + 0.5))
 	row.Children(func() {
-		for i, p := range res.value {
-			card := s.buttonBase(c.Key("video-playlist-" + count(i))).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).
+		for i, p := range lists {
+			card := s.buttonBase(c.Key(key + "-" + count(i))).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).
 				Label(p.Title).Cursor(ui.CursorPointer)
 			if card.Clicked() {
 				if s.videos.titles == nil {

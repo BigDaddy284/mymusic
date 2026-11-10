@@ -36,6 +36,8 @@ type Video struct {
 	Watched int `json:"watched,omitempty"`
 	// Feedback are the tokens of the video's menu, of a feed signed in.
 	Feedback VideoFeedback `json:"feedback,omitzero"`
+	// Short is set for one of YouTube's Shorts.
+	Short bool `json:"short,omitempty"`
 }
 
 // VideoPlaylist is a playlist of YouTube's website.
@@ -172,12 +174,15 @@ func parseVideoPage(n node) VideoPage {
 }
 
 // collectVideos walks a response for the videos and playlists it shows,
-// in order, each once. Shorts, ads and the like are left out.
+// in order, each once. Ads and the like are left out; Shorts are marked,
+// which the pages leave out unless the settings ask for them.
 func collectVideos(n node) ([]Video, []VideoPlaylist) {
 	var videos []Video
 	var lists []VideoPlaylist
 	seenV, seenP := map[string]bool{}, map[string]bool{}
+	var inShorts bool
 	addVideo := func(v Video, ok bool) {
+		v.Short = v.Short || inShorts
 		if ok && v.ID != "" && !seenV[v.ID] {
 			seenV[v.ID] = true
 			videos = append(videos, v)
@@ -189,19 +194,20 @@ func collectVideos(n node) ([]Video, []VideoPlaylist) {
 			lists = append(lists, p)
 		}
 	}
-	var walk func(v any, depth int)
-	walk = func(v any, depth int) {
+	var walk func(v any, depth int, shorts bool)
+	walk = func(v any, depth int, shorts bool) {
 		if depth > 64 {
 			return
 		}
 		switch v := v.(type) {
 		case []any:
 			for _, x := range v {
-				walk(x, depth+1)
+				walk(x, depth+1, shorts)
 			}
 		case map[string]any:
 			for _, key := range sortedKeys(v) {
 				x := node{v[key]}
+				inShorts = shorts
 				switch key {
 				case "videoRenderer", "gridVideoRenderer", "compactVideoRenderer", "playlistVideoRenderer":
 					addVideo(parseVideoRenderer(x))
@@ -214,15 +220,23 @@ func collectVideos(n node) ([]Video, []VideoPlaylist) {
 					case "LOCKUP_CONTENT_TYPE_PLAYLIST", "LOCKUP_CONTENT_TYPE_PODCAST":
 						addList(parsePlaylistLockup(x))
 					}
-				case "reelShelfRenderer", "richShelfRenderer", "shortsLockupViewModel", "reelItemRenderer", "adSlotRenderer":
-					// Shorts and ads: left out.
+				case "reelShelfRenderer":
+					// A shelf of Shorts: its videos are Shorts.
+					walk(v[key], depth+1, true)
+				case "shortsLockupViewModel":
+					addVideo(parseShortLockup(x))
+				case "reelItemRenderer":
+					addVideo(parseReelItem(x))
+				case "richShelfRenderer", "adSlotRenderer":
+					// Shelves of the home page's news and the like, and ads:
+					// left out.
 				default:
-					walk(v[key], depth+1)
+					walk(v[key], depth+1, shorts)
 				}
 			}
 		}
 	}
-	walk(n.v, 0)
+	walk(n.v, 0, false)
 	return videos, lists
 }
 
@@ -283,7 +297,32 @@ func parseVideoRenderer(r node) (Video, bool) {
 	v.Thumbnail = videoThumbnail(id, r.get("thumbnail", "thumbnails"))
 	v.Watched = r.find("thumbnailOverlayResumePlaybackRenderer").get("percentDurationWatched").number()
 	v.Feedback = parseVideoFeedback(r.get("menu"))
+	v.Short = r.get("navigationEndpoint", "reelWatchEndpoint").exists() ||
+		strings.HasPrefix(r.get("navigationEndpoint", "commandMetadata", "webCommandMetadata", "url").str(), "/shorts/")
 	return v, v.Title != ""
+}
+
+// parseShortLockup reads a Short of the shortsLockupViewModel design.
+func parseShortLockup(r node) (Video, bool) {
+	id := r.find("reelWatchEndpoint").get("videoId").str()
+	if id == "" {
+		id = strings.TrimPrefix(r.get("entityId").str(), "shorts-shelf-item-")
+	}
+	meta := r.get("overlayMetadata")
+	v := Video{ID: id, Title: meta.get("primaryText", "content").str(), Views: meta.get("secondaryText", "content").str(), Short: true}
+	if v.Title == "" {
+		v.Title = r.get("accessibilityText").str()
+	}
+	v.Thumbnail = videoThumbnail(id, r.get("thumbnail", "sources"))
+	return v, id != "" && v.Title != ""
+}
+
+// parseReelItem reads a Short of the reelItemRenderer design.
+func parseReelItem(r node) (Video, bool) {
+	id := r.get("videoId").str()
+	v := Video{ID: id, Title: r.get("headline").text(), Views: r.get("viewCountText").text(), Short: true}
+	v.Thumbnail = videoThumbnail(id, r.get("thumbnail", "thumbnails"))
+	return v, id != "" && v.Title != ""
 }
 
 // hasLiveBadge reports whether a video's badges say it is live now.
@@ -352,6 +391,7 @@ func parseVideoLockup(r node) (Video, bool) {
 	v.Thumbnail = videoThumbnail(id, image.find("image").get("sources"))
 	v.Watched = image.find("thumbnailOverlayProgressBarViewModel").get("startPercent").number()
 	v.Feedback = parseVideoFeedback(meta.get("menuButton"))
+	v.Short = strings.HasPrefix(r.find("webCommandMetadata").get("url").str(), "/shorts/")
 	return v, id != "" && v.Title != ""
 }
 
@@ -449,6 +489,16 @@ type VideoDetails struct {
 	Views string `json:"views"`
 	// Rating is "like", "dislike", or "" for neither.
 	Rating string `json:"rating"`
+	// Chapters are the video's chapters, by their start, as its seek bar
+	// on YouTube shows them: none when it has none.
+	Chapters []Chapter `json:"chapters,omitempty"`
+}
+
+// Chapter is a chapter of a video: its title, and where it starts, in
+// seconds.
+type Chapter struct {
+	Title string  `json:"title"`
+	Start float64 `json:"start"`
 }
 
 // VideoDetailsOf asks YouTube's website's watch page of the video id for
@@ -470,6 +520,7 @@ func parseVideoDetails(n node) VideoDetails {
 			d.Views = vc.get("viewCount").text()
 		}
 	}
+	d.Chapters = parseChapters(n)
 	switch n.find("likeStatus").str() {
 	case "LIKE":
 		d.Rating = "like"
@@ -490,4 +541,63 @@ func (c *Client) RateVideo(ctx context.Context, id, rating string) error {
 		endpoint = "like/dislike"
 	}
 	return c.rateAt(ctx, endpoint, map[string]any{"videoId": id})
+}
+
+// parseChapters reads the chapters of a watch page: those of its seek bar,
+// chapterRenderer, or else of its panel of chapters, each once, by start.
+func parseChapters(n node) []Chapter {
+	var out []Chapter
+	seen := map[float64]bool{}
+	add := func(title string, start float64) {
+		if title == "" || start < 0 || seen[start] {
+			return
+		}
+		seen[start] = true
+		out = append(out, Chapter{Title: title, Start: start})
+	}
+	var bar, panel [][2]any
+	var walk func(v any, depth int)
+	walk = func(v any, depth int) {
+		if depth > 64 {
+			return
+		}
+		switch v := v.(type) {
+		case []any:
+			for _, x := range v {
+				walk(x, depth+1)
+			}
+		case map[string]any:
+			for _, key := range sortedKeys(v) {
+				x := node{v[key]}
+				switch key {
+				case "chapterRenderer":
+					ms, _ := x.get("timeRangeStartMillis").v.(float64)
+					bar = append(bar, [2]any{x.get("title").text(), ms / 1000})
+				case "macroMarkersListItemRenderer":
+					sec, _ := x.find("watchEndpoint").get("startTimeSeconds").v.(float64)
+					panel = append(panel, [2]any{x.get("title").text(), sec})
+				default:
+					walk(v[key], depth+1)
+				}
+			}
+		}
+	}
+	walk(n.v, 0)
+	list := bar
+	if len(list) == 0 {
+		list = panel
+	}
+	for _, c := range list {
+		add(c[0].(string), c[1].(float64))
+	}
+	slices.SortStableFunc(out, func(a, b Chapter) int {
+		switch {
+		case a.Start < b.Start:
+			return -1
+		case a.Start > b.Start:
+			return 1
+		}
+		return 0
+	})
+	return out
 }

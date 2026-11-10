@@ -208,3 +208,20 @@ func (v *Videos) Save(ctx context.Context, playlistID, id string) error {
 func (v *Videos) Feedback(ctx context.Context, token string) error {
 	return v.a.youtube.SendVideoFeedback(ctx, token)
 }
+
+// Channel returns a channel of YouTube's website, by its browse ID, with
+// its latest videos, or, with playlists set, its playlists.
+func (v *Videos) Channel(ctx context.Context, id string, playlists bool) (youtube.VideoChannel, error) {
+	get := v.a.youtube.ChannelVideos
+	if playlists {
+		get = v.a.youtube.ChannelPlaylists
+	}
+	ch, err := get(ctx, id)
+	return ch, v.a.offlineErr(ctx, err)
+}
+
+// Subscribe subscribes the account to the channel id, or, with on unset,
+// unsubscribes it.
+func (v *Videos) Subscribe(ctx context.Context, id string, on bool) error {
+	return v.a.youtube.SetSubscribed(ctx, id, on)
+}
