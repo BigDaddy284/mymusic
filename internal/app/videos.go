@@ -183,3 +183,16 @@ func (v *Videos) RouteOutput(pid int, id string) error {
 	}
 	return output.RouteProcesses(output.ProcessTree(uint32(pid)), id)
 }
+
+// Details returns what YouTube's watch page tells of the video id: its
+// views, and how the account rated it.
+func (v *Videos) Details(ctx context.Context, id string) (youtube.VideoDetails, error) {
+	d, err := v.a.youtube.VideoDetailsOf(ctx, id)
+	return d, v.a.offlineErr(ctx, err)
+}
+
+// Rate rates the video id on the account: "like", "dislike", or "" for
+// neither.
+func (v *Videos) Rate(ctx context.Context, id, rating string) error {
+	return v.a.youtube.RateVideo(ctx, id, rating)
+}

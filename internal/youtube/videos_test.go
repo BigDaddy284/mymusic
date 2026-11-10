@@ -77,3 +77,14 @@ func TestVideoThumbnailFallback(t *testing.T) {
 		t.Errorf("the fallback thumbnails are %+v", th)
 	}
 }
+
+// TestParseVideoDetails reads the views and the account's rating of a
+// watch page.
+func TestParseVideoDetails(t *testing.T) {
+	n := decode(t, `{"contents":{"twoColumnWatchNextResults":{"results":{"results":{"contents":[
+	 {"videoPrimaryInfoRenderer":{"viewCount":{"videoViewCountRenderer":{"viewCount":{"simpleText":"12,345 views"},"shortViewCount":{"simpleText":"12K views"}}}}}]}}}},
+	 "frameworkUpdates":{"entityBatchUpdate":{"mutations":[{"payload":{"likeStatusEntity":{"key":"k","likeStatus":"LIKE"}}}]}}}`)
+	if d := parseVideoDetails(n); d.Views != "12K views" || d.Rating != "like" {
+		t.Errorf("details %+v", d)
+	}
+}

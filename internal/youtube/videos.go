@@ -438,3 +438,52 @@ func nextVideosToken(n node) string {
 	walk(n.v, 0)
 	return token
 }
+
+// VideoDetails is what the watch page of YouTube's website tells of a
+// video: how many saw it, and how the account rated it.
+type VideoDetails struct {
+	Views string `json:"views"`
+	// Rating is "like", "dislike", or "" for neither.
+	Rating string `json:"rating"`
+}
+
+// VideoDetailsOf asks YouTube's website's watch page of the video id for
+// its details.
+func (c *Client) VideoDetailsOf(ctx context.Context, id string) (VideoDetails, error) {
+	n, err := c.callWith(ctx, websiteClient, "next", map[string]any{"videoId": id}, nil, callOptions{website: true})
+	if err != nil {
+		return VideoDetails{}, err
+	}
+	return parseVideoDetails(n), nil
+}
+
+// parseVideoDetails reads the watch page's details.
+func parseVideoDetails(n node) VideoDetails {
+	var d VideoDetails
+	if vc := n.find("videoViewCountRenderer"); vc.exists() {
+		d.Views = vc.get("shortViewCount").text()
+		if d.Views == "" {
+			d.Views = vc.get("viewCount").text()
+		}
+	}
+	switch n.find("likeStatus").str() {
+	case "LIKE":
+		d.Rating = "like"
+	case "DISLIKE":
+		d.Rating = "dislike"
+	}
+	return d
+}
+
+// RateVideo rates a video of the account: "like", "dislike", or "" to
+// take the rating back.
+func (c *Client) RateVideo(ctx context.Context, id, rating string) error {
+	endpoint := "like/removelike"
+	switch rating {
+	case "like":
+		endpoint = "like/like"
+	case "dislike":
+		endpoint = "like/dislike"
+	}
+	return c.rateAt(ctx, endpoint, map[string]any{"videoId": id})
+}

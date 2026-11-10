@@ -156,7 +156,7 @@ func (s *shell) loadVideo() {
 		vp.making = true
 		win := s.win
 		go func() {
-			web, err := win.NewWebView(mygo.WebViewOptions{URL: watchPageURL(id), BackgroundColor: "#000000"})
+			web, err := win.NewWebView(mygo.WebViewOptions{URL: watchPageURL(id, s.set.VideoCaptions), BackgroundColor: "#000000"})
 			s.update(func() {
 				vp.making = false
 				if err != nil {
@@ -178,16 +178,24 @@ func (s *shell) loadVideo() {
 		return
 	}
 	vp.loaded = id
-	web := vp.web
+	web, captions := vp.web, s.set.VideoCaptions
 	go func() {
-		if err := web.Page().LoadURL(watchPageURL(id)); err != nil {
+		if err := web.Page().LoadURL(watchPageURL(id, captions)); err != nil {
 			log.Printf("mytube: playing the video %s: %v", id, err)
 		}
 	}()
 }
 
-// watchPageURL is the player's page, playing id.
-func watchPageURL(id string) string { return "/watch.html?v=" + url.QueryEscape(id) }
+// watchPageURL is the player's page, playing id, with the captions on or
+// off: the page keeps them so all through the video, whatever YouTube's
+// account settings ask.
+func watchPageURL(id string, captions bool) string {
+	cc := "0"
+	if captions {
+		cc = "1"
+	}
+	return "/watch.html?v=" + url.QueryEscape(id) + "&cc=" + cc
+}
 
 // stopWatching closes the player: the video stops.
 func (s *shell) stopWatching() {
@@ -318,6 +326,7 @@ if (p) {
     case 'volume': p.setVolume(arg); if (arg > 0) p.unMute(); break;
     case 'mute': if (arg) p.mute(); else p.unMute(); break;
     case 'captions':
+      window.mtCaptions = !!arg;
       if (arg) { p.loadModule('captions'); p.setOption('captions', 'reload', true); }
       else { p.unloadModule('captions'); }
       break;
@@ -405,7 +414,7 @@ func (s *shell) settleVideo() {
 		if vp.settled == 3 && s.set.VideoOutput.ID != "" {
 			s.applyVideoOutput()
 		}
-		if vp.state.Captions != w.VideoCaptions {
+		if !w.VideoCaptions || vp.state.Captions != w.VideoCaptions {
 			s.localVideoCommand("captions", w.VideoCaptions)
 			vp.state.Captions = w.VideoCaptions
 		}
@@ -735,6 +744,10 @@ func (s *shell) videoRow(c *ui.Context, key string, v youtube.Video, current boo
 // videoPlayerBar is the Video side's player bar: what plays, the same
 // transport and seek bar as the music's, and the same buttons at its side,
 // which work on the video.
+// videoControlsHeight is how tall the middle of the Video player bar is:
+// the play button, 48, the gap, 6, and the seek row, 20.
+const videoControlsHeight = 48 + 6 + 20
+
 func (s *shell) videoPlayerBar(c *ui.Context) {
 	k := &s.lk
 	vp := &s.videos.player
@@ -747,13 +760,19 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 		bar.Background(k.surface).BorderWidth(1, 0, 0, 0).BorderColor(k.border)
 	}
 	bar.Children(func() {
-		ui.Column(c).Grow(1).Basis(0).MinWidth(220).Gap(2).Children(func() {
+		// The info starts level with the top of the play button, which
+		// sits in the middle of the bar on top of the seek row.
+		top := max(0, (k.player-videoControlsHeight)/2)
+		ui.Column(c).Grow(1).Basis(0).MinWidth(220).Gap(1).AlignSelf(ui.Start).Margin(top, 0, 0, 0).Children(func() {
 			title, sub := "Nothing playing", "Pick a video, or press Random"
 			if vp.current.ID != "" {
 				title, sub = vp.current.Title, vp.current.Channel
 			}
 			ui.Text(c, title).FontSize(k.bodySize()).SingleLine().MinWidth(0)
 			ui.Text(c, sub).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+			if vp.current.ID != "" {
+				s.videoRatingRow(c, vp.current)
+			}
 		})
 		ui.Column(c).Grow(1.6).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
 			ui.Row(c).Gap(12).Children(func() {

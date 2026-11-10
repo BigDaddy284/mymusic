@@ -52,6 +52,9 @@ type videosState struct {
 	moreBusy  map[string]bool
 	// rolling is set while Random asks Wikipedia for a topic.
 	rolling bool
+	// ratings are the account's ratings of videos the user set here, by
+	// video: "like", "dislike", or "" (videorating.go).
+	ratings map[string]string
 	// The player (watch.go), and the preview of the card the pointer
 	// rests on (preview.go).
 	player  videoPlayer
@@ -581,7 +584,8 @@ func (s *shell) videoSearchField(c *ui.Context) {
 	if vs.rolling {
 		label = "finding…"
 	}
-	if s.button(c, "top-random", label, true).Disabled(vs.rolling).Tooltip("Search for a random Wikipedia article").Clicked() {
+	// Random is the height of the search box beside it.
+	if s.button(c, "top-random", label, true).Height(36).PaddingX(20).Radius(s.lk.round(36)).AlignSelf(ui.Center).Disabled(vs.rolling).Tooltip("Search for a random Wikipedia article").Clicked() {
 		s.randomVideoSearch()
 	}
 }
