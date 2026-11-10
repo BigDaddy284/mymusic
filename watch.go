@@ -780,7 +780,7 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 	}
 	s.iconButton(c, "v-cast", "cast", "Casting videos isn't available yet", false, 18).Disabled(true)
 	speed := s.iconButton(c, "v-speed", "speed", "Speed: "+videoSpeedLabel(st.Rate), st.Rate != 0 && st.Rate != 1, 18).Disabled(!has)
-	speed.PopoverMenu(func(m *ui.Menu) {
+	speed.Menu(func(m *ui.Menu) {
 		for _, r := range settings.VideoRates {
 			if m.Item(videoSpeedLabel(r)).Checked(r == st.Rate || st.Rate == 0 && r == 1).Chosen() {
 				s.videoCommand("rate", r)
