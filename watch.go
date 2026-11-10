@@ -245,6 +245,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 			}
 			vp.state = st
 			s.settleVideo()
+			s.keepVideoPlace()
 			if st.Esc {
 				s.leaveFullApp()
 			}
@@ -310,6 +311,31 @@ switch (cmd) {
 return true;
 `
 
+const (
+	// videoResumeAfter and videoResumeBefore bound where a video goes on
+	// from: not in its first seconds, nor its last.
+	videoResumeAfter  = 10
+	videoResumeBefore = 15
+)
+
+// keepVideoPlace keeps where the video is, to go on from there when it
+// plays again; one watched to its end, or gone back to its start, starts
+// over. It waits for the player to have gone on from where the video was
+// left (settleVideo).
+func (s *shell) keepVideoPlace() {
+	vp := &s.videos.player
+	st := vp.state
+	if vp.current.ID == "" || st.Duration <= 0 || vp.settled < 4 {
+		return
+	}
+	at := st.Time
+	if st.Ended || at < videoResumeAfter || at > st.Duration-videoResumeBefore {
+		at = 0
+	}
+	id := vp.current.ID
+	s.svc.Videos.LeftAt(id, at)
+}
+
 // settleVideo brings the player the user's volume, speed and captions,
 // kept in the settings: once the video's length is known, and again a
 // few polls later, as YouTube's player may turn captions on by itself.
@@ -329,6 +355,11 @@ func (s *shell) settleVideo() {
 		s.videoCommand("mute", w.VideoMuted)
 		s.videoCommand("rate", w.VideoRate)
 		vp.state.Volume, vp.state.Muted, vp.state.Rate = w.VideoVolume, w.VideoMuted, w.VideoRate
+		// The video goes on from where it was left, as tracks do.
+		if at := s.svc.Videos.Position(vp.current.ID); at > videoResumeAfter && at < vp.state.Duration-videoResumeBefore {
+			s.videoCommand("seek", at)
+			vp.state.Time = at
+		}
 		fallthrough
 	case 3, 6:
 		if vp.state.Captions != w.VideoCaptions {

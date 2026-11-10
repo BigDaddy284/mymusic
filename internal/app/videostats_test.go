@@ -57,3 +57,27 @@ func TestVideoStats(t *testing.T) {
 		t.Errorf("top channels: %+v", all.TopChannels)
 	}
 }
+
+// TestVideoPositions keeps where each video was left, from one start to
+// the next, and forgets one at 0.
+func TestVideoPositions(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "video-stats.json")
+	vs, err := openVideoStats(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	vs.leftAt("a", 95)
+	vs.leftAt("b", 40)
+	vs.leftAt("b", 0)
+	vs.flush()
+	again, err := openVideoStats(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := again.position("a"); got != 95 {
+		t.Errorf("a was left at %v", got)
+	}
+	if got := again.position("b"); got != 0 {
+		t.Errorf("b, forgotten, was left at %v", got)
+	}
+}

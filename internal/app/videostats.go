@@ -35,7 +35,13 @@ type videoBook struct {
 	Views map[string][]string `json:"views"`
 	// Videos tell what each video is.
 	Videos map[string]youtube.Video `json:"videos"`
+	// Positions are where each video was left, in seconds, to go on
+	// from there when it plays again.
+	Positions map[string]float64 `json:"positions,omitempty"`
 }
+
+// positionsKept is how many videos keep where they were left.
+const positionsKept = 500
 
 // VideoWatch is a video, with how long it was watched and how often.
 type VideoWatch struct {
@@ -69,6 +75,8 @@ type videoStats struct {
 	// book is the file's value, with what waits to be saved.
 	book    videoBook
 	waiting float64
+	// moved is set when where a video was left changed since the save.
+	moved bool
 	// sitting is the video watched now, and for how long, which counts
 	// as a view after videoViewAfter.
 	sitting   string
@@ -131,6 +139,43 @@ func (vs *videoStats) watched(v youtube.Video, seconds float64) {
 	}
 }
 
+// leftAt keeps where a video was left: 0 forgets it, as at its end.
+func (vs *videoStats) leftAt(id string, seconds float64) {
+	if id == "" {
+		return
+	}
+	vs.mu.Lock()
+	defer vs.mu.Unlock()
+	b := &vs.book
+	if seconds <= 0 {
+		if _, ok := b.Positions[id]; ok {
+			delete(b.Positions, id)
+			vs.moved = true
+		}
+		return
+	}
+	if b.Positions == nil {
+		b.Positions = map[string]float64{}
+	}
+	if _, ok := b.Positions[id]; !ok && len(b.Positions) >= positionsKept {
+		for other := range b.Positions { // any one goes
+			delete(b.Positions, other)
+			break
+		}
+	}
+	if b.Positions[id] != seconds {
+		b.Positions[id] = seconds
+		vs.moved = true
+	}
+}
+
+// position is where a video was left, 0 when it wasn't.
+func (vs *videoStats) position(id string) float64 {
+	vs.mu.Lock()
+	defer vs.mu.Unlock()
+	return vs.book.Positions[id]
+}
+
 // started tells a video starts again from its start, which counts as a
 // view of its own once it plays long enough.
 func (vs *videoStats) started() {
@@ -140,10 +185,10 @@ func (vs *videoStats) started() {
 }
 
 func (vs *videoStats) saveLocked() {
-	if vs.waiting == 0 {
+	if vs.waiting == 0 && !vs.moved {
 		return
 	}
-	vs.waiting = 0
+	vs.waiting, vs.moved = 0, false
 	if err := vs.file.Set(vs.book); err != nil {
 		log.Printf("mytube: keeping the video stats: %v", err)
 	}
@@ -239,6 +284,21 @@ func (v *Videos) Watched(video youtube.Video, seconds float64) {
 	if vs := v.a.videoStats; vs != nil {
 		vs.watched(video, seconds)
 	}
+}
+
+// LeftAt keeps where the video id was left, in seconds; 0 forgets it.
+func (v *Videos) LeftAt(id string, seconds float64) {
+	if vs := v.a.videoStats; vs != nil {
+		vs.leftAt(id, seconds)
+	}
+}
+
+// Position is where the video id was left, in seconds, 0 when it wasn't.
+func (v *Videos) Position(id string) float64 {
+	if vs := v.a.videoStats; vs != nil {
+		return vs.position(id)
+	}
+	return 0
 }
 
 // Started tells the video plays again from its start.
