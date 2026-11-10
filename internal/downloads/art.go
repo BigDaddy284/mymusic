@@ -67,7 +67,7 @@ func (m *Manager) keepArtSoon(id string) {
 			p, err := m.fetchArt(dir, w.images)
 			if err != nil {
 				if !errors.Is(err, context.Canceled) {
-					log.Printf("mymusic: keeping a cover of the downloads: %v", err)
+					log.Printf("mytube: keeping a cover of the downloads: %v", err)
 				}
 				continue
 			}

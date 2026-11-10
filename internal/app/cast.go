@@ -1,8 +1,8 @@
 package app
 
-// Casting: the cast devices on the network, which MyMusic looks for by
+// Casting: the cast devices on the network, which MyTube looks for by
 // mDNS (internal/cast), and the player's streams played on one of them in
-// the engine's place (castOut), which fetches their audio from MyMusic
+// the engine's place (castOut), which fetches their audio from MyTube
 // (castServer).
 
 import (
@@ -24,7 +24,7 @@ import (
 
 // These times are casting's; tests shorten them.
 var (
-	// castFirstBrowse is how long after start MyMusic first looks for
+	// castFirstBrowse is how long after start MyTube first looks for
 	// cast devices, and castBrowseEvery how often it looks again.
 	castFirstBrowse = 3 * time.Second
 	castBrowseEvery = 45 * time.Second
@@ -89,7 +89,7 @@ func castDeviceOf(d cast.Device) CastDevice {
 }
 
 // watchCast looks for cast devices a moment after start, then every
-// castBrowseEvery, and stops the cast device's receiver as MyMusic quits.
+// castBrowseEvery, and stops the cast device's receiver as MyTube quits.
 func (a *App) watchCast() {
 	a.OnFlush(a.quitCasting)
 	go func() {
@@ -120,7 +120,7 @@ func (a *App) browseCast() {
 	devices, err := browse(ctx)
 	cancel()
 	if err != nil {
-		log.Printf("mymusic: looking for cast devices: %v", err)
+		log.Printf("mytube: looking for cast devices: %v", err)
 	}
 	now := time.Now()
 	c.mu.Lock()
@@ -262,7 +262,7 @@ func (a *App) castTo(ctx context.Context, id string) error {
 		return nil
 	case c.starting != nil:
 		c.mu.Unlock()
-		return errors.New("MyMusic is connecting to a cast device already")
+		return errors.New("MyTube is connecting to a cast device already")
 	}
 	d := castDeviceOf(f.device)
 	c.starting = &d
@@ -289,7 +289,7 @@ func (a *App) castTo(ctx context.Context, id string) error {
 		OnEnd: func(err error) { a.castEnded(out, err) },
 	})
 	if err != nil {
-		log.Printf("mymusic: connecting to a cast device: %v", err)
+		log.Printf("mytube: connecting to a cast device: %v", err)
 		var ne net.Error
 		if errors.As(err, &ne) || errors.Is(err, context.DeadlineExceeded) {
 			return fmt.Errorf("Couldn't connect to %s: check that it's on, on this computer's network", d.Name)
@@ -315,7 +315,7 @@ func (a *App) castTo(ctx context.Context, id string) error {
 	if prev != nil {
 		prev.end(true)
 	}
-	log.Printf("mymusic: casting to a %s", d.Model)
+	log.Printf("mytube: casting to a %s", d.Model)
 	return nil
 }
 
@@ -363,15 +363,15 @@ func (a *App) castEnded(out *castOut, err error) {
 	why := "the connection was lost"
 	switch {
 	case errors.Is(err, cast.ErrStopped):
-		why = "it stopped playing from MyMusic"
+		why = "it stopped playing from MyTube"
 	case err != nil && strings.HasSuffix(err.Error(), "plays on the cast device now"):
 		why = err.Error()
 	}
-	log.Printf("mymusic: casting stopped: %v", err)
+	log.Printf("mytube: casting stopped: %v", err)
 	a.notifyCast(fmt.Sprintf("Casting to %s stopped: %s", cur.device.Name, why))
 }
 
-// quitCasting stops the cast device's receiver as MyMusic quits: it could
+// quitCasting stops the cast device's receiver as MyTube quits: it could
 // fetch no more audio.
 func (a *App) quitCasting() {
 	c := &a.cast

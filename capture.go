@@ -20,7 +20,7 @@ import (
 )
 
 // captureFromEnv saves screenshots of the window, for development.
-// MYMUSIC_CAPTURE names the folder; MYMUSIC_CAPTURE_ROUTES the steps,
+// MYTUBE_CAPTURE names the folder; MYTUBE_CAPTURE_ROUTES the steps,
 // separated by |: a path shows its page and saves it, act:shot:<name> saves
 // the window as it is, act:mute mutes the player, act:play:<search> plays
 // the songs a search finds, act:local:<search> the music on this computer
@@ -40,20 +40,20 @@ import (
 // act:memory logs the Go heap and the process's memory, and act:heap
 // saves a profile of the heap, as Record memory use does. Nothing
 // plays unless the player is muted, or plays into no device
-// (MYMUSIC_SILENT).
-// MYMUSIC_CAPTURE_WAIT is how long each page gets, MYMUSIC_CAPTURE_SIZE
-// the window's size as 1280x820, and MYMUSIC_CAPTURE_QUIT quits after.
+// (MYTUBE_SILENT).
+// MYTUBE_CAPTURE_WAIT is how long each page gets, MYTUBE_CAPTURE_SIZE
+// the window's size as 1280x820, and MYTUBE_CAPTURE_QUIT quits after.
 func (s *shell) captureFromEnv() {
-	dir := os.Getenv("MYMUSIC_CAPTURE")
+	dir := os.Getenv("MYTUBE_CAPTURE")
 	if dir == "" {
 		return
 	}
 	steps := []string{"/"}
-	if r := os.Getenv("MYMUSIC_CAPTURE_ROUTES"); r != "" {
+	if r := os.Getenv("MYTUBE_CAPTURE_ROUTES"); r != "" {
 		steps = strings.Split(r, "|")
 	}
 	wait := captureWait()
-	if w, h, ok := strings.Cut(os.Getenv("MYMUSIC_CAPTURE_SIZE"), "x"); ok {
+	if w, h, ok := strings.Cut(os.Getenv("MYTUBE_CAPTURE_SIZE"), "x"); ok {
 		wi, _ := strconv.Atoi(w)
 		hi, _ := strconv.Atoi(h)
 		if wi > 0 && hi > 0 {
@@ -69,7 +69,7 @@ func (s *shell) captureFromEnv() {
 		if s.p.State().Muted || app.Silent() {
 			return true
 		}
-		log.Printf("mymusic: capture: not playing %s, as the player isn't muted", what)
+		log.Printf("mytube: capture: not playing %s, as the player isn't muted", what)
 		return false
 	}
 	go func() {
@@ -78,12 +78,12 @@ func (s *shell) captureFromEnv() {
 		save := func(name string) {
 			png, err := s.win.CapturePage()
 			if err != nil {
-				log.Printf("mymusic: capture of %s: %v", name, err)
+				log.Printf("mytube: capture of %s: %v", name, err)
 				return
 			}
 			n++
 			if err := os.WriteFile(filepath.Join(dir, fmt.Sprintf("%02d-%s.png", n, name)), png, 0o644); err != nil {
-				log.Printf("mymusic: capture: %v", err)
+				log.Printf("mytube: capture: %v", err)
 			}
 		}
 		for _, step := range steps {
@@ -103,29 +103,29 @@ func (s *shell) captureFromEnv() {
 			case "mini":
 				s.showMini()
 			case "title":
-				log.Printf("mymusic: capture: the window's title is %q", s.win.Title())
+				log.Printf("mytube: capture: the window's title is %q", s.win.Title())
 			case "nowplaying":
-				log.Printf("mymusic: capture: the system's media controls: %s", s.a.ControlsArtwork())
+				log.Printf("mytube: capture: the system's media controls: %s", s.a.ControlsArtwork())
 			case "memory":
-				log.Printf("mymusic: capture: %s", diag.ReadMemory())
+				log.Printf("mytube: capture: %s", diag.ReadMemory())
 			case "heap":
 				if err := diag.WriteHeapProfile(filepath.Join(dir, "heap.pprof")); err != nil {
-					log.Printf("mymusic: capture: %v", err)
+					log.Printf("mytube: capture: %v", err)
 				}
 			case "library":
 				add, q, _ := strings.Cut(arg, ":")
 				if add != "add" && add != "remove" {
-					log.Printf("mymusic: capture: act:library takes add or remove, not %q", add)
+					log.Printf("mytube: capture: act:library takes add or remove, not %q", add)
 					continue
 				}
 				res, err := s.svc.Catalog.Search(context.Background(), q)
 				if err != nil || len(res.YouTube.Tracks) == 0 {
-					log.Printf("mymusic: capture: searching %q: %v", q, err)
+					log.Printf("mytube: capture: searching %q: %v", q, err)
 					continue
 				}
 				t := res.YouTube.Tracks[0]
 				s.win.Update(func() {
-					log.Printf("mymusic: capture: %s %s (%s), in the library: %v", add, t.Title, t.ID, s.songInLibrary(t.ID))
+					log.Printf("mytube: capture: %s %s (%s), in the library: %v", add, t.Title, t.ID, s.songInLibrary(t.ID))
 					s.saveSong(t, add == "add")
 				})
 			case "play":
@@ -134,7 +134,7 @@ func (s *shell) captureFromEnv() {
 				}
 				res, err := s.svc.Catalog.Search(context.Background(), arg)
 				if err != nil || len(res.YouTube.Tracks) == 0 {
-					log.Printf("mymusic: capture: searching %q: %v", arg, err)
+					log.Printf("mytube: capture: searching %q: %v", arg, err)
 					continue
 				}
 				s.p.PlayTracks(res.YouTube.Tracks, 0)
@@ -147,10 +147,10 @@ func (s *shell) captureFromEnv() {
 					tracks = s.svc.LocalFiles.Search(arg, 100).Tracks
 				}
 				if len(tracks) == 0 {
-					log.Printf("mymusic: capture: no music on this computer of %q", arg)
+					log.Printf("mytube: capture: no music on this computer of %q", arg)
 					continue
 				}
-				log.Printf("mymusic: capture: playing %d tracks on this computer, from %s", len(tracks), tracks[0].Title)
+				log.Printf("mytube: capture: playing %d tracks on this computer, from %s", len(tracks), tracks[0].Title)
 				s.p.PlayTracks(tracks, 0)
 			case "resume":
 				if mayPlay("the queue") {
@@ -204,7 +204,7 @@ func (s *shell) captureFromEnv() {
 				save(name)
 			}
 		}
-		if os.Getenv("MYMUSIC_CAPTURE_QUIT") != "" {
+		if os.Getenv("MYTUBE_CAPTURE_QUIT") != "" {
 			mygo.App.Quit()
 		}
 	}()
@@ -227,16 +227,16 @@ func colorsStep(set *settings.Settings, arg string) {
 
 // captureWait is how long a page gets before its screenshot.
 func captureWait() time.Duration {
-	if d, err := time.ParseDuration(os.Getenv("MYMUSIC_CAPTURE_WAIT")); err == nil {
+	if d, err := time.ParseDuration(os.Getenv("MYTUBE_CAPTURE_WAIT")); err == nil {
 		return d
 	}
 	return 5 * time.Second
 }
 
 // captureMiniFromEnv saves a screenshot of the mini player to
-// MYMUSIC_CAPTURE's folder, a page's wait after it opens.
+// MYTUBE_CAPTURE's folder, a page's wait after it opens.
 func (s *shell) captureMiniFromEnv() {
-	dir := os.Getenv("MYMUSIC_CAPTURE")
+	dir := os.Getenv("MYTUBE_CAPTURE")
 	if dir == "" {
 		return
 	}
@@ -247,7 +247,7 @@ func (s *shell) captureMiniFromEnv() {
 			err = os.WriteFile(filepath.Join(dir, "mini.png"), png, 0o644)
 		}
 		if err != nil {
-			log.Printf("mymusic: capture of the mini player: %v", err)
+			log.Printf("mytube: capture of the mini player: %v", err)
 		}
 	}()
 }

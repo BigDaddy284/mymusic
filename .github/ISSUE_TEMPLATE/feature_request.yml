@@ -1,5 +1,5 @@
 name: An idea
-description: Suggest something MyMusic could do.
+description: Suggest something MyTube could do.
 labels: [idea]
 body:
   - type: textarea

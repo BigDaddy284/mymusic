@@ -1,5 +1,5 @@
 {
-  "_fixture": "Hand-written from the shapes of YouTube Music's home feed, not recorded: the headers of its shelves, with the links their titles and More buttons open; the items are those of home.json. MYMUSIC_LIVE=1 go test ./internal/youtube -run TestLiveShelfKeys -v lists the keys of the shelves of the home feed as it is.",
+  "_fixture": "Hand-written from the shapes of YouTube Music's home feed, not recorded: the headers of its shelves, with the links their titles and More buttons open; the items are those of home.json. MYTUBE_LIVE=1 go test ./internal/youtube -run TestLiveShelfKeys -v lists the keys of the shelves of the home feed as it is.",
   "contents": {
     "singleColumnBrowseResultsRenderer": {
       "tabs": [

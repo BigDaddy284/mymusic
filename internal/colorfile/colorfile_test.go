@@ -88,7 +88,7 @@ func TestMatugen(t *testing.T) {
 		if light["source_color"] != "#6750a4" {
 			t.Errorf("%s: light source_color %q", c.file, light["source_color"])
 		}
-		// Custom colours of matugen's config, and the roles MyMusic
+		// Custom colours of matugen's config, and the roles MyTube
 		// doesn't wear, aren't kept.
 		for _, role := range []string{"red", "on_red", "scrim", "surface_tint"} {
 			if _, ok := dark[role]; ok {
@@ -119,7 +119,7 @@ func TestTokens(t *testing.T) {
 	}
 }
 
-// TestBad gives an error for a file that holds no colours MyMusic can
+// TestBad gives an error for a file that holds no colours MyTube can
 // wear, which says why.
 func TestBad(t *testing.T) {
 	whole, err := os.ReadFile(filepath.Join("testdata", "pywal-3.8.json"))
@@ -257,7 +257,7 @@ func TestExpand(t *testing.T) {
 	}
 }
 
-// TestMatugenTemplate renders MyMusic's template, every expression as a
+// TestMatugenTemplate renders MyTube's template, every expression as a
 // colour, into the tokens of a dark and a light set, and keeps matugen's
 // delimiters, {{ and }}, to its expressions.
 func TestMatugenTemplate(t *testing.T) {

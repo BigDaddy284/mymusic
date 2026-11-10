@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MyMusic: YouTube Music and your own music in one desktop player</title>
+  <title>MyTube: YouTube Music and your own music in one desktop player</title>
   <meta name="description" content="A free, open-source desktop player for Windows: one search, queue and library for YouTube Music and the music on your computer, with lyrics and podcasts." />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fff8f8" media="(prefers-color-scheme: light)" />
@@ -14,7 +14,7 @@
   {%- set base = config.extra.canonical_url | trim_end(pat='/') %}
   {%- set root = base ~ "/" %}
   {%- set image = base ~ "/assets/og.jpg" %}
-  {%- set social_title = "MyMusic: YouTube Music and your own music in one desktop player" %}
+  {%- set social_title = "MyTube: YouTube Music and your own music in one desktop player" %}
   {%- set social_description = "One search, one queue and one library across YouTube Music and the music on your computer, with lyrics, podcasts and downloads, in a free, open-source desktop player you can theme and extend." %}
   {%- set social_url = root %}
   {%- set social_kind = "website" %}
@@ -23,7 +23,7 @@
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@graph": [
     {"@type": "SoftwareApplication",
-     "name": "MyMusic",
+     "name": "MyTube",
      "url": {{ root | json_encode | safe }},
      "description": "A free, open-source desktop player for YouTube Music and the music on your computer: one search, one queue and one library across both, with synced lyrics, podcasts, downloads, themes and plugins.",
      "applicationCategory": "MultimediaApplication",
@@ -35,7 +35,7 @@
      "image": {{ image | json_encode | safe }},
      "author": {"@type": "Organization", "name": "MixMusic contributors", "url": "https://github.com/bigdaddy284/mymusic/graphs/contributors"},
      "sameAs": ["https://github.com/bigdaddy284/mymusic"]},
-    {"@type": "WebSite", "name": "MyMusic", "url": {{ root | json_encode | safe }}, "inLanguage": "en"}
+    {"@type": "WebSite", "name": "MyTube", "url": {{ root | json_encode | safe }}, "inLanguage": "en"}
   ]}
   </script>
   {#- The FAQ's questions and answers, which the page shows near its foot
@@ -80,7 +80,7 @@
     <symbol id="i-speed" viewBox="0 0 24 24"><path d="M6 18A8.5 8.5 0 1 1 18 18M12 12l3.5-3.5" /></symbol>
     <symbol id="i-dislike" viewBox="0 0 24 24"><path d="M16.5 3.5h4v10h-4zM16.5 3.5H7.2a2 2 0 0 0-2 1.6l-1.6 7a2 2 0 0 0 2 2.4H10V18a2.5 2.5 0 0 0 2.5 2.5l4-7Z" /></symbol>
     <symbol id="i-radio" viewBox="0 0 24 24"><path d="M3.5 5.5h17v13h-17zM10 9v6l5-3z" /></symbol>
-    <!-- MyMusic's own icons, as the app draws them (icons.go). -->
+    <!-- MyTube's own icons, as the app draws them (icons.go). -->
     <symbol id="a-home" viewBox="0 0 24 24"><path d="M3.5 11 12 3.5l8.5 7.5M5.5 9.5V20h5v-6h3v6h5V9.5" /></symbol>
     <symbol id="a-search" viewBox="0 0 24 24"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM15.2 15.2 20.5 20.5" /></symbol>
     <symbol id="a-compass" viewBox="0 0 24 24"><path d="M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17ZM15.5 8.5l-2 5-5 2 2-5z" /></symbol>
@@ -112,9 +112,9 @@
 
   <header class="appbar" data-appbar>
     <div class="appbar-inner">
-      <a class="brand" href="#top" aria-label="MyMusic, back to the top">
+      <a class="brand" href="#top" aria-label="MyTube, back to the top">
         <svg class="brand-mark" width="28" height="28" aria-hidden="true"><use href="#i-rings" /></svg>
-        <span>MyMusic</span>
+        <span>MyTube</span>
       </a>
       <nav class="appbar-nav" aria-label="Sections">
         <a href="#features">Features</a>
@@ -150,16 +150,16 @@
         <p class="meta">Version <span data-version>0.5.10</span> · MIT or GPLv3 · Windows · YouTube Music needs no account</p>
       </div>
       <figure class="stage stage-hero demo-fallback" style="--glow: #717ed6">
-        <img src="assets/shots/now-playing.webp" width="1920" height="1058" fetchpriority="high" alt="MyMusic's now playing page in its default look, Blend with the Mix theme: アイドル by YOASOBI, its cover over the visualizer, the player, its synced lyrics with the Translate and Romaji switches, and up next beside them." />
+        <img src="assets/shots/now-playing.webp" width="1920" height="1058" fetchpriority="high" alt="MyTube's now playing page in its default look, Blend with the Mix theme: アイドル by YOASOBI, its cover over the visualizer, the player, its synced lyrics with the Translate and Romaji switches, and up next beside them." />
       </figure>
 
       <div class="demo-wrap" data-demo-wrap>
         <div class="app-frame" data-app-frame>
-          <div class="app" role="group" aria-label="A working copy of MyMusic's player in its default look, the Blend layout and the Mix theme" data-app>
+          <div class="app" role="group" aria-label="A working copy of MyTube's player in its default look, the Blend layout and the Mix theme" data-app>
             <header class="app-top">
               <div class="app-brand">
                 <svg class="app-mark" width="26" height="26" aria-hidden="true"><use href="#i-rings" /></svg>
-                <span>mymusic</span>
+                <span>mytube</span>
                 <span class="a-ico a-quiet" aria-hidden="true"><svg width="20" height="20"><use href="#a-sidebar" /></svg></span>
               </div>
               <div class="app-history">
@@ -278,7 +278,7 @@
         </div>
 
         <div class="mini-frame" data-mini-frame>
-          <div class="mini" role="group" aria-label="A working copy of MyMusic's mini player" data-mini>
+          <div class="mini" role="group" aria-label="A working copy of MyTube's mini player" data-mini>
             <img class="mini-art" width="132" height="132" src="assets/covers/cover-10.webp" alt="" data-cover />
             <div class="mini-body">
               <b class="mini-title" data-title>Local Forecast - Elevator</b>
@@ -292,7 +292,7 @@
               </div>
             </div>
             <div class="mini-corner">
-              <button class="a-ico a-btn mini-open" type="button" aria-label="Open MyMusic" data-to-full><svg width="16" height="16" aria-hidden="true"><use href="#a-mini" /></svg></button>
+              <button class="a-ico a-btn mini-open" type="button" aria-label="Open MyTube" data-to-full><svg width="16" height="16" aria-hidden="true"><use href="#a-mini" /></svg></button>
             </div>
             <span class="mini-progress" aria-hidden="true"><span data-fill-line></span></span>
           </div>
@@ -300,7 +300,7 @@
         </div>
 
         <audio preload="none" data-audio></audio>
-        <p class="demo-note">A working copy of MyMusic's player in its default look: the Blend layout, the Mix theme, and an accent that follows the cover playing. <span class="note-full">Play, skip, seek, like or dislike, change the speed, search, or open the mini player.</span><span class="note-mini">Play, skip, or pick a song from up next.</span> Music: “Local Forecast - Elevator”, “Carefree”, “Wallpaper”, “Inspired”, “Fluffing a Duck” and “Monkeys Spinning Monkeys” by Kevin MacLeod (<a href="https://incompetech.com/">incompetech.com</a>), licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, converted to AAC for this page. The covers are made for this page. In the app, every track carries the mark of the service it plays from; these songs play from this site, so they have none.</p>
+        <p class="demo-note">A working copy of MyTube's player in its default look: the Blend layout, the Mix theme, and an accent that follows the cover playing. <span class="note-full">Play, skip, seek, like or dislike, change the speed, search, or open the mini player.</span><span class="note-mini">Play, skip, or pick a song from up next.</span> Music: “Local Forecast - Elevator”, “Carefree”, “Wallpaper”, “Inspired”, “Fluffing a Duck” and “Monkeys Spinning Monkeys” by Kevin MacLeod (<a href="https://incompetech.com/">incompetech.com</a>), licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, converted to AAC for this page. The covers are made for this page. In the app, every track carries the mark of the service it plays from; these songs play from this site, so they have none.</p>
       </div>
     </section>
 
@@ -314,7 +314,7 @@
         <div class="merge-stage" data-merge-stage>
           <p class="merge-label merge-label-file" aria-hidden="true"><span class="mark mark-file"></span>This computer</p>
           <p class="merge-label merge-label-youtube" aria-hidden="true"><span class="mark mark-youtube"></span>YouTube Music</p>
-          <p class="merge-label merge-label-queue" aria-hidden="true"><svg class="icon" width="16" height="16"><use href="#i-queue" /></svg>Up next in MyMusic</p>
+          <p class="merge-label merge-label-queue" aria-hidden="true"><svg class="icon" width="16" height="16"><use href="#i-queue" /></svg>Up next in MyTube</p>
           <ol class="merge-list" aria-label="One queue of tracks on this computer and on YouTube Music (made up for this page)">
             <li class="merge-row" data-src="file" style="--row-art: #ec8051"><img src="assets/covers/cover-2.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Paper Planets</strong><span><span class="mark mark-file" aria-hidden="true"></span>Velvet Ferries</span></span></li>
             <li class="merge-row" data-src="youtube" style="--row-art: #52e4ea"><img src="assets/covers/cover-1.webp" width="480" height="480" alt="" loading="lazy" /><span class="merge-text"><strong>Neon Tide</strong><span><span class="mark mark-youtube" aria-hidden="true"></span>Kaori Ume</span></span></li>
@@ -332,7 +332,7 @@
     <section class="section" id="features" aria-labelledby="features-title">
       <div class="section-head">
         <h2 id="features-title">One player for all your music</h2>
-        <p class="lead">Every page of MyMusic works across YouTube Music and the music on your computer. Pick one to see it.</p>
+        <p class="lead">Every page of MyTube works across YouTube Music and the music on your computer. Pick one to see it.</p>
       </div>
 
       <div class="tabs" data-tabs style="--glow: #d671a1">
@@ -348,10 +348,10 @@
 
         <div class="tab-body">
           <figure class="stage stage-tab" data-stage>
-            <img class="stage-img is-shown" data-stage-img src="assets/shots/search.webp" width="1920" height="1058" loading="lazy" alt="MyMusic's search page for YOASOBI: pivots for songs, videos, albums, artists, playlists and podcasts, and the songs YouTube Music finds, each marked with its service." />
+            <img class="stage-img is-shown" data-stage-img src="assets/shots/search.webp" width="1920" height="1058" loading="lazy" alt="MyTube's search page for YOASOBI: pivots for songs, videos, albums, artists, playlists and podcasts, and the songs YouTube Music finds, each marked with its service." />
           </figure>
 
-          <div class="panel" role="tabpanel" id="panel-search" aria-labelledby="tab-search" data-shot="search" data-alt="MyMusic's search page for YOASOBI: pivots for songs, videos, albums, artists, playlists and podcasts, and the songs YouTube Music finds, each marked with its service.">
+          <div class="panel" role="tabpanel" id="panel-search" aria-labelledby="tab-search" data-shot="search" data-alt="MyTube's search page for YOASOBI: pivots for songs, videos, albums, artists, playlists and podcasts, and the songs YouTube Music finds, each marked with its service.">
             <h3>One search box for all of it</h3>
             <p>Suggestions come as you type, and the songs, albums, artists, playlists and podcasts of YouTube Music and the music on your computer land in the same lists, each with a mark of where it comes from. YouTube's videos, such as DJ sets and live recordings, have a list of their own.</p>
             <ul class="marks">
@@ -361,10 +361,10 @@
             <p class="note">YouTube Music needs no account. Add your music folders in Settings, and their songs join the same search; <a href="{{ get_url(path='@/docs/local-music/index.md') }}">the guide</a> tells how.</p>
           </div>
 
-          <div class="panel" role="tabpanel" id="panel-queue" aria-labelledby="tab-queue" data-shot="now-playing" data-alt="MyMusic's now playing page for アイドル, its synced lyrics beside the cover, and Up next listing the tracks that follow." hidden>
+          <div class="panel" role="tabpanel" id="panel-queue" aria-labelledby="tab-queue" data-shot="now-playing" data-alt="MyTube's now playing page for アイドル, its synced lyrics beside the cover, and Up next listing the tracks that follow." hidden>
             <h3>All your tracks, in one queue</h3>
             <p>Play next or add to the queue from any track, album or playlist, then drag to reorder. Shuffle, repeat, crossfade and speed work across all of them, a radio carries on when the queue runs out, and the songs you dislike are passed over.</p>
-            <p class="note">Tracks play in MyMusic's own audio engine, one after another without a gap. A cast button sends what plays to a Chromecast or a Google speaker on your network.</p>
+            <p class="note">Tracks play in MyTube's own audio engine, one after another without a gap. A cast button sends what plays to a Chromecast or a Google speaker on your network.</p>
           </div>
 
           <div class="panel" role="tabpanel" id="panel-library" aria-labelledby="tab-library" data-shot="liked" data-alt="The library's liked songs, with Play, Shuffle and Download, and pivots for mixes, podcasts, downloads and history." hidden>
@@ -373,7 +373,7 @@
             <p class="note">Your history and listening stats, day by day, sit beside them. Playlists of up to 20,000 tracks load in full.</p>
           </div>
 
-          <div class="panel" role="tabpanel" id="panel-explore" aria-labelledby="tab-explore" data-shot="explore" data-alt="MyMusic's Explore page: new albums and singles, and what's trending, in rows of covers." hidden>
+          <div class="panel" role="tabpanel" id="panel-explore" aria-labelledby="tab-explore" data-shot="explore" data-alt="MyTube's Explore page: new albums and singles, and what's trending, in rows of covers." hidden>
             <h3>Find what you have not heard yet</h3>
             <p>New albums and singles, the charts of your country, and dozens of moods and genres, each opening its playlists. Under now playing, songs, playlists and artists like what you hear.</p>
             <p class="note">Explore comes from YouTube Music, so it needs no account. YouTube's live radio channels play too.</p>
@@ -437,7 +437,7 @@
             <span class="mini-look" data-l="tiles"><i></i><i></i><i></i></span>
           </div>
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-layout" /></svg>Layouts</h3>
-          <p>Blend, the new default, Expressive, Crate and Tiles, MyMusic's look until now. Each sets shapes, density, headings and motion apart from the theme, and every theme shows in every layout.</p>
+          <p>Blend, the new default, Expressive, Crate and Tiles, MyTube's look until now. Each sets shapes, density, headings and motion apart from the theme, and every theme shows in every layout.</p>
           <a class="link" href="#customize">See them below</a>
         </li>
         <li class="tile">
@@ -447,7 +447,7 @@
         </li>
         <li class="tile">
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-cast" /></svg>Casting</h3>
-          <p>Send what plays to a Chromecast, a Google Home or Nest speaker, or a TV with Chromecast built in. The queue stays in MyMusic, and the device's own buttons work.</p>
+          <p>Send what plays to a Chromecast, a Google Home or Nest speaker, or a TV with Chromecast built in. The queue stays in MyTube, and the device's own buttons work.</p>
         </li>
         <li class="tile">
           <div class="tile-art tile-art-chip" aria-hidden="true"><span>1.25×</span></div>
@@ -471,11 +471,11 @@
 
     <section class="section walkthrough" id="video" aria-labelledby="video-title" style="--glow: #8f7ce0">
       <div class="section-head">
-        <h2 id="video-title">MyMusic in 80 seconds</h2>
+        <h2 id="video-title">MyTube in 80 seconds</h2>
         <p class="lead">Search, word-by-word lyrics, romaji and translation, the four layouts, colours from the cover, the library and downloads, podcasts and the rest of 0.5.9, with sound.</p>
       </div>
       <figure class="video">
-        <video src="assets/promo.mp4" poster="assets/promo-poster.webp" width="1920" height="1080" playsinline preload="metadata" aria-label="MyMusic's promo video: 80 seconds of MyMusic 0.5.9 in the Blend layout, narrated" data-walkthrough></video>
+        <video src="assets/promo.mp4" poster="assets/promo-poster.webp" width="1920" height="1080" playsinline preload="metadata" aria-label="MyTube's promo video: 80 seconds of MyTube 0.5.9 in the Blend layout, narrated" data-walkthrough></video>
       </figure>
       <div class="player">
         <button class="play" type="button" aria-label="Play the video" data-play><svg class="icon i-play" width="22" height="22" aria-hidden="true"><use href="#i-play" /></svg><svg class="icon i-pause" width="22" height="22" aria-hidden="true"><use href="#i-pause" /></svg></button>
@@ -484,7 +484,7 @@
       </div>
       <div class="chips" role="group" aria-label="Chapters of the video" data-chapters>
         <button class="chip is-current" type="button" aria-current="true" data-at="0">Intro</button>
-        <button class="chip" type="button" data-at="7.4">Meet MyMusic</button>
+        <button class="chip" type="button" data-at="7.4">Meet MyTube</button>
         <button class="chip" type="button" data-at="14.6">Search</button>
         <button class="chip" type="button" data-at="19.6">Word by word</button>
         <button class="chip" type="button" data-at="23.8">Romaji</button>
@@ -507,7 +507,7 @@
 
       <div class="gallery" data-gallery>
         <figure class="stage stage-gallery">
-          <img class="gallery-img is-shown" src="assets/shots/theme-mix.webp" width="1920" height="1058" loading="lazy" alt="MyMusic's home page in the Mix theme and the Blend layout." />
+          <img class="gallery-img is-shown" src="assets/shots/theme-mix.webp" width="1920" height="1058" loading="lazy" alt="MyTube's home page in the Mix theme and the Blend layout." />
         </figure>
         <div class="gallery-side">
           <p class="gallery-caption" aria-live="polite"><strong data-gallery-name>Mix, in the Blend layout</strong> <span data-gallery-desc>The default: true black and greys, with cyan for everything live.</span></p>
@@ -517,7 +517,7 @@
               <button class="chip is-current" type="button" aria-pressed="true" data-kind="layout" data-id="blend" data-name="Blend" data-desc="The default since 0.5.9: rounded shapes and springy motion, dense rows of big covers in cards, under bold headings.">Blend</button>
               <button class="chip" type="button" aria-pressed="false" data-kind="layout" data-id="expressive" data-name="Expressive" data-desc="After Material 3 Expressive: tonal fills, pill buttons and chips, large rounded cards, a floating player bar and springs.">Expressive</button>
               <button class="chip" type="button" aria-pressed="false" data-kind="layout" data-id="crate" data-name="Crate" data-desc="Dense and restrained, with big covers in cards and bold, tight headings, so that the covers do the work.">Crate</button>
-              <button class="chip" type="button" aria-pressed="false" data-kind="layout" data-id="tiles" data-name="Tiles" data-desc="MyMusic's look until 0.5.9: flat colour tiles, giant lowercase words and outlined boxes.">Tiles</button>
+              <button class="chip" type="button" aria-pressed="false" data-kind="layout" data-id="tiles" data-name="Tiles" data-desc="MyTube's look until 0.5.9: flat colour tiles, giant lowercase words and outlined boxes.">Tiles</button>
             </div>
           </div>
           <div class="look-group">
@@ -546,12 +546,12 @@
       <div class="columns">
         <div class="column">
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-palette" /></svg>Make a theme</h3>
-          <p>A theme is a folder with a <code>theme.json</code>: eighteen colours, the fonts and a corner radius. MyMusic draws everything with them, in every layout, so a theme keeps working as the app changes. Let it follow your computer, with one theme for light mode and one for dark, or wear the colours pywal or matugen make of your wallpaper.</p>
+          <p>A theme is a folder with a <code>theme.json</code>: eighteen colours, the fonts and a corner radius. MyTube draws everything with them, in every layout, so a theme keeps working as the app changes. Let it follow your computer, with one theme for light mode and one for dark, or wear the colours pywal or matugen make of your wallpaper.</p>
           <a class="link" href="{{ get_url(path='@/docs/themes/index.md') }}">Theme guide<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
         </div>
         <div class="column">
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-puzzle" /></svg>Add a plugin</h3>
-          <p>Plugins are ES modules that add pages, commands, track actions and widgets through a typed API, and go in your plugins folder, like a sleep timer or a spectrum on now playing. Every plugin can use the whole API, and MyMusic tells you so before you enable one.</p>
+          <p>Plugins are ES modules that add pages, commands, track actions and widgets through a typed API, and go in your plugins folder, like a sleep timer or a spectrum on now playing. Every plugin can use the whole API, and MyTube tells you so before you enable one.</p>
           <a class="link" href="{{ get_url(path='@/docs/plugins/index.md') }}">Plugin guide<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
           <a class="link" href="https://github.com/bigdaddy284/mymusic/tree/main/examples">Example themes and plugins<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
         </div>
@@ -560,7 +560,7 @@
 
     <section class="section" id="download" aria-labelledby="download-title">
       <div class="section-head">
-        <h2 id="download-title">Download MyMusic</h2>
+        <h2 id="download-title">Download MyTube</h2>
         <p class="lead">Free for Windows. Version <span data-version>0.5.10</span>; every file is on the GitHub releases page.</p>
       </div>
 
@@ -577,7 +577,7 @@
       <div class="needs">
         <h3>What it needs</h3>
         <dl>
-          <div><dt>YouTube Music</dt><dd>yt-dlp, which MyMusic installs for you from Settings › Playback, and a JavaScript runtime on your PATH: Deno, Node.js, Bun or QuickJS.</dd></div>
+          <div><dt>YouTube Music</dt><dd>yt-dlp, which MyTube installs for you from Settings › Playback, and a JavaScript runtime on your PATH: Deno, Node.js, Bun or QuickJS.</dd></div>
           <div><dt>First launch</dt><dd>The Windows installer is not signed yet: if SmartScreen warns, choose More info › Run anyway.</dd></div>
         </dl>
         <p class="note">Check each file against <code>SHA256SUMS</code> in the release. Older versions are on the <a href="https://github.com/bigdaddy284/mymusic/releases">releases page</a> too. <a href="{{ get_url(path='@/docs/troubleshooting/index.md') }}">Troubleshooting</a> helps when something doesn't work.</p>
@@ -602,7 +602,7 @@
     <section class="section section-open" id="open-source" aria-labelledby="open-title">
       <div class="open-copy">
         <h2 id="open-title">Built in the open</h2>
-        <p>MyMusic is open source under the MIT license or the GNU GPL, version 3: one Go program built on MyGo, which draws its windows itself on the GPU, with no browser inside. Fixes, features, themes, plugins and reports of what does not work are all welcome.</p>
+        <p>MyTube is open source under the MIT license or the GNU GPL, version 3: one Go program built on MyGo, which draws its windows itself on the GPU, with no browser inside. Fixes, features, themes, plugins and reports of what does not work are all welcome.</p>
         <a class="link" href="{{ get_url(path='@/docs/_index.md') }}">Read the docs<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
       </div>
       <ul class="links">
@@ -618,11 +618,11 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <a class="brand brand-small" href="#top" aria-label="MyMusic, back to the top">
+      <a class="brand brand-small" href="#top" aria-label="MyTube, back to the top">
         <svg class="brand-mark" width="22" height="22" aria-hidden="true"><use href="#i-rings" /></svg>
-        <span>MyMusic</span>
+        <span>MyTube</span>
       </a>
-      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. YouTube Music is a trademark of Google; MyMusic is not made by Google.</p>
+      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. YouTube Music is a trademark of Google; MyTube is not made by Google.</p>
       <a class="btn btn-filled" data-download href="https://github.com/bigdaddy284/mymusic/releases/latest">
         <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-download" /></svg>
         <span data-download-label>Download</span>

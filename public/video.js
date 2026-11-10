@@ -1,18 +1,18 @@
-// The picture of a music video, which MyMusic's now playing page shows in
+// The picture of a music video, which MyTube's now playing page shows in
 // place of the cover, muted: public/video.html loads this in a web view
-// of the main window. MyMusic plays the sound in its own engine, and the
+// of the main window. MyTube plays the sound in its own engine, and the
 // Go side (video.go, in the root package) tells this page the engine's
 // time a few times a second, which the picture follows, nudging its rate,
 // or seeking when it is far off.
 //
 // The picture comes through Media Source Extensions, a part of the stream
-// at a time, from MyMusic's proxy at the stream scheme: a <video> can't
+// at a time, from MyTube's proxy at the stream scheme: a <video> can't
 // play the stream scheme itself, as WebView2 gets a scheme's responses
 // only once they are whole. The page holds about AHEAD seconds of the picture ahead of what
 // shows, and fetches nothing while the sound is paused or the page isn't
 // shown.
 //
-// Without a document, as in MyMusic's tests, it only defines mvLogic: the
+// Without a document, as in MyTube's tests, it only defines mvLogic: the
 // parts of it that decide, which take no browser.
 (function (root) {
   "use strict";
@@ -155,7 +155,7 @@
     c.fetching = new AbortController();
     try {
       const res = await fetch(c.desc.src + "&range=" + from + "-" + to, { signal: c.fetching.signal });
-      if (!res.ok) throw new Error("MyMusic's proxy answered HTTP " + res.status);
+      if (!res.ok) throw new Error("MyTube's proxy answered HTTP " + res.status);
       return await res.arrayBuffer();
     } finally {
       c.fetching = null;
@@ -224,7 +224,7 @@
     c.failed = (e && e.message) || "the picture couldn't play";
     stop(c);
     video.pause();
-    console.error("mymusic: the picture:", c.failed);
+    console.error("mytube: the picture:", c.failed);
   }
 
   /**
@@ -377,7 +377,7 @@
 
   /**
    * codecs returns the families of the codecs this web view plays the
-   * picture in through Media Source Extensions, in the order MyMusic
+   * picture in through Media Source Extensions, in the order MyTube
    * prefers them: those it decodes in hardware first, then VP9, whose
    * streams are smaller for the same picture, then H.264. AV1 isn't among
    * them: without hardware to decode it, it takes several times the CPU.

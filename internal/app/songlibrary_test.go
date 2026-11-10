@@ -11,7 +11,7 @@ import (
 )
 
 // TestSetSongSaved saves a YouTube Music song to the library, by its
-// MyMusic ID, with the token of its menu, and nothing of another service,
+// MyTube ID, with the token of its menu, and nothing of another service,
 // an episode, or signed out.
 func TestSetSongSaved(t *testing.T) {
 	ctx := context.Background()

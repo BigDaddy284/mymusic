@@ -103,7 +103,7 @@ func TestNoNotificationInFront(t *testing.T) {
 }
 
 // TestNotificationBehind tells of the track that starts, and of a like or
-// a dislike, while no window of MyMusic's has the keyboard, open or not.
+// a dislike, while no window of MyTube's has the keyboard, open or not.
 func TestNotificationBehind(t *testing.T) {
 	n := newNotes(t)
 	n.start()

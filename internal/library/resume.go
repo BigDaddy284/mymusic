@@ -8,21 +8,21 @@ import (
 
 // sameSlack is how far apart two places of an episode can be and still be
 // the same, besides a percent of its length: YouTube Music tells a place
-// to the percent, and heard MyMusic's own a report or so before it
+// to the percent, and heard MyTube's own a report or so before it
 // stopped.
 const sameSlack = 30 * time.Second
 
 // toldOutranks reports whether an episode starts where its service last
 // saw the user, as told when t was read (Episode.ToldAt), rather than at
-// pos, the place MyMusic keeps of its own. The service's place is taken
-// when it is newer: it changed since MyMusic kept pos, which remembers the
+// pos, the place MyTube keeps of its own. The service's place is taken
+// when it is newer: it changed since MyTube kept pos, which remembers the
 // service's place of then in its track, and was read after. A place heard
 // on a phone, further on or back, is such a change; one that didn't change
-// is MyMusic's own, or one it chose not to start from before. When
-// MyMusic never saw the service's place, which is newer can't be told, so
+// is MyTube's own, or one it chose not to start from before. When
+// MyTube never saw the service's place, which is newer can't be told, so
 // the one further along is taken: a place partway is never undone by an
 // older one. Either way, a place within sameSlack and a percent of
-// MyMusic's own is that one, which keeps MyMusic's, exact to the second.
+// MyTube's own is that one, which keeps MyTube's, exact to the second.
 // An episode played counts as at its end.
 func toldOutranks(pos Position, t media.Track) bool {
 	told := t.Episode

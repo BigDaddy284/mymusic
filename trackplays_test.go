@@ -55,7 +55,7 @@ func titlesShown(t *testing.T, tt *ui.Tester, tracks []media.Track) []string {
 	return out
 }
 
-// TestSortByPlays sorts the liked songs by how often MyMusic played
+// TestSortByPlays sorts the liked songs by how often MyTube played
 // them, from Sort by's Plays, and follows the plays counted after.
 func TestSortByPlays(t *testing.T) {
 	s := newTestShell(t)

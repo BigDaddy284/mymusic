@@ -90,13 +90,13 @@ func TestOutputNotes(t *testing.T) {
 
 // TestStartNativeOnAGoneDevice starts the engine's output on a device that
 // isn't there, which plays silence on the default device and says so. It
-// opens the audio device, so it runs only with MYMUSIC_AUDIO=1.
+// opens the audio device, so it runs only with MYTUBE_AUDIO=1.
 func TestStartNativeOnAGoneDevice(t *testing.T) {
-	if os.Getenv("MYMUSIC_AUDIO") != "1" {
-		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYTUBE_AUDIO") != "1" {
+		t.Skip("MYTUBE_AUDIO=1 runs the tests that open the audio device")
 	}
 	a := newQuietApp(t, nil)
-	gone := settings.OutputDevice{ID: "mymusic-test-no-such-device", Name: "Gone"}
+	gone := settings.OutputDevice{ID: "mytube-test-no-such-device", Name: "Gone"}
 	a.output.chosen = gone
 	notes := make(chan string, 4)
 	defer a.OnOutputDevice(func(note string) { notes <- note })()

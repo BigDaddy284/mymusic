@@ -1,9 +1,9 @@
 # The audio engine
 <!-- docs: group=inside order=20 -->
 
-MyMusic plays YouTube Music and the music on your computer through an audio engine of its own, written in Go. This page covers its decoders, loudness, equalizer, crossfade, speed and 5.1.
+MyTube plays YouTube Music and the music on your computer through an audio engine of its own, written in Go. This page covers its decoders, loudness, equalizer, crossfade, speed and 5.1.
 
-The engine plays everything MyMusic plays on this computer: YouTube Music
+The engine plays everything MyTube plays on this computer: YouTube Music
 tracks and podcast episodes, live streams, downloads and the music on this
 computer. For the code,
 read [the audio engine's part of the architecture](architecture/audio.md)
@@ -11,7 +11,7 @@ and [its codecs](architecture/codecs.md).
 
 ## Decoding
 
-MyMusic decodes the audio YouTube serves it in Go, with decoders of its
+MyTube decodes the audio YouTube serves it in Go, with decoders of its
 own. It uses no FFmpeg and no codec of the system.
 
 | Format | What YouTube uses it for | Decoder | Written from |
@@ -52,9 +52,9 @@ engine, from its files, which the engine tells apart by their first bytes:
 - **Any rate, any channels.** A file's audio is converted to 48 kHz by
   `resample`, and more than two channels are mixed down to stereo, as
   ITU-R BS.775 mixes 5.1 down, scaled so that they don't clip.
-- **The decoders MyMusic didn't write**, go-mp3's and Vorbis's, run
+- **The decoders MyTube didn't write**, go-mp3's and Vorbis's, run
   guarded: a file made to break one fails as a broken file, and never
-  stops MyMusic. Every reader of files, MyMusic's own and theirs, is
+  stops MyTube. Every reader of files, MyTube's own and theirs, is
   fuzzed with broken files.
 
 ## Resampling
@@ -85,9 +85,9 @@ In order:
 9. **The output** plays it on your device.
 
 Steps 5 to 8 are ports of Chromium's Web Audio, the biquad filters,
-DynamicsCompressor and AnalyserNode of Blink, which MyMusic used while it
+DynamicsCompressor and AnalyserNode of Blink, which MyTube used while it
 ran in a web view, before 0.5.0. They match Chromium sample for sample, so
-MyMusic sounds as it did. Pausing and playing fade over 5 ms, so that
+MyTube sounds as it did. Pausing and playing fade over 5 ms, so that
 they don't click.
 
 ## The output
@@ -116,7 +116,7 @@ are the render endpoints that are active, by their friendly names, and
 the device chosen is its endpoint, by its ID.
 
 No C library is linked in: the output calls the system's audio libraries
-while MyMusic runs.
+while MyTube runs.
 
 ## Even loudness
 
@@ -126,7 +126,7 @@ tracks down to one level, so that none jumps out.
 - **Where the measure comes from.** YouTube measures the loudness of each
   video, the integrated loudness of ITU-R BS.1770 in LKFS, and its player
   API tells it with the video's streams. For a stream yt-dlp found, which
-  doesn't carry it, MyMusic asks the player API for the measure apart.
+  doesn't carry it, MyTube asks the player API for the measure apart.
 - **What it does.** A track louder than -14 LKFS, YouTube's own target,
   plays turned down by the difference: a master at -8 LKFS plays 6 dB
   quieter. A quieter track is never turned up, as YouTube tells no peak
@@ -134,7 +134,7 @@ tracks down to one level, so that none jumps out.
   common, so many tracks play 4 to 7 dB quieter than with it off.
 - **When.** A track takes its level with its first sample, so it never
   starts loud; a later change glides.
-- **Offline.** MyMusic keeps the measures of the tracks you played in
+- **Offline.** MyTube keeps the measures of the tracks you played in
   `loudness.json` in its cache folder, so cached and downloaded tracks
   keep their level without the network.
 - **Not measured.** Live streams have no measure, and play at their own
@@ -144,7 +144,7 @@ tracks down to one level, so that none jumps out.
 different: a compressor that squeezes loud and quiet moments closer
 together as they play, and lifts quiet recordings. It starts at -24 dB,
 with a knee of 24 dB, a ratio of 4 to 1, an attack of 10 ms and a release
-of 250 ms, the settings of the web player MyMusic had.
+of 250 ms, the settings of the web player MyTube had.
 
 **The volume slider** has even steps of loudness: each tenth of it is
 6 dB, down to -40 dB, and one press of the volume keys is about 3 dB.
@@ -193,7 +193,7 @@ seconds; at 0, the default, it is off.
   starts as it ends.
 
 **Without a crossfade**, the next track is ready before its turn: a second
-into a track, MyMusic finds the next one's stream, and ten seconds in, it
+into a track, MyTube finds the next one's stream, and ten seconds in, it
 fetches its audio and decodes its start on the other deck. When the track
 ends, the decks swap and the next track starts at once, without loading.
 Live streams and episodes are not fetched ahead.
@@ -281,7 +281,7 @@ cast, the engine plays nothing here, and the visualizer draws nothing.
   seconds, and gets all three tries back once it plays on for ten
   seconds. A download, or a track on this computer, is loaded again once,
   at once, and then skipped, as its file is what fails.
-- **When the network is gone.** After 8 seconds of buffering, MyMusic
+- **When the network is gone.** After 8 seconds of buffering, MyTube
   checks whether the network answers. While it doesn't, the queue plays
   on with the tracks it holds, downloads and the offline cache, and waits
   where it was once none is left.
@@ -298,7 +298,7 @@ they play again without the network.
   tracks played least recently go first. A full disk never interrupts
   playback: the track just isn't kept.
 - **Clearing.** Tracks kept shows how many tracks it holds and their size,
-  with Clear tracks; Covers kept does the same for the covers MyMusic
+  with Clear tracks; Covers kept does the same for the covers MyTube
   keeps, up to 256 MB, with Clear covers.
 - **Downloads are apart.** Downloads stay until you remove them, and
   clearing the cache leaves them:

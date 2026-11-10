@@ -1,4 +1,4 @@
-// Package app wires MyMusic together: the services its windows call, the
+// Package app wires MyTube together: the services its windows call, the
 // player, and its place on the desktop: windows, the tray, media keys and
 // notifications.
 package app
@@ -60,7 +60,7 @@ type Options struct {
 	// of the system, from the first scan on, not only once the app started:
 	// tests set it.
 	WatchMusic localfiles.WatchFolder
-	// Builtin holds the add-ons MyMusic ships with.
+	// Builtin holds the add-ons MyTube ships with.
 	Builtin fs.FS
 	// TrayIcon is the PNG of the tray icon.
 	TrayIcon []byte
@@ -97,13 +97,13 @@ type Options struct {
 	Controls func(handle func(nowplaying.Request)) (*nowplaying.Controls, error)
 }
 
-// App is MyMusic.
+// App is MyTube.
 type App struct {
 	opts Options
 	// lastCrash is the crash report of the run before, until the user
 	// answers about it.
 	lastCrash string
-	// memory records how MyMusic uses its memory while the user asks, in
+	// memory records how MyTube uses its memory while the user asks, in
 	// the logs folder (memory.go): made at its first use.
 	memory     *diag.MemoryRecorder
 	memoryOnce sync.Once
@@ -149,7 +149,7 @@ type App struct {
 	// watchtime reports the listening to YouTube Music's episodes to the
 	// history there.
 	watchtime watchtime
-	// native is MyMusic's own audio engine, made at its first use.
+	// native is MyTube's own audio engine, made at its first use.
 	native     *audio.Engine
 	nativeOnce sync.Once
 	// controls shows the engine's track in the system's media controls.
@@ -172,7 +172,7 @@ type App struct {
 	onNavigate *func(target string)
 	// updates keeps the user's choices of updates.
 	updates *store.File[updatePrefs]
-	// checkUpdates has MyMusic look for a new version at once.
+	// checkUpdates has MyTube look for a new version at once.
 	checkUpdates chan struct{}
 	// readingProfiles is set while the accounts' profiles are read in the
 	// background.
@@ -182,7 +182,7 @@ type App struct {
 	youtubeChecking atomic.Bool
 	// updating is held while an update installs.
 	updating sync.Mutex
-	// quitting is set once MyMusic starts to quit: its windows close then,
+	// quitting is set once MyTube starts to quit: its windows close then,
 	// even with close to the tray on.
 	quitting atomic.Bool
 	// global holds the user's global shortcuts as registered (#80).
@@ -214,9 +214,9 @@ type App struct {
 	// profileErrs is why the accounts' profiles could not be read, until
 	// they are, or the user signs in or out.
 	profileErrs profileErrors
-	// flushers save what the windows hold back, as MyMusic quits.
+	// flushers save what the windows hold back, as MyTube quits.
 	flushers []*func()
-	// stopWatch stops the watch of settings.json, as MyMusic quits.
+	// stopWatch stops the watch of settings.json, as MyTube quits.
 	stopWatch context.CancelFunc
 
 	// fileMu guards file, what the windows are told of settings.json;
@@ -234,7 +234,7 @@ func New(opts Options) (*App, error) {
 		return nil, fmt.Errorf("opening settings: %w", err)
 	}
 	if err := a.settings.Aside(); err != nil {
-		log.Printf("mymusic: settings.json didn't read (%v): kept it as settings.json.broken, and started with the settings of a new install", err)
+		log.Printf("mytube: settings.json didn't read (%v): kept it as settings.json.broken, and started with the settings of a new install", err)
 	}
 	if a.library, err = library.Open(filepath.Join(opts.DataDir, "library.json")); err != nil {
 		return nil, fmt.Errorf("opening the library: %w", err)
@@ -246,7 +246,7 @@ func New(opts Options) (*App, error) {
 		return nil, fmt.Errorf("opening the update preferences: %w", err)
 	}
 	a.checkUpdates = make(chan struct{}, 1)
-	// The recordings MyMusic 0.x found on YouTube Music for Spotify
+	// The recordings MyTube 0.x found on YouTube Music for Spotify
 	// tracks.
 	removeFile(filepath.Join(opts.CacheDir, "matches.json"))
 	loudness, err := store.Open(filepath.Join(opts.CacheDir, "loudness.json"), map[string]float64{})
@@ -265,14 +265,14 @@ func New(opts Options) (*App, error) {
 	a.tools = tools.New(filepath.Join(opts.DataDir, "bin"))
 	a.resolver = stream.NewResolver(a.tools, filepath.Join(opts.CacheDir, "yt-dlp"))
 	a.resolver.Told = a.surroundTold
-	// MYMUSIC_YTDLP_ONLY has yt-dlp find every stream, as before MyMusic
+	// MYTUBE_YTDLP_ONLY has yt-dlp find every stream, as before MyTube
 	// asked YouTube's player API: to time one against the other, or to
 	// tell which fails. The API still tells how loud tracks are.
 	direct := stream.NewDirect()
-	if os.Getenv("MYMUSIC_YTDLP_ONLY") == "" {
+	if os.Getenv("MYTUBE_YTDLP_ONLY") == "" {
 		a.resolver.Direct = direct
 	} else {
-		log.Print("mymusic: yt-dlp alone finds the streams (MYMUSIC_YTDLP_ONLY)")
+		log.Print("mytube: yt-dlp alone finds the streams (MYTUBE_YTDLP_ONLY)")
 	}
 	a.loudness = newLoudnessBook(direct.Loudness, loudness)
 	a.cache = stream.NewCache(filepath.Join(opts.CacheDir, "audio"), 0)
@@ -286,7 +286,7 @@ func New(opts Options) (*App, error) {
 	a.proxy.Cache = a.cache
 	a.matcher = match.New(a.youtube)
 	a.labels = newLabelCache(a.youtube.MadeWithAI, aiLabels, time.Now)
-	userAgent := "MyMusic/" + opts.Version + " (https://github.com/bigdaddy284/mymusic)"
+	userAgent := "MyTube/" + opts.Version + " (https://github.com/bigdaddy284/mymusic)"
 	a.lyrics = lyrics.New(userAgent)
 	a.unison = lyrics.NewUnison(userAgent)
 	a.translations = newTranslations(filepath.Join(opts.CacheDir, "lyrics-translations"))
@@ -345,7 +345,7 @@ func (a *App) Bind() {
 }
 
 // needWebView tells why what, which takes a window showing a web page,
-// can't be done, or nil when it can: MyMusic's own windows need no
+// can't be done, or nil when it can: MyTube's own windows need no
 // webview, so it runs on systems without one, where opening such a window
 // would panic.
 func needWebView(what string) error {

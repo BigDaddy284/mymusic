@@ -39,7 +39,7 @@ func parseShelves(n node) []media.Shelf {
 
 // sectionShelves reads the shelves among the sections of a page: its
 // carousels, and its grids of cards. Sections of other kinds, and shelves
-// with no item MyMusic can show, are left out.
+// with no item MyTube can show, are left out.
 func sectionShelves(sections node) []media.Shelf {
 	shelves := []media.Shelf{}
 	for _, s := range sections.list() {

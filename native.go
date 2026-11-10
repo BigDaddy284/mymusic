@@ -1,4 +1,4 @@
-// Package native draws MyMusic's native interface, a beta beside the web
+// Package native draws MyTube's native interface, a beta beside the web
 // one: windows MyGo draws itself with its ui package, without a webview.
 // They show what the web interface shows, from the same services, and play
 // through the queue in Go (internal/player).
@@ -35,7 +35,7 @@ func Open(a *app.App, hidden bool) *mygo.Window {
 	size := fitIn(mygo.Rectangle{X: work.X, Y: work.Y, Width: 1280, Height: 820}, work)
 	least := fitIn(mygo.Rectangle{X: work.X, Y: work.Y, Width: 940, Height: 600}, work)
 	s.attach(mygo.NewWindow(mygo.WindowOptions{
-		Title:           "MyMusic",
+		Title:           "MyTube",
 		Width:           size.Width,
 		Height:          size.Height,
 		MinWidth:        least.Width,
@@ -162,7 +162,7 @@ type shell struct {
 	// folds the rail; narrowFold is the fold the user gave it there.
 	narrow     bool
 	narrowFold *bool
-	// wordmark is the size of MyMusic's name in the rail (wordmarkSize).
+	// wordmark is the size of MyTube's name in the rail (wordmarkSize).
 	wordmark wordmarkFit
 	// zoom is the zoom the window shows, zoomRoom the largest it has room
 	// for, and zoomToast set when the next frame tells of a new zoom.
@@ -375,9 +375,9 @@ func shownPanel(panel string) string {
 
 // start follows the player and the app, until the window closes, and
 // shows the player's notices and the pages that deep links ask for, and
-// takes MyMusic's global keys as the user records keys. The colours the
+// takes MyTube's global keys as the user records keys. The colours the
 // settings' wells hold back are saved as the window closes, and as
-// MyMusic quits, as Windows ending the session doesn't close it.
+// MyTube quits, as Windows ending the session doesn't close it.
 func (s *shell) start() {
 	s.follow(
 		s.p.Notices(func(n player.Notice) { s.update(func() { s.notes = append(s.notes, n) }) }),
@@ -649,7 +649,7 @@ func (s *shell) promptDialog(c *ui.Context) {
 	}
 }
 
-// offerCrashReport asks, when MyMusic crashed the time before, to report
+// offerCrashReport asks, when MyTube crashed the time before, to report
 // it on GitHub; either way, it doesn't ask again.
 func (s *shell) offerCrashReport() {
 	report := s.svc.System.LastCrash()
@@ -657,7 +657,7 @@ func (s *shell) offerCrashReport() {
 		return
 	}
 	s.asking = &question{
-		title:   "mymusic quit unexpectedly",
+		title:   "mytube quit unexpectedly",
 		message: "It kept a report of what happened, " + report + ", in its logs folder. Reporting it on GitHub, with that file attached, helps fix it.",
 		ok:      "report it",
 		run: func() {

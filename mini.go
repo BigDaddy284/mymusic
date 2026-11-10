@@ -35,7 +35,7 @@ func OpenMini(a *app.App) *mygo.Window {
 	registerFonts()
 	s := newShell(a, a.GoPlayer())
 	s.attach(mygo.NewWindow(mygo.WindowOptions{
-		Title:       "MyMusic mini player",
+		Title:       "MyTube mini player",
 		Width:       miniWidth,
 		Height:      miniHeight,
 		MinWidth:    miniMinWidth,
@@ -60,7 +60,7 @@ func OpenMini(a *app.App) *mygo.Window {
 
 // miniView builds the mini player: the artwork the height of the player,
 // what plays with the buttons of the panels and the transport beside it,
-// buttons that open MyMusic or close the window, and the progress along
+// buttons that open MyTube or close the window, and the progress along
 // its foot, which seeks. The panel shows above or below it, where the
 // window grows for it (minipanel.go). Dragging it anywhere but its
 // controls moves the window.
@@ -144,7 +144,7 @@ func (s *shell) miniBody(c *ui.Context, w float32) {
 	cur, ok := s.st.Current()
 	ui.Column(c).Grow(1).MinWidth(0).Padding(2, 0, miniSeekRoom-4).PaddingStart(12).PaddingEnd(4).
 		Gap(4).Justify(ui.Center).Children(func() {
-		title, line := k.words("Nothing playing"), "play something in MyMusic"
+		title, line := k.words("Nothing playing"), "play something in MyTube"
 		if ok {
 			title, line = cur.Track.Title, names(cur.Track.Artists)
 		}
@@ -156,7 +156,7 @@ func (s *shell) miniBody(c *ui.Context, w float32) {
 				ui.Text(c, title).FontSize(k.size(1.25)).FontWeight(k.titleWeight()).Font(k.display).
 					LetterSpacing(k.tracking(-0.02, k.size(1.25))).SingleLine().Grow(1).MinWidth(0).PaddingEnd(6)
 				// Both close this window once this frame is drawn (#37).
-				if s.miniButton(c, "mini-open", "mini", "Open MyMusic", false, 26, 15).Clicked() {
+				if s.miniButton(c, "mini-open", "mini", "Open MyTube", false, 26, 15).Clicked() {
 					go s.svc.System.ShowMainWindow()
 				}
 				if s.miniButton(c, "mini-close", "close", "Close the mini player", false, 26, 15).Clicked() {

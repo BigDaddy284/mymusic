@@ -207,7 +207,7 @@ func TestStreamRetryPaused(t *testing.T) {
 func TestStreamRetryNotFound(t *testing.T) {
 	prepare, tries := foundOnce("yt:a", errors.New("YouTube asks to confirm this is not a bot."))
 	h := newHarness(t, Saved{}, func(f *fakeServices) {
-		f.failure = "MyMusic could not reach YouTube's audio servers"
+		f.failure = "MyTube could not reach YouTube's audio servers"
 		f.prepare = prepare
 	})
 	h.p.PlayTracks(tracks("a", "b"), 0)

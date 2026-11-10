@@ -38,5 +38,5 @@ DESIGN.md
 # which main does not keep.
 /examples/plugins/*/*.js
 # What `go build` writes at the root.
-/mymusic
-/mymusic.exe
+/mytube
+/mytube.exe

@@ -1,13 +1,13 @@
 # Themes and plugins
 <!-- docs: group=using order=80 -->
 
-Themes and plugins are add-ons: a theme sets MyMusic's colours, typefaces
-and corners, and a plugin adds pages, commands and more. MyMusic loads
+Themes and plugins are add-ons: a theme sets MyTube's colours, typefaces
+and corners, and a plugin adds pages, commands and more. MyTube loads
 those it ships with and those you put in your add-ons folders.
 
 ## Add a theme or a plugin
 
-The folders are in MyMusic's
+The folders are in MyTube's
 [data folder](data-and-privacy.md#the-data-folder), `addons/themes` and
 `addons/plugins`: **open themes folder** in
 [Settings › Appearance](look-and-feel.md#themes) › Theme and **open plugins
@@ -22,7 +22,7 @@ Settings › Appearance, and works with every
 ## Enable a plugin
 
 A plugin doesn't run until you enable it, with its switch in Settings ›
-Plugins › Installed plugins. MyMusic asks first:
+Plugins › Installed plugins. MyTube asks first:
 
 > Plugins can control the player, change your library and reach the
 > internet, whatever they ask for. Enable plugins from authors you trust.
@@ -35,7 +35,7 @@ Settings › Plugins ("failed:" and the reason); **reload** tries it again.
 
 ## What a plugin can do
 
-A plugin runs in a JavaScript engine of MyMusic's own, inside MyMusic,
+A plugin runs in a JavaScript engine of MyTube's own, inside MyTube,
 not in a browser. Through the [plugin API](plugins.md#the-api), it can:
 
 - add **pages**, with an item of their own in the sidebar;
@@ -54,7 +54,7 @@ not in a browser. Through the [plugin API](plugins.md#the-api), it can:
 
 What it draws, it draws in your theme's colours and type. Everything it
 added goes when you turn it off.
-[How MyMusic works](how-it-works.md#themes-and-plugins) tells how plugins
+[How MyTube works](how-it-works.md#themes-and-plugins) tells how plugins
 run, and [the add-ons' part of the architecture](architecture/addons.md)
 shows the code.
 
@@ -70,7 +70,7 @@ The question before you enable a plugin lists what it asks for:
 | `storage` | keeps values between runs |
 
 These tell you what the plugin does. They aren't enforced: every plugin can
-use the whole API, which is why MyMusic asks you to trust it.
+use the whole API, which is why MyTube asks you to trust it.
 
 ## Remove
 

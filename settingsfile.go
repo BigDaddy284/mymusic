@@ -72,11 +72,11 @@ func (s *shell) fileToast(c *ui.Context) {
 	switch n.Kind {
 	case app.NoticeProblem:
 		t.Type, t.Title, t.Timeout = "error", "settings.json has a mistake", 8*time.Second
-		t.Description = sentence(n.Problem) + " MyMusic keeps the settings it had until you fix it."
+		t.Description = sentence(n.Problem) + " MyTube keeps the settings it had until you fix it."
 		t.Action, t.OnAction = "open", s.openSettingsFile
 	case app.NoticeAside:
 		t.Type, t.Title, t.Timeout = "error", "settings.json didn't read", -1
-		t.Description = sentence(n.Problem) + " MyMusic started with the settings of a new install, and kept your file as settings.json.broken."
+		t.Description = sentence(n.Problem) + " MyTube started with the settings of a new install, and kept your file as settings.json.broken."
 		t.Action, t.OnAction = "show", s.showSettingsFile
 	case app.NoticeStart:
 		t.Title = "settings.json isn't UTF-8"
@@ -88,7 +88,7 @@ func (s *shell) fileToast(c *ui.Context) {
 	c.AddToast(t)
 }
 
-// fileNotes tells what of settings.json MyMusic didn't take as it was.
+// fileNotes tells what of settings.json MyTube didn't take as it was.
 func fileNotes(r settings.Report) string {
 	var notes []string
 	if r.NotUTF8 {
@@ -99,7 +99,7 @@ func fileNotes(r settings.Report) string {
 		if len(r.Unknown) > 1 {
 			them = "them"
 		}
-		notes = append(notes, "MyMusic doesn't know "+and(r.Unknown)+": its next save drops "+them+".")
+		notes = append(notes, "MyTube doesn't know "+and(r.Unknown)+": its next save drops "+them+".")
 	}
 	if len(r.Adjusted) > 0 {
 		notes = append(notes, "Put "+and(r.Adjusted)+" back in range.")
@@ -131,7 +131,7 @@ func (s *shell) settingsFileProblem(c *ui.Context) {
 	if p == "" {
 		return
 	}
-	s.alert(c, "settings.json has a mistake", sentence(p)+" MyMusic goes on with the settings it had, and saves what you change here once the file reads again.", func() {
+	s.alert(c, "settings.json has a mistake", sentence(p)+" MyTube goes on with the settings it had, and saves what you change here once the file reads again.", func() {
 		if s.button(c, "settings-file-fix", "open settings.json", true).Clicked() {
 			s.openSettingsFile()
 		}

@@ -1,18 +1,18 @@
 # Where the audio streams come from
 <!-- docs: group=inside order=30 -->
 
-MyMusic finds the audio streams of YouTube Music tracks itself, through YouTube's player API, and with yt-dlp for the rest. Here are the formats and rules.
+MyTube finds the audio streams of YouTube Music tracks itself, through YouTube's player API, and with yt-dlp for the rest. Here are the formats and rules.
 
-Every track MyMusic plays in its own engine is a YouTube video: YouTube
+Every track MyTube plays in its own engine is a YouTube video: YouTube
 Music's songs, music videos, uploads, podcast episodes and live streams.
 This page
-tells how MyMusic gets their audio, and what it does when YouTube makes
+tells how MyTube gets their audio, and what it does when YouTube makes
 that hard. For the code, read
 [the streams' part of the architecture](architecture/stream.md).
 
 ## YouTube's player API
 
-For each track, MyMusic asks YouTube's player API itself, the way
+For each track, MyTube asks YouTube's player API itself, the way
 YouTube's own apps do: as YouTube's app for visionOS, signed out.
 
 - **Why that app.** YouTube answers it with Opus streams whose addresses
@@ -20,23 +20,23 @@ YouTube's own apps do: as YouTube's app for visionOS, signed out.
   to solve, and without a pre-roll ad, so YouTube serves them at once.
   The answer also tells how loud YouTube measured the video, which
   [Even loudness](audio-engine.md#even-loudness) uses.
-- **Signed out, always.** MyMusic sends no cookie and no account with
+- **Signed out, always.** MyTube sends no cookie and no account with
   it, also while you're signed in to YouTube Music: with an account,
   YouTube answers with fewer streams, often none that plays.
-- **A visitor ID.** YouTube gives each visitor an ID, which MyMusic keeps
+- **A visitor ID.** YouTube gives each visitor an ID, which MyTube keeps
   and sends back, as a browser would.
-- **Checked before it plays.** MyMusic asks YouTube's server for the
+- **Checked before it plays.** MyTube asks YouTube's server for the
   first byte of the stream it picked before the player gets it, so that a
   stream YouTube refuses goes to yt-dlp rather than failing in the player.
 - **Fast.** It takes a fraction of the time yt-dlp takes, which is why
   tracks start in a moment since 0.5.6.
 
-When YouTube changes what it asks of this app, MyMusic's requests change
-with it, in an update of MyMusic.
+When YouTube changes what it asks of this app, MyTube's requests change
+with it, in an update of MyTube.
 
 ## When yt-dlp is needed
 
-MyMusic runs [yt-dlp](https://github.com/yt-dlp/yt-dlp) for what the
+MyTube runs [yt-dlp](https://github.com/yt-dlp/yt-dlp) for what the
 player API won't give it:
 
 - **Videos YouTube gives that app no streams of**, such as those made for
@@ -47,20 +47,20 @@ player API won't give it:
   can't read most streams.
 - **5.1 surround mixes**, as below.
 - **A rest from the player API.** When YouTube's player API refuses
-  three streams in a row, MyMusic asks for the third once more with a
+  three streams in a row, MyTube asks for the third once more with a
   new visitor ID, as YouTube may refuse the one it gave rather than
-  MyMusic. Refused again, it leaves the player API alone for 2 minutes,
+  MyTube. Refused again, it leaves the player API alone for 2 minutes,
   and yt-dlp finds every stream meanwhile; refused after a rest, it rests
   twice as long as before, up to 30 minutes, until a stream is found. A
   track it doesn't answer for in time, 4 seconds, counts as a refusal,
   and the next track waits 2 seconds at most for it. The log says how
   long it rests. Before 0.5.11, it rested 30 minutes at once.
 
-yt-dlp runs signed out too, with its own cache in MyMusic's cache folder,
+yt-dlp runs signed out too, with its own cache in MyTube's cache folder,
 for at most 90 seconds a track. Install it, and choose the JavaScript
 runtime, in Settings › Playback › Tools;
 [how it updates](how-it-works.md#yt-dlp-and-the-javascript-runtime) is on
-the first page of this section. When yt-dlp finds no stream, MyMusic says
+the first page of this section. When yt-dlp finds no stream, MyTube says
 why in plain words, such as "this track is not available in your
 country", "only the members of its channel can play this track" or
 "YouTube plays this track only to signed-in adults, on its own website".
@@ -68,11 +68,11 @@ country", "only the members of its channel can play this track" or
 yt-dlp runs twice at most for a track, a quick way first:
 
 - **The quick run** asks the player API as the visionOS app alone, as
-  MyMusic's own requests do, without the JavaScript runtime and without
+  MyTube's own requests do, without the JavaScript runtime and without
   the HLS and DASH manifests. It solves no challenge, which takes the
   full run several seconds of the computer's time, and YouTube serves its
   streams at once. It runs when the player API rests, doesn't answer in
-  time, or refuses MyMusic's own request.
+  time, or refuses MyTube's own request.
 - **The full run** asks as yt-dlp's default apps, with the JavaScript
   runtime: when the quick run finds no audio, and at once when the player
   API said that the visionOS app gets no stream of the video, as of one
@@ -94,14 +94,14 @@ quality.
 | Live streams | AAC-LC at 44.1 kHz in stereo, about 128 kbit/s, format 234 | HE-AAC at 22.05 kHz, format 233, whose AAC-LC core the engine plays |
 | The picture of music videos | about the size of its frame on screen, at most 480 lines | the smallest picture |
 
-Of a video's audio, MyMusic picks:
+Of a video's audio, MyTube picks:
 
 - **The original audio track**, before a dub, and audio descriptions last.
 - **Stereo or mono.** A 5.1 surround format is never picked as a track's
   stereo stream, though it is the best of them; it comes beside it.
 - **The original dynamics.** YouTube also serves a few videos in a
   stable-volume version, whose format names end in "drc", whose sound is
-  squeezed and no smaller. MyMusic takes it only when the video has no
+  squeezed and no smaller. MyTube takes it only when the video has no
   other of its codec.
 - **Unencrypted and whole**: never a stream cut short.
 - **Never format 139**, YouTube's HE-AAC: a video in AAC alone plays its
@@ -111,16 +111,16 @@ Of a video's audio, MyMusic picks:
 
 - **How long they last.** A stream's address works for some hours, as
   its `expire` parameter tells, or six hours when it doesn't tell.
-  MyMusic keeps each stream it found until 30 minutes before it expires,
+  MyTube keeps each stream it found until 30 minutes before it expires,
   then finds it again, so that a track started near the expiry plays to
   its end.
 - **A refused address.** When YouTube refuses an address while a track
-  plays (HTTP 403), MyMusic finds the stream again and goes on from the
+  plays (HTTP 403), MyTube finds the stream again and goes on from the
   byte it reached.
 - **`available_at`.** YouTube refuses a stream that yt-dlp found for a few
   seconds after it gave out the address: its own player would show an ad
   meanwhile. yt-dlp tells the moment YouTube starts to serve it,
-  `available_at`, and MyMusic waits until then, up to 30 seconds, rather
+  `available_at`, and MyTube waits until then, up to 30 seconds, rather
   than ask at once and be refused. Before 0.5.1 it asked at once, and such
   a track failed with "YouTube refused to send its audio". Streams of the
   player API play at once, and the next track is looked up a second into
@@ -131,12 +131,12 @@ Of a video's audio, MyMusic picks:
 ## Servers that don't answer
 
 YouTube keeps each stream on several of its media servers, and the
-stream's address names all of them. When the one MyMusic asks doesn't
-connect within 3 seconds, the TLS handshake included, MyMusic asks the
+stream's address names all of them. When the one MyTube asks doesn't
+connect within 3 seconds, the TLS handshake included, MyTube asks the
 next, as YouTube's own player does, and for 10 minutes asks the others
 before the one that didn't answer. Any answer of a server, a refusal too,
 is the stream's: no other server is asked then. Before 0.5.9, such a track
-waited on its one server and failed with "MyMusic could not reach
+waited on its one server and failed with "MyTube could not reach
 YouTube's audio servers", while other tracks played.
 
 A stream that stops coming, or whose connection drops, connects again from
@@ -150,12 +150,12 @@ the broadcast goes on.
 
 - **How.** YouTube gives a live video's audio as an HLS media playlist
   (RFC 8216) of AAC in packed audio, format 234, or 233 with data saver.
-  MyMusic loads the playlist again about once per segment's length, and
+  MyTube loads the playlist again about once per segment's length, and
   fetches each new segment once, in order.
 - **How far behind.** It starts three segments from the end of the
   playlist, as RFC 8216 asks of a player, about 15 seconds behind the
   broadcast, which leaves room to ride out a slow network.
-- **After a pause.** MyMusic holds up to four segments you haven't heard
+- **After a pause.** MyTube holds up to four segments you haven't heard
   yet, then waits. Played again, the stream goes on from where it was
   while YouTube's playlist still has the next segment, which it does for
   about an hour; after a longer pause, it goes on from near the live
@@ -163,7 +163,7 @@ the broadcast goes on.
 - **What's different.** The player bar and the mini player say "live" in
   place of a time, with no seeking, and Previous goes to the track
   before. A live stream plays at 1× and at its own level, as YouTube
-  measures no loudness of it. MyMusic finds its stream again before the
+  measures no loudness of it. MyTube finds its stream again before the
   address expires. A live stream is never kept in the offline cache,
   never downloaded and never scrobbled, and it doesn't cast yet. It ends
   when the broadcast does.
@@ -175,7 +175,7 @@ Some tracks have a 5.1 surround mix beside their stereo one, which
 or E-AC-3, format 328.
 
 - **Asking a TV app.** YouTube lists no 5.1 audio to the visionOS app.
-  So, at the same time, MyMusic asks the player API as YouTube's app for
+  So, at the same time, MyTube asks the player API as YouTube's app for
   Samsung's TVs, which YouTube tells of a video's AC-3 and E-AC-3. A
   track doesn't wait for that answer: it starts as soon as its stereo
   stream is found and checked, and when the answer comes after, the 5.1
@@ -183,7 +183,7 @@ or E-AC-3, format 328.
   Before 0.5.11, a track waited up to half a second for the answer,
   which on a slow connection often came late or not at all.
 - **yt-dlp and a JavaScript runtime.** The addresses of these streams
-  need a challenge solved, which only yt-dlp does. MyMusic has it find
+  need a challenge solved, which only yt-dlp does. MyTube has it find
   the mix only when it is asked for, as you press 5.1 or a track starts
   with "Play 5.1 surround when a track has it" on, once a track, in about
   3 seconds; YouTube serves it a few seconds after. Without yt-dlp and a
@@ -200,13 +200,13 @@ videos, or press the video button by the transport while one plays.
 
 - **What shows it.** It shows only for official music videos and other
   uploads, never for songs or live streams. MyGo draws no video, so a web
-  view of the main window shows a page of MyMusic's own over the cover,
+  view of the main window shows a page of MyTube's own over the cover,
   which plays the picture, muted, through the browser's Media Source
-  Extensions. The sound stays in MyMusic's engine, with its equalizer and
-  its speed, and the picture follows the engine's clock, which MyMusic
+  Extensions. The sound stays in MyTube's engine, with its equalizer and
+  its speed, and the picture follows the engine's clock, which MyTube
   sends it four times a second.
 - **Where it comes from.** YouTube lists a video's pictures beside its
-  audio, as streams without sound. MyMusic picks the codec the web view
+  audio, as streams without sound. MyTube picks the codec the web view
   plays best, and the smallest picture at least as large as the frame it
   shows in, of at most 480 lines, and of two of a size the one of at most
   30 frames a second; with data saver, the smallest. Its stream proxy serves it to the page a part
@@ -221,7 +221,7 @@ videos, or press the video button by the transport while one plays.
 
 ## Downloads and the cache
 
-MyMusic keeps audio on disk two ways:
+MyTube keeps audio on disk two ways:
 
 | | Offline cache | Downloads |
 |---|---|---|
@@ -250,32 +250,32 @@ MyMusic keeps audio on disk two ways:
 
 ## Proxies
 
-MyMusic connects through a proxy when one is set, for every request it
+MyTube connects through a proxy when one is set, for every request it
 makes: the catalog, the streams, the covers and yt-dlp.
 
 - **The environment's proxy**, as `HTTPS_PROXY`, `HTTP_PROXY` and
   `NO_PROXY` name it, comes first.
-- **Windows' proxy settings**: failing that, MyMusic takes the proxy of Windows'
+- **Windows' proxy settings**: failing that, MyTube takes the proxy of Windows'
   settings, as browsers do: automatic setup first, by detecting the
   settings or by a setup script, which Windows answers for each site and
-  MyMusic remembers for 5 minutes, then the proxy server you set, unless
+  MyTube remembers for 5 minutes, then the proxy server you set, unless
   its bypass list names the address. It follows the settings as VPN and
   proxy apps turn them on and off, and hands yt-dlp the proxy where
-  yt-dlp wouldn't find it itself. The log says what MyMusic connects
-  through, without user names or passwords. Before 0.5.9, MyMusic
+  yt-dlp wouldn't find it itself. The log says what MyTube connects
+  through, without user names or passwords. Before 0.5.9, MyTube
   connected directly, so on a network that lets traffic out only through
   a proxy, songs were found but didn't play.
 - **Never** for loopback addresses, such as `127.0.0.1`, which always
   connect directly.
 
-MyMusic has no proxy setting of its own.
+MyTube has no proxy setting of its own.
 
 ## "Sign in to confirm you're not a bot"
 
 YouTube sometimes answers a request with "Sign in to confirm you're not a
 bot", which it asks of a visitor it doesn't trust.
 
-- **Through the player API**, MyMusic drops the visitor ID YouTube
+- **Through the player API**, MyTube drops the visitor ID YouTube
   doesn't trust, takes the new one YouTube's answer carries, or asks for a
   new one, and asks once more. Refused that way for three tracks in a
   row, it leaves the player API to yt-dlp for a few minutes, as above.
@@ -284,7 +284,7 @@ bot", which it asks of a visitor it doesn't trust.
   track says "YouTube is turning down requests from this network for
   now".
 - **What to do.** Wait a while and play the track again. Signing in to
-  YouTube Music doesn't change it, as MyMusic asks for streams signed
+  YouTube Music doesn't change it, as MyTube asks for streams signed
   out. An old yt-dlp fails more often as YouTube changes: Settings ›
   Playback › Tools shows whether yours is up to date.
   [Troubleshooting](troubleshooting.md) has more.

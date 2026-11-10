@@ -203,7 +203,7 @@ func (p *Proxy) ServeVideo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if _, err := io.Copy(w, body); err != nil && body.err != nil && r.Context().Err() == nil {
-		log.Printf("mymusic: the picture of %s broke off: %v", videoID, loggable(body.err))
+		log.Printf("mytube: the picture of %s broke off: %v", videoID, loggable(body.err))
 	}
 }
 
@@ -221,6 +221,6 @@ func queryRange(s string) (start, end int64, ok bool) {
 func (p *Proxy) failVideo(w http.ResponseWriter, videoID string, err error) {
 	http.Error(w, "the picture couldn't load", http.StatusBadGateway)
 	if !errors.Is(err, context.Canceled) {
-		log.Printf("mymusic: the picture of %s: %v", videoID, loggable(err))
+		log.Printf("mytube: the picture of %s: %v", videoID, loggable(err))
 	}
 }

@@ -14,10 +14,10 @@ import (
 // TestStreamDevices lists the system's output devices, then plays half a
 // second of silence on the default one, by its ID, and on a device that
 // isn't there, which plays on the default device and says so. It opens the
-// device, so it runs only with MYMUSIC_AUDIO=1.
+// device, so it runs only with MYTUBE_AUDIO=1.
 func TestStreamDevices(t *testing.T) {
-	if os.Getenv("MYMUSIC_AUDIO") != "1" {
-		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYTUBE_AUDIO") != "1" {
+		t.Skip("MYTUBE_AUDIO=1 runs the tests that open the audio device")
 	}
 	devices, err := Devices()
 	if errors.Is(err, ErrNoDevice) || errors.Is(err, ErrUnsupported) {
@@ -52,7 +52,7 @@ func TestStreamDevices(t *testing.T) {
 		}
 	}
 	t.Run("the default device", func(t *testing.T) { testStreamOn(t, chosen.ID, false) })
-	t.Run("a device that isn't there", func(t *testing.T) { testStreamOn(t, "mymusic-test-no-such-device", true) })
+	t.Run("a device that isn't there", func(t *testing.T) { testStreamOn(t, "mytube-test-no-such-device", true) })
 }
 
 // testStreamOn plays half a second of silence on the device id, which

@@ -303,7 +303,7 @@ func (m *Manager) check() {
 	}
 	m.idx.Pending = left
 	for _, video := range gone {
-		log.Printf("mymusic: the download of %s went missing; downloading it again", video)
+		log.Printf("mytube: the download of %s went missing; downloading it again", video)
 		delete(m.idx.Files, video)
 	}
 	if len(gone) > 0 || len(left) != len(pending) {
@@ -389,7 +389,7 @@ func (m *Manager) writeNow() {
 		return
 	}
 	if err := m.idx.write(m.dir); err != nil {
-		log.Printf("mymusic: keeping the index of the downloads: %v", err)
+		log.Printf("mytube: keeping the index of the downloads: %v", err)
 		return
 	}
 	m.dirty = false
@@ -747,7 +747,7 @@ func (m *Manager) leaveOut(video string) {
 		if e.video() != video || m.done(e) {
 			continue
 		}
-		log.Printf("mymusic: %s is a live stream, which doesn't download; leaving it out", id)
+		log.Printf("mytube: %s is a live stream, which doesn't download; leaving it out", id)
 		m.drop(id)
 		for _, c := range m.idx.Collections {
 			// A snapshot shares the collection's tracks.

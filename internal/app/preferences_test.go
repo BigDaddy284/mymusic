@@ -8,7 +8,7 @@ import (
 )
 
 // TestResetKeepsDownloadsFolder puts the settings back, but for the folder
-// the downloads are in: they would be lost to MyMusic otherwise.
+// the downloads are in: they would be lost to MyTube otherwise.
 func TestResetKeepsDownloadsFolder(t *testing.T) {
 	dir := t.TempDir()
 	a, err := New(Options{DataDir: filepath.Join(dir, "data"), CacheDir: filepath.Join(dir, "cache"), Builtin: builtin.FS, Version: "test"})

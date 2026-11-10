@@ -152,7 +152,7 @@ func TestCreateYouTubePlaylist(t *testing.T) {
 }
 
 // TestDeleteYouTubePlaylist deletes a playlist of YouTube Music by its
-// MyMusic ID, and nothing of another service or signed out.
+// MyTube ID, and nothing of another service or signed out.
 func TestDeleteYouTubePlaylist(t *testing.T) {
 	ctx := context.Background()
 	if err := (&Collection{a: &App{youtube: youtube.New()}}).DeleteYouTubePlaylist(ctx, "yt:PLmine"); !errors.Is(err, errNotSignedIn) {

@@ -200,7 +200,7 @@ func (c *labelCache) run(videoID string, call *labelCall) {
 		if c.fails++; c.fails >= labelFails && !now.Before(c.paused) {
 			c.fails = 0
 			c.paused = now.Add(labelPause)
-			log.Printf("mymusic: %d checks of AI labels in a row failed, the last with %v: tracks play unchecked for %s", labelFails, err, labelPause)
+			log.Printf("mytube: %d checks of AI labels in a row failed, the last with %v: tracks play unchecked for %s", labelFails, err, labelPause)
 		}
 	}
 }
@@ -246,7 +246,7 @@ func (c *labelCache) save() {
 	}
 	c.mu.Unlock()
 	if err := c.file.Set(kept); err != nil {
-		log.Printf("mymusic: keeping the AI labels: %v", err)
+		log.Printf("mytube: keeping the AI labels: %v", err)
 	}
 }
 

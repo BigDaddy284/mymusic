@@ -14,15 +14,15 @@ import (
 
 // TestSample checks the Reader against ffprobe on a file the repository
 // does not hold, such as the Opus audio of a YouTube video, and logs how
-// the file is laid out. It runs when MYMUSIC_WEBM_SAMPLE names the file,
+// the file is laid out. It runs when MYTUBE_WEBM_SAMPLE names the file,
 // with ffprobe on the PATH:
 //
 //	yt-dlp -f 251 -o zoo.webm https://www.youtube.com/watch?v=jNQXAC9IVRw
-//	MYMUSIC_WEBM_SAMPLE=zoo.webm go test ./webm -run Sample -v
+//	MYTUBE_WEBM_SAMPLE=zoo.webm go test ./webm -run Sample -v
 func TestSample(t *testing.T) {
-	path := os.Getenv("MYMUSIC_WEBM_SAMPLE")
+	path := os.Getenv("MYTUBE_WEBM_SAMPLE")
 	if path == "" {
-		t.Skip("set MYMUSIC_WEBM_SAMPLE to a WebM file to test against ffprobe")
+		t.Skip("set MYTUBE_WEBM_SAMPLE to a WebM file to test against ffprobe")
 	}
 	out, err := exec.Command("ffprobe", append(probeArgs, path)...).Output()
 	if err != nil {

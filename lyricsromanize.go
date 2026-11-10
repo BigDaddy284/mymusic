@@ -40,7 +40,7 @@ type romanizeView struct {
 	lang string
 }
 
-// romanizeLanguage returns the language of lyrics that MyMusic romanizes
+// romanizeLanguage returns the language of lyrics that MyTube romanizes
 // on the computer, which keeps the user's choice: theirs, when their
 // lines are in its script, else that of the script of their lines, as
 // Korean for lyrics in English with lines in Hangul; "" for lyrics it

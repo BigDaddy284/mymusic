@@ -1,8 +1,8 @@
-// Package volume is the curves of MyMusic's volume: what a position of
+// Package volume is the curves of MyTube's volume: what a position of
 // the slider, from 0 to 1, sounds like on each, and how settings.json
 // keeps it.
 //
-// On Natural, MyMusic's own curve, a position p plays at the gain
+// On Natural, MyTube's own curve, a position p plays at the gain
 // (1000^p - 1) / 999. Each tenth of the slider is 6 dB, down to -40 dB,
 // and below that the curve bends down to silence at 0; the middle is
 // -30 dB. On Linear, p plays at the gain p: the middle is -6 dB.
@@ -46,7 +46,7 @@ func (c Curve) Gain(p float64) float64 {
 func Gain(p float64) float64 { return Natural.Gain(p) }
 
 // Saved is the position p as settings.json keeps it, whatever the curve:
-// the square root of its gain on Natural, as MyMusic once played a share
+// the square root of its gain on Natural, as MyTube once played a share
 // at its square.
 func Saved(p float64) float64 { return math.Sqrt(Natural.Gain(p)) }
 

@@ -1,7 +1,7 @@
 package app
 
 // The player: the queue played in Go (internal/player), through
-// MyMusic's own audio engine, with the services of Player.
+// MyTube's own audio engine, with the services of Player.
 
 import (
 	"context"
@@ -95,7 +95,7 @@ func (a *App) commandGoPlayer(p *player.Player, cmd PlayerCommand) {
 			}
 			go func() {
 				if err := (&Collection{a}).SetLiked(context.Background(), cur.Track, !liked); err != nil {
-					log.Printf("mymusic: liking %s: %v", cur.Track.ID, err)
+					log.Printf("mytube: liking %s: %v", cur.Track.ID, err)
 					return
 				}
 				a.notifyLiked(cur.Track, !liked)
@@ -118,7 +118,7 @@ func (a *App) dislikeGoPlayer(p *player.Player, t media.Track, disliked bool) {
 	p.Disliked(t.ID, disliked)
 	go func() {
 		if err := (&Collection{a}).SetDisliked(context.Background(), t, disliked); err != nil {
-			log.Printf("mymusic: disliking %s: %v", t.ID, err)
+			log.Printf("mytube: disliking %s: %v", t.ID, err)
 			p.Disliked(t.ID, !disliked)
 			return
 		}
@@ -143,7 +143,7 @@ func (s playerServices) StreamFailure(t media.Track) string { return (&Player{s.
 
 func (s playerServices) RecordPlay(t media.Track) {
 	if err := (&Collection{s.a}).RecordPlay(t); err != nil {
-		log.Printf("mymusic: counting a play of %s: %v", t.ID, err)
+		log.Printf("mytube: counting a play of %s: %v", t.ID, err)
 	}
 }
 
@@ -180,7 +180,7 @@ func (s playerServices) Settings() settings.Settings { return s.a.settings.Get()
 
 func (s playerServices) SaveVolume(v float64) {
 	if _, err := (&Preferences{s.a}).Update(func(st *settings.Settings) { st.Volume = v }); err != nil {
-		log.Printf("mymusic: keeping the volume: %v", err)
+		log.Printf("mytube: keeping the volume: %v", err)
 	}
 }
 
@@ -208,7 +208,7 @@ func (s playerServices) SaveQueue(saved player.Saved) {
 		*v = saved
 		return nil
 	}); err != nil {
-		log.Printf("mymusic: keeping the queue: %v", err)
+		log.Printf("mytube: keeping the queue: %v", err)
 	}
 }
 
@@ -298,7 +298,7 @@ func (a *App) InstallYTDLP(ctx context.Context, progress func(done, total int64)
 
 // InstallUpdate downloads the newest version, checks its signature and
 // puts it in place of this one, telling progress how far its download
-// went. It returns the version installed, which runs once MyMusic
+// went. It returns the version installed, which runs once MyTube
 // restarts.
 func (a *App) InstallUpdate(ctx context.Context, progress func(done, total int64)) (string, error) {
 	return a.installUpdate(ctx, progress)

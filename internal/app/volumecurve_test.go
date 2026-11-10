@@ -11,7 +11,7 @@ import (
 )
 
 // TestVolumeCurve plays the volume on the curve of the settings in
-// MyMusic's own engine (#383), as the curve changes, and leaves the
+// MyTube's own engine (#383), as the curve changes, and leaves the
 // volume's position where it was.
 func TestVolumeCurve(t *testing.T) {
 	a := newQuietApp(t, nil)

@@ -306,7 +306,7 @@ func TestCastOutCommands(t *testing.T) {
 }
 
 // TestCastOutVolumeEcho shows the device's own volume, but not the echo of
-// one MyMusic set.
+// one MyTube set.
 func TestCastOutVolumeEcho(t *testing.T) {
 	o, f, _ := newTestOut(t)
 	var shown []float64
@@ -322,12 +322,12 @@ func TestCastOutVolumeEcho(t *testing.T) {
 }
 
 // TestCastOutLoadFailure tells why a load failed: a device that never
-// fetched the audio can't reach MyMusic.
+// fetched the audio can't reach MyTube.
 func TestCastOutLoadFailure(t *testing.T) {
 	o, f, ev := newTestOut(t)
 	f.loadErr = &cast.RequestError{Type: "LOAD_FAILED"}
 	o.Load(streamURL("abcdefghijk"), audio.Cue{Autoplay: true})
-	ev.wait(t, "error The cast device couldn't reach MyMusic: let MyMusic take connections from your network in the firewall")
+	ev.wait(t, "error The cast device couldn't reach MyTube: let MyTube take connections from your network in the firewall")
 	n := int64(1)
 	o.fetched = func() int64 { n++; return n }
 	o.Load(streamURL("abcdefghijk"), audio.Cue{Autoplay: true})
@@ -522,7 +522,7 @@ func TestCasting(t *testing.T) {
 }
 
 // TestCastingEnds brings the track back to the computer, paused, when the
-// device stops playing from MyMusic, and tells why.
+// device stops playing from MyTube, and tells why.
 func TestCastingEnds(t *testing.T) {
 	dev := casttest.New(t)
 	r := casttest.NewResponder(t, dev.Entry())
@@ -544,7 +544,7 @@ func TestCastingEnds(t *testing.T) {
 	dev.StopApp("")
 	select {
 	case why := <-whys:
-		if why != "Casting to Living Room stopped: it stopped playing from MyMusic" {
+		if why != "Casting to Living Room stopped: it stopped playing from MyTube" {
 			t.Errorf("told %q", why)
 		}
 	case <-time.After(5 * time.Second):

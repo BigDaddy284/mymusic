@@ -12,10 +12,10 @@ import (
 // TestEngineOnTheDevice plays a 3-second track through the device, at
 // volume 0, so silently: the time must pass as the clock's, and the track
 // end when it should, 3 seconds after it started to play. It opens the
-// device, so it runs only with MYMUSIC_AUDIO=1.
+// device, so it runs only with MYTUBE_AUDIO=1.
 func TestEngineOnTheDevice(t *testing.T) {
-	if os.Getenv("MYMUSIC_AUDIO") != "1" {
-		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYTUBE_AUDIO") != "1" {
+		t.Skip("MYTUBE_AUDIO=1 runs the tests that open the audio device")
 	}
 	start := func(channels int, render func([]float32, int), failed func(error)) (Output, error) {
 		return output.Start(channels, render, failed)
@@ -65,8 +65,8 @@ func TestEngineOnTheDevice(t *testing.T) {
 // once, and may ask for its first buffers before the deck decoded a frame,
 // at any speed.
 func TestEngineOnTheDeviceAtSpeed(t *testing.T) {
-	if os.Getenv("MYMUSIC_AUDIO") != "1" {
-		t.Skip("MYMUSIC_AUDIO=1 runs the tests that open the audio device")
+	if os.Getenv("MYTUBE_AUDIO") != "1" {
+		t.Skip("MYTUBE_AUDIO=1 runs the tests that open the audio device")
 	}
 	start := func(channels int, render func([]float32, int), failed func(error)) (Output, error) {
 		return output.Start(channels, render, failed)

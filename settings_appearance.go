@@ -24,7 +24,7 @@ var layoutChoices = []choice{
 	{"Blend", "Expressive's rounded shapes and springy motion, on Crate's dense rows, big covers in cards and bold headings.", false},
 	{"Expressive", "Playful and colourful: tonal fills, big rounded shapes, pill buttons, a floating player bar and springy motion. The Material themes go with it, their colours made of the cover's.", false},
 	{"Crate", "Restrained: dense rows, big covers in cards and bold, tight headings, so that the covers do the work.", false},
-	{"Tiles", "Flat tiles, giant light lowercase words and outlined boxes, as MyMusic first was.", false},
+	{"Tiles", "Flat tiles, giant light lowercase words and outlined boxes, as MyTube first was.", false},
 }
 
 func init() { addSettings("appearance", 10, (*shell).layoutSettings) }
@@ -343,7 +343,7 @@ func (s *shell) colorControl(c *ui.Context, key, label string, current ui.Color,
 }
 
 // keepColors saves at once the colours whose wells wait for the user to
-// stop a moment, as the window closes or MyMusic quits first. The wells'
+// stop a moment, as the window closes or MyTube quits first. The wells'
 // own saves, once due, then find nothing to save.
 func (s *shell) keepColors() {
 	waiting := false

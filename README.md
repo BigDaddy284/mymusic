@@ -1,16 +1,16 @@
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.id.md">Bahasa Indonesia</a></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="MyMusic's icon: a music note in a blue to purple gradient on a dark rounded tile" />
+  <img src="brand/icon.png" width="112" height="112" alt="MyTube's icon: five sound bars in a blue to purple gradient on a dark rounded tile" />
 </p>
 
-<h1 align="center">MyMusic</h1>
+<h1 align="center">MyTube</h1>
 
 <p align="center"><strong>One player for YouTube Music and the music on your computer.</strong></p>
 
 <p align="center">YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
 
-<p align="center"><sub>MyMusic is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
+<p align="center"><sub>MyTube is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
 
 <p align="center">
   <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
@@ -31,14 +31,14 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.webp" alt="MyMusic 0.5.9 in its default look, the Blend layout with the Mix theme, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, with romaji under each line of its lyrics and the mini player in front of it; a search on the left and the library's mixes on the right" />
+  <img src="docs/banner.webp" alt="MyTube 0.5.9 in its default look, the Blend layout with the Mix theme, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, with romaji under each line of its lyrics and the mini player in front of it; a search on the left and the library's mixes on the right" />
 </p>
 
-## Why MyMusic
+## Why MyTube
 
 If your music is split between YouTube Music and files on your computer,
 you usually need two apps, with two searches, two queues and two
-libraries. MyMusic puts both in one player:
+libraries. MyTube puts both in one player:
 
 - **One search.** It looks through YouTube Music and your own music at
   once, and marks each result with where it comes from.
@@ -46,13 +46,13 @@ libraries. MyMusic puts both in one player:
   after a YouTube Music track, and a playlist can hold both.
 - **No account needed.** YouTube Music plays as soon as you open the app.
   Sign in only if you want your own library.
-- **A small program.** MyMusic is one Go program that draws its own
+- **A small program.** MyTube is one Go program that draws its own
   windows on the GPU. There is no browser inside it to download or keep in
   memory.
 - **Yours to change.** Four layouts and fourteen themes come with it, you
   can add themes and plugins of your own, and any command can have a key
   of your own.
-- **Private.** MyMusic has no account, server, analytics or telemetry of
+- **Private.** MyTube has no account, server, analytics or telemetry of
   its own.
 - **Free and open source,** under the MIT license or the GPL 3.0.
 
@@ -95,16 +95,16 @@ libraries. MyMusic puts both in one player:
 
 - Media keys and Windows' media controls.
 - Global shortcuts of your own to play, pause, skip, change the volume,
-  mute, like or dislike what plays or show MyMusic, whichever window is
+  mute, like or dislike what plays or show MyTube, whichever window is
   in front.
 - The player's buttons on the taskbar thumbnail.
 - Tray controls, notifications of new tracks, and start at login.
-- `mymusic://` links.
+- `mytube://` links.
 - **Last.fm:** every track you hear joins your profile, and scrobbles made
   offline are sent once you are back online.
 - **Discord:** your profile shows what plays, with its artwork and the time
   left.
-- **Updates:** MyMusic checks for a new release at start and every few
+- **Updates:** MyTube checks for a new release at start and every few
   hours, checks its signature, and installs it when you say so, or by
   itself if you choose.
 
@@ -113,7 +113,7 @@ libraries. MyMusic puts both in one player:
 - **Layouts.** Blend, the default, has rounded shapes and springy motion
   on dense rows of big covers. Expressive, after Material 3 Expressive, is
   playful, with tonal fills, pill buttons and a floating player bar. Crate
-  is restrained, so that the covers do the work, and Tiles is MyMusic's
+  is restrained, so that the covers do the work, and Tiles is MyTube's
   first look, with flat tiles and giant lowercase words.
 - **Themes.** Fourteen built in, each in any layout, with effects you can
   tune, one theme for light mode and one for dark mode, and an accent
@@ -126,32 +126,32 @@ libraries. MyMusic puts both in one player:
   from any app, and a command palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) for
   the rest.
 - **A settings file.** Your settings are `settings.json` in your data folder
-  (`%AppData%\MyMusic`), which you can keep with your dotfiles. Save it while MyMusic runs, and it applies at once; Settings ›
+  (`%AppData%\MyTube`), which you can keep with your dotfiles. Save it while MyTube runs, and it applies at once; Settings ›
   Desktop › Settings file opens it.
 
 ## A look around
 
 <p align="center">
-  <img src="docs/look-listen.webp" alt="MyMusic's pages in the Blend layout, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, each line of its lyrics with romaji and an English translation under it; the album THE BOOK 3 on the left and a followed podcast's page on the right" />
+  <img src="docs/look-listen.webp" alt="MyTube's pages in the Blend layout, standing upright on a dark stage and facing you: now playing アイドル by YOASOBI in the middle, outlined in pink, each line of its lyrics with romaji and an English translation under it; the album THE BOOK 3 on the left and a followed podcast's page on the right" />
 </p>
 
 <p align="center"><sub><b>Listen.</b> In the middle, now playing アイドル by YOASOBI: each line lights up as it's sung, with romaji and a translation under it. On the left, an album; on the right, a podcast you follow.</sub></p>
 
 <p align="center">
-  <img src="docs/look-yours.webp" alt="More of MyMusic, standing upright on a dark stage and facing you: Settings › Appearance with the four layouts in the middle, outlined in pink; a Material theme coloured by the cover that plays on the left, and the marketplace's community themes on the right" />
+  <img src="docs/look-yours.webp" alt="More of MyTube, standing upright on a dark stage and facing you: Settings › Appearance with the four layouts in the middle, outlined in pink; a Material theme coloured by the cover that plays on the left, and the marketplace's community themes on the right" />
 </p>
 
 <p align="center"><sub><b>Make it yours.</b> In the middle, the four layouts: Blend, the default, Expressive, Crate and Tiles, under the themes. On the left, a Material theme that takes its colours from the cover that plays. On the right, community themes in the marketplace.</sub></p>
 
 ## Install
 
-MyMusic runs on Windows 10 and 11. Download it from the
+MyTube runs on Windows 10 and 11. Download it from the
 [latest release](https://github.com/bigdaddy284/mymusic/releases/latest):
 
 | Windows | Download |
 |---|---|
-| 10 and 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Portable, no installation | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| 10 and 11 (x64, Arm), installer | [`mytube-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Portable, no installation | [`mytube-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists
 `SHA256SUMS` to check the downloads with. You don't need the files named
@@ -159,7 +159,7 @@ MyMusic runs on Windows 10 and 11. Download it from the
 from them.
 
 The installer and the portable zip update themselves. For the portable
-zip, unpack it anywhere and open `MyMusic.exe`.
+zip, unpack it anywhere and open `MyTube.exe`.
 
 ### The first launch
 
@@ -168,7 +168,7 @@ zip, unpack it anywhere and open `MyMusic.exe`.
 - Signing in to YouTube Music needs the
   WebView2 Runtime, which Windows 11 includes. On Windows 10, install it
   from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
-- MyMusic finds the audio of most YouTube Music tracks itself. For the
+- MyTube finds the audio of most YouTube Music tracks itself. For the
   rest, such as tracks made for children, it uses
   [yt-dlp](https://github.com/yt-dlp/yt-dlp), which it installs for you
   from Settings › Playback and keeps up to date. yt-dlp needs a JavaScript
@@ -178,15 +178,15 @@ zip, unpack it anywhere and open `MyMusic.exe`.
 
 - **YouTube Music:** choose Sign in to YouTube Music in Settings › Accounts
   and sign in to Google in the window that opens. What you type goes to
-  Google only. MyMusic keeps the session encrypted, with a key in
+  Google only. MyTube keeps the session encrypted, with a key in
   Windows' Credential Manager. Where that window can't open, or
   Google refuses it, import the session of a browser you signed in with
-  (MyMusic reads it with its yt-dlp, and keeps YouTube's cookies alone),
+  (MyTube reads it with its yt-dlp, and keeps YouTube's cookies alone),
   or paste the Cookie header of a signed-in music.youtube.com tab.
 - **Last.fm:** create an API account at
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (any name, no callback URL), paste its API key and shared secret in
-  Settings › Accounts, and approve MyMusic in your browser.
+  Settings › Accounts, and approve MyTube in your browser.
 - **Discord:** while the Discord app runs, your profile shows what you
   listen to. Turn it off in Settings › Desktop.
 
@@ -209,7 +209,7 @@ Open a new terminal, then:
 
 ```powershell
 git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
+cd mytube
 bun install
 bun run dev
 ```
@@ -227,8 +227,8 @@ osslsigncode, GoReleaser and Zola.
 ### Develop
 
 `bun run dev` builds the app, starts it, and rebuilds it as you edit. Its
-data stays apart from an installed MyMusic, under the name
-`MyMusic Dev`.
+data stays apart from an installed MyTube, under the name
+`MyTube Dev`.
 
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
@@ -263,7 +263,7 @@ packages outside `internal/` are for anyone to import, and documented on
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
 internal/player      the queue, played by the audio engine or on a cast device
-internal/audio       MyMusic's audio engine, and the system's audio output
+internal/audio       MyTube's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
@@ -274,7 +274,7 @@ internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins
-builtin/themes       the themes MyMusic ships with
+builtin/themes       the themes MyTube ships with
 public/              the page of the picture of music videos
 sdk/                 the types of the plugin API
 examples/            example themes and plugins
@@ -290,7 +290,7 @@ webm/                the audio of WebM files: packets, times and seeking
 mp4/                 the audio of MP4 files: packets, times and seeking
 resample/            sample rate conversion, with Kaiser-windowed sincs
 lyrics/              synced lyrics from Unison and LRCLIB, and translations
-brand/               MyMusic's logo, for code that draws it
+brand/               MyTube's logo, for code that draws it
 ```
 
 ## Themes and plugins
@@ -317,7 +317,7 @@ pages, commands, track actions and widgets.
 
 ## Privacy
 
-MyMusic has no account, server, analytics or telemetry of its own. It
+MyTube has no account, server, analytics or telemetry of its own. It
 talks to:
 
 - **YouTube and Google:** YouTube Music's catalog, its streams and how loud
@@ -358,15 +358,15 @@ The library's history page clears what you played, Settings › Playback
 clears the cache and the covers, and signing out of a service deletes its
 sign-in.
 
-The visualizer analyzes the audio MyMusic plays in memory, and never
+The visualizer analyzes the audio MyTube plays in memory, and never
 records or sends it.
 
 ## Credits
 
-MyMusic is built on these projects:
+MyTube is built on these projects:
 
-- **[MyGo](https://github.com/egoist/mygo)**, the desktop framework MyMusic
-  is built with. MyMusic uses MyGo's native UI: MyGo draws every window
+- **[MyGo](https://github.com/egoist/mygo)**, the desktop framework MyTube
+  is built with. MyTube uses MyGo's native UI: MyGo draws every window
   itself, in Go, without a webview, from the pages and the player bar to the
   mini player. Its command line packages the app, with its installers and
   the signed updates it updates itself from.
@@ -386,7 +386,7 @@ MyMusic is built on these projects:
 - **[NSIS](https://nsis.sourceforge.io)**, which makes the Windows
   installers.
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**, which finds the audio of
-  the tracks MyMusic can't find itself.
+  the tracks MyTube can't find itself.
 - **[Unison](https://unison.boidu.dev)**, the open, crowdsourced database of
   lyrics, under the ODbL, and **[LRCLIB](https://lrclib.net)**, the open
   database of synced lyrics.
@@ -394,7 +394,7 @@ MyMusic is built on these projects:
   morphological analyser that reads the kanji of lyrics for their romaji,
   with the IPA dictionary of
   [kagome-dict](https://github.com/ikawaha/kagome-dict), made from
-  mecab-ipadic, which MyMusic downloads the first time romaji is turned
+  mecab-ipadic, which MyTube downloads the first time romaji is turned
   on.
 - **[libopus](https://opus-codec.org)**, whose decoder the Opus decoder is a
   port of, and **[SharpJaad](https://github.com/jimm98y/SharpJaad)**, the C#
@@ -424,11 +424,11 @@ Fixes, features, themes, plugins and bug reports are all welcome.
   that a change people will notice needs.
 
 [CONTRIBUTORS.md](CONTRIBUTORS.md) thanks the people whose code, ideas and
-reports shaped MyMusic.
+reports shaped MyTube.
 
 ## License
 
-MyMusic is dual-licensed: use it under the [MIT license](LICENSE-MIT) or
+MyTube is dual-licensed: use it under the [MIT license](LICENSE-MIT) or
 the [GNU General Public License, version 3](LICENSE-GPL), whichever you
 prefer. Contributions are accepted under both. The typefaces in `fonts` are
 under the SIL Open Font License: [Selawik's](fonts/OFL.txt),
@@ -440,6 +440,6 @@ derives from SharpJaad, under [its MIT license](aac/LICENSE.sharpjaad), and
 the HCT color science is a port of Material Color Utilities, under
 [its Apache license](internal/hct/LICENSE.material-color-utilities).
 
-MyMusic is not affiliated with, endorsed by or sponsored by Google. It
+MyTube is not affiliated with, endorsed by or sponsored by Google. It
 plays what YouTube Music offers its users, through its own interfaces; use
 it as its terms allow. YouTube Music is a trademark of its owner.

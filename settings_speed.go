@@ -12,13 +12,13 @@ const speedRows = "playback › Speed"
 
 func init() { addSettings("playback", 30, (*shell).speedSettings) }
 
-// speedSettings sets the speed of what MyMusic plays itself, at its own
+// speedSettings sets the speed of what MyTube plays itself, at its own
 // pitch, by kind: songs, and podcasts' episodes.
 func (s *shell) speedSettings(c *ui.Context) {
 	s.group(c, "Speed", func() {
 		s.settingsOf(c, speedRows)
 		// A live stream has nothing ahead of its live edge to play faster.
-		s.hint(c, "Speed changes what MyMusic plays: YouTube Music and the music on this computer. Live streams keep their own speed, as they play as they're broadcast. The speed button by the player changes it too, for the kind of track that plays.")
+		s.hint(c, "Speed changes what MyTube plays: YouTube Music and the music on this computer. Live streams keep their own speed, as they play as they're broadcast. The speed button by the player changes it too, for the kind of track that plays.")
 	})
 }
 

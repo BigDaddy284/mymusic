@@ -23,7 +23,7 @@ func TestSelawikLight(t *testing.T) {
 	}
 }
 
-// TestFacesRegistered checks that the faces MyMusic ships register under
+// TestFacesRegistered checks that the faces MyTube ships register under
 // the families the themes name, and that their licenses show in Settings
 // › About.
 func TestFacesRegistered(t *testing.T) {

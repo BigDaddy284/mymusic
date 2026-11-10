@@ -1,7 +1,7 @@
 # Playing music
 <!-- docs: group=using order=10 -->
 
-MyMusic plays YouTube Music and the music on your computer from one search and one queue, with radios, crossfade, an equalizer, speed control and offline playback.
+MyTube plays YouTube Music and the music on your computer from one search and one queue, with radios, crossfade, an equalizer, speed control and offline playback.
 
 This page covers finding music, the queue, and the sound settings. Most of what it names is in [Settings › Playback](settings.md#playback); the box at the top of the Settings page [finds any setting](settings.md#find-a-setting-by-typing) as you type its name.
 
@@ -40,10 +40,10 @@ A track that loads can't be paused or moved until you hear it: the play button s
 - where it comes from: YouTube Music, a download, or a file on this computer;
 - its format, as Opus in WebM, AAC in MP4 or FLAC, its bitrate, sample rate, bit depth (of FLAC and WAV), channels and length;
 - the file it plays from, with its size: a file on this computer, with its tags, its download, or the offline cache's copy. Show in Explorer opens the folder of a file on this computer or of a download;
-- of the track playing, what MyMusic's audio engine plays: from where, its 5.1 surround audio when it plays it, and whether it converts it to 48 kHz;
+- of the track playing, what MyTube's audio engine plays: from where, its 5.1 surround audio when it plays it, and whether it converts it to 48 kHz;
 - how loud it plays: YouTube's measure of it, and how far [Even loudness](#even-loudness-volume-levelling-and-the-volume) turns it down.
 
-It tells what MyMusic knows without asking a service: a track that hasn't played yet tells its format once it plays, as MyMusic finds its stream then.
+It tells what MyTube knows without asking a service: a track that hasn't played yet tells its format once it plays, as MyTube finds its stream then.
 
 ## The queue and Up next
 
@@ -73,7 +73,7 @@ A radio plays tracks like one you choose, from YouTube Music.
 ## Crossfade and gapless playback
 
 - **Crossfade,** in Settings › Playback › Sound: tracks overlap by 0 to 12 seconds, the next fading in as the one before fades out. It's off by default.
-- **With Crossfade off,** the next track starts as the one before ends: MyMusic finds the next track a second into the one playing and loads it ahead, so skipping ahead is quick too.
+- **With Crossfade off,** the next track starts as the one before ends: MyTube finds the next track a second into the one playing and loads it ahead, so skipping ahead is quick too.
 - **A pause in a song's last seconds** holds, with Crossfade on: the next song doesn't fade in a moment later.
 - Podcast episodes never crossfade, and tracks don't crossfade on a [cast device](casting.md).
 
@@ -86,7 +86,7 @@ A radio plays tracks like one you choose, from YouTube Music.
 
 ## The equalizer
 
-Settings › Playback › Equalizer shapes the sound of what MyMusic plays itself.
+Settings › Playback › Equalizer shapes the sound of what MyTube plays itself.
 
 ![Settings › Playback scrolled to the Equalizer group: the Equalizer switch turned on, the Preset menu set to Custom, and the sliders of the preamp and the ten bands from 32 Hz to 16 kHz, each with its gain above it](shots/equalizer.webp)
 
@@ -94,11 +94,11 @@ Settings › Playback › Equalizer shapes the sound of what MyMusic plays itsel
 - **Preset:** Flat, Bass boost, Treble boost, Vocal, Electronic, Rock, Acoustic, Late night or Lo-fi. Choosing one turns the equalizer on.
 - **Bands:** a preamp and ten bands, at 32, 64, 125, 250 and 500 Hz and 1, 2, 4, 8 and 16 kHz, each from -12 to +12 dB in half steps. Moving a band makes the preset Custom.
 
-It works on everything MyMusic plays on this computer. [The audio engine](audio-engine.md#the-equalizer) tells how the bands are made.
+It works on everything MyTube plays on this computer. [The audio engine](audio-engine.md#the-equalizer) tells how the bands are made.
 
 ## Speed
 
-MyMusic plays songs faster or slower, from half their speed to three times it, at their own pitch.
+MyTube plays songs faster or slower, from half their speed to three times it, at their own pitch.
 
 - **The speed button,** beside the volume, shows the speed while it isn't 1×. It opens a menu of steps, 0.75×, 1× (normal), 1.1×, 1.25×, 1.5×, 1.75× and 2×, with a slider below them for every speed from 0.5× to 3×, by 0.05.
 - **Settings › Playback › Speed** has a slider for Songs and one for Podcasts, each with a normal link while it isn't 1×. Podcast episodes play at their own speed, apart from songs' (see [Podcasts](podcasts.md#speed)); the button, the commands and the media controls change the speed of the kind that plays.
@@ -119,7 +119,7 @@ Dislike a song you never want to hear again:
 
 A disliked song that plays moves on at once, and a toast's undo takes the dislike back and goes back to the song where it was. From then on, the queue passes over the song as it moves on, forward and back, radios leave it out, and the play buttons of albums, playlists, mixes and artists start at their first song you don't dislike. A song you pick yourself still plays, and Up next shows the songs it skips.
 
-A song is liked or disliked, not both: disliking a liked song unlikes it. Signed in to YouTube Music, your dislikes of its songs go there too; those of the music on this computer stay in MyMusic. Library › Disliked lists them all (see [Your library](library.md#disliked-songs)), and "Skip songs you dislike" in Settings › Playback › Sound turns the skipping off.
+A song is liked or disliked, not both: disliking a liked song unlikes it. Signed in to YouTube Music, your dislikes of its songs go there too; those of the music on this computer stay in MyTube. Library › Disliked lists them all (see [Your library](library.md#disliked-songs)), and "Skip songs you dislike" in Settings › Playback › Sound turns the skipping off.
 
 ## Skipping songs made with AI
 
@@ -128,7 +128,7 @@ A song is liked or disliked, not both: disliking a liked song unlikes it. Signed
 - YouTube labels only some of them, so others still play.
 - A song you pick by name plays anyway.
 - Skipped songs stay in the queue, dimmed and marked "made with AI", and one notice tells of them.
-- MyMusic asks YouTube about each song once, signed out, and keeps the answer for 30 days. That can add up to half a second before a song you skip to starts; a song YouTube doesn't answer for within 10 seconds plays.
+- MyTube asks YouTube about each song once, signed out, and keeps the answer for 30 days. That can add up to half a second before a song you skip to starts; a song YouTube doesn't answer for within 10 seconds plays.
 
 ## Live streams
 
@@ -144,20 +144,20 @@ YouTube's live streams play, such as its 24/7 radio channels, from about 15 seco
 
 Music videos can show their picture on the now playing page, in place of the cover. Turn on "Show the video of music videos" in Settings › Playback › Music videos, press the video button beside the play and next buttons of the now playing page while a music video plays, or use the command "Show or hide the video of music videos".
 
-- The picture is muted and follows MyMusic's own sound, pausing and seeking with it.
+- The picture is muted and follows MyTube's own sound, pausing and seeking with it.
 - It shows only for official music videos and other uploads, never for songs or live streams.
 - It needs WebView2, the system's web view: without it, the cover stays, and the setting says why. [Where the audio streams come from](streams.md#the-picture-of-music-videos) tells how the picture keeps in time.
 - It's fetched as it plays, about 3 MB a minute at 360p, and under 1 MB with data saver. Nothing is fetched while it's paused or not shown: on another page, with the window hidden or minimized, or with the mini player open.
 - While your system asks for less motion, a button on the cover plays the picture.
-- A web view runs beside MyMusic while pictures show, which takes memory until a minute after the last one.
+- A web view runs beside MyTube while pictures show, which takes memory until a minute after the last one.
 
 ## The output device
 
-MyMusic plays on the system's default output device, and moves to the new one when you change it in your system's sound settings. To play music on headphones or a DAC while calls and the system's sounds stay on the speakers, choose the device MyMusic plays on: **Output device**, at the top of Settings › Playback › Sound.
+MyTube plays on the system's default output device, and moves to the new one when you change it in your system's sound settings. To play music on headphones or a DAC while calls and the system's sounds stay on the speakers, choose the device MyTube plays on: **Output device**, at the top of Settings › Playback › Sound.
 
 - **The choices** are **System default**, which names the device it is now, and each output device of your computer by the name your system gives it. Two of one name, as two monitors of one model, are told apart by a number. The refresh button beside it looks for devices again.
 - **The speaker button** beside the volume chooses too, where the window is wide enough for it beside the player bar's other buttons, and while there's a choice to make: more than one device, or one chosen. It turns to the accent while a device is chosen, and its tip names it.
-- **When the device goes away,** as headphones you unplug, MyMusic plays on the system's default device and says so, and goes back to the device a second after it's back, saying so too. A device that's there but can't play, as one another app holds, gives way to the default for 10 seconds before MyMusic tries it again. Settings and the menu still show the device chosen, as not connected.
+- **When the device goes away,** as headphones you unplug, MyTube plays on the system's default device and says so, and goes back to the device a second after it's back, saying so too. A device that's there but can't play, as one another app holds, gives way to the default for 10 seconds before MyTube tries it again. Settings and the menu still show the device chosen, as not connected.
 - **Where it doesn't apply:** a [cast device](casting.md) plays what you cast on itself. The menu says so while it casts.
 - **What it lists:** Windows' playback devices that are enabled. [The audio engine](audio-engine.md#the-output) tells more.
 
@@ -185,11 +185,11 @@ Quality, in Settings › Playback › Sound, chooses between best and data saver
 
 - **The [offline cache](library.md#the-offline-cache)** keeps the tracks you played, as much as Settings › Playback › Offline cache allows, and they play again without the network. Downloads play without it too: see [Your library](library.md#downloads).
 - **While you're offline,** the queue skips the tracks that aren't downloaded or cached, without an error for each, and waits for the network only once none is left. A toast says that your downloads still play, and Home offers to open them.
-- **When the network drops** partway through a song, the song waits for it, and plays on from where it stopped once it's back. The player bar says that it waits for the network, and the play button chooses whether the song plays then. Songs whose audio MyMusic holds still play meanwhile.
-- **A downloaded song, or one on this computer, that can't be read,** as a damaged file or one on a drive unplugged, doesn't wait for the network, which wouldn't help: MyMusic tries it again at once, and then moves on, saying why, as File not found or Can't read the file.
-- **A song whose audio stops arriving,** as on a slow connection, loads again where it was, up to three times. When three songs in a row can't play, MyMusic stops, rather than step through the rest of the queue.
-- **When the computer goes to sleep,** MyMusic pauses, and stays paused when it wakes, ready where it was.
+- **When the network drops** partway through a song, the song waits for it, and plays on from where it stopped once it's back. The player bar says that it waits for the network, and the play button chooses whether the song plays then. Songs whose audio MyTube holds still play meanwhile.
+- **A downloaded song, or one on this computer, that can't be read,** as a damaged file or one on a drive unplugged, doesn't wait for the network, which wouldn't help: MyTube tries it again at once, and then moves on, saying why, as File not found or Can't read the file.
+- **A song whose audio stops arriving,** as on a slow connection, loads again where it was, up to three times. When three songs in a row can't play, MyTube stops, rather than step through the rest of the queue.
+- **When the computer goes to sleep,** MyTube pauses, and stays paused when it wakes, ready where it was.
 
 ## A sleep timer
 
-MyMusic has no sleep timer of its own. The example Sleep Timer plugin, in the repository's [examples](../examples/README.md), adds one once you [put it in your plugins folder](addons.md#add-a-theme-or-a-plugin) and enable it: it fades the music out over 30 seconds and pauses it after 15, 30, 45, 60 or 90 minutes, or at the end of the track. It adds a sleep timer page to the sidebar and commands to the command palette, such as "Sleep timer: 30 minutes" and "Sleep timer: cancel".
+MyTube has no sleep timer of its own. The example Sleep Timer plugin, in the repository's [examples](../examples/README.md), adds one once you [put it in your plugins folder](addons.md#add-a-theme-or-a-plugin) and enable it: it fades the music out over 30 seconds and pauses it after 15, 30, 45, 60 or 90 minutes, or at the end of the track. It adds a sleep timer page to the sidebar and commands to the command palette, such as "Sleep timer: 30 minutes" and "Sleep timer: cancel".

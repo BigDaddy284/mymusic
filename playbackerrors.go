@@ -12,7 +12,7 @@ import (
 
 // The details of the tracks that couldn't play (#351): the toast that
 // tells of one has Details, which shows them in a dialog, with Copy, and
-// Settings › About lists the last few, until MyMusic closes. The text of
+// Settings › About lists the last few, until MyTube closes. The text of
 // the details is failurereport.go's.
 
 // failureView is the dialog of a failure's details: whether it shows, and
@@ -103,7 +103,7 @@ func (s *shell) privacy() privacy {
 
 func init() { addSettings("about", 25, (*shell).playbackErrorSettings) }
 
-// playbackErrorSettings list the tracks that couldn't play since MyMusic
+// playbackErrorSettings list the tracks that couldn't play since MyTube
 // started, the latest first, each with its details: Settings › About ›
 // Recent playback errors.
 func (s *shell) playbackErrorSettings(c *ui.Context) {
@@ -130,4 +130,4 @@ func (s *shell) playbackErrorSettings(c *ui.Context) {
 }
 
 // noFailures tells that no track failed to play.
-const noFailures = "No track failed to play since MyMusic started. The last few that do are listed here until MyMusic closes, with what was tried."
+const noFailures = "No track failed to play since MyTube started. The last few that do are listed here until MyTube closes, with what was tried."

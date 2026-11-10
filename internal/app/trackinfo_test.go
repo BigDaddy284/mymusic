@@ -131,7 +131,7 @@ func TestTrackInfoOfADownload(t *testing.T) {
 	}
 }
 
-// TestTrackInfoOfAStream tells of the stream MyMusic found of a track,
+// TestTrackInfoOfAStream tells of the stream MyTube found of a track,
 // which it holds, and nothing of a track it found none of.
 func TestTrackInfoOfAStream(t *testing.T) {
 	a := newQuietApp(t, nil)

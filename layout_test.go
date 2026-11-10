@@ -156,7 +156,7 @@ func TestChooseLayout(t *testing.T) {
 }
 
 // TestLayoutEditedInSettingsFile applies a layout design written in
-// settings.json while MyMusic runs, and puts back one unknown.
+// settings.json while MyTube runs, and puts back one unknown.
 func TestLayoutEditedInSettingsFile(t *testing.T) {
 	s := fileShell(t)
 	tt := tester(t, s)

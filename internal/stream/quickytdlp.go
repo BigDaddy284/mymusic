@@ -53,7 +53,7 @@ func (r *Resolver) findWithYTDLP(ctx context.Context, videoID string, quality Qu
 		case errors.Is(err, tools.ErrNoYTDLP), ctx.Err() != nil:
 			return Stream{}, ytdlpRun{}, err
 		}
-		log.Printf("mymusic: yt-dlp's quick run found no stream of %s in %s (%s); the full run looks for it", videoID, took, err)
+		log.Printf("mytube: yt-dlp's quick run found no stream of %s in %s (%s); the full run looks for it", videoID, took, err)
 	}
 	start := time.Now()
 	s, err := r.ytdlp(ctx, videoID, quality)

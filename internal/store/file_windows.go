@@ -14,7 +14,7 @@ import (
 // openShared opens path to read it, sharing it with the programs that save
 // over it meanwhile, as editors do: by writing it, deleting it, renaming it
 // away, or renaming another file over it with POSIX semantics. os.Open
-// shares no deletes, and those saves would fail while MyMusic reads the
+// shares no deletes, and those saves would fail while MyTube reads the
 // file. A rename over it by MoveFileEx, as os.Rename's, fails while the
 // file is open at all, which no share mode allows: reads are short.
 func openShared(path string) (*os.File, error) {

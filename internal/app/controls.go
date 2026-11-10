@@ -1,6 +1,6 @@
 package app
 
-// The system's media controls show what MyMusic's own audio engine plays,
+// The system's media controls show what MyTube's own audio engine plays,
 // which they control.
 
 import (
@@ -14,12 +14,12 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/nowplaying"
 )
 
-// controls shows what MyMusic's own audio engine plays in the system's
+// controls shows what MyTube's own audio engine plays in the system's
 // media controls, and passes on what they ask, as the media keys do.
 type controls struct {
 	mu sync.Mutex
 	c  *nowplaying.Controls
-	// tried is set once MyMusic reached for the system's controls.
+	// tried is set once MyTube reached for the system's controls.
 	tried bool
 	// native is set while the engine has the player's track.
 	native bool
@@ -40,7 +40,7 @@ var controlCommands = map[nowplaying.Command]Command{
 	nowplaying.Previous: CommandPrevious,
 }
 
-// setNative tells whether MyMusic's own audio engine has the player's
+// setNative tells whether MyTube's own audio engine has the player's
 // track, from its load to its stop.
 func (a *App) setNative(on bool) {
 	a.controls.mu.Lock()
@@ -80,7 +80,7 @@ func (a *App) showControls() {
 			c.c = ctl
 			c.covers = a.newControlsCovers(a.showControls)
 		case !errors.Is(err, nowplaying.ErrUnsupported):
-			log.Printf("mymusic: the system's media controls: %v", err)
+			log.Printf("mytube: the system's media controls: %v", err)
 		}
 	}
 	if c.c == nil {

@@ -6,7 +6,7 @@
   queue runs out, or at once after a suggested song (`PlayWithRadio`),
   passes over the songs the user dislikes but those they
   pick, counts plays and keeps up to 500 tracks of the queue,
-  around the one playing, in `queue.json`, as it changes and as MyMusic
+  around the one playing, in `queue.json`, as it changes and as MyTube
   quits. A track that can't play for want of the network gives way at once
   to the next that plays without it, a download or a track the offline
   cache holds, as the app tells; once none is left, it waits for the
@@ -21,7 +21,7 @@
   before it's announced, beside the search for its stream, and the next
   track before it's preloaded or crossfaded into.
 - **Failures** (`failures.go`): the player keeps the last 10 tracks that
-  couldn't play, until MyMusic quits (`Failures`, `FailureOf`), and the
+  couldn't play, until MyTube quits (`Failures`, `FailureOf`), and the
   notice of each names its own (`Notice.Failure`). Each holds the steps
   tried of the track since it loaded, in turn, with why each failed: the
   5.1 audio it gave up, the stream and its tries again, one step for each run of the same

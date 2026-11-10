@@ -13,15 +13,15 @@ out="$(cd "$out" && pwd)"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
-# Windows: the app and the files beside it, in a MyMusic folder that runs
+# Windows: the app and the files beside it, in a MyTube folder that runs
 # from wherever it is unpacked.
 for dir in build/windows-*/; do
 	arch="$(basename "$dir")"
 	arch="${arch#windows-}"
-	stage="$work/portable-$arch/MyMusic"
+	stage="$work/portable-$arch/MyTube"
 	mkdir -p "$stage"
-	cp "$dir"MyMusic.exe "$stage/"
+	cp "$dir"MyTube.exe "$stage/"
 	for f in "$dir"*.png; do cp "$f" "$stage/"; done
-	(cd "$work/portable-$arch" && zip -qr9 "$out/mymusic-$v-windows-$arch-portable.zip" MyMusic)
-	echo "made mymusic-$v-windows-$arch-portable.zip"
+	(cd "$work/portable-$arch" && zip -qr9 "$out/mytube-$v-windows-$arch-portable.zip" MyTube)
+	echo "made mytube-$v-windows-$arch-portable.zip"
 done

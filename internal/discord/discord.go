@@ -1,4 +1,4 @@
-// Package discord shows what MyMusic plays on the user's Discord profile,
+// Package discord shows what MyTube plays on the user's Discord profile,
 // as Rich Presence. It talks to the Discord app running on the same
 // computer, through the app's named pipe, and needs no network access of
 // its own.
@@ -68,7 +68,7 @@ type Client struct {
 
 // New returns a client that shows presence as the Discord application whose
 // ID, as the Discord Developer Portal shows it, is appID. Discord names the
-// application in the presence, as in "Listening to MyMusic".
+// application in the presence, as in "Listening to MyTube".
 func New(appID string) *Client {
 	return &Client{dial: dial, busy: make(chan struct{}, 1), appID: appID}
 }

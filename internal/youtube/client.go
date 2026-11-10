@@ -86,7 +86,7 @@ func clientVersion(now time.Time) string { return musicClient.version(now) }
 // major version its builds carry.
 type innerClient struct{ name, id, major string }
 
-// musicClient is YouTube Music's website, which MyMusic speaks as.
+// musicClient is YouTube Music's website, which MyTube speaks as.
 var musicClient = innerClient{name: clientName, id: clientNameID, major: "1"}
 
 // version returns a version of the client that YouTube accepts: its build

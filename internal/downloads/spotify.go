@@ -8,13 +8,13 @@ import (
 )
 
 // fromSpotify reports whether what has the ID id, of source, came from
-// Spotify, which MyMusic 0.x downloaded the recordings of, and which
-// MyMusic plays no more.
+// Spotify, which MyTube 0.x downloaded the recordings of, and which
+// MyTube plays no more.
 func fromSpotify(id string, source media.Source) bool {
 	return source == "spotify" || strings.HasPrefix(id, "sp:")
 }
 
-// forgetSpotify turns the Spotify tracks an index of MyMusic 0.x holds
+// forgetSpotify turns the Spotify tracks an index of MyTube 0.x holds
 // into the tracks of YouTube Music they downloaded, which play on, and
 // drops the Spotify albums and playlists downloaded whole, with the
 // tracks only they kept: the audio no track needs then goes, at the

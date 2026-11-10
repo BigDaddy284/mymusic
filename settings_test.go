@@ -178,7 +178,7 @@ func TestCacheOff(t *testing.T) {
 	if got := s.svc.Preferences.Get().CacheSizeMB; got != 0 {
 		t.Errorf("the cache keeps %d MB, not none", got)
 	}
-	if !tt.HasText("Off: MyMusic keeps no tracks.") {
+	if !tt.HasText("Off: MyTube keeps no tracks.") {
 		t.Errorf("the cache doesn't say it's off: %q", tt.Texts())
 	}
 }
@@ -308,7 +308,7 @@ func TestCacheSizeLabel(t *testing.T) {
 	}
 }
 
-// TestThemeCards says who made each theme: MyMusic, or its author.
+// TestThemeCards says who made each theme: MyTube, or its author.
 func TestThemeCards(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 1600)

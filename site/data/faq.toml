@@ -4,12 +4,12 @@
 # the doc that tells more, as @/docs/<name>/index.md.
 
 [[questions]]
-question = "Is MyMusic free?"
+question = "Is MyTube free?"
 answer = '''
-Yes, for any purpose. MyMusic is free and open source, under the MIT
+Yes, for any purpose. MyTube is free and open source, under the MIT
 license or the GNU GPL, version 3, whichever you choose.
 [License](@/docs/license/index.md) tells what each allows, and what else
-MyMusic includes.
+MyTube includes.
 '''
 
 [[questions]]
@@ -23,9 +23,9 @@ how.
 '''
 
 [[questions]]
-question = "What does MyMusic collect?"
+question = "What does MyTube collect?"
 answer = '''
-Nothing for itself: MyMusic has no account, server, analytics or
+Nothing for itself: MyTube has no account, server, analytics or
 telemetry of its own. It talks to the services you use: YouTube Music
 and Last.fm, Unison and LRCLIB for the lyrics of the track that
 plays, and GitHub for updates and yt-dlp. Your library,
@@ -35,23 +35,23 @@ lists what each feature sends, and where.
 '''
 
 [[questions]]
-question = "Where does MyMusic keep my data?"
+question = "Where does MyTube keep my data?"
 answer = '''
 In a data folder on your computer, which Settings › About names:
-`%AppData%\MyMusic`. Your sign-ins stay in Windows' Credential
+`%AppData%\MyTube`. Your sign-ins stay in Windows' Credential
 Manager.
-[Your data and privacy](@/docs/data-and-privacy/index.md#where-mymusic-keeps-its-data)
+[Your data and privacy](@/docs/data-and-privacy/index.md#where-mytube-keeps-its-data)
 tells what each file holds, and how to move or clear it.
 '''
 
 [[questions]]
-question = "How does MyMusic update?"
+question = "How does MyTube update?"
 answer = '''
-The installer and the portable zip update themselves: MyMusic looks for a new version when it starts and
+The installer and the portable zip update themselves: MyTube looks for a new version when it starts and
 every 6 hours, and asks before it installs one, unless you turn on
 Install updates without asking in Settings › About. Each update is
 signed, and one whose signature doesn't match is never installed.
-[How MyMusic works](@/docs/how-it-works/index.md#mymusic-itself)
+[How MyTube works](@/docs/how-it-works/index.md#mytube-itself)
 tells more.
 '''
 
@@ -59,7 +59,7 @@ tells more.
 question = "Why does Windows warn me the first time?"
 answer = '''
 The Windows installer isn't signed yet: if SmartScreen warns, choose More
-info, then Run anyway. MyMusic's code is open on GitHub, and each
+info, then Run anyway. MyTube's code is open on GitHub, and each
 release lists `SHA256SUMS` to check the downloads with.
 [Getting started](@/docs/getting-started/index.md#the-first-launch) has
 the rest.
@@ -68,7 +68,7 @@ the rest.
 [[questions]]
 question = "How do I report a problem?"
 answer = '''
-In MyMusic, Settings › About › Report a problem opens a new issue on
+In MyTube, Settings › About › Report a problem opens a new issue on
 GitHub in your browser, with your version, system, tools, theme and
 plugins filled in; nothing goes until you send it. Open logs folder,
 beside it, shows the log to attach, once you've read it. Or open an

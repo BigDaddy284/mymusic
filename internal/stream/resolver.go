@@ -330,10 +330,10 @@ func (r *Resolver) resolve(ctx context.Context, videoID string, quality Quality)
 		cancel()
 		if err == nil {
 			if took := time.Since(start); took > slowResolve {
-				log.Printf("mymusic: found the stream of %s in %s, through YouTube's player API", videoID, took.Round(10*time.Millisecond))
+				log.Printf("mytube: found the stream of %s in %s, through YouTube's player API", videoID, took.Round(10*time.Millisecond))
 			}
 			if s.Surround != nil && s.Surround.URL == "" && !r.findsSurround() {
-				log.Printf("mymusic: YouTube has 5.1 surround audio of %s, which takes yt-dlp and a JavaScript runtime to play", videoID)
+				log.Printf("mytube: YouTube has 5.1 surround audio of %s, which takes yt-dlp and a JavaScript runtime to play", videoID)
 				s.Surround = nil
 			}
 			return s, nil
@@ -358,10 +358,10 @@ func (r *Resolver) resolve(ctx context.Context, videoID string, quality Quality)
 	took := time.Since(start).Round(10 * time.Millisecond)
 	switch {
 	case direct != nil:
-		log.Printf("mymusic: found the stream of %s in %s with yt-dlp's %s run in %s (%s)", videoID, took, run.name, run.took,
+		log.Printf("mytube: found the stream of %s in %s with yt-dlp's %s run in %s (%s)", videoID, took, run.name, run.took,
 			strings.TrimPrefix(direct.Error(), "stream: "))
 	case took > slowResolve:
-		log.Printf("mymusic: found the stream of %s in %s with yt-dlp's %s run in %s", videoID, took, run.name, run.took)
+		log.Printf("mytube: found the stream of %s in %s with yt-dlp's %s run in %s", videoID, took, run.name, run.took)
 	}
 	return s, nil
 }
@@ -390,7 +390,7 @@ func (r *Resolver) findSurround(ctx context.Context, videoID string, quality Qua
 	if s.Surround == nil {
 		return Stream{}, errNoSurround
 	}
-	log.Printf("mymusic: found the 5.1 surround audio of %s in %s with yt-dlp", videoID, time.Since(start).Round(10*time.Millisecond))
+	log.Printf("mytube: found the 5.1 surround audio of %s in %s with yt-dlp", videoID, time.Since(start).Round(10*time.Millisecond))
 	return *s.Surround, nil
 }
 
@@ -440,7 +440,7 @@ func ytdlpFailure(stderr string) error {
 		return nil
 	}
 	if plain, kind := plainError(msg); plain != "" {
-		log.Printf("mymusic: %s", msg)
+		log.Printf("mytube: %s", msg)
 		return failure{plain, kind}
 	}
 	return failure{msg, networkKind(msg)}
@@ -606,7 +606,7 @@ func parseInfo(out []byte) (Stream, error) {
 	if strings.HasPrefix(in.Protocol, "m3u8") {
 		// The engine plays HLS only as a live stream goes on.
 		if in.LiveStatus != "is_live" {
-			return Stream{}, errors.New("YouTube gave no audio for this track that MyMusic plays")
+			return Stream{}, errors.New("YouTube gave no audio for this track that MyTube plays")
 		}
 		s := Stream{URL: in.URL, Header: http.Header{}, MimeType: "audio/aac", Codec: "mp4a.40.2", Expires: expiry(in.URL), Live: true}
 		for k, v := range in.Headers {

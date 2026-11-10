@@ -85,10 +85,10 @@ func TestProbeDistrustsCertificates(t *testing.T) {
 	}
 }
 
-// TestLiveProbe asks YouTube. It runs with MYMUSIC_LIVE=1.
+// TestLiveProbe asks YouTube. It runs with MYTUBE_LIVE=1.
 func TestLiveProbe(t *testing.T) {
-	if os.Getenv("MYMUSIC_LIVE") == "" {
-		t.Skip("set MYMUSIC_LIVE=1 to ask YouTube")
+	if os.Getenv("MYTUBE_LIVE") == "" {
+		t.Skip("set MYTUBE_LIVE=1 to ask YouTube")
 	}
 	if err := Probe(context.Background()); err != nil {
 		t.Errorf("Probe = %v", err)

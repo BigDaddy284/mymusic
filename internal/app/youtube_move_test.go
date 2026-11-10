@@ -11,7 +11,7 @@ import (
 )
 
 // TestMoveInYouTubePlaylist moves a track of a playlist of YouTube Music
-// by its MyMusic ID, before another by their places in the playlist, and
+// by its MyTube ID, before another by their places in the playlist, and
 // nothing of another service or signed out.
 func TestMoveInYouTubePlaylist(t *testing.T) {
 	ctx := context.Background()

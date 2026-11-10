@@ -1,6 +1,6 @@
 name: Release
 
-# Pushing a tag such as v0.2.0 builds MyMusic for Windows, x64 and Arm64,
+# Pushing a tag such as v0.2.0 builds MyTube for Windows, x64 and Arm64,
 # and publishes the release: the version's section of CHANGELOG.md, the
 # downloads of .github/release-notes.md, the installers, the portable zips
 # and SHA256SUMS. Nix builds: every job runs in the shell of flake.nix,
@@ -108,9 +108,9 @@ jobs:
             target="$(basename "$dir")" # windows-amd64, windows-arm64
             arch="${target#*-}"
             # What installed apps update from, under the names their manifests use.
-            for f in "$dir"update-*.json "$dir"*.delta "$dir"mymusic-"$v"-"$target".tar.g[z]; do cp "$f" release/; done
-            # mygo build names it mymusic-setup-<version>-<arch>.exe.
-            for f in "$dir"*-setup-*.exe; do cp "$f" "release/mymusic-$v-windows-$arch-setup.exe"; done
+            for f in "$dir"update-*.json "$dir"*.delta "$dir"mytube-"$v"-"$target".tar.g[z]; do cp "$f" release/; done
+            # mygo build names it mytube-setup-<version>-<arch>.exe.
+            for f in "$dir"*-setup-*.exe; do cp "$f" "release/mytube-$v-windows-$arch-setup.exe"; done
           done
           ls -l release
           # Two installers and two portable zips, not counting the update
@@ -152,8 +152,8 @@ jobs:
           fi
           # The target of each archive, as windows-amd64, has a manifest
           # of this version, which names files of this release.
-          for archive in mymusic-"$v"-*.tar.gz; do
-            target="${archive#mymusic-"$v"-}"
+          for archive in mytube-"$v"-*.tar.gz; do
+            target="${archive#mytube-"$v"-}"
             if [ ! -f "update-${target%.tar.gz}.json" ]; then
               echo "$archive has no update-${target%.tar.gz}.json" >&2
               exit 1

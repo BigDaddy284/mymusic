@@ -139,7 +139,7 @@ func (s *shell) discordPreview(c *ui.Context, d settings.Desktop) {
 	if a == nil {
 		return
 	}
-	name := "MyMusic"
+	name := "MyTube"
 	if d.DiscordAppID != "" {
 		name = "your application"
 	}

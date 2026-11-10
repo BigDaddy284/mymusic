@@ -7,6 +7,6 @@ import (
 	"io"
 )
 
-// dial finds no Discord app: MyMusic reaches Discord's named pipe on
+// dial finds no Discord app: MyTube reaches Discord's named pipe on
 // Windows alone.
 func dial(context.Context) (io.ReadWriteCloser, error) { return nil, ErrNotRunning }

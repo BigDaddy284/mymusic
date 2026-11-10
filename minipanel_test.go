@@ -79,7 +79,7 @@ func TestMiniPanelQueue(t *testing.T) {
 	if steps < 3 {
 		t.Errorf("the window grew at once, not over a moment: %+v", f.moves)
 	}
-	if r, _ := tt.Find("Open MyMusic"); r.Y > 30 {
+	if r, _ := tt.Find("Open MyTube"); r.Y > 30 {
 		t.Errorf("the player moved down with the panel below it: its button is at %+v", r)
 	}
 	showsAll(t, tt, "the queue", s.lk.words("Up next"), "1 of 6", testTracks[0].Title+", playing", "Play Teardrop", "Massive Attack")
@@ -134,7 +134,7 @@ func TestMiniPanelAbove(t *testing.T) {
 			t.Fatalf("the player moved as the window grew above it: %+v", f.moves)
 		}
 	}
-	if r, _ := tt.Find("Open MyMusic"); r.Y < miniPanelHeight {
+	if r, _ := tt.Find("Open MyTube"); r.Y < miniPanelHeight {
 		t.Errorf("the player isn't under the panel: its button is at %+v", r)
 	}
 	tt.Key(0, ui.KeyEscape)
@@ -223,7 +223,7 @@ func TestMiniPanelSizes(t *testing.T) {
 			if f.rect.Height != h+miniPanelHeight || f.rect.Width != w {
 				t.Errorf("in %dx%d, the window with the %s is at %+v", w, h, p, f.rect)
 			}
-			for _, label := range []string{"Open MyMusic", "Close the mini player", "Queue", "Lyrics", "Output device",
+			for _, label := range []string{"Open MyTube", "Close the mini player", "Queue", "Lyrics", "Output device",
 				"Shuffle", "Previous", "Pause", "Next", "Repeat: off", "Like", "Dislike", "Mute", "Seek"} {
 				r, ok := tt.Find(label)
 				if !ok || r.X < 0 || r.Y < 0 || r.X+r.W > float32(w)+0.01 || r.Y+r.H > float32(h)+0.01 {
@@ -303,7 +303,7 @@ func TestMiniPanelMotion(t *testing.T) {
 func TestMiniPanelKeys(t *testing.T) {
 	s := miniShell(t, nil)
 	tt, f := miniAt(t, s, 100, 100, 420, 132)
-	for _, label := range []string{"Open MyMusic", "Close the mini player", "Queue", "Lyrics", "Output device",
+	for _, label := range []string{"Open MyTube", "Close the mini player", "Queue", "Lyrics", "Output device",
 		"Shuffle", "Previous", "Pause", "Next", "Repeat: off", "Like", "Dislike", "Mute", "Volume", "Seek"} {
 		tabTo(t, tt, label, "")
 		if _, ok := tt.Access(label); !ok {

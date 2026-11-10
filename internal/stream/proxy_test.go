@@ -181,7 +181,7 @@ func TestProxyTellsWhyItFailed(t *testing.T) {
 	srv.Close()
 	p = testProxy(srv, 1000)
 	get(t, p, "")
-	if got := p.Failure(testID); !strings.HasPrefix(got, "MyMusic could not reach YouTube's audio servers") {
+	if got := p.Failure(testID); !strings.HasPrefix(got, "MyTube could not reach YouTube's audio servers") {
 		t.Errorf("unreachable: Failure = %q", got)
 	}
 	if strings.Contains(logs.String(), "gen=") || !strings.Contains(logs.String(), testID) {

@@ -30,7 +30,7 @@ type Manager struct {
 	// Dir holds the add-ons the user installed: themes/<id> and
 	// plugins/<id>.
 	Dir string
-	// Builtin holds the add-ons MyMusic ships with, laid out as Dir.
+	// Builtin holds the add-ons MyTube ships with, laid out as Dir.
 	Builtin fs.FS
 }
 
@@ -63,7 +63,7 @@ func (m *Manager) sources() []source {
 }
 
 // List finds every add-on. Add-ons the user installed cannot replace those
-// MyMusic ships with: they are listed as problems.
+// MyTube ships with: they are listed as problems.
 func (m *Manager) List() Inventory {
 	c := Inventory{Themes: []Theme{}, Plugins: []Plugin{}, Problems: []Problem{}}
 	for _, kind := range []Kind{KindTheme, KindPlugin} {
@@ -119,7 +119,7 @@ func check(err error, id, dir string, seen map[string]bool) string {
 	case id != dir:
 		return "the folder must be named after the id, " + id
 	case seen[id]:
-		return "an add-on MyMusic ships with has this id"
+		return "an add-on MyTube ships with has this id"
 	}
 	seen[id] = true
 	return ""
@@ -133,8 +133,8 @@ func (m *Manager) isBuiltin(kindFolder, id string) bool {
 	return err == nil
 }
 
-// ErrBuiltin is returned when removing an add-on MyMusic ships with.
-var ErrBuiltin = errors.New("addons: add-ons MyMusic ships with cannot be removed")
+// ErrBuiltin is returned when removing an add-on MyTube ships with.
+var ErrBuiltin = errors.New("addons: add-ons MyTube ships with cannot be removed")
 
 // Uninstall removes an add-on the user installed.
 func (m *Manager) Uninstall(kind Kind, id string) error {
@@ -148,7 +148,7 @@ func (m *Manager) Uninstall(kind Kind, id string) error {
 }
 
 // Files returns the files of an add-on, in its folder: that of the add-on
-// MyMusic ships with, when there is one of the id, as List chooses, or
+// MyTube ships with, when there is one of the id, as List chooses, or
 // the user's.
 func (m *Manager) Files(kind Kind, id string) (fs.FS, error) {
 	if !settings.ValidID(id) || (kind != KindTheme && kind != KindPlugin) {

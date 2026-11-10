@@ -11,8 +11,8 @@ import (
 )
 
 // fromSpotify reports whether what has the ID id, of source, came from
-// Spotify, which MyMusic 0.x played from and kept in the library, and
-// which MyMusic plays no more.
+// Spotify, which MyTube 0.x played from and kept in the library, and
+// which MyTube plays no more.
 func fromSpotify(id string, source media.Source) bool {
 	return source == "spotify" || strings.HasPrefix(id, "sp:")
 }

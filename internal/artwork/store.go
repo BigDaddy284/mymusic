@@ -522,7 +522,7 @@ func (s *Store) write(rawURL string, h header, data []byte) {
 		s.diskTold = true
 		s.mu.Unlock()
 		if !told {
-			s.logf("mymusic: artwork: keeping covers in %s: %v", s.dir, err)
+			s.logf("mytube: artwork: keeping covers in %s: %v", s.dir, err)
 		}
 	}
 }
@@ -631,7 +631,7 @@ func (s *Store) failed(host, rawURL string, err error) {
 	}
 	h.logged, h.skipped = now, 0
 	s.mu.Unlock()
-	s.logf("mymusic: artwork: a cover from %s didn't load (%s): %s%s", host, key(rawURL)[:8], describe(err), more)
+	s.logf("mytube: artwork: a cover from %s didn't load (%s): %s%s", host, key(rawURL)[:8], describe(err), more)
 }
 
 // loaded logs that the images of host load again, after failures.
@@ -644,7 +644,7 @@ func (s *Store) loaded(host string) {
 	}
 	s.mu.Unlock()
 	if again {
-		s.logf("mymusic: artwork: covers from %s load again", host)
+		s.logf("mytube: artwork: covers from %s load again", host)
 	}
 }
 

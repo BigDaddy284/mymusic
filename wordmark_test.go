@@ -24,7 +24,7 @@ func TestFitSize(t *testing.T) {
 	}
 }
 
-// TestWordmarkFits checks that MyMusic's name in the unfolded rail fits
+// TestWordmarkFits checks that MyTube's name in the unfolded rail fits
 // whole in every built-in theme, layout design and density, as Sakura's
 // wide serif didn't, and keeps its size where it fitted.
 func TestWordmarkFits(t *testing.T) {
@@ -43,7 +43,7 @@ func TestWordmarkFits(t *testing.T) {
 				}
 				s.refresh()
 				tt.Frame()
-				if !tt.HasText("MyMusic") {
+				if !tt.HasText(railName) {
 					t.Fatalf("%s, %s: no name in the rail: %q", th.ID, layout, tt.Texts())
 				}
 				f := s.wordmark

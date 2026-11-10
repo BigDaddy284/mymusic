@@ -27,7 +27,7 @@ var eqPresets = []struct {
 
 func init() { addSettings("playback", 50, (*shell).equalizerSettings) }
 
-// equalizerSettings shape the sound of what MyMusic plays itself.
+// equalizerSettings shape the sound of what MyTube plays itself.
 func (s *shell) equalizerSettings(c *ui.Context) {
 	k := &s.lk
 	eq := &s.set.Equalizer

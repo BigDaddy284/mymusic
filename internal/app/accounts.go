@@ -9,8 +9,8 @@ import (
 // loginTimeout is how long signing in waits for the user in the browser.
 const loginTimeout = 5 * time.Minute
 
-// spotifySecret is the key under which MyMusic 0.x kept a Spotify sign-in
-// in the system's credential store, which MyMusic now forgets
+// spotifySecret is the key under which MyTube 0.x kept a Spotify sign-in
+// in the system's credential store, which MyTube now forgets
 // (forgetSpotify).
 const spotifySecret = "spotify-token"
 
@@ -53,7 +53,7 @@ func (s *Accounts) Status(ctx context.Context) AccountsStatus {
 	return s.a.knownAccountsStatus()
 }
 
-// knownAccountsStatus is the state of the accounts as MyMusic knows it,
+// knownAccountsStatus is the state of the accounts as MyTube knows it,
 // without asking the services; it has the profiles it lacks read in the
 // background.
 func (a *App) knownAccountsStatus() AccountsStatus {
@@ -97,11 +97,11 @@ func (a *App) accountsStatus(ctx context.Context) AccountsStatus {
 	return AccountsStatus{YouTube: a.youtubeAccount(ctx), Lastfm: a.lastfmAccount()}
 }
 
-// forgetSpotify deletes the Spotify sign-in MyMusic 0.x kept, from the
-// credential store and the files beside it, as MyMusic plays from Spotify
+// forgetSpotify deletes the Spotify sign-in MyTube 0.x kept, from the
+// credential store and the files beside it, as MyTube plays from Spotify
 // no more.
 func forgetSpotify(dataDir string) {
 	if err := newSecretStore(dataDir, spotifySecret, "spotify-token.json", "spotify-token.dpapi").Clear(); err != nil {
-		log.Printf("mymusic: forgetting the Spotify sign-in: %v", err)
+		log.Printf("mytube: forgetting the Spotify sign-in: %v", err)
 	}
 }

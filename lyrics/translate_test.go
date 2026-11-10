@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-// translateRequest is what MyMusic sends Unison to translate.
+// translateRequest is what MyTube sends Unison to translate.
 type translateRequest struct {
 	Lines   []string `json:"lines"`
 	To      string   `json:"to"`

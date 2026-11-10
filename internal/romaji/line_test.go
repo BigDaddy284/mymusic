@@ -13,7 +13,7 @@ import (
 
 // moduleDictionary is the IPA dictionary of kagome's module, in the Go
 // module cache, where `go mod download github.com/ikawaha/kagome-dict/ipa@v1.2.6`
-// puts it: the dictionary MyMusic downloads, which tests never download.
+// puts it: the dictionary MyTube downloads, which tests never download.
 func moduleDictionary(t testing.TB) string {
 	t.Helper()
 	out, err := exec.Command("go", "env", "GOMODCACHE").Output()

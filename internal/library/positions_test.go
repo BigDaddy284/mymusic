@@ -79,7 +79,7 @@ func TestPositionRules(t *testing.T) {
 }
 
 // TestResumeFromService starts an episode where its service says the user
-// left it, while MyMusic has no place of its own.
+// left it, while MyTube has no place of its own.
 func TestResumeFromService(t *testing.T) {
 	p, _ := openPositions(t)
 	ep := episode("sp:e1")

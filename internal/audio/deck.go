@@ -47,7 +47,7 @@ var (
 	errNetwork     = errors.New("the network failed while loading the audio")
 	errDecode      = errors.New("the audio could not be decoded")
 	errUnsupported = errors.New("the audio format is not supported")
-	// errFile is errNetwork of a Local source, in the words MyMusic
+	// errFile is errNetwork of a Local source, in the words MyTube
 	// has for a file on this computer.
 	errFile = errors.New("Can't read the file")
 )

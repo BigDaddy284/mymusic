@@ -14,7 +14,7 @@ const (
 	QualitySaver Quality = "saver"
 )
 
-// Playback is how MyMusic plays: the sound, the speed,
+// Playback is how MyTube plays: the sound, the speed,
 // the music videos and the equalizer of Settings › Playback, and the
 // volume.
 type Playback struct {
@@ -33,7 +33,7 @@ type Playback struct {
 	// in place of its stereo audio: on six speakers where the output device
 	// has them, else mixed down to stereo as the track's stream asks.
 	Surround bool `json:"surround"`
-	// OutputDevice is the device MyMusic's own player plays on: the
+	// OutputDevice is the device MyTube's own player plays on: the
 	// system's default when its ID is empty.
 	OutputDevice OutputDevice `json:"outputDevice"`
 	// Autoplay continues with similar tracks when the queue ends.
@@ -55,10 +55,10 @@ type Playback struct {
 	// page, in place of their cover. It is off at first: it fetches more
 	// than the sound, and shows a web page there.
 	MusicVideos bool `json:"musicVideos"`
-	// Equalizer shapes the sound of MyMusic's own player.
+	// Equalizer shapes the sound of MyTube's own player.
 	Equalizer Equalizer `json:"equalizer"`
 	// VolumeCurve is how the positions of the volume slider sound, in
-	// MyMusic's player (#383): Natural at first.
+	// MyTube's player (#383): Natural at first.
 	VolumeCurve volume.Curve `json:"volumeCurve"`
 	// Volume is from 0 to 1.
 	Volume float64 `json:"volume"`
@@ -95,7 +95,7 @@ func (p Playback) clean(d Playback) Playback {
 	return p
 }
 
-// The speeds MyMusic's own player plays at: from half a track's own speed
+// The speeds MyTube's own player plays at: from half a track's own speed
 // to three times it, by twentieths.
 const (
 	MinSpeed  = 0.5

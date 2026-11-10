@@ -90,7 +90,7 @@ func (s *shell) related(c *ui.Context, t media.Track) {
 }
 
 // visualizer draws the spectrum of what plays over the foot of the sleeve,
-// in the accent, at every frame while it plays. Where MyMusic hears
+// in the accent, at every frame while it plays. Where MyTube hears
 // nothing, as while it casts, it draws nothing.
 func (s *shell) visualizer(c *ui.Context, size float32) {
 	k := &s.lk

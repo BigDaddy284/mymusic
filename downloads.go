@@ -21,7 +21,7 @@ import (
 )
 
 // bigDownload is how many tracks, or bytes, a download takes before
-// MyMusic asks first.
+// MyTube asks first.
 const (
 	bigDownload      = 100
 	bigDownloadBytes = 1 << 30
@@ -69,7 +69,7 @@ func (s *shell) confirmDownload(tracks []media.Track, run func()) {
 }
 
 // downloadSize is about how many bytes tracks take, downloaded, and
-// whether they're as many, or as big, as MyMusic asks before downloading.
+// whether they're as many, or as big, as MyTube asks before downloading.
 func (s *shell) downloadSize(tracks []media.Track) (size int64, big bool) {
 	size = s.svc.Downloads.Estimate(tracks)
 	return size, len(tracks) > bigDownload || size >= bigDownloadBytes
@@ -226,7 +226,7 @@ func (s *shell) downloadCollection(d *downloadHead) {
 		s.svc.Downloads.AddCollection(d.c, tracks)
 		msg := "Downloading " + d.c.Title
 		if d.c.Total > len(d.tracks) {
-			msg += fmt.Sprintf(": the %d of its %d tracks MyMusic reads", len(d.tracks), d.c.Total)
+			msg += fmt.Sprintf(": the %d of its %d tracks MyTube reads", len(d.tracks), d.c.Total)
 		}
 		s.notes = append(s.notes, notice(msg))
 	})

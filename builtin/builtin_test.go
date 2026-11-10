@@ -19,7 +19,7 @@ func TestThemesAreValid(t *testing.T) {
 			t.Errorf("%s is not marked built-in", th.ID)
 		}
 	}
-	for _, id := range []string{"mymusic", "mymusic-light"} {
+	for _, id := range []string{"mytube", "mytube-light"} {
 		if !ids[id] {
 			t.Errorf("the default theme, %s, is missing", id)
 		}

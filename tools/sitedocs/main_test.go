@@ -75,7 +75,7 @@ const plugins = "# Plugins\r\n" +
 func TestRun(t *testing.T) {
 	root := repo(t, map[string]string{
 		"docs/plugins.md":                 plugins,
-		"docs/themes.md":                  "# Themes `json`\n<!--docs: group=make  order=10-->\nA theme sets the colors, the typefaces and the corners of MyMusic, which draws everything with them. A theme is a folder.\n\n## Colors\n",
+		"docs/themes.md":                  "# Themes `json`\n<!--docs: group=make  order=10-->\nA theme sets the colors, the typefaces and the corners of MyTube, which draws everything with them. A theme is a folder.\n\n## Colors\n",
 		"docs/zebra.md":                   "# Zebra\n\n<!-- docs: group=make -->\n\n- a list first\n\nThen prose: it ends in a colon:\n",
 		"docs/banner.webp":                "banner",
 		"docs/shots/home.webp":            "home",
@@ -141,7 +141,7 @@ func TestRun(t *testing.T) {
 	}
 
 	themes := readFile(t, filepath.Join(out, "themes", "index.md"))
-	for _, s := range []string{"title = \"Themes json\"\n", "description = \"A theme sets the colors, the typefaces and the corners of MyMusic, which draws everything with them.\"\n", "weight = 10\n", "group = \"make\"\n", "group_first = true\n", "+++\n\nA theme sets"} {
+	for _, s := range []string{"title = \"Themes json\"\n", "description = \"A theme sets the colors, the typefaces and the corners of MyTube, which draws everything with them.\"\n", "weight = 10\n", "group = \"make\"\n", "group_first = true\n", "+++\n\nA theme sets"} {
 		if !strings.Contains(themes, s) {
 			t.Errorf("themes page lacks %q:\n%s", s, themes)
 		}
@@ -288,8 +288,8 @@ func TestGroups(t *testing.T) {
 	out := filepath.Join(root, "site", "content", "docs")
 	for slug, want := range map[string][]string{
 		"start":   {"weight = 10\n", "group = \"start\"\ngroup_title = \"Getting started\"\ngroup_first = true\n"},
-		"playing": {"weight = 20\n", "group = \"using\"\ngroup_title = \"Using MyMusic\"\ngroup_first = true\n"},
-		"lyrics":  {"weight = 30\n", "group = \"using\"\ngroup_title = \"Using MyMusic\"\n+++\n\nLyrics.\n"},
+		"playing": {"weight = 20\n", "group = \"using\"\ngroup_title = \"Using MyTube\"\ngroup_first = true\n"},
+		"lyrics":  {"weight = 30\n", "group = \"using\"\ngroup_title = \"Using MyTube\"\n+++\n\nLyrics.\n"},
 		"inside":  {"group = \"inside\"\ngroup_title = \"How it works\"\ngroup_first = true\n", "+++\n\nInside.\n"},
 		"notes":   {"group = \"project\"\n", "## A {#a}\n\nA part names no place of its own.\n"},
 	} {
@@ -339,7 +339,7 @@ func TestRoot(t *testing.T) {
 	root := repo(t, map[string]string{
 		"CONTRIBUTING.md":    "# Contributing\n<!-- docs: group=project order=10 -->\n\nThank you for helping. Read [themes](docs/themes.md), [the config](site/zola.toml), [the conduct](CODE_OF_CONDUCT.md) and [below](#commits).\n\n## Commits\n",
 		"CODE_OF_CONDUCT.md": "# Code of conduct\n<!-- docs: group=project order=40 -->\n\nBe kind.\n",
-		"README.md":          "# MyMusic\n\nThe README is no page.\n",
+		"README.md":          "# MyTube\n\nThe README is no page.\n",
 		"CHANGELOG.md":       "<!-- docs: group=project -->\n",
 		"NOTES.md":           "# Notes\n\nText, then <!-- docs: group=project --> too late.\n",
 		"docs/themes.md":     "# Themes\n<!-- docs: group=make order=10 -->\n\nSee [contributing](../CONTRIBUTING.md#commits) and <a href=\"../CODE_OF_CONDUCT.md\">the code of conduct</a>.\n",
@@ -391,7 +391,7 @@ func TestImages(t *testing.T) {
 		t.Fatal(err)
 	}
 	page := readFile(t, filepath.Join(root, "site", "content", "docs", "look", "index.md"))
-	if s := "group = \"using\"\ngroup_title = \"Using MyMusic\"\ngroup_first = true\n\n[extra.images]\n\"shots/home%20page.png\" = [3, 2]\n+++\n"; !strings.Contains(page, s) {
+	if s := "group = \"using\"\ngroup_title = \"Using MyTube\"\ngroup_first = true\n\n[extra.images]\n\"shots/home%20page.png\" = [3, 2]\n+++\n"; !strings.Contains(page, s) {
 		t.Errorf("look page lacks %q:\n%s", s, page)
 	}
 	if strings.Contains(page, "notes.txt\" =") {

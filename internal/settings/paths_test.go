@@ -51,7 +51,7 @@ func TestPathsNotUTF8(t *testing.T) {
 
 // TestPathsKept keeps the paths of the settings through the store, which
 // copies them through JSON as they change, and in the file it saves, as
-// MyMusic keeps settings.json.
+// MyTube keeps settings.json.
 func TestPathsKept(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "settings.json")

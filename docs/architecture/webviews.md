@@ -2,7 +2,7 @@
 
 Two web pages still show, and only while they're needed:
 
-- **Google's sign-in to YouTube Music**, whose cookies MyMusic keeps.
+- **Google's sign-in to YouTube Music**, whose cookies MyTube keeps.
 - **The picture of music videos** (`video.go`, `internal/app/video.go`),
   with "Show the video of music videos" on in Settings › Playback: a web
   view of the main window, on the now playing page, in place of the

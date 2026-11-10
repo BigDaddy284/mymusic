@@ -111,7 +111,7 @@ func (p *Player) waitFor(willPlay, radio bool, resume func(play bool)) {
 	p.report()
 	if !p.toldOffline {
 		p.toldOffline = true
-		p.notify(Notice{Message: "No network. MyMusic plays on from here once it's back"})
+		p.notify(Notice{Message: "No network. MyTube plays on from here once it's back"})
 		// Once the network answers, the next loss is told too, also when the
 		// user left this wait for a track that plays without the network.
 		await(p, func(ctx context.Context) (struct{}, error) { return struct{}{}, n.WaitOnline(ctx) }, func(_ struct{}, err error) {
@@ -212,7 +212,7 @@ func (p *Player) Woke() {
 	})
 }
 
-// Sleeping takes in the computer going to sleep. What MyMusic plays
+// Sleeping takes in the computer going to sleep. What MyTube plays
 // itself pauses, a track that loads stays paused once loaded, and a track
 // that waits for the network doesn't play once it's back: the computer
 // may wake somewhere quiet.
@@ -292,7 +292,7 @@ func (p *Player) skipOffline(i int, autoplay bool) bool {
 		return false
 	}
 	p.offlineSkips++
-	log.Printf("mymusic: the network is gone; playing %s, which plays without it, in place of %s",
+	log.Printf("mytube: the network is gone; playing %s, which plays without it, in place of %s",
 		p.s.Queue[j].Track.ID, p.s.Queue[i].Track.ID)
 	p.playAt(j, 0, autoplay)
 	return true

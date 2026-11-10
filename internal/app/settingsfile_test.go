@@ -106,7 +106,7 @@ func TestReloadSettingsIgnoresOwnSave(t *testing.T) {
 	n := told(t, a)
 	a.ReloadSettings()
 	if n.Load() != 0 || prefs.File().Seq != 0 {
-		t.Errorf("MyMusic's own save told the windows %d times, File %+v", n.Load(), prefs.File())
+		t.Errorf("MyTube's own save told the windows %d times, File %+v", n.Load(), prefs.File())
 	}
 }
 
@@ -130,7 +130,7 @@ func TestReloadSettingsBroken(t *testing.T) {
 	if got := prefs.Get().Theme; got != "aurora" {
 		t.Errorf("the theme is %q, want the one it had", got)
 	}
-	// MyMusic's own changes apply, and wait to be saved.
+	// MyTube's own changes apply, and wait to be saved.
 	if _, err := prefs.Update(func(s *settings.Settings) { s.Crossfade = 5 }); err != nil {
 		t.Fatal(err)
 	}
@@ -336,7 +336,7 @@ func TestTellStart(t *testing.T) {
 	})
 }
 
-// TestWatchSettingsFile edits settings.json while MyMusic watches it, as
+// TestWatchSettingsFile edits settings.json while MyTube watches it, as
 // it does once it started.
 func TestWatchSettingsFile(t *testing.T) {
 	if testing.Short() {
@@ -399,7 +399,7 @@ func TestWatchFollowsALink(t *testing.T) {
 
 	writeSettings(t, first, `{"theme": "mochi"}`)
 	until(t, "an edit of the first file", func() bool { return a.settings.Get().Theme == "mochi" })
-	// The link goes to the second file now; MyMusic saves through it.
+	// The link goes to the second file now; MyTube saves through it.
 	w := a.watcher.Load()
 	if err := os.Remove(a.settings.Path()); err != nil {
 		t.Fatal(err)

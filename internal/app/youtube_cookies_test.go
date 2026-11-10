@@ -158,7 +158,7 @@ func TestBrowserSpec(t *testing.T) {
 
 // cookieApp is an app whose YouTube Music is answer, with a store of the
 // YouTube session of its own, and the temporary folder of the test. It
-// opens as MyMusic does, as choosing a channel changes the settings, which
+// opens as MyTube does, as choosing a channel changes the settings, which
 // reaches every part of the app.
 func cookieApp(t *testing.T, answer http.HandlerFunc) (*App, *atomic.Int32) {
 	t.Helper()
@@ -349,7 +349,7 @@ func TestPasteCookies(t *testing.T) {
 }
 
 // TestSignInKeepsSettingsEdits forgets the channel of the session before,
-// and keeps what an edit of settings.json changed since MyMusic read it.
+// and keeps what an edit of settings.json changed since MyTube read it.
 func TestSignInKeepsSettingsEdits(t *testing.T) {
 	a, _ := cookieApp(t, signedIn(true))
 	if _, err := (&Preferences{a}).Update(func(set *settings.Settings) { set.YouTubeChannel = "123456789012345678901" }); err != nil {
@@ -365,7 +365,7 @@ func TestSignInKeepsSettingsEdits(t *testing.T) {
 }
 
 // TestRemoveCookieExports deletes the copies of browsers' cookies that a
-// MyMusic that stopped while it imported one left, and nothing else.
+// MyTube that stopped while it imported one left, and nothing else.
 func TestRemoveCookieExports(t *testing.T) {
 	tmp := t.TempDir()
 	for _, v := range []string{"TMPDIR", "TMP", "TEMP"} {

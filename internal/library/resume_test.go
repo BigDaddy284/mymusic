@@ -18,16 +18,16 @@ func told(id string, when time.Time, min float64, played bool) media.Track {
 }
 
 // TestToldPlace starts an episode where YouTube Music last saw the user
-// when that is newer than MyMusic's own place: it changed since MyMusic
-// kept its own. When MyMusic never saw it, the place further along wins.
-// A place near MyMusic's own keeps MyMusic's, and a played one starts
+// when that is newer than MyTube's own place: it changed since MyTube
+// kept its own. When MyTube never saw it, the place further along wins.
+// A place near MyTube's own keeps MyTube's, and a played one starts
 // from the start.
 func TestToldPlace(t *testing.T) {
 	monday := time.Date(2026, 11, 2, 9, 0, 0, 0, time.UTC)
 	tuesday := monday.AddDate(0, 0, 1)
 	for _, c := range []struct {
 		name string
-		// keep is the place MyMusic keeps: the track it played, and the
+		// keep is the place MyTube keeps: the track it played, and the
 		// minute it left it at, or -1 for none, or 60 for played.
 		keep    media.Track
 		keptMin float64

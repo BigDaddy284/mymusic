@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// TestForgetSpotify opens a library MyMusic 0.x kept, with Spotify's
+// TestForgetSpotify opens a library MyTube 0.x kept, with Spotify's
 // tracks, artists and podcasts beside YouTube Music's: what came from
 // Spotify goes, the rest stays, and the file as it was stays beside it.
 func TestForgetSpotify(t *testing.T) {

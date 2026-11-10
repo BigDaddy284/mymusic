@@ -1,4 +1,4 @@
-// The MyMusic site: the working player in the hero, feature tabs, the
+// The MyTube site: the working player in the hero, feature tabs, the
 // video's chapters, the gallery of layouts and themes, and
 // download buttons named for the visitor's system. Every download goes to
 // the latest release on GitHub.
@@ -184,7 +184,7 @@
           c.setAttribute("aria-pressed", String(on));
         });
         const other = layout ? "the Mix theme" : "the Blend layout";
-        show(src(chip), `MyMusic's home page in the ${chip.dataset.name} ${layout ? "layout" : "theme"} and ${other}.`);
+        show(src(chip), `MyTube's home page in the ${chip.dataset.name} ${layout ? "layout" : "theme"} and ${other}.`);
         name.textContent = `${chip.dataset.name}, in ${other}`;
         desc.textContent = chip.dataset.desc;
         const accent = $(".dots i:nth-child(2)", chip)?.style.background;
@@ -193,7 +193,7 @@
     });
   }
 
-  // The player in the hero: a working copy of MyMusic's window in its
+  // The player in the hero: a working copy of MyTube's window in its
   // default look, playing Creative Commons songs from this site, with its
   // mini player for narrow screens and for the mini player button.
   const wrap = $("[data-demo-wrap]");

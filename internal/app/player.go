@@ -19,7 +19,7 @@ import (
 type PlaybackMode string
 
 const (
-	// PlaybackStream plays the track in MyMusic's audio engine, from Url.
+	// PlaybackStream plays the track in MyTube's audio engine, from Url.
 	PlaybackStream PlaybackMode = "stream"
 )
 
@@ -100,7 +100,7 @@ func (p *Player) Prepare(ctx context.Context, track media.Track) (PlaybackSource
 		} else {
 			src.Cached = stereo
 		}
-		// A track cached before MyMusic kept measures gets one now.
+		// A track cached before MyTube kept measures gets one now.
 		p.learnLoudness(videoID)
 		return src, nil
 	}
@@ -156,7 +156,7 @@ func liveSource(src PlaybackSource, videoID string) PlaybackSource {
 	return src
 }
 
-// learnLoudness asks YouTube how loud a video MyMusic holds the audio of
+// learnLoudness asks YouTube how loud a video MyTube holds the audio of
 // is, unless the book knows, or the network is gone: the engine would wait
 // for an answer that can't come.
 func (p *Player) learnLoudness(videoID string) {
@@ -245,24 +245,24 @@ func (a *App) command(cmd PlayerCommand) {
 func trayTip(np NowPlaying) string { return cut(playingLine(np), 120) }
 
 // windowTitle is the main window's title: what plays, unless the settings
-// keep it to MyMusic's name.
+// keep it to MyTube's name.
 func windowTitle(np NowPlaying, show bool) string {
 	if !show {
-		return "MyMusic"
+		return "MyTube"
 	}
 	return cut(playingLine(np), 256)
 }
 
 // playingLine names what plays, as the tray's tooltip and the main
 // window's title show it: "One More Time - Daft Punk", after "Paused: "
-// while it's paused, or "MyMusic" with nothing to play.
+// while it's paused, or "MyTube" with nothing to play.
 func playingLine(np NowPlaying) string {
 	if np.Track == nil {
-		return "MyMusic"
+		return "MyTube"
 	}
 	line := oneLine(np.Track.Title)
 	if line == "" {
-		return "MyMusic"
+		return "MyTube"
 	}
 	if artists := oneLine(np.Track.ArtistNames()); artists != "" {
 		line += " - " + artists
@@ -314,7 +314,7 @@ func (a *App) notifyTrack(t media.Track) {
 	n := mygo.NewNotification(opts)
 	n.OnClick(a.showMain)
 	if err := showNote(n); err != nil && !errors.Is(err, mygo.ErrNotificationsDenied) {
-		log.Printf("mymusic: notification: %v", err)
+		log.Printf("mytube: notification: %v", err)
 	}
 }
 
@@ -336,7 +336,7 @@ func (a *App) notifyDisliked(t media.Track, disliked bool) {
 }
 
 // notifyRated shows the notification id of a track liked or disliked from
-// outside MyMusic's windows, unless one that shows it is in front.
+// outside MyTube's windows, unless one that shows it is in front.
 func (a *App) notifyRated(id, title, body string) {
 	if !a.settings.Get().Notifications || a.inFront() {
 		return
@@ -344,7 +344,7 @@ func (a *App) notifyRated(id, title, body string) {
 	n := mygo.NewNotification(mygo.NotificationOptions{ID: id, Title: title, Body: body, Silent: true})
 	n.OnClick(a.showMain)
 	if err := showNote(n); err != nil && !errors.Is(err, mygo.ErrNotificationsDenied) {
-		log.Printf("mymusic: notification: %v", err)
+		log.Printf("mytube: notification: %v", err)
 	}
 }
 

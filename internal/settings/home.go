@@ -52,7 +52,7 @@ func defaultHome() Home {
 
 // clean is h with each shelf named once, by a key of its own, without
 // those past maxHomeShelves, and titles cut to maxHomeTitle. The shelves
-// of Spotify MyMusic 0.x showed go: "spotify:…", and the playlists and
+// of Spotify MyTube 0.x showed go: "spotify:…", and the playlists and
 // artists of Spotify the user added, "playlist:sp:…" and "artist:sp:…".
 func (h Home) clean() Home {
 	shelves := make([]HomeShelf, 0, len(h.HomeShelves))

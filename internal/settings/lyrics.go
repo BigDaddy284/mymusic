@@ -23,7 +23,7 @@ type Lyrics struct {
 	LyricsPlain bool `json:"lyricsPlain"`
 	// LyricsTranslate are the languages of the lyrics the user translates,
 	// codes of ISO 639-1 as "ja": their translation shows under each line.
-	// "" stands for lyrics whose language MyMusic can't tell.
+	// "" stands for lyrics whose language MyTube can't tell.
 	LyricsTranslate []string `json:"lyricsTranslate"`
 	// LyricsRomanize shows the lyrics of a language in Latin letters,
 	// RomanizeUnder or RomanizeOnly, by the language's code; lyrics of

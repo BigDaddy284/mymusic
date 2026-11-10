@@ -67,7 +67,7 @@ type waveFormat struct {
 }
 
 // iUnknownVtbl is IUnknown's part of a vtable: QueryInterface and AddRef,
-// which MyMusic doesn't call, then Release.
+// which MyTube doesn't call, then Release.
 type iUnknownVtbl struct {
 	_, _, release uintptr
 }

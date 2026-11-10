@@ -1,7 +1,7 @@
 # Settings
 <!-- docs: group=using order=90 -->
 
-MyMusic's settings page by page, finding a setting by typing, settings.json,
+MyTube's settings page by page, finding a setting by typing, settings.json,
 the command palette, refreshing a page and the keyboard shortcuts.
 
 Open Settings with the gear in the sidebar,
@@ -17,7 +17,7 @@ and each group a list of rows.
 
 ### Appearance
 
-How MyMusic looks; [Look and feel](look-and-feel.md) tells all of it.
+How MyTube looks; [Look and feel](look-and-feel.md) tells all of it.
 
 | Group | What's there |
 |---|---|
@@ -28,7 +28,7 @@ How MyMusic looks; [Look and feel](look-and-feel.md) tells all of it.
 
 ### Playback
 
-How MyMusic plays; [Playing music](playing-music.md) tells all of it.
+How MyTube plays; [Playing music](playing-music.md) tells all of it.
 
 | Group | What's there |
 |---|---|
@@ -40,8 +40,8 @@ How MyMusic plays; [Playing music](playing-music.md) tells all of it.
 | [Lyrics](lyrics.md#translate) | **Translate lyrics to**: the language the translate switch beside the lyrics shows them in. |
 | [Offline cache](library.md#the-offline-cache) | **Tracks kept** and **Covers kept**, each with **clear**, and the cache's **Size**: off, 512 MB, 1 GB, 4 GB or 16 GB. |
 | [Downloads](library.md#where-they-are) | How many tracks are downloaded and how much room they take, with **show**; their **Folder**, with **open** and **change**; **Download on metered connections** and **Download songs added later**. |
-| [Music on this computer](local-music.md#add-a-folder) | **Folders**, with **add a folder** and **rescan**, then each folder of music, with how many tracks it holds, how many files were skipped and how many folders in it can't be read, and **remove**. Under the folders, each one MyMusic can't watch for changes, as one on a network drive, says why: its changes show after a **rescan**. |
-| [Tools](how-it-works.md#yt-dlp-and-the-javascript-runtime) | **yt-dlp**, which MyMusic installs and keeps up to date, the **JavaScript runtime** it runs with (found by itself, or Deno, Node.js, Bun or QuickJS), and **Own yt-dlp**, the path to one of yours. |
+| [Music on this computer](local-music.md#add-a-folder) | **Folders**, with **add a folder** and **rescan**, then each folder of music, with how many tracks it holds, how many files were skipped and how many folders in it can't be read, and **remove**. Under the folders, each one MyTube can't watch for changes, as one on a network drive, says why: its changes show after a **rescan**. |
+| [Tools](how-it-works.md#yt-dlp-and-the-javascript-runtime) | **yt-dlp**, which MyTube installs and keeps up to date, the **JavaScript runtime** it runs with (found by itself, or Deno, Node.js, Bun or QuickJS), and **Own yt-dlp**, the path to one of yours. |
 
 ### Accounts
 
@@ -65,12 +65,12 @@ The **On the desktop** group:
 | Row | What it does |
 |---|---|
 | [Close to the tray](desktop.md#close-to-the-tray) | Closing the window keeps the music playing; quit from the tray icon. Off at first. |
-| Media keys | The keyboard's play, next and previous keys control MyMusic. On at first. |
-| [Notifications](desktop.md#notifications) | Tells what starts playing while neither MyMusic's window nor the mini player is in front. On at first. |
+| Media keys | The keyboard's play, next and previous keys control MyTube. On at first. |
+| [Notifications](desktop.md#notifications) | Tells what starts playing while neither MyTube's window nor the mini player is in front. On at first. |
 | [Show what plays in the window title](desktop.md#the-window-title) | The window's title names the track that plays. On at first. |
 | [Show what plays on Discord](desktop.md#discord) | Your Discord profile shows what you listen to. On at first. Under it, **Discord application ID**, to show another application's name, a preview of your status, and [what it shows](desktop.md#what-your-discord-status-shows): its two lines, the cover, the service's badge, the time left, a Listen button, and whether it stays while paused. |
-| [Keep on top](desktop.md#keep-the-window-on-top) | MyMusic's window stays above your other windows. Off at first. |
-| [Start at login](desktop.md#start-at-login) | Starts MyMusic, hidden, when you sign in to your computer. |
+| [Keep on top](desktop.md#keep-the-window-on-top) | MyTube's window stays above your other windows. Off at first. |
+| [Start at login](desktop.md#start-at-login) | Starts MyTube, hidden, when you sign in to your computer. |
 | Settings file | **open** opens `settings.json`, **show in folder** shows it in its folder. |
 | Reset settings | Puts back the settings of a new install, after asking. Your accounts, library and add-ons stay. |
 
@@ -87,13 +87,13 @@ themes and the plugins' commands. See
 
 | Group | What's there |
 |---|---|
-| MyMusic | The **Version**, with the system and how this copy was [installed](getting-started.md#install); whether a newer version is out, with **what's new** and **install** (or its download, for a copy that can't replace itself); the folder your [data](data-and-privacy.md#where-mymusic-keeps-its-data) lives in; and **source code**, **contribute**, **report a problem** and **open logs folder** (see [Troubleshooting](troubleshooting.md)). |
-| Memory use | **Record memory use**, for a report of MyMusic taking too much memory: while it's on, MyMusic writes how it uses its memory to `memory.log` in [the logs folder](data-and-privacy.md#the-logs-folder) each minute, and saves a heap profile there once it passes 1 GB, and **save a heap profile** saves one at once. It's off again at the next start. |
-| [Updates](how-it-works.md#mymusic-itself) | **Check for updates**, at start and every few hours, and **Install updates without asking**, which downloads them in the background for the next launch. |
-| [Recent playback errors](troubleshooting.md#tracks-that-fail-to-play) | The last 10 tracks that couldn't play since MyMusic started, the latest first, with the time and why, each with **details**: what was tried, and **copy**. |
-| Licenses | The licenses of the code and the typefaces MyMusic includes, each with **show**: see [License](license.md) and [Credits](credits.md). |
+| MyTube | The **Version**, with the system and how this copy was [installed](getting-started.md#install); whether a newer version is out, with **what's new** and **install** (or its download, for a copy that can't replace itself); the folder your [data](data-and-privacy.md#where-mytube-keeps-its-data) lives in; and **source code**, **contribute**, **report a problem** and **open logs folder** (see [Troubleshooting](troubleshooting.md)). |
+| Memory use | **Record memory use**, for a report of MyTube taking too much memory: while it's on, MyTube writes how it uses its memory to `memory.log` in [the logs folder](data-and-privacy.md#the-logs-folder) each minute, and saves a heap profile there once it passes 1 GB, and **save a heap profile** saves one at once. It's off again at the next start. |
+| [Updates](how-it-works.md#mytube-itself) | **Check for updates**, at start and every few hours, and **Install updates without asking**, which downloads them in the background for the next launch. |
+| [Recent playback errors](troubleshooting.md#tracks-that-fail-to-play) | The last 10 tracks that couldn't play since MyTube started, the latest first, with the time and why, each with **details**: what was tried, and **copy**. |
+| Licenses | The licenses of the code and the typefaces MyTube includes, each with **show**: see [License](license.md) and [Credits](credits.md). |
 
-![Settings › About: the MyMusic group, with the version, MyMusic 0.5.9 · windows amd64 · portable, "This is the newest version" with Check again, where your data lives, its folder covered here, and the Source code, Contribute, Report a problem and Open logs folder buttons; then Updates, with Check for updates on and Install updates without asking off](shots/about.webp)
+![Settings › About: the MyTube group, with the version, MyTube 0.5.9 · windows amd64 · portable, "This is the newest version" with Check again, where your data lives, its folder covered here, and the Source code, Contribute, Report a problem and Open logs folder buttons; then Updates, with Check for updates on and Install updates without asking off](shots/about.webp)
 
 Without Install updates without asking, a new version asks in a pop-up:
 **install** it, **later**, which asks again at the next start, or **skip
@@ -119,29 +119,29 @@ colour. Each setting found keeps its control, so you change it right there.
 
 ## settings.json
 
-MyMusic keeps your settings in `settings.json`, in its
+MyTube keeps your settings in `settings.json`, in its
 [data folder](data-and-privacy.md#the-data-folder):
 
 | System | settings.json |
 |---|---|
-| Windows | `%AppData%\MyMusic\settings.json` |
+| Windows | `%AppData%\MyTube\settings.json` |
 
 Settings › Desktop › Settings file opens it, or shows it in its folder, and
 so does **Open the settings file** in the command palette. Settings › About
 names the data folder. You can keep the file with your dotfiles: a
 `settings.json` that is a link to another file stays a link.
 
-### Edit it while MyMusic runs
+### Edit it while MyTube runs
 
 Save the file, and what you changed applies at once, as if you had changed
-it in Settings; a toast says "Applied settings.json". MyMusic reads the
+it in Settings; a toast says "Applied settings.json". MyTube reads the
 file again before it saves to it, so it doesn't write over an edit it
 hasn't read: [the settings' part of the architecture](architecture/settings.md)
 tells how.
 
 - **A key you take out** goes back to its default, as at a new install.
   Plugins you add to `enabledPlugins` start without asking.
-- **A key MyMusic doesn't know** stays until its next save, which drops
+- **A key MyTube doesn't know** stays until its next save, which drops
   it, and the toast says so. A value out of its range goes back into it,
   and the toast says that too.
 - **Encodings.** Save it as UTF-8. A file with a byte order mark, or in
@@ -149,11 +149,11 @@ tells how.
 - **Names that aren't UTF-8.** A folder or a file whose name isn't valid
   UTF-8 is written in base64 after `base64:`, as
   `"base64:QzpcTXVzaWNcY2Fm6Q=="`, so that it names the same folder when
-  MyMusic reads the file again. Every other path is written as it is.
+  MyTube reads the file again. Every other path is written as it is.
 
 Its keys are short names of the settings, as `theme`, `layout`, `zoom`,
 `closeToTray`, `notchPlayer`, `shortcuts` and `globalShortcuts`. Open the
-file to see them all, each with its value: MyMusic writes every one.
+file to see them all, each with its value: MyTube writes every one.
 
 ### When it has a mistake
 
@@ -163,18 +163,18 @@ the line and the column, as "line 4, column 1: a comma before } has nothing
 after it", and a panel at the top of Settings says it too, with **open
 settings.json**. Meanwhile:
 
-- MyMusic goes on with the settings it had, and doesn't save to the file
+- MyTube goes on with the settings it had, and doesn't save to the file
   until it reads again. What you change in Settings is saved once it does.
-- If MyMusic quits first, it keeps your text as `settings.json.broken`
+- If MyTube quits first, it keeps your text as `settings.json.broken`
   beside it, and saves its settings in its place.
-- A file that doesn't read as MyMusic starts is kept the same way, as
-  `settings.json.broken`, and MyMusic starts with the settings of a new
+- A file that doesn't read as MyTube starts is kept the same way, as
+  `settings.json.broken`, and MyTube starts with the settings of a new
   install; a toast says so, with **show**.
 
 ## The command palette
 
 <kbd>Ctrl</kbd> <kbd>K</kbd> opens the
-command palette, which lists every command: MyMusic's, a "Theme:" command
+command palette, which lists every command: MyTube's, a "Theme:" command
 for each [theme](look-and-feel.md#themes), and those of your
 [plugins](addons.md#what-a-plugin-can-do), each with its group and its
 keys.
@@ -191,7 +191,7 @@ keys.
 ## Refresh a page
 
 **Refresh this page** asks the services again for what the page shows,
-without restarting MyMusic: press <kbd>F5</kbd>, or the refresh button after the back
+without restarting MyTube: press <kbd>F5</kbd>, or the refresh button after the back
 and forward arrows. It's in the command palette too.
 
 - The page keeps showing what it has until the answers come, with a spinner

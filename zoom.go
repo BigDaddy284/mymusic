@@ -245,7 +245,7 @@ func (s *shell) useKeypad() {
 		})
 	})
 	if err != nil {
-		log.Printf("mymusic: the keypad's +: %v", err)
+		log.Printf("mytube: the keypad's +: %v", err)
 		return
 	}
 	s.stop = append(s.stop, stop)

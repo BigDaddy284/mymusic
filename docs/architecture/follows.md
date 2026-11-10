@@ -1,6 +1,6 @@
 # Following artists
 
-The artists the user follows, on their services or in MyMusic, and what
+The artists the user follows, on their services or in MyTube, and what
 they put out lately, for Home and Library › Artists.
 
 - **Follows.** Signed in to an artist's service, Follow follows them there,
@@ -16,7 +16,7 @@ they put out lately, for Home and Library › Artists.
   may answer a read as it was a moment before. Tests replace
   `followOnService`.
 - **Releases.** `Catalog.NewReleases` gathers the artists followed
-  (`followedArtists`): MyMusic's, then YouTube Music's (`FEmusic_library_corpus_artists`) where the user signed
+  (`followedArtists`): MyTube's, then YouTube Music's (`FEmusic_library_corpus_artists`) where the user signed
   in, each once. A look (`releaseBook.look`) asks for the releases of the
   artists due: never asked, read more than `releasesFresh` (12 hours) ago,
   or failed more than `releasesRetry` (an hour) ago; at most
@@ -31,7 +31,7 @@ they put out lately, for Home and Library › Artists.
   artist when it was asked and when it answered, and their releases of
   the last year. A look forgets the artists no longer followed, but those
   of a service whose list didn't read; one the user stops following from
-  MyMusic goes at once (`releaseBook.forget`).
+  MyTube goes at once (`releaseBook.forget`).
 - **New** (`newReleases`): `media.Release.Span` reads `Released`, a day, a
   month or a year, as the first and the last day the release may have
   come out on. A release is new while its last day is within

@@ -65,14 +65,14 @@ func (c *Catalog) MoreEpisodes(ctx context.Context, show media.Ref, more string)
 	return media.EpisodePage{}, fmt.Errorf("no podcast %s", show.ID)
 }
 
-// Podcasts returns the podcasts the user follows in MyMusic, the last
+// Podcasts returns the podcasts the user follows in MyTube, the last
 // followed first.
 func (c *Collection) Podcasts() []media.Podcast { return c.a.library.Podcasts() }
 
-// Follows reports whether the user follows the podcast id in MyMusic.
+// Follows reports whether the user follows the podcast id in MyTube.
 func (c *Collection) Follows(id string) bool { return c.a.library.Follows(id) }
 
-// SetPodcastFollowed follows a podcast in MyMusic, or stops, and saves it
+// SetPodcastFollowed follows a podcast in MyTube, or stops, and saves it
 // to the user's library of its service, or takes it out, when they signed
 // in there: that it can't is logged, as for likes, unless the user stops
 // following one they followed only there, which then fails.
@@ -89,7 +89,7 @@ func (c *Collection) SetPodcastFollowed(ctx context.Context, p media.Podcast, on
 	case err != nil && !on && !here:
 		return err
 	case err != nil:
-		log.Printf("mymusic: saving a podcast on its service: %v", err)
+		log.Printf("mytube: saving a podcast on its service: %v", err)
 	}
 	return nil
 }

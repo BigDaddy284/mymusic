@@ -243,7 +243,7 @@ func (m *Manager) download(j *job, dir, video string) error {
 	}
 	a, err := inspect(part, s.Size)
 	if err != nil {
-		log.Printf("mymusic: the download of %s doesn't play: %v", video, err)
+		log.Printf("mytube: the download of %s doesn't play: %v", video, err)
 		os.Remove(part)
 		m.mu.Lock()
 		delete(m.idx.Parts, video)
@@ -354,7 +354,7 @@ func (m *Manager) waiting() bool {
 func (m *Manager) failed(id string, e *entry, err error) {
 	why := plain(err)
 	now := time.Now()
-	log.Printf("mymusic: downloading %s: %s", id, why)
+	log.Printf("mytube: downloading %s: %s", id, why)
 	switch {
 	case errors.Is(err, stream.ErrThrottled):
 		m.setHold(holdThrottled, true, "YouTube is turning down requests from this network for now; downloads go on in a while", now.Add(throttleFor))

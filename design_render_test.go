@@ -86,24 +86,24 @@ func coverServer(t *testing.T, s *shell) string {
 }
 
 // TestRenderDesignLanguages draws the main pages in each layout design, in
-// Mix and Daylight, to MYMUSIC_RENDER, with made-up covers, for a look:
-// MYMUSIC_LAYOUTS and MYMUSIC_THEMES list others, and MYMUSIC_FOLLOW=off
+// Mix and Daylight, to MYTUBE_RENDER, with made-up covers, for a look:
+// MYTUBE_LAYOUTS and MYTUBE_THEMES list others, and MYTUBE_FOLLOW=off
 // keeps the themes' own accents rather than the covers'. The images are
 // named by the layout, then the theme.
 func TestRenderDesignLanguages(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	layouts := settings.Layouts
-	if only := os.Getenv("MYMUSIC_LAYOUTS"); only != "" {
+	if only := os.Getenv("MYTUBE_LAYOUTS"); only != "" {
 		layouts = nil
 		for _, l := range strings.Split(only, ",") {
 			layouts = append(layouts, settings.Layout(l))
 		}
 	}
 	themes := []string{"mix", "daylight"}
-	if only := os.Getenv("MYMUSIC_THEMES"); only != "" {
+	if only := os.Getenv("MYTUBE_THEMES"); only != "" {
 		themes = strings.Split(only, ",")
 	}
 	for _, layout := range layouts {
@@ -128,7 +128,7 @@ func renderDesign(t *testing.T, dir string, layout settings.Layout, theme string
 	st := s.svc.Preferences.Get()
 	st.FollowSystem, st.Theme, st.Layout = false, theme, layout
 	// The theme's own accent, rather than the cover's.
-	st.DynamicAccent = os.Getenv("MYMUSIC_FOLLOW") != "off"
+	st.DynamicAccent = os.Getenv("MYTUBE_FOLLOW") != "off"
 	if _, err := s.svc.Preferences.Set(st); err != nil {
 		t.Fatal(err)
 	}

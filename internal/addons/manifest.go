@@ -1,9 +1,9 @@
-// Package addons manages themes and plugins: those MyMusic ships with,
+// Package addons manages themes and plugins: those MyTube ships with,
 // and those the user puts in the add-ons folder.
 //
 // A theme is a folder with a theme.json manifest, which sets the colors,
 // fonts and corners of the interface. A plugin is a folder with a
-// plugin.json manifest and an ES module, whose default export MyMusic
+// plugin.json manifest and an ES module, whose default export MyTube
 // calls with its plugin API.
 package addons
 
@@ -42,8 +42,8 @@ var ColorKeys = []string{
 // pointer is over or presses, in place of the text's tints.
 var OptionalColorKeys = []string{"accent-2", "hover", "pressed"}
 
-// legacyColorKeys are the colors the themes of MyMusic 0.x set, which
-// MyMusic takes, and ignores: "spotify", of Spotify's marks.
+// legacyColorKeys are the colors the themes of MyTube 0.x set, which
+// MyTube takes, and ignores: "spotify", of Spotify's marks.
 var legacyColorKeys = []string{"spotify"}
 
 // OptionType is the kind of control a theme option shows.
@@ -63,7 +63,7 @@ type Choice struct {
 }
 
 // Option is a setting a theme offers, which the effects of the themes
-// MyMusic ships with follow.
+// MyTube ships with follow.
 type Option struct {
 	ID      string     `json:"id"`
 	Label   string     `json:"label"`
@@ -120,14 +120,14 @@ type Plugin struct {
 	Permissions []string `json:"permissions,omitempty"`
 	Files       []string `json:"files,omitempty"`
 	// API is the version of the plugin API the plugin was written for:
-	// 2, that of MyMusic's own interface, or 1, the web interface's,
-	// which MyMusic no longer runs.
+	// 2, that of MyTube's own interface, or 1, the web interface's,
+	// which MyTube no longer runs.
 	API int `json:"api,omitempty"`
 
 	Builtin bool `json:"builtin"`
 }
 
-// PluginAPI is the version of the plugin API MyMusic runs.
+// PluginAPI is the version of the plugin API MyTube runs.
 const PluginAPI = 2
 
 var (
@@ -270,7 +270,7 @@ func (p Plugin) Validate() error {
 	}
 	errs = append(errs, validateFiles(p.Files, "plugin.json", p.Main))
 	if p.API < 0 || p.API > PluginAPI {
-		errs = append(errs, fmt.Errorf("api %d is unknown: MyMusic runs plugins of api %d", p.API, PluginAPI))
+		errs = append(errs, fmt.Errorf("api %d is unknown: MyTube runs plugins of api %d", p.API, PluginAPI))
 	}
 	return errors.Join(errs...)
 }

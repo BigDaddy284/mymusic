@@ -15,14 +15,14 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
-// resolveCheck is how long yt-dlp looks for a stream before MyMusic
+// resolveCheck is how long yt-dlp looks for a stream before MyTube
 // checks the network beside it: yt-dlp takes a minute and more to give up
 // on a network that drops what it sends.
 var resolveCheck = 3 * time.Second
 
 // watchNetwork has the player follow the network and the computer's
 // sleep, as MyGo tells them. A change of the network the system tells only
-// has MyMusic check it: the system counts a network behind a captive
+// has MyTube check it: the system counts a network behind a captive
 // portal as online, and one without a route out may still answer. The
 // handlers run on the main thread, and only pass on what came.
 //

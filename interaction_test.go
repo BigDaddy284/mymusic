@@ -275,15 +275,15 @@ func TestAlbumPlayPastAI(t *testing.T) {
 func TestUpdateOffer(t *testing.T) {
 	s := newTestShell(t)
 	s.offer = &app.Release{Version: "9.9.9", Newer: true, Page: "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
-		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-windows-amd64-setup.exe",
-		File:     "mymusic-9.9.9-windows-amd64-setup.exe"}
+		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mytube-9.9.9-windows-amd64-setup.exe",
+		File:     "mytube-9.9.9-windows-amd64-setup.exe"}
 	tt := tester(t, s)
 	u := s.svc.System.Updates()
 	act := downloadLabel(u.Kind)
 	if u.Enabled {
 		act = "install 9.9.9"
 	}
-	for _, text := range []string{"mymusic 9.9.9 is out", "what's new", "later", "skip this version", act} {
+	for _, text := range []string{"mytube 9.9.9 is out", "what's new", "later", "skip this version", act} {
 		if !tt.HasText(text) {
 			t.Errorf("the offer doesn't show %q: %q", text, tt.Texts())
 		}
@@ -1268,7 +1268,7 @@ func TestYTDLPNotNow(t *testing.T) {
 	}
 }
 
-// TestYTDLPMissing offers yt-dlp for the tracks MyMusic can't find
+// TestYTDLPMissing offers yt-dlp for the tracks MyTube can't find
 // itself, without saying nothing plays.
 func TestYTDLPMissing(t *testing.T) {
 	s := newTestShell(t)
@@ -1595,8 +1595,8 @@ func TestAboutRelease(t *testing.T) {
 	s := newTestShell(t)
 	s.loads["release"] = &loaded[app.Release]{done: true, value: app.Release{Version: "9.9.9", Newer: true, Date: "2026-10-12T09:00:00Z",
 		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
-		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mymusic-9.9.9-windows-amd64-setup.exe",
-		File:     "mymusic-9.9.9-windows-amd64-setup.exe"}}
+		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mytube-9.9.9-windows-amd64-setup.exe",
+		File:     "mytube-9.9.9-windows-amd64-setup.exe"}}
 	tt := testerOf(t, s, 1280, 2400)
 	show(s, tt, "/settings/about")
 	u := s.svc.System.Updates()
@@ -1604,7 +1604,7 @@ func TestAboutRelease(t *testing.T) {
 	if u.Enabled {
 		act = "install 9.9.9"
 	}
-	for _, text := range []string{"MyMusic 9.9.9 is out", "Out since 12 Oct 2026.", "what's new", "check again", act, "contribute"} {
+	for _, text := range []string{"MyTube 9.9.9 is out", "Out since 12 Oct 2026.", "what's new", "check again", act, "contribute"} {
 		if !tt.HasText(text) {
 			t.Errorf("About doesn't show %q: %q", text, tt.Texts())
 		}

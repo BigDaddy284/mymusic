@@ -167,12 +167,12 @@ async function render(input, cfg) {
 // TestAgainstChromium renders a signal through the equalizer, the
 // compressor and the analyser of this package, and through the Web Audio
 // nodes of the web player that they reproduce, in the Chromium browser
-// MYMUSIC_BROWSER names (msedge.exe, chrome): they must give the same
+// MYTUBE_BROWSER names (msedge.exe, chrome): they must give the same
 // samples, bit for bit, as they did with Edge 155.
 func TestAgainstChromium(t *testing.T) {
-	browser := os.Getenv("MYMUSIC_BROWSER")
+	browser := os.Getenv("MYTUBE_BROWSER")
 	if browser == "" {
-		t.Skip("MYMUSIC_BROWSER names a Chromium browser to compare Web Audio with")
+		t.Skip("MYTUBE_BROWSER names a Chromium browser to compare Web Audio with")
 	}
 	input := testSignal()
 	var mu sync.Mutex
@@ -223,7 +223,7 @@ func TestAgainstChromium(t *testing.T) {
 	defer cancel()
 	// The browser's processes keep files of their profile open a moment
 	// after it is killed: removed with retries, not as t.TempDir.
-	profile, err := os.MkdirTemp("", "mymusic-chromium-")
+	profile, err := os.MkdirTemp("", "mytube-chromium-")
 	if err != nil {
 		t.Fatal(err)
 	}

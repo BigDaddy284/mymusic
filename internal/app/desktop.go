@@ -11,9 +11,9 @@ import (
 	"github.com/egoist/mygo"
 )
 
-// URLScheme is the scheme of MyMusic's deep links, such as
-// mymusic://search?q=daft+punk.
-const URLScheme = "mymusic"
+// URLScheme is the scheme of MyTube's deep links, such as
+// mytube://search?q=daft+punk.
+const URLScheme = "mytube"
 
 // mediaKeys are the global shortcuts of the keyboard's media keys.
 var mediaKeys = map[string]Command{
@@ -23,14 +23,14 @@ var mediaKeys = map[string]Command{
 	"MediaStop":          CommandPause,
 }
 
-// Start opens the main window and puts MyMusic on the desktop: the tray
+// Start opens the main window and puts MyTube on the desktop: the tray
 // icon, the media keys and the user's global shortcuts, the deep links of
 // portable copies. It runs once the app is ready.
 func (a *App) Start() {
 	// Quitting closes every window; the main window must close then, not
 	// hide in the tray, or the quit stops there.
 	mygo.App.OnBeforeQuit(func(*mygo.QuitEvent) { a.quitting.Store(true) })
-	// What waits a moment to be saved is saved as MyMusic quits: once its
+	// What waits a moment to be saved is saved as MyTube quits: once its
 	// windows closed, before the single instance lock is released and an
 	// update's restart starts the new copy, and again once the loop
 	// stopped, which is all that runs when Windows ends the session. The
@@ -41,13 +41,13 @@ func (a *App) Start() {
 	mygo.App.OnQuit(a.flush)
 	if !mygo.App.IsPackaged() {
 		if err := mygo.App.RegisterURLScheme(URLScheme); err != nil {
-			log.Printf("mymusic: registering %s links: %v", URLScheme, err)
+			log.Printf("mytube: registering %s links: %v", URLScheme, err)
 		}
 	}
 	if a.openMain(mygo.App.WasOpenedAtLogin()) == nil {
 		return
 	}
-	// Edits of settings.json apply while MyMusic runs. The watch starts
+	// Edits of settings.json apply while MyTube runs. The watch starts
 	// beside the main thread, as WatchFiles waits for it to enroll.
 	ctx, stop := context.WithCancel(context.Background())
 	a.mu.Lock()
@@ -72,7 +72,7 @@ func (a *App) Start() {
 	go forgetSpotify(a.opts.DataDir)
 }
 
-// keepYTDLPCurrent updates the yt-dlp MyMusic installed a minute after
+// keepYTDLPCurrent updates the yt-dlp MyTube installed a minute after
 // start, then once a day: YouTube changes often, and an old yt-dlp stops
 // finding its streams.
 func (a *App) keepYTDLPCurrent() {
@@ -85,21 +85,21 @@ func (a *App) keepYTDLPCurrent() {
 		cancel()
 		switch {
 		case err != nil:
-			log.Printf("mymusic: updating yt-dlp: %v", err)
+			log.Printf("mytube: updating yt-dlp: %v", err)
 		case updated:
-			log.Printf("mymusic: updated yt-dlp")
+			log.Printf("mytube: updated yt-dlp")
 		}
 	}
 }
 
-// openMain opens the main window, with its player, hidden when MyMusic
-// starts at login. Where MyMusic can't play, it says why and quits, and
+// openMain opens the main window, with its player, hidden when MyTube
+// starts at login. Where MyTube can't play, it says why and quits, and
 // returns nil. With close to the tray on, closing it hides it.
 func (a *App) openMain(hidden bool) *mygo.Window {
 	if _, err := a.startGoPlayer(); err != nil {
-		log.Printf("mymusic: can't play: %v", err)
-		_, _ = mygo.Dialog.Message(mygo.MessageOptions{Type: mygo.MessageError, Title: "MyMusic",
-			Message: "MyMusic can't play on this computer", Detail: err.Error()})
+		log.Printf("mytube: can't play: %v", err)
+		_, _ = mygo.Dialog.Message(mygo.MessageOptions{Type: mygo.MessageError, Title: "MyTube",
+			Message: "MyTube can't play on this computer", Detail: err.Error()})
 		mygo.App.Quit()
 		return nil
 	}
@@ -224,14 +224,14 @@ func (a *App) setupTray() {
 		{Label: "Next", Click: cmd(CommandNext)},
 		{Label: "Previous", Click: cmd(CommandPrevious)},
 		mygo.Separator(),
-		{Label: "Show MyMusic", Click: func(*mygo.MenuItem, *mygo.Window) { a.showMain() }},
+		{Label: "Show MyTube", Click: func(*mygo.MenuItem, *mygo.Window) { a.showMain() }},
 		{Label: "Mini player", Click: func(*mygo.MenuItem, *mygo.Window) { a.showMini() }},
 		mygo.Separator(),
 		{Role: mygo.RoleQuit},
 	})
-	tray, err := mygo.NewTray(mygo.TrayOptions{Icon: a.opts.TrayIcon, ToolTip: "MyMusic"})
+	tray, err := mygo.NewTray(mygo.TrayOptions{Icon: a.opts.TrayIcon, ToolTip: "MyTube"})
 	if err != nil {
-		log.Printf("mymusic: tray: %v", err)
+		log.Printf("mytube: tray: %v", err)
 		return
 	}
 	// A click shows the window; a right click, the menu.
@@ -262,7 +262,7 @@ func (a *App) applyMediaKeys(on bool) {
 			continue
 		}
 		if err := mygo.GlobalShortcut.Register(key, func() { a.command(PlayerCommand{Command: c}) }); err != nil {
-			log.Printf("mymusic: media key %s: %v", key, err)
+			log.Printf("mytube: media key %s: %v", key, err)
 		}
 	}
 }
@@ -270,8 +270,8 @@ func (a *App) applyMediaKeys(on bool) {
 // deepLinkPathRe matches the paths deep links may open.
 var deepLinkPathRe = regexp.MustCompile(`^/(search|album|artist|playlist|library|settings|lyrics|stats|explore|mood)(/[A-Za-z0-9:_%=-]*)?$`)
 
-// HandleURL opens a deep link: mymusic://search?q=…, mymusic://album/<id>,
-// mymusic://play/<track id> and the like. Register it with
+// HandleURL opens a deep link: mytube://search?q=…, mytube://album/<id>,
+// mytube://play/<track id> and the like. Register it with
 // mygo.App.OnOpenURL before the app runs.
 func (a *App) HandleURL(raw string) {
 	u, err := url.Parse(raw)
@@ -322,7 +322,7 @@ func (a *App) OnNavigate(fn func(target string)) (cancel func()) {
 	}
 }
 
-// SecondInstance shows the main window when the user starts MyMusic again.
+// SecondInstance shows the main window when the user starts MyTube again.
 func (a *App) SecondInstance([]string, string) { whenReady(a.showMain) }
 
 // Activate shows the main window when the app is activated without it in
@@ -340,7 +340,7 @@ func (a *App) Activate(bool) {
 
 // whenReady runs fn now once MyGo is ready, and before then once it is,
 // after Start opened the main window: no window can open earlier, and a
-// second start of MyMusic, or a click on its Dock icon, can come while it
+// second start of MyTube, or a click on its Dock icon, can come while it
 // is still starting (#305).
 func whenReady(fn func()) {
 	if mygo.App.IsReady() {
@@ -352,7 +352,7 @@ func whenReady(fn func()) {
 
 // OpenMainWindow shows the main window, opening it again if it was
 // closed, at the page of path unless it is "", and leaves the other
-// windows as they are, as the mini player opens MyMusic.
+// windows as they are, as the mini player opens MyTube.
 func (s *System) OpenMainWindow(path string) {
 	mygo.App.WhenReady(func() {
 		s.a.showMain()

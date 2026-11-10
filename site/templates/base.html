@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}MyMusic{% endblock title %}</title>
+  <title>{% block title %}MyTube{% endblock title %}</title>
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}" />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fff8f8" media="(prefers-color-scheme: light)" />
@@ -35,7 +35,7 @@
     {%- block menu %}{% endblock menu %}
     <a class="brand" href="{{ home }}">
       <svg class="brand-mark" width="28" height="28" aria-hidden="true"><use href="#i-rings" /></svg>
-      <span>MyMusic</span>
+      <span>MyTube</span>
     </a>
     <a class="topbar-docs" href="{{ get_url(path='@/docs/_index.md') }}"{% block docs_current %}{% endblock docs_current %}>Docs</a>
     <nav class="topbar-nav" aria-label="Site">
@@ -56,9 +56,9 @@
     <div class="footer-inner">
       <a class="brand brand-small" href="{{ home }}">
         <svg class="brand-mark" width="22" height="22" aria-hidden="true"><use href="#i-rings" /></svg>
-        <span>MyMusic</span>
+        <span>MyTube</span>
       </a>
-      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. YouTube Music is a trademark of Google; MyMusic is not made by Google.</p>
+      <p>Free and open source under the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-MIT">MIT license</a> or the <a href="https://github.com/bigdaddy284/mymusic/blob/main/LICENSE-GPL">GNU GPL, version 3</a>. YouTube Music is a trademark of Google; MyTube is not made by Google.</p>
       <nav class="footer-nav" aria-label="Project">
         <a href="{{ get_url(path='@/docs/contributing/index.md') }}">Contributing</a>
         <a href="{{ get_url(path='@/docs/code-of-conduct/index.md') }}">Code of conduct</a>

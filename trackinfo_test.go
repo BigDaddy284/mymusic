@@ -65,7 +65,7 @@ func hasAll(t *testing.T, tt interface{ HasText(string) bool }, want ...string) 
 }
 
 // TestTrackInfoFromTheMenu shows a track's Track info from its menu: its
-// stream, as MyMusic found it, and how loud it plays; Close closes it.
+// stream, as MyTube found it, and how loud it plays; Close closes it.
 func TestTrackInfoFromTheMenu(t *testing.T) {
 	s := newTestShell(t)
 	withTrackInfo(t, app.TrackInfo{EvenLoudness: true, Measured: true, LKFS: -9.2, Trim: -4.8,
@@ -146,13 +146,13 @@ func TestTrackInfoOfTheTrackPlaying(t *testing.T) {
 	s.settle(t, func(st player.State) bool { return st.Playing && st.Source != nil })
 	tt := tester(t, s)
 	s.showTrackInfo(testTracks[0])
-	until(t, s, tt, "the dialog", func() bool { return tt.HasText("MyMusic's audio engine is opening it…") })
+	until(t, s, tt, "the dialog", func() bool { return tt.HasText("MyTube's audio engine is opening it…") })
 	tt.Advance(1100 * time.Millisecond)
 	until(t, s, tt, "what the engine plays", func() bool {
 		tt.Advance(100 * time.Millisecond)
-		return tt.HasText("In MyMusic's audio engine, streamed from YouTube, converted to 48 kHz")
+		return tt.HasText("In MyTube's audio engine, streamed from YouTube, converted to 48 kHz")
 	})
-	if !hasAll(t, tt, "AAC in MP4", "130 kbit/s", "44.1 kHz", "Stereo", "MyMusic has no measure of it yet: it plays at its own level.") {
+	if !hasAll(t, tt, "AAC in MP4", "130 kbit/s", "44.1 kHz", "Stereo", "MyTube has no measure of it yet: it plays at its own level.") {
 		t.Errorf("the dialog shows %q", tt.Texts())
 	}
 	asks := f.asks()
@@ -186,14 +186,14 @@ func TestTrackFacts(t *testing.T) {
 		"Format":   "Opus in WebM",
 		"Bitrate":  "About 160 kbit/s, on average",
 		"Download": "/d/a.webm",
-		"Loudness": "MyMusic has no measure of it yet: it plays at its own level. Volume levelling squeezes its loud and quiet moments closer together.",
+		"Loudness": "MyTube has no measure of it yet: it plays at its own level. Volume levelling squeezes its loud and quiet moments closer together.",
 	} {
 		if got[label] != want {
 			t.Errorf("%s: %q, want %q", label, got[label], want)
 		}
 	}
 	// Not found yet.
-	if got := values(trackFacts(testTracks[0], app.TrackInfo{})); got["Format"] != "MyMusic finds its stream as it plays, and tells its format then." {
+	if got := values(trackFacts(testTracks[0], app.TrackInfo{})); got["Format"] != "MyTube finds its stream as it plays, and tells its format then." {
 		t.Errorf("a track not played: %q", got)
 	}
 	// 5.1 surround, from the cache, and a quiet track.
@@ -204,7 +204,7 @@ func TestTrackFacts(t *testing.T) {
 		"Format":       "E-AC-3 in MP4",
 		"Channels":     "5.1 surround",
 		"Offline copy": "/c/a.5.1.m4a",
-		"Playing":      "In MyMusic's audio engine, its 5.1 surround audio, from the offline cache",
+		"Playing":      "In MyTube's audio engine, its 5.1 surround audio, from the offline cache",
 		"Loudness":     "YouTube measured it at −16.0 LKFS. Even loudness leaves it as it is: it isn't louder than −14.0 LKFS.",
 	} {
 		if got[label] != want {

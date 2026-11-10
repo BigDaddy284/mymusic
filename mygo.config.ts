@@ -2,14 +2,14 @@ import { defineConfig } from "mygo-cli";
 import pkg from "./package.json" with { type: "json" };
 
 export default defineConfig({
-  name: "MyMusic",
+  name: "MyTube",
   // The slug names the update archives and the Windows installer, which
   // release.yml and .github/scripts/package.sh look for by name. It is
-  // MyGo's default for "MyMusic": pinned so it can't move.
-  slug: "mymusic",
-  identifier: "app.mymusic.desktop",
+  // MyGo's default for "MyTube": pinned so it can't move.
+  slug: "mytube",
+  identifier: "app.mytube.desktop",
   version: pkg.version,
-  copyright: "© 2026 MyMusic contributors, based on MixMusic, © 2026 MixMusic contributors",
+  copyright: "© 2026 MyTube contributors, based on MixMusic, © 2026 MixMusic contributors",
   // The icon that `mygo build` makes the Windows icons of. It isn't
   // in resources/, MyGo's place for it by default: `mygo build` ships every
   // file there beside the app, which reads none as it runs (#303).
@@ -21,7 +21,7 @@ export default defineConfig({
   frontendDist: "public",
   bindings: ".mygo/bindings.ts",
   out: "build",
-  urlSchemes: ["mymusic"],
+  urlSchemes: ["mytube"],
   // Apps update themselves from the releases of the repository, signed with
   // the key whose public half is here (the secret one is the
   // MYGO_UPDATER_PRIVATE_KEY secret of the release workflow).

@@ -37,7 +37,7 @@ func sortedTitles(ti *testIndex) []string {
 }
 
 // TestUnreadFolder keeps the songs of a folder in a folder of music that
-// can't be read, as one MyMusic isn't allowed to, and tells of it, until
+// can't be read, as one MyTube isn't allowed to, and tells of it, until
 // a scan reads it: then a song whose file is gone goes.
 func TestUnreadFolder(t *testing.T) {
 	ti, _, shore := unreadIndex(t)
@@ -81,7 +81,7 @@ func TestUnreadMusicFolder(t *testing.T) {
 	allow := localfilestest.DenyRead(t, ti.dir)
 	ti.scan(t)
 	f := ti.Status().Folders[0]
-	if f.Problem != "MyMusic isn't allowed to read it" || f.Tracks != 3 || len(ti.Tracks()) != 3 {
+	if f.Problem != "MyTube isn't allowed to read it" || f.Tracks != 3 || len(ti.Tracks()) != 3 {
 		t.Errorf("the folder: %+v, %d tracks", f, len(ti.Tracks()))
 	}
 	if !ti.Missing(ti.Tracks()[0].ID) {

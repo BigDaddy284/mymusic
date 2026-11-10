@@ -232,7 +232,7 @@ func TestApplyGlobalShortcuts(t *testing.T) {
 	}
 
 	// Keys in use elsewhere stay the user's, with the problem, until they
-	// register as MyMusic tries again.
+	// register as MyTube tries again.
 	inUse := acc(t, "Mod+Alt+N")
 	hk.fail[inUse] = errors.New("mygo: cannot register \"Ctrl+Alt+N\": Hot key is already registered.")
 	setGlobal(t, a, map[string]string{"player.toggle": "Mod+Alt+O", "player.next": "Mod+Alt+N"})
@@ -286,7 +286,7 @@ func TestApplyGlobalShortcuts(t *testing.T) {
 }
 
 // TestGlobalShortcutsFromSettingsFile registers the global shortcuts an
-// edit of settings.json sets while MyMusic runs, and lets go of those it
+// edit of settings.json sets while MyTube runs, and lets go of those it
 // takes away.
 func TestGlobalShortcutsFromSettingsFile(t *testing.T) {
 	a, hk, _ := newShortcutApp(t)

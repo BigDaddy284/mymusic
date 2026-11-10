@@ -13,7 +13,7 @@ import (
 
 // The tracks that couldn't play (#351): the player keeps what it tried of
 // each, and why each try failed, as it heard, for the details of the
-// track's notice and of Settings › About, until MyMusic closes.
+// track's notice and of Settings › About, until MyTube closes.
 
 // keptFailures is how many failures the player keeps: the latest.
 const keptFailures = 10

@@ -1,11 +1,11 @@
 # Architecture
 <!-- docs: group=project order=60 -->
 
-MyMusic is one Go program. [MyGo](https://github.com/egoist/mygo) draws its
+MyTube is one Go program. [MyGo](https://github.com/egoist/mygo) draws its
 windows in Go, with its `ui` package: immediate-mode views, which the GPU
 draws, without a webview. The windows show the catalogs, the accounts and
 the library of the services of `internal/app`, and the player in Go plays
-the queue through MyMusic's own audio engine.
+the queue through MyTube's own audio engine.
 
 ```
 ┌────────────────── the windows (the root package) ───────────────────┐

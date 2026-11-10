@@ -2,15 +2,15 @@ package app
 
 import "github.com/bigdaddy284/mymusic/internal/media"
 
-// FollowedArtists returns the artists the user follows in MyMusic, the
+// FollowedArtists returns the artists the user follows in MyTube, the
 // last followed first.
 func (c *Collection) FollowedArtists() []media.Artist { return c.a.library.Artists() }
 
 // FollowsArtist reports whether the user follows the artist id in
-// MyMusic.
+// MyTube.
 func (c *Collection) FollowsArtist(id string) bool { return c.a.library.FollowsArtist(id) }
 
-// SetArtistFollowed follows an artist in MyMusic, or stops following
+// SetArtistFollowed follows an artist in MyTube, or stops following
 // them there. Nothing of it reaches their service, signed in or not:
 // SetFollowing follows there.
 func (c *Collection) SetArtistFollowed(a media.Artist, on bool) error {

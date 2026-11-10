@@ -16,11 +16,11 @@ import (
 
 // TestRenderMiniPanel draws the mini player with each of its panels, below
 // it in the window it opens in and above it in its narrowest at the
-// screen's foot, in Mix and Daylight, to MYMUSIC_RENDER, for a look.
+// screen's foot, in Mix and Daylight, to MYTUBE_RENDER, for a look.
 func TestRenderMiniPanel(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	for _, theme := range []string{"mix", "daylight"} {
 		for _, place := range []struct {

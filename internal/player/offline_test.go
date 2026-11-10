@@ -106,7 +106,7 @@ func waiting(id string, willPlay bool) func(*Player) bool {
 	}
 }
 
-const offlineNotice = "No network. MyMusic plays on from here once it's back"
+const offlineNotice = "No network. MyTube plays on from here once it's back"
 
 // TestWaitForTheNetwork has a track that can't be found for want of the
 // network wait for it, without skipping on, and play once it's back.
@@ -284,7 +284,7 @@ func TestWokeRetries(t *testing.T) {
 	useRetries(t, h, "a", len(retryWaits))
 }
 
-// TestSleeping pauses what MyMusic plays as the computer goes to sleep.
+// TestSleeping pauses what MyTube plays as the computer goes to sleep.
 func TestSleeping(t *testing.T) {
 	t.Run("stream", func(t *testing.T) {
 		h := newNetHarness(t, newNet(true))

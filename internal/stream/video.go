@@ -30,7 +30,7 @@ type Video struct {
 }
 
 // videoFamily returns the family of a video codec, as YouTube and yt-dlp
-// name it, or "" for one MyMusic doesn't play.
+// name it, or "" for one MyTube doesn't play.
 func videoFamily(codec string) string {
 	switch {
 	case codec == "vp9" || strings.HasPrefix(codec, "vp09."):

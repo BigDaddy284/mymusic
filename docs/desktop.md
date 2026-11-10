@@ -1,7 +1,7 @@
 # On the desktop
 <!-- docs: group=using order=60 -->
 
-MyMusic on your desktop: the mini player, the tray,
+MyTube on your desktop: the mini player, the tray,
 media keys and media controls, global shortcuts, notifications and Discord.
 
 Most of what this page covers is in [Settings › Desktop](settings.md#desktop),
@@ -21,7 +21,7 @@ It shows the cover, the title, the artists with the mark of their service,
 and the time and the length ("live" for a live stream), with a line of the
 accent along its foot for the progress. Its buttons:
 
-- at the top right, one button that opens MyMusic's main window and one
+- at the top right, one button that opens MyTube's main window and one
   that closes the mini player;
 - beside the time, the buttons of its [panel](#its-panel): the queue, the
   lyrics and the output device, and, after a track couldn't play, a red
@@ -79,45 +79,45 @@ it showed as it closed, but the warning sign's.
 
 ## The tray
 
-MyMusic puts an icon in the tray. Its menu has **Play / Pause**, **Next**,
-**Previous**, **Show MyMusic**, **Mini player**, and the item that quits
-MyMusic. A click on the icon shows the main window and a right click opens
+MyTube puts an icon in the tray. Its menu has **Play / Pause**, **Next**,
+**Previous**, **Show MyTube**, **Mini player**, and the item that quits
+MyTube. A click on the icon shows the main window and a right click opens
 the menu.
 
-![The tray icon's menu on Windows: Play / Pause, Next and Previous, then Show MyMusic and Mini player, then Exit](shots/tray-menu.webp)
+![The tray icon's menu on Windows: Play / Pause, Next and Previous, then Show MyTube and Mini player, then Exit](shots/tray-menu.webp)
 
 ### Close to the tray
 
 With **Close to the tray** on, in Settings › Desktop, closing the main
-window keeps the music playing: MyMusic hides in the tray until you show
-it again from the tray icon, by starting MyMusic again, or with a global
-shortcut of your own for **Show MyMusic**. It is off on a new install, so
-closing the window quits MyMusic.
+window keeps the music playing: MyTube hides in the tray until you show
+it again from the tray icon, by starting MyTube again, or with a global
+shortcut of your own for **Show MyTube**. It is off on a new install, so
+closing the window quits MyTube.
 
 - To quit with Close to the tray on, choose the quit item of the tray
   icon's menu.
 
 ## Media keys and the system's media controls
 
-MyMusic shows what plays in Windows' media flyout, which shows with the
+MyTube shows what plays in Windows' media flyout, which shows with the
 volume keys and in Quick Settings, with the cover, the title and the
 artists, play or pause, previous, next and a seek bar, and takes its
 buttons.
 
 The covers there come from the
-[covers MyMusic keeps](library.md#the-offline-cache) on disk, so a cover
+[covers MyTube keeps](library.md#the-offline-cache) on disk, so a cover
 you saw in the window shows there at once, and offline too. A track [on
 this computer](local-music.md) shows the cover its file holds, or the one
-beside it, from MyMusic's copy in its cache.
+beside it, from MyTube's copy in its cache.
 
 **Media keys**, in Settings › Desktop and on by default, has the keyboard's
-play or pause, next and previous keys control MyMusic, and its stop key
+play or pause, next and previous keys control MyTube, and its stop key
 pause it. While a track loads, they and the system's controls do nothing:
 a track can't be paused or moved until you hear it.
 
 ### The taskbar thumbnail on Windows
 
-On Windows, the thumbnail that shows while the pointer rests on MyMusic's
+On Windows, the thumbnail that shows while the pointer rests on MyTube's
 taskbar button has three buttons: previous, play or pause, and next. They
 are off while there's no track to play.
 
@@ -126,13 +126,13 @@ are off while there's no track to play.
 The main window's title names the track that plays, for the taskbar, the
 window switcher and screen readers, and starts with "Paused:" while it's
 paused. Turn off **Show what plays in the window title** in Settings ›
-Desktop to keep it to MyMusic's name.
+Desktop to keep it to MyTube's name.
 
 ## Keep the window on top
 
-**Keep on top**, in Settings › Desktop and off at first, keeps MyMusic's
+**Keep on top**, in Settings › Desktop and off at first, keeps MyTube's
 main window above your other windows, for when you work beside it.
-MyMusic remembers it between starts. Turn it on or off with:
+MyTube remembers it between starts. Turn it on or off with:
 
 - the **Keep on top** switch in Settings › Desktop;
 - **Keep the window on top, or not** in the command palette, which has no
@@ -144,7 +144,7 @@ The [mini player](#the-mini-player) stays on top either way.
 
 ## Global shortcuts
 
-Global shortcuts are keys of your own that control MyMusic whichever
+Global shortcuts are keys of your own that control MyTube whichever
 window is in front, even with its window closed to the tray. Record them in
 the **From any app** group at the top of
 [Settings › Shortcuts](settings.md#change-a-shortcut), for:
@@ -153,9 +153,9 @@ the **From any app** group at the top of
 - Next track and Previous track
 - Volume up, Volume down and Mute
 - Like what plays and Dislike what plays
-- Show MyMusic
+- Show MyTube
 
-![Settings › Shortcuts: the From any app group at the top, "These keys control MyMusic whichever window is in front", with Play or pause, Next track, Previous track and Volume up, each with none and a Set button](shots/shortcuts.webp)
+![Settings › Shortcuts: the From any app group at the top, "These keys control MyTube whichever window is in front", with Play or pause, Next track, Previous track and Volume up, each with none and a Set button](shots/shortcuts.webp)
 
 A new install has none. To set one, choose **set** on its row and press
 the keys; <kbd>Escape</kbd> cancels and <kbd>Backspace</kbd> removes it.
@@ -163,13 +163,13 @@ the keys; <kbd>Escape</kbd> cancels and <kbd>Backspace</kbd> removes it.
 - A global shortcut needs <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or the Windows
   key. <kbd>F1</kbd> to <kbd>F11</kbd> may stand alone; Windows keeps
   <kbd>F12</kbd> for itself.
-- While MyMusic runs, those keys do nothing else, in MyMusic's own window
+- While MyTube runs, those keys do nothing else, in MyTube's own window
   too: a command of the window that had them gives them up.
 - Keys the system refuses, as when another app has them, stay yours: the
-  row says why, with **try again**, and MyMusic tries again at each
+  row says why, with **try again**, and MyTube tries again at each
   start.
 - Liking or disliking from another window shows a notification, while
-  notifications are on and neither MyMusic's window nor the mini player
+  notifications are on and neither MyTube's window nor the mini player
   is in front.
 
 The media keys work as they do without any global shortcut.
@@ -177,17 +177,17 @@ The media keys work as they do without any global shortcut.
 ## Notifications
 
 With **Notifications** on, in Settings › Desktop and on by default,
-MyMusic shows a notification when a track starts while its window isn't
+MyTube shows a notification when a track starts while its window isn't
 in front: the title, the artists and the album, with the cover. A click
-on it shows MyMusic. None shows while the mini player is in front: it
+on it shows MyTube. None shows while the mini player is in front: it
 shows the track already. The tray icon's tip names what plays too.
 
 - The cover is its centre square, as the player bar shows it: the middle
   of a music video's thumbnail. It takes the place of the tray icon.
 - It is the cover the system's media controls show, from the covers
-  MyMusic keeps: a track on this computer shows the cover its file holds,
+  MyTube keeps: a track on this computer shows the cover its file holds,
   or the one beside it.
-- MyMusic waits up to 2 seconds for a cover it hasn't downloaded yet:
+- MyTube waits up to 2 seconds for a cover it hasn't downloaded yet:
   without one by then, the notification shows without it. When the next
   track starts meanwhile, only the next one's shows.
 
@@ -197,17 +197,17 @@ While the Discord app runs on your computer, your Discord profile shows
 what you listen to: the title, the artists, the cover and the time left.
 Pausing clears it, and a live stream shows how long it has played. You
 can [choose what it shows](#what-your-discord-status-shows). Discord's
-member list says "Listening to MyMusic". There's nothing to set up: turn
+member list says "Listening to MyTube". There's nothing to set up: turn
 it off with **Show what plays on Discord** in Settings › Desktop.
 
 - **Discord application ID**, under the switch, shows the name of a Discord
-  application of your own in place of MyMusic's: create one in Discord's
+  application of your own in place of MyTube's: create one in Discord's
   [developer portal](https://discord.com/developers/applications) and paste
   its application ID.
 - Under them, a **preview** shows your status as Discord's card does, of
   what plays, or of a song while nothing does, and follows what you choose
   below it, the lines as you type them.
-- MyMusic finds Discord's Canary build too.
+- MyTube finds Discord's Canary build too.
 
 ### What your Discord status shows
 
@@ -224,31 +224,31 @@ left, and a pause clears it.
 | Listen button | A **Listen on YouTube Music** button that opens the track there. Discord shows it to the others who see your profile, not always to you. A file on your computer has none. Off at first. |
 | Keep while paused | A paused track stays, marked with a pause badge, whose tip says Paused, and without its time. Off, a pause clears your status, as before. |
 
-Discord reads the badges from MyMusic's GitHub repository, and an
-application of your own shows them as MyMusic's does.
+Discord reads the badges from MyTube's GitHub repository, and an
+application of your own shows them as MyTube's does.
 
 ## Start at login
 
-**Start at login**, in Settings › Desktop, starts MyMusic when you sign in
+**Start at login**, in Settings › Desktop, starts MyTube when you sign in
 to your computer, with its window hidden in the tray, from where the tray
 icon shows it.
 
 ## Sleep
 
-MyMusic pauses as the computer goes to sleep, and stays paused when it
+MyTube pauses as the computer goes to sleep, and stays paused when it
 wakes, ready where it was.
 
-## mymusic:// links
+## mytube:// links
 
-Links that start with `mymusic://` open a page of MyMusic, or play a
+Links that start with `mytube://` open a page of MyTube, or play a
 track, from a browser or another app:
 
 | Link | What it does |
 |---|---|
-| `mymusic://search?q=lofi+piano` | searches for "lofi piano" |
-| `mymusic://album/<id>`, `mymusic://artist/<id>`, `mymusic://playlist/<id>` | opens an album, an artist or a playlist |
-| `mymusic://library`, `mymusic://explore`, `mymusic://stats`, `mymusic://settings` | opens that page |
-| `mymusic://play/<track id>` | plays a track |
+| `mytube://search?q=lofi+piano` | searches for "lofi piano" |
+| `mytube://album/<id>`, `mytube://artist/<id>`, `mytube://playlist/<id>` | opens an album, an artist or a playlist |
+| `mytube://library`, `mytube://explore`, `mytube://stats`, `mytube://settings` | opens that page |
+| `mytube://play/<track id>` | plays a track |
 
-An ID is MyMusic's own: YouTube Music's ID after `yt:`. Opening MyMusic a second time, or a link while it runs,
+An ID is MyTube's own: YouTube Music's ID after `yt:`. Opening MyTube a second time, or a link while it runs,
 opens the page in the window that's there.

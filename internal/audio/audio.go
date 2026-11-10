@@ -1,9 +1,9 @@
-// Package audio is MyMusic's own audio engine: it plays the audio YouTube
+// Package audio is MyTube's own audio engine: it plays the audio YouTube
 // serves, Opus in WebM files and AAC-LC in MP4 ones, and the AAC-LC of the
 // HLS packed audio of its live streams, on two decks, so that one track
 // can fade into the next, each loud track turned down to an even loudness
 // and each at its speed, at its own pitch, through the preamp, equalizer,
-// levelling and analyser of the web player MyMusic had, whose Web Audio
+// levelling and analyser of the web player MyTube had, whose Web Audio
 // nodes it reproduces.
 package audio
 

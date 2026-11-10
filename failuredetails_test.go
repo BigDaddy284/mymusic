@@ -106,11 +106,11 @@ func TestFailureDetails(t *testing.T) {
 		t.Fatalf("copied %q", copied)
 	}
 	for _, line := range []string{
-		"MyMusic couldn't play a track\n\n",
+		"MyTube couldn't play a track\n\n",
 		"- Track: Broken Song, by The Band\n",
 		"- From: YouTube Music, yt:broken\n",
 		"- What was tried:\n  1. YouTube's player API: YouTube's player API answered LOGIN_REQUIRED: Sign in to confirm your age\n  2. yt-dlp: this track is private\n",
-		"- MyMusic 0.4.0 on ",
+		"- MyTube 0.4.0 on ",
 	} {
 		if !strings.Contains(copied[0], line) {
 			t.Errorf("the text copied has no %q:\n%s", line, copied[0])
@@ -191,7 +191,7 @@ func TestFailureReport(t *testing.T) {
 		Stopped: true,
 	}
 	got := failureReport(f, app.Info{Version: "0.5.11", Platform: "windows", Arch: "amd64"}, pr)
-	want := "MyMusic couldn't play a track\n\n" +
+	want := "MyTube couldn't play a track\n\n" +
 		"- Track: Song, by Artist, on Album\n" +
 		"- From: YouTube Music, yt:4uLU6hMCjMI\n" +
 		"- Played as: Song (Official Audio), by Artist, from YouTube Music, yt:dQw4w9WgXcQ\n" +
@@ -202,7 +202,7 @@ func TestFailureReport(t *testing.T) {
 		"  3. The stream: GET https://rr1.googlevideo.com/videoplayback: dial tcp (address) and (address) refused, token=(hidden) Cookie: (hidden)\n" +
 		"  4. The stream, tried again, 3 times: the file " + inHome + " of (account) is gone\n" +
 		"- " + failureStopped + "\n" +
-		"- MyMusic 0.5.11 on windows amd64\n"
+		"- MyTube 0.5.11 on windows amd64\n"
 	if got != want {
 		t.Errorf("the report is\n%s\nwant\n%s", got, want)
 	}

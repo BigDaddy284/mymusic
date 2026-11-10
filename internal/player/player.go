@@ -1,5 +1,5 @@
-// Package player plays MyMusic's queue: one queue of tracks of every
-// service, played by MyMusic's own audio engine. It plays as the web interface's player did, of which it is the port.
+// Package player plays MyTube's queue: one queue of tracks of every
+// service, played by MyTube's own audio engine. It plays as the web interface's player did, of which it is the port.
 //
 // One goroutine owns the player's state: commands and the engines' events
 // take turns on it, and what waits on the network, as preparing a track,
@@ -33,7 +33,7 @@ const (
 type Mode string
 
 const (
-	// ModeStream plays a track's audio in MyMusic's own engine.
+	// ModeStream plays a track's audio in MyTube's own engine.
 	ModeStream Mode = "stream"
 )
 
@@ -287,7 +287,7 @@ type Services interface {
 	SaveQueue(saved Saved)
 }
 
-// Stream is MyMusic's own audio engine, as *audio.Engine, whose events
+// Stream is MyTube's own audio engine, as *audio.Engine, whose events
 // the player takes as an audio.Events. Its speeds keep the pitch: 1 plays
 // a track at its own speed.
 type Stream interface {

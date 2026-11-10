@@ -115,7 +115,7 @@ func (d *Downloads) Default() string { return d.a.defaultDownloads() }
 func (d *Downloads) OpenFolder() error {
 	dir := d.a.downloads.Folder()
 	if dir == "" {
-		return errors.New("MyMusic keeps no downloads here")
+		return errors.New("MyTube keeps no downloads here")
 	}
 	return mygo.Shell.OpenPath(dir)
 }
@@ -123,7 +123,7 @@ func (d *Downloads) OpenFolder() error {
 // ChooseFolder asks the user for a folder to move the downloads to, over
 // parent: "" when they chose none. It waits for their answer.
 func (d *Downloads) ChooseFolder(parent *mygo.Window) (string, error) {
-	paths, err := mygo.Dialog.Open(mygo.OpenDialogOptions{Parent: parent, Title: "Choose where MyMusic keeps downloads",
+	paths, err := mygo.Dialog.Open(mygo.OpenDialogOptions{Parent: parent, Title: "Choose where MyTube keeps downloads",
 		Directory: true, CreateDirectories: true, DefaultPath: d.Folder()})
 	if err != nil || len(paths) == 0 {
 		return "", err

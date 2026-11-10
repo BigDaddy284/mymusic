@@ -38,7 +38,7 @@ func (c *Catalog) EpisodeDetails(ctx context.Context, t media.Track) (media.Epis
 	case noDetails(err):
 		return media.EpisodeDetails{}, detailsError{"No details found for this episode.", errors.Join(ErrNoEpisodeDetails, err)}
 	case err != nil:
-		log.Printf("mymusic: the details of %s: %v", t.ID, err)
+		log.Printf("mytube: the details of %s: %v", t.ID, err)
 		return media.EpisodeDetails{}, detailsError{"The episode's details can't be loaded right now. Check your connection, or try again in a moment.", err}
 	}
 	d.Chapters = media.ChaptersOf(d.Description)

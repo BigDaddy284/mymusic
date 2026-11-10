@@ -6,7 +6,7 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-// TestVisualizerOfSilence draws nothing while MyMusic hears nothing, as
+// TestVisualizerOfSilence draws nothing while MyTube hears nothing, as
 // while paused: no flat line of bars, which would look
 // broken.
 func TestVisualizerOfSilence(t *testing.T) {

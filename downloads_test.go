@@ -369,11 +369,11 @@ func TestOfflineToast(t *testing.T) {
 }
 
 // TestRenderDownloads draws the downloads page and a list with marks to
-// MYMUSIC_RENDER, for a look.
+// MYTUBE_RENDER, for a look.
 func TestRenderDownloads(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s, _ := newKeptShell(t, keptTracks...)
 	s.svc.Downloads.Add(testTracks[:3])

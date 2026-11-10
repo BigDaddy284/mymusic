@@ -77,7 +77,7 @@ func TestWaitingForTheNetwork(t *testing.T) {
 	if !tt.HasText("waiting for the network") {
 		t.Errorf("the now playing page doesn't tell the wait: %q", tt.Texts())
 	}
-	if dir := os.Getenv("MYMUSIC_RENDER"); dir != "" {
+	if dir := os.Getenv("MYTUBE_RENDER"); dir != "" {
 		s.p.Play()
 		s.settle(t, func(st player.State) bool { return st.WillPlay })
 		renderTo(t, s, tt, dir, "now-playing-waiting")

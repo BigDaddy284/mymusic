@@ -12,12 +12,12 @@ import (
 
 // errUnswitchable refuses a brand channel the list of the session's
 // channels tells no page ID of.
-var errUnswitchable = errors.New("YouTube doesn't let MyMusic switch to this channel")
+var errUnswitchable = errors.New("YouTube doesn't let MyTube switch to this channel")
 
 // YouTubeChannels returns the channels the YouTube session can use YouTube
 // Music as: each Google account it is signed in to, and the brand channels
-// they manage. Current marks the one MyMusic uses; none is current when
-// that one is no longer of the session. A channel MyMusic can't switch to
+// they manage. Current marks the one MyTube uses; none is current when
+// that one is no longer of the session. A channel MyTube can't switch to
 // is never current.
 func (s *Accounts) YouTubeChannels(ctx context.Context) ([]youtube.AccountChannel, error) {
 	channels, err := s.a.youtube.Channels(ctx)
@@ -31,14 +31,14 @@ func (s *Accounts) YouTubeChannels(ctx context.Context) ([]youtube.AccountChanne
 	return channels, nil
 }
 
-// SetYouTubeChannel makes MyMusic use YouTube Music as ch, one of
+// SetYouTubeChannel makes MyTube use YouTube Music as ch, one of
 // YouTubeChannels: a Google account of the session, by its index
 // (AuthUser), and a brand channel of it, by its page ID, or the account
 // itself without one. The home, library and likes are theirs. The account
 // stays beside the session's cookies, the channel in the settings.
 //
 // Switched to a brand channel, YouTube Music may still answer as the
-// Google account itself, as the account list names it: MyMusic then goes
+// Google account itself, as the account list names it: MyTube then goes
 // back to the account and channel it used before, and says so. Any other
 // answer, or none, keeps the switch.
 func (s *Accounts) SetYouTubeChannel(ctx context.Context, ch youtube.AccountChannel) (AccountsStatus, error) {
@@ -67,12 +67,12 @@ func (s *Accounts) SetYouTubeChannel(ctx context.Context, ch youtube.AccountChan
 	case me == nil || ch.Name == "" || ch.Is(*me):
 	case itself != nil && itself.Is(*me):
 		if err := s.a.useYouTubeAccount(wasUser, wasPage); err != nil {
-			log.Printf("mymusic: going back to the YouTube Music account used before: %v", err)
+			log.Printf("mytube: going back to the YouTube Music account used before: %v", err)
 		}
 		notify()
-		return AccountsStatus{}, fmt.Errorf("YouTube Music answered as the account %s, not as its channel %s: MyMusic goes on as before", me.Name, ch.Name)
+		return AccountsStatus{}, fmt.Errorf("YouTube Music answered as the account %s, not as its channel %s: MyTube goes on as before", me.Name, ch.Name)
 	default:
-		log.Print("mymusic: YouTube Music answers with another name than the account list gives the channel chosen")
+		log.Print("mytube: YouTube Music answers with another name than the account list gives the channel chosen")
 	}
 	notify()
 	return status, nil

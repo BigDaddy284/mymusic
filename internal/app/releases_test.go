@@ -216,7 +216,7 @@ func TestNewReleasesBounded(t *testing.T) {
 }
 
 // TestNewReleasesUnfollowed forgets the releases of an artist the user
-// stops following, at once in MyMusic, and at the next look on a
+// stops following, at once in MyTube, and at the next look on a
 // service.
 func TestNewReleasesUnfollowed(t *testing.T) {
 	now := releaseDay

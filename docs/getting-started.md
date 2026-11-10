@@ -1,33 +1,33 @@
 # Getting started
 <!-- docs: group=start order=10 -->
 
-MyMusic is a free desktop player for YouTube Music and the music on your computer, on Windows. This page installs it and shows you around.
+MyTube is a free desktop player for YouTube Music and the music on your computer, on Windows. This page installs it and shows you around.
 
-MyMusic puts both in one window: one search looks through YouTube Music and your own music at once, one queue plays tracks of either, and your liked songs and mixes hold both. YouTube Music plays as soon as you open it, with no account, and your own YouTube Music library is there once you sign in. MyMusic has no account, server, analytics or telemetry of its own, and it is open source, under the MIT license or the GPL 3.0.
+MyTube puts both in one window: one search looks through YouTube Music and your own music at once, one queue plays tracks of either, and your liked songs and mixes hold both. YouTube Music plays as soon as you open it, with no account, and your own YouTube Music library is there once you sign in. MyTube has no account, server, analytics or telemetry of its own, and it is open source, under the MIT license or the GPL 3.0.
 
 ## Install
 
 Download the file for Windows 10 or 11, on x64 or Arm, from the
-[latest release](https://github.com/bigdaddy284/mymusic/releases/latest): the installer, `mymusic-<version>-windows-<arch>-setup.exe`, or the portable zip, `mymusic-<version>-windows-<arch>-portable.zip`, which you unpack anywhere and start with `MyMusic.exe`.
+[latest release](https://github.com/bigdaddy284/mymusic/releases/latest): the installer, `mytube-<version>-windows-<arch>-setup.exe`, or the portable zip, `mytube-<version>-windows-<arch>-portable.zip`, which you unpack anywhere and start with `MyTube.exe`.
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists `SHA256SUMS` to check the downloads with, and files you don't need, which installed copies update from. The [README](../README.md#install) has the full table of downloads.
 
-The installer and the portable zip update themselves: MyMusic looks for a new version at start and every few hours, and asks before it installs one, unless you let it install updates by itself. [Settings › About](settings.md#about) shows your version and the newest one.
+The installer and the portable zip update themselves: MyTube looks for a new version at start and every few hours, and asks before it installs one, unless you let it install updates by itself. [Settings › About](settings.md#about) shows your version and the newest one.
 
 ## The first launch
 
 - **Windows.** The installer isn't signed yet, so SmartScreen may warn about it: choose More info, then Run anyway. Signing in to YouTube Music needs the WebView2 Runtime, which Windows 11 includes. On Windows 10, install it from [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
-- **yt-dlp.** MyMusic finds the audio of most YouTube Music tracks itself. For the rest, such as tracks made for children, it runs [yt-dlp](https://github.com/yt-dlp/yt-dlp). Until yt-dlp is there, Home says "Some tracks need yt-dlp", with a button that installs it; Settings › Playback › Tools installs it too, and MyMusic keeps the copy it installed up to date. yt-dlp needs a JavaScript runtime: [Deno](https://deno.com), Node.js, Bun or QuickJS, which MyMusic finds once you install one. [Where the audio streams come from](streams.md#when-yt-dlp-is-needed) tells which tracks need it.
+- **yt-dlp.** MyTube finds the audio of most YouTube Music tracks itself. For the rest, such as tracks made for children, it runs [yt-dlp](https://github.com/yt-dlp/yt-dlp). Until yt-dlp is there, Home says "Some tracks need yt-dlp", with a button that installs it; Settings › Playback › Tools installs it too, and MyTube keeps the copy it installed up to date. yt-dlp needs a JavaScript runtime: [Deno](https://deno.com), Node.js, Bun or QuickJS, which MyTube finds once you install one. [Where the audio streams come from](streams.md#when-yt-dlp-is-needed) tells which tracks need it.
 
-MyMusic opens on Home in the [Blend layout](look-and-feel.md#layouts). Your settings and library stay in a [data folder](data-and-privacy.md#the-data-folder) of your own: `%AppData%\MyMusic`.
+MyTube opens on Home in the [Blend layout](look-and-feel.md#layouts). Your settings and library stay in a [data folder](data-and-privacy.md#the-data-folder) of your own: `%AppData%\MyTube`.
 
 ## The window
 
-![MyMusic's window on Home, in its default look: the sidebar on the left, with its pages and Your mixes under them, the top bar with the back and forward arrows, Refresh and the search box, Home's Jump back in, Liked songs and Your mixes tiles over its Recently played shelf, and the player bar along the foot](shots/home.webp)
+![MyTube's window on Home, in its default look: the sidebar on the left, with its pages and Your mixes under them, the top bar with the back and forward arrows, Refresh and the search box, Home's Jump back in, Liked songs and Your mixes tiles over its Recently played shelf, and the player bar along the foot](shots/home.webp)
 
 ### The sidebar
 
-The sidebar on the left goes to MyMusic's pages: Home, Search, Explore, Library, Stats and [Settings](settings.md), then the pages plugins add. Under them, Your mixes lists your liked songs, your downloads once you have some, and each [mix](library.md#mixes) you made, with how many tracks each holds; its + button makes a new mix. At its foot, a card shows what plays, and opens the now playing page. The button beside MyMusic's name folds the sidebar to its icons, as Ctrl+B does; in a narrow window it folds by itself.
+The sidebar on the left goes to MyTube's pages: Home, Search, Explore, Library, Stats and [Settings](settings.md), then the pages plugins add. Under them, Your mixes lists your liked songs, your downloads once you have some, and each [mix](library.md#mixes) you made, with how many tracks each holds; its + button makes a new mix. At its foot, a card shows what plays, and opens the now playing page. The button beside MyTube's name folds the sidebar to its icons, as Ctrl+B does; in a narrow window it folds by itself.
 
 - **Home** has your own tiles first: Jump back in plays the track you played last, then Liked songs and Your mixes. Then come your shelves, such as Recently played, [New from artists you follow](library.md#new-releases), and those of YouTube Music. The pivots at the top keep Everything, only Yours or only YouTube Music's, and [Edit home](home.md#arrange-home) moves, hides and adds its shelves.
 - **Explore** has YouTube Music's new albums, singles and trending songs, its charts, and its moods and genres, each with playlists of its own.
@@ -80,7 +80,7 @@ The [media keys](desktop.md) of your keyboard and headphones work too, and Setti
 
 ## What works without an account
 
-With no account at all, MyMusic:
+With no account at all, MyTube:
 
 - searches YouTube Music and plays it, with its home shelves, Explore, artists, albums, playlists, [podcasts](podcasts.md) and [radios](playing-music.md#autoplay-and-radios);
 - keeps your liked songs, dislikes, mixes, history and stats on your computer, in [your library](library.md);
@@ -91,8 +91,8 @@ Every account is optional, and you add them in Settings › Accounts: [Accounts]
 
 ### What each account adds
 
-- **YouTube Music.** Sign in with [Google's own page](accounts.md#the-sign-in-window) in a window MyMusic opens, or [import the session of a browser](accounts.md#import-from-a-browser) you signed in with. You get your home feed, your library (playlists, albums, artists you follow and liked songs), likes and dislikes that reach YouTube Music, saving albums and playlists, making and deleting playlists, and a [brand channel](accounts.md#several-google-accounts-and-brand-channels) of your account if you have one. What you play joins your YouTube Music history, so its home and radios learn from it, and podcast episodes [go on where you left them](podcasts.md#with-youtube-music) on your phone. Tracks play the same signed in or out.
-- **Last.fm.** Paste the API key and shared secret of a Last.fm API account of yours, and approve MyMusic in your browser: what you listen to joins your Last.fm profile once half of a track, or four minutes of it, played. Scrobbles made offline are sent once you're back online.
+- **YouTube Music.** Sign in with [Google's own page](accounts.md#the-sign-in-window) in a window MyTube opens, or [import the session of a browser](accounts.md#import-from-a-browser) you signed in with. You get your home feed, your library (playlists, albums, artists you follow and liked songs), likes and dislikes that reach YouTube Music, saving albums and playlists, making and deleting playlists, and a [brand channel](accounts.md#several-google-accounts-and-brand-channels) of your account if you have one. What you play joins your YouTube Music history, so its home and radios learn from it, and podcast episodes [go on where you left them](podcasts.md#with-youtube-music) on your phone. Tracks play the same signed in or out.
+- **Last.fm.** Paste the API key and shared secret of a Last.fm API account of yours, and approve MyTube in your browser: what you listen to joins your Last.fm profile once half of a track, or four minutes of it, played. Scrobbles made offline are sent once you're back online.
 
 ## Next
 

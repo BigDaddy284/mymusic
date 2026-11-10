@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// newPlaylistPrivacy keeps a playlist made in MyMusic to the account that
+// newPlaylistPrivacy keeps a playlist made in MyTube to the account that
 // made it: the user shares it from YouTube Music when they want to.
 const newPlaylistPrivacy = "PRIVATE"
 

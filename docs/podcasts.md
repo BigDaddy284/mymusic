@@ -1,13 +1,13 @@
 # Podcasts
 <!-- docs: group=using order=40 -->
 
-MyMusic finds and plays podcasts from YouTube Music, follows shows, and starts each episode where you left it, here or on another device.
+MyTube finds and plays podcasts from YouTube Music, follows shows, and starts each episode where you left it, here or on another device.
 
 YouTube Music's podcasts play with no account.
 
 ## Find shows and episodes
 
-[Search](playing-music.md#search) for a show or an episode, then choose the Podcasts pivot of the results. It shows the shows found as tiles, then the episodes found, each with its show's name. MyMusic asks YouTube Music for podcasts only once you open the pivot.
+[Search](playing-music.md#search) for a show or an episode, then choose the Podcasts pivot of the results. It shows the shows found as tiles, then the episodes found, each with its show's name. MyTube asks YouTube Music for podcasts only once you open the pivot.
 
 - **A show's tile** opens its page. Its play button plays the episode you left partway, or else the newest one. Its menu has Open, Play and Copy link.
 - **An episode's row** plays it, with the episodes after it in the list: double-click the row, or click its cover.
@@ -31,33 +31,33 @@ An episode's menu, from its … button or a right click, has Play, Play next and
 
 Follow a show with Follow on its page.
 
-- **[Signed in](accounts.md) to its service,** following saves the show on YouTube Music too. Signed out, MyMusic keeps it on its own.
+- **[Signed in](accounts.md) to its service,** following saves the show on YouTube Music too. Signed out, MyTube keeps it on its own.
 - **A show you saved on the service,** as in another profile or on your phone, says Following on its page, and Following stops following it there too.
 - **[Library](library.md#the-library-page) › Podcasts** lists:
   - **Keep listening:** the episodes you left partway, with how much is left of each;
-  - **Following:** the shows you follow in MyMusic;
+  - **Following:** the shows you follow in MyTube;
   - **Saved on YouTube Music:** the shows saved there, once you signed in, past those you follow here.
 
 ![Library › Podcasts with three shows under Following: the Lex Fridman Podcast, Dissect and Ongoing History of New Music, each with its cover, its authors and the mark of its service](shots/podcasts.webp)
 
 ## Where you left off
 
-MyMusic keeps where you left each episode, so that it starts there the next time, on its own or from the queue. [The podcasts' part of the architecture](architecture/podcasts.md) tells how.
+MyTube keeps where you left each episode, so that it starts there the next time, on its own or from the queue. [The podcasts' part of the architecture](architecture/podcasts.md) tells how.
 
 - **It starts a little before:** an episode plays from 5 seconds before where you left it, to pick up the sentence.
-- **What it keeps:** nothing for the first 15 seconds of an episode, and an episode within 2 minutes of its end, or the last 3% of a short one, counts as played. MyMusic keeps the places of your latest 500 episodes.
-- **Whatever played before:** an episode played from its show's page starts where you left it, in MyMusic or on another device, whatever the queue before it was at.
+- **What it keeps:** nothing for the first 15 seconds of an episode, and an episode within 2 minutes of its end, or the last 3% of a short one, counts as played. MyTube keeps the places of your latest 500 episodes.
+- **Whatever played before:** an episode played from its show's page starts where you left it, in MyTube or on another device, whatever the queue before it was at.
 - **Moving within an episode,** as Previous does after its first seconds, starts it again; it never jumps back to where you left it.
-- **Mark as played** and **Mark as unplayed,** in an episode's menu, change what MyMusic keeps.
+- **Mark as played** and **Mark as unplayed,** in an episode's menu, change what MyTube keeps.
 
 Episodes play one after another without a [crossfade](playing-music.md#crossfade-and-gapless-playback), and the next one's audio isn't fetched ahead. A queue that ends on an episode stops, rather than start a [radio](playing-music.md#autoplay-and-radios).
 
 ### With YouTube Music
 
-Signed in to YouTube Music, MyMusic and YouTube Music go on from each other's place:
+Signed in to YouTube Music, MyTube and YouTube Music go on from each other's place:
 
-- **From your phone:** an episode starts where you left it on another device, when that's newer than where you left it in MyMusic. One you finished there starts from its start.
-- **To your phone:** while an episode plays, MyMusic tells YouTube Music how far you got, as YouTube Music's own player does, so that YouTube Music on your phone goes on from there.
+- **From your phone:** an episode starts where you left it on another device, when that's newer than where you left it in MyTube. One you finished there starts from its start.
+- **To your phone:** while an episode plays, MyTube tells YouTube Music how far you got, as YouTube Music's own player does, so that YouTube Music on your phone goes on from there.
 - **The switch:** ["Add what you play to your history"](accounts.md#your-youtube-music-history), in Settings › Accounts, governs this too. Turned off, or signed out, nothing goes to YouTube Music.
 
 ## Episode details and chapters

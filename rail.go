@@ -127,11 +127,12 @@ func (s *shell) rail(c *ui.Context) {
 	})
 }
 
-// brandMark is MyMusic's mark, the music note of its icon, in its own
-// blue to purple gradient.
+// brandMark is the Music mark, a music note in its own blue to purple
+// gradient, which the sidebar shows beside the section's name: the app's
+// own icon is the sound bars.
 var brandMark = mustSVG(brand.Mark)
 
-// mustSVG parses an SVG MyMusic ships.
+// mustSVG parses an SVG MyTube ships.
 func mustSVG(data []byte) *ui.SVG {
 	svg, err := ui.ParseSVG(data)
 	if err != nil {
@@ -140,7 +141,7 @@ func mustSVG(data []byte) *ui.SVG {
 	return svg
 }
 
-// brand is MyMusic's mark and name, where the window drags under a
+// brand is MyTube's mark and name, where the window drags under a
 // hidden title bar, and the button that collapses the rail, in inner DIPs,
 // the rail's width inside its padding. Where the title bar keeps room at
 // the left of that row, where the name doesn't fit beside it, nor the
@@ -197,13 +198,16 @@ func (s *shell) brand(c *ui.Context, collapsed bool, inner float32) float32 {
 	return tall + 40
 }
 
-// logo is MyMusic's mark, and its name in what is left of room DIPs.
+// railName is the name at the head of the sidebar, beside the Music mark.
+const railName = "Music"
+
+// logo is the Music mark, and its name in what is left of room DIPs.
 func (s *shell) logo(c *ui.Context, room float32) {
 	k := &s.lk
 	// The mark keeps its gradient in every theme, as the app's icon does.
 	ui.Image(c, brandMark).Size(26, 26).Shrink(0)
 	size := s.wordmarkSize(c, room)
-	ui.Text(c, "MyMusic").FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
+	ui.Text(c, railName).FontSize(size).FontWeight(k.displayWeight()).Font(k.display).LetterSpacing(k.tracking(-0.03, size)).
 		SingleLine().Grow(1).MinWidth(0)
 }
 
@@ -218,7 +222,7 @@ func (s *shell) railButton(c *ui.Context, collapsed bool) {
 	}
 }
 
-// wordmarkFit is the size of MyMusic's name in the rail, the face, weight
+// wordmarkFit is the size of MyTube's name in the rail, the face, weight
 // and room it was measured for, and its width at 24.
 type wordmarkFit struct {
 	font   string
@@ -228,7 +232,7 @@ type wordmarkFit struct {
 	width  float32
 }
 
-// wordmarkSize is the size of MyMusic's name in room DIPs: 24, or less
+// wordmarkSize is the size of MyTube's name in room DIPs: 24, or less
 // when the theme's face is too wide for it there, as Sakura's Georgia is,
 // so that the name never shows cut. It measures the name once for each
 // face, weight and room, not every frame.
@@ -238,7 +242,7 @@ func (s *shell) wordmarkSize(c *ui.Context, room float32) float32 {
 	if s.wordmark.size > 0 && s.wordmark.font == f.font && s.wordmark.weight == f.weight && s.wordmark.room == f.room {
 		return s.wordmark.size
 	}
-	f.width, _ = c.MeasureText(0, ui.Span{Text: "MyMusic", Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
+	f.width, _ = c.MeasureText(0, ui.Span{Text: railName, Font: f.font, Size: 24, Weight: f.weight, LetterSpacing: k.tracking(-0.03, 24)})
 	f.size = fitSize(24, f.width, room)
 	s.wordmark = f
 	return f.size

@@ -31,7 +31,7 @@ const (
 	maxCoverPixels = 80_000_000
 )
 
-// errNotCover is an image file MyMusic doesn't make covers of.
+// errNotCover is an image file MyTube doesn't make covers of.
 var errNotCover = errors.New("a cover is a PNG, JPEG or WebP image")
 
 // mixCovers is the folder of the covers chosen for mixes.

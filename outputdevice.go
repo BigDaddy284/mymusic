@@ -1,6 +1,6 @@
 package main
 
-// The output device: which of this computer's audio devices MyMusic's own
+// The output device: which of this computer's audio devices MyTube's own
 // player plays on, as Settings › Playback chooses it, and the device
 // button beside the volume in the player bar. outputChoices and
 // outputMenu are what any place that offers the choice shows, as the mini
@@ -19,7 +19,7 @@ import (
 // outputDevicesKey is the key the output devices load at.
 const outputDevicesKey = "output-devices"
 
-// outputChoice is one of the places MyMusic's own player can play: the
+// outputChoice is one of the places MyTube's own player can play: the
 // system's default device, a device of this computer, or the device
 // chosen, while it isn't there.
 type outputChoice struct {
@@ -42,7 +42,7 @@ func (o outputChoice) title() string {
 	return o.Label + " · " + o.Detail
 }
 
-// outputChoices lists where MyMusic's own player can play: the system's
+// outputChoices lists where MyTube's own player can play: the system's
 // default, then each output device by name, those of one name told apart
 // by a number, and the device chosen, while it isn't among them. Until
 // the devices are listed, the device chosen stands for itself.
@@ -86,7 +86,7 @@ func (s *shell) outputDevices() *loaded[[]app.OutputDevice] {
 	return fetch(s, outputDevicesKey, s.svc.Player.OutputDevices)
 }
 
-// chooseOutput has MyMusic's own player play on the device d, the system's
+// chooseOutput has MyTube's own player play on the device d, the system's
 // default for none, from where the track is.
 func (s *shell) chooseOutput(d settings.OutputDevice) {
 	if d.ID == s.set.OutputDevice.ID {
@@ -176,7 +176,7 @@ func (o *outputSlot) fits() bool {
 }
 
 // outputChoice reports whether there is a choice of output device to make,
-// which the device button offers: while MyMusic's own player is there,
+// which the device button offers: while MyTube's own player is there,
 // more than one device, or a device chosen. It lists the devices whatever
 // the room, so that they're there once the room is.
 func (s *shell) outputChoice() bool {

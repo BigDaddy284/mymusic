@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// TestForgetSpotify reads the downloads of MyMusic 0.x, with Spotify
+// TestForgetSpotify reads the downloads of MyTube 0.x, with Spotify
 // tracks and a Spotify album: a Spotify track downloaded on its own
 // becomes the recording it downloaded, the album and the tracks only it
 // kept go, and so does the audio no track needs then.

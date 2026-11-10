@@ -1,6 +1,6 @@
 package app
 
-// Whether a window of MyMusic's is in front, which shows what a
+// Whether a window of MyTube's is in front, which shows what a
 // notification would tell: the notification would only repeat it over the
 // window the user looks at (#289).
 

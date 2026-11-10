@@ -235,7 +235,7 @@ func TestLongPlaylistPageFails(t *testing.T) {
 	}
 }
 
-// TestLongPlaylistCut says where a playlist longer than MyMusic reads was
+// TestLongPlaylistCut says where a playlist longer than MyTube reads was
 // cut.
 func TestLongPlaylistCut(t *testing.T) {
 	s := newTestShell(t)
@@ -247,7 +247,7 @@ func TestLongPlaylistCut(t *testing.T) {
 		Title: "Everything", TrackCount: 25000, Tracks: tracks, Cut: true}}
 	tt := tester(t, s)
 	show(s, tt, playlistPath("yt:PLcut"))
-	if !tt.HasText("This playlist has 25,000 tracks: MyMusic shows and plays its first 20,000.") {
+	if !tt.HasText("This playlist has 25,000 tracks: MyTube shows and plays its first 20,000.") {
 		t.Errorf("the page shows %q", tt.Texts())
 	}
 }

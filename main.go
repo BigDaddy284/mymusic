@@ -1,4 +1,4 @@
-// Command mymusic is a desktop music player for YouTube Music and the
+// Command mytube is a desktop music player for YouTube Music and the
 // music on your computer, in one customizable interface.
 package main
 
@@ -24,9 +24,9 @@ var trayIcon []byte
 const version = "0.5.10"
 
 func main() {
-	// MYMUSIC_DATA_DIR keeps everything in one folder: a portable copy,
+	// MYTUBE_DATA_DIR keeps everything in one folder: a portable copy,
 	// or a test run apart from the user's own data.
-	portable := os.Getenv("MYMUSIC_DATA_DIR")
+	portable := os.Getenv("MYTUBE_DATA_DIR")
 	if dir := portable; dir != "" {
 		mygo.App.SetPath(mygo.PathUserData, filepath.Join(dir, "data"))
 		mygo.App.SetPath(mygo.PathCache, filepath.Join(dir, "cache"))
@@ -34,6 +34,9 @@ func main() {
 	}
 	if !mygo.App.RequestSingleInstanceLock() {
 		return // the running instance takes over
+	}
+	if portable == "" {
+		adoptOldFolders()
 	}
 	// The log and the crash reports, once this is the instance that runs.
 	logsDir, err := mygo.App.Path(mygo.PathLogs)
@@ -46,7 +49,7 @@ func main() {
 	}
 	logs, lastCrash, err := diag.Start(logsDir, running)
 	if err != nil {
-		log.Printf("mymusic: writing the log: %v", err)
+		log.Printf("mytube: writing the log: %v", err)
 		logsDir = ""
 	} else {
 		defer logs.Close()
@@ -86,8 +89,38 @@ func main() {
 	}
 }
 
+// oldName is the app's name before MyTube, which named its folders.
+const oldName = "MyMusic"
+
+// adoptOldFolders moves the folders of the app's data, cache and logs from
+// before it was MyTube, of oldName, to MyTube's, where MyTube has none yet,
+// so that its settings, library and downloads come along.
+func adoptOldFolders() {
+	for _, kind := range []mygo.PathName{mygo.PathUserData, mygo.PathCache, mygo.PathLogs} {
+		dir, err := mygo.App.Path(kind)
+		if err != nil || dir == "" {
+			continue
+		}
+		if err := adoptFolder(dir, filepath.Join(filepath.Dir(dir), oldName)); err != nil {
+			log.Printf("mytube: moving %s: %v", dir, err)
+		}
+	}
+}
+
+// adoptFolder moves the folder old to dir, unless dir is there already or
+// old isn't.
+func adoptFolder(dir, old string) error {
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		return nil
+	}
+	if fi, err := os.Stat(old); err != nil || !fi.IsDir() {
+		return nil
+	}
+	return os.Rename(old, dir)
+}
+
 // defaultDownloadsDir is the folder the downloads are in, unless the user
-// chose another: %LocalAppData%\MyMusic\downloads, beside the cache, in
+// chose another: %LocalAppData%\MyTube\downloads, beside the cache, in
 // the folder of the app's data that Windows keeps and doesn't roam. A
 // portable copy keeps them in its own folder.
 func defaultDownloadsDir(portable, cacheDir string) string {

@@ -227,7 +227,7 @@ func TestSecretSealed(t *testing.T) {
 	// Where sealing fails too, the user hears why in words of their own.
 	k = unavailableKeeper()
 	s = testSecret(t, k, fakeSealer{fail: errors.New("dpapi: Access is denied.")})
-	if err := s.Save(secret); err == nil || !strings.HasPrefix(err.Error(), "Windows did not let MyMusic keep your sign-in: ") {
+	if err := s.Save(secret); err == nil || !strings.HasPrefix(err.Error(), "Windows did not let MyTube keep your sign-in: ") {
 		t.Errorf("saving gave %v", err)
 	}
 }

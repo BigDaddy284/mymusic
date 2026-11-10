@@ -1,4 +1,4 @@
-- MyMusic watches your folders of music while it runs: a file you add,
+- MyTube watches your folders of music while it runs: a file you add,
   change, rename or remove in them shows in the library within a few
   seconds, without a rescan, and a folder you copy in is read once, as
   the copy settles. It hears of them as Windows tells of changes. A

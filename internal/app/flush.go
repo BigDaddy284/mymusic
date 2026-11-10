@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-// OnFlush has fn save at once what a window holds back, as MyMusic quits,
+// OnFlush has fn save at once what a window holds back, as MyTube quits,
 // until cancel. It runs on the main thread.
 func (a *App) OnFlush(fn func()) (cancel func()) {
 	f := &fn
@@ -22,7 +22,7 @@ func (a *App) OnFlush(fn func()) (cancel func()) {
 // Close waits for the downloads and the covers fetched beside the app's
 // callers to stop, then saves at once what waits to be saved, as flush
 // does. It is for an app whose folders go as it ends, as a test's do, once
-// its player closed: MyMusic itself quits with flush, which waits on none
+// its player closed: MyTube itself quits with flush, which waits on none
 // of them.
 func (a *App) Close() {
 	a.downloads.Close()
@@ -35,12 +35,12 @@ func (a *App) Close() {
 // flush saves at once what waits a moment to be saved: what the windows
 // hold back, then the queue and the volume, the index of the downloads,
 // where episodes were left,
-// then settings.json where it holds no settings MyMusic can read: gone,
+// then settings.json where it holds no settings MyTube can read: gone,
 // or with a mistake, which is kept as settings.json.broken, so that the
 // next start doesn't fall back to the settings of a new install. The
 // windows go first, as the main window saves the settings it changed,
 // whose volume may be older than the player's. It runs on the main thread
-// as MyMusic quits, and never waits on the player's goroutine, which may
+// as MyTube quits, and never waits on the player's goroutine, which may
 // wait on the main thread itself.
 func (a *App) flush() {
 	a.mu.Lock()
@@ -57,10 +57,10 @@ func (a *App) flush() {
 	}
 	a.downloads.Flush()
 	if err := a.positions.Flush(); err != nil {
-		log.Printf("mymusic: keeping where episodes were left: %v", err)
+		log.Printf("mytube: keeping where episodes were left: %v", err)
 	}
 	a.labels.save()
 	if err := a.settings.Flush(); err != nil {
-		log.Printf("mymusic: saving settings.json: %v", err)
+		log.Printf("mytube: saving settings.json: %v", err)
 	}
 }

@@ -105,7 +105,7 @@ func (s *shell) round(c *ui.Context, key, name, label string, main, disabled boo
 	return b
 }
 
-// gradientRound fills a transport button b as the MyMusic themes do: the
+// gradientRound fills a transport button b as the MyTube themes do: the
 // main one with the gradient, the others as Stills & Reels' compact
 // buttons, only while hovered or pressed. It returns its ink.
 func (s *shell) gradientRound(b ui.Element, main, disabled bool) ui.Color {
@@ -510,7 +510,7 @@ func (s *shell) alert(c *ui.Context, title, message string, actions func()) ui.E
 
 // sourceMark tells where a track comes from by a shape: a square for
 // YouTube Music, a ring and its hole for the music
-// on this computer, two rings for MyMusic's own mixes.
+// on this computer, two rings for MyTube's own mixes.
 func (s *shell) sourceMark(c *ui.Context, source media.Source, on bool) {
 	k := &s.lk
 	ink := k.muted

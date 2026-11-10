@@ -28,7 +28,7 @@ type Info struct {
 	Arch     string `json:"arch"`
 	Dev      bool   `json:"dev"`
 	DataDir  string `json:"dataDir"`
-	// NativeAudio is set where MyMusic's own audio engine can play: on
+	// NativeAudio is set where MyTube's own audio engine can play: on
 	// 64-bit Windows.
 	NativeAudio bool `json:"nativeAudio"`
 }
@@ -49,7 +49,7 @@ func (s *System) Info() Info {
 	}
 }
 
-// version is the version of MyMusic that runs.
+// version is the version of MyTube that runs.
 func (a *App) version() string {
 	if v := mygo.App.Version(); v != "" {
 		return v
@@ -57,7 +57,7 @@ func (a *App) version() string {
 	return a.opts.Version
 }
 
-// Tools describes the tools MyMusic runs: yt-dlp and a JavaScript
+// Tools describes the tools MyTube runs: yt-dlp and a JavaScript
 // runtime.
 func (s *System) Tools(ctx context.Context) tools.Status { return s.a.tools.Status(ctx) }
 
@@ -84,13 +84,13 @@ func (s *System) OpenExternal(rawURL string) error {
 	return mygo.Shell.OpenExternal(u.String())
 }
 
-// Notice is the license of code MyMusic includes from another project.
+// Notice is the license of code MyTube includes from another project.
 type Notice struct {
 	Name string `json:"name"`
 	Text string `json:"text"`
 }
 
-// Notices returns the licenses of the code MyMusic includes from other
+// Notices returns the licenses of the code MyTube includes from other
 // projects, which its copies must reproduce.
 func (s *System) Notices() []Notice {
 	return []Notice{
@@ -159,5 +159,5 @@ func (s *System) Notify(title, body string) error {
 	return mygo.NewNotification(mygo.NotificationOptions{Title: title, Body: body}).Show()
 }
 
-// Quit quits MyMusic.
+// Quit quits MyTube.
 func (s *System) Quit() { mygo.App.Quit() }

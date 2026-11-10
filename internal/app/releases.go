@@ -1,7 +1,7 @@
 package app
 
 // New releases: what the artists the user follows put out lately, in
-// MyMusic or on their services, for Home and Library › Artists. Each
+// MyTube or on their services, for Home and Library › Artists. Each
 // artist's releases are asked of their service at most every
 // releasesFresh, a few artists at once and a bounded number in a look, and
 // kept between runs in releases.json in the cache folder.
@@ -85,7 +85,7 @@ func (b *releaseBook) open(a *App) *store.File[map[string]artistReleases] {
 		}
 		f, err := store.Open(filepath.Join(a.opts.CacheDir, "releases.json"), map[string]artistReleases{})
 		if err != nil {
-			log.Printf("mymusic: opening the releases of the artists followed: %v", err)
+			log.Printf("mytube: opening the releases of the artists followed: %v", err)
 			return
 		}
 		b.file = f
@@ -100,7 +100,7 @@ func (b *releaseBook) open(a *App) *store.File[map[string]artistReleases] {
 }
 
 // NewReleases returns what the artists the user follows put out lately,
-// the newest first: those they follow in MyMusic, and on YouTube Music
+// the newest first: those they follow in MyTube, and on YouTube Music
 // where they signed in. It asks the services for the
 // releases of the artists not asked for a while (look); the others, and
 // those that fail, show as last read.
@@ -130,7 +130,7 @@ func (b *releaseBook) forget(a *App, artistID string) {
 		return
 	}
 	if err := f.Update(func(m *map[string]artistReleases) error { delete(*m, artistID); return nil }); err != nil {
-		log.Printf("mymusic: forgetting an artist's releases: %v", err)
+		log.Printf("mytube: forgetting an artist's releases: %v", err)
 	}
 }
 
@@ -180,7 +180,7 @@ func (b *releaseBook) look(ctx context.Context, a *App, followed []media.Artist,
 			e := entries[ar.ID]
 			e.Artist, e.Asked = media.Ref{ID: ar.ID, Name: ar.Name}, now
 			if err != nil {
-				log.Printf("mymusic: reading the releases of %s: %v", ar.ID, err)
+				log.Printf("mytube: reading the releases of %s: %v", ar.ID, err)
 			} else {
 				e.Read, e.Releases = now, recent(releases, now)
 			}
@@ -223,7 +223,7 @@ func (b *releaseBook) look(ctx context.Context, a *App, followed []media.Artist,
 			return nil
 		})
 		if err != nil {
-			log.Printf("mymusic: keeping the releases of the artists followed: %v", err)
+			log.Printf("mytube: keeping the releases of the artists followed: %v", err)
 		}
 	}
 	return newReleases(f.Get(), ids, now)
@@ -293,7 +293,7 @@ func newReleases(entries map[string]artistReleases, ids []string, now time.Time)
 }
 
 // followedArtists returns the artists the user follows, each once: in
-// MyMusic, then on YouTube Music, where they signed in.
+// MyTube, then on YouTube Music, where they signed in.
 // lost holds the services whose lists failed.
 func (a *App) followedArtists(ctx context.Context) (followed []media.Artist, lost map[media.Source]bool) {
 	lists := []struct {
@@ -315,7 +315,7 @@ func (a *App) followedArtists(ctx context.Context) (followed []media.Artist, los
 	followed, lost = a.library.Artists(), map[media.Source]bool{}
 	for _, l := range lists {
 		if l.err != nil {
-			log.Printf("mymusic: reading the artists followed on %s: %v", l.source, l.err)
+			log.Printf("mytube: reading the artists followed on %s: %v", l.source, l.err)
 			lost[l.source] = true
 		}
 		followed = append(followed, l.got...)

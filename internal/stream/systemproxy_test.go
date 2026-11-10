@@ -65,7 +65,7 @@ func (p *connectProxy) asked() []string {
 
 // TestProxyFetchesThroughTheSystemProxy fetches a stream from YouTube's
 // audio servers, over HTTPS, through the proxy server of Windows' settings,
-// as MyMusic does on a network that lets traffic out only through it; and
+// as MyTube does on a network that lets traffic out only through it; and
 // directly when the bypass list names the server.
 func TestProxyFetchesThroughTheSystemProxy(t *testing.T) {
 	size := chunkSize + 4321

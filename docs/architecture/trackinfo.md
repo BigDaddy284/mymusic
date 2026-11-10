@@ -2,7 +2,7 @@
 
 Track info, in every track's menu, shows in a dialog what a track is and
 how it plays (#342). Nothing in it asks a service: it tells what
-MyMusic's files, the resolver and the engine hold.
+MyTube's files, the resolver and the engine hold.
 
 - **What a file holds.** `audio.Inspect` reads the headers of a file as
   a deck opens it (`openTrack`), and `describe` tells, of the track it
@@ -37,5 +37,5 @@ MyMusic's files, the resolver and the engine hold.
   Explorer shows the file of a track on this
   computer, or its download, through `showInFolder`.
 - **Copies.** `trackCopies` is the place a song's copies are to show,
-  side by side, the one that plays marked, once MyMusic links them
+  side by side, the one that plays marked, once MyTube links them
   (#340). It shows nothing yet.

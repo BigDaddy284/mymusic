@@ -10,14 +10,14 @@ You need [Go](https://go.dev/dl/) 1.27.3 or later and [Bun](https://bun.sh) 1.2 
 
 ```sh
 git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
+cd mytube
 bun install
 bun run dev
 ```
 
 `bun run dev` builds the app, starts it, and rebuilds it as you edit it.
-Development builds keep their data apart from an installed MyMusic, under
-the name `MyMusic Dev`.
+Development builds keep their data apart from an installed MyTube, under
+the name `MyTube Dev`.
 
 Before you open a pull request:
 
@@ -32,7 +32,7 @@ bun run typecheck
 [docs/architecture](docs/architecture/README.md) tells where things live. A few
 rules keep the project healthy:
 
-- **Windows only.** MyMusic is built for Windows alone. Linux still compiles the code, with stubs that do nothing, because `mygo build` runs it there to write its bindings and releases are cross-compiled on Linux: `GOOS=windows go vet ./...` checks a change from Linux.
+- **Windows only.** MyTube is built for Windows alone. Linux still compiles the code, with stubs that do nothing, because `mygo build` runs it there to write its bindings and releases are cross-compiled on Linux: `GOOS=windows go vet ./...` checks a change from Linux.
 - **The theme contract is public.** Themes set the tokens of
   [docs/themes.md](docs/themes.md): colors, fonts and a radius. Rename or
   remove one only with a plan for the themes that set it, and document new
@@ -41,13 +41,13 @@ rules keep the project healthy:
   `sdk/index.d.ts` and [docs/plugins.md](docs/plugins.md) together; the
   typecheck checks the example plugins against the types.
 - **Tests do not need the network.** Parsers are tested on recorded
-  responses in `testdata/`; live tests run only with `MYMUSIC_LIVE=1`.
+  responses in `testdata/`; live tests run only with `MYTUBE_LIVE=1`.
   The Opus decoder's conformance test runs when `OPUS_TESTVECTORS` names
   the folder of the
   [RFC 8251 test vectors](https://opus-codec.org/static/testvectors/opus_testvectors-rfc8251.tar.gz),
   which CI downloads. The tests that open the audio device, silently, run
-  only with `MYMUSIC_AUDIO=1`, and those that compare the native engine's
-  sound with Chromium's Web Audio when `MYMUSIC_BROWSER` names a Chromium
+  only with `MYTUBE_AUDIO=1`, and those that compare the native engine's
+  sound with Chromium's Web Audio when `MYTUBE_BROWSER` names a Chromium
   browser, as `msedge.exe`.
 - **Honest errors.** When a service refuses something, say what and how to
   get past it, in the words of the interface.
@@ -83,7 +83,7 @@ same lines, as below, or waits for the other to merge.
   `settings_surround.go` does, and registers itself from `init()` with
   `addSettings(place, order, build)`: a place is a tab, as `"playback"`,
   or a group, as `soundRows`. Orders go up in tens, so a new row slots in
-  between. Two rows at the same order stop MyMusic at start-up, so the
+  between. Two rows at the same order stop MyTube at start-up, so the
   tests catch it; the second to merge takes another number. Nothing edits
   a central list or switch.
 - **Options, not arguments.** When a function or an interface method would
@@ -148,7 +148,7 @@ don't edit CHANGELOG.md itself, so they never conflict over it;
 3. Tag the commit and push it with the tag:
 
    ```sh
-   git tag -a vx.y.z -m "MyMusic vx.y.z"
+   git tag -a vx.y.z -m "MyTube vx.y.z"
    git push origin main vx.y.z
    ```
 
@@ -222,7 +222,7 @@ language line.
 ## Reports
 
 Open an [issue](https://github.com/bigdaddy284/mymusic/issues) with what you did,
-what happened, and what you expected, with your system and MyMusic's
+what happened, and what you expected, with your system and MyTube's
 version (Settings › About). For security problems, see
 [SECURITY.md](SECURITY.md) instead.
 

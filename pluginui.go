@@ -11,7 +11,7 @@ import (
 )
 
 // hosts are the plugin hosts of the apps, one each: plugins run as long as
-// MyMusic does, whatever windows come and go.
+// MyTube does, whatever windows come and go.
 var hosts struct {
 	sync.Mutex
 	m map[*app.App]*plugins.Host

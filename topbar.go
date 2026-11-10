@@ -300,7 +300,7 @@ func (s *shell) chooseSuggested(kind string) {
 			return
 		}
 	}
-	log.Printf("mymusic: capture: no %s among the suggestions", kind)
+	log.Printf("mytube: capture: no %s among the suggestions", kind)
 }
 
 // openSuggested plays a song the box suggested at once, with its radio

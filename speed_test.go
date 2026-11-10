@@ -17,7 +17,7 @@ func TestSpeedSettings(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 3200)
 	show(s, tt, "/settings/playback")
-	for _, want := range []string{"speed", "Songs", "Their own speed.", "Speed changes what MyMusic plays: YouTube Music and the music on this computer.", "Live streams keep their own speed, as they play as they're broadcast."} {
+	for _, want := range []string{"speed", "Songs", "Their own speed.", "Speed changes what MyTube plays: YouTube Music and the music on this computer.", "Live streams keep their own speed, as they play as they're broadcast."} {
 		if !tt.HasText(want) {
 			t.Errorf("the settings don't say %q", want)
 		}
@@ -91,7 +91,7 @@ func TestSpeedFound(t *testing.T) {
 	}
 }
 
-// TestPlayerBarSpeed shows the speed after the artists while MyMusic
+// TestPlayerBarSpeed shows the speed after the artists while MyTube
 // plays the track at another than its own.
 func TestPlayerBarSpeed(t *testing.T) {
 	s := newTestShell(t)

@@ -34,7 +34,7 @@ const (
 
 // seekSlider is the seek bar's slider of *at, from 0 to most seconds: the
 // theme's, or the wavy one while the settings ask for it, which waves
-// while the track plays. The MyMusic themes fill it with their gradient,
+// while the track plays. The MyTube themes fill it with their gradient,
 // as Stills & Reels' sliders are.
 func (s *shell) seekSlider(c *ui.Context, at *float64, most float64) ui.Element {
 	k := &s.lk

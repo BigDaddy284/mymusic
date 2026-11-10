@@ -68,7 +68,7 @@ type conn struct {
 
 // dial connects to the device at addr. Cast devices have certificates of
 // their own, which no authority signs that a sender could check without
-// the device authentication MyMusic doesn't need: the connection is
+// the device authentication MyTube doesn't need: the connection is
 // encrypted, and the device isn't checked.
 func dial(ctx context.Context, addr string, onMessage func(message, header)) (*conn, error) {
 	ctx, cancel := context.WithTimeout(ctx, dialTimeout)
@@ -145,7 +145,7 @@ func (c *conn) reason() error {
 // connect opens the virtual connection to dest, which every destination
 // needs before it takes messages.
 func (c *conn) connect(dest string) error {
-	return c.send(nsConnection, dest, map[string]any{"type": "CONNECT", "userAgent": "MyMusic"})
+	return c.send(nsConnection, dest, map[string]any{"type": "CONNECT", "userAgent": "MyTube"})
 }
 
 // send sends payload to dest in namespace ns, as JSON, without waiting for
@@ -244,7 +244,7 @@ func (c *conn) read() {
 		}
 		c.seen.Store(time.Now().UnixNano())
 		if m.Binary {
-			continue // device authentication, which MyMusic doesn't ask for
+			continue // device authentication, which MyTube doesn't ask for
 		}
 		var h header
 		if json.Unmarshal(m.Payload, &h) != nil {

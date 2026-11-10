@@ -394,11 +394,11 @@ func BenchmarkStretch(b *testing.B) {
 }
 
 // TestStretchListen writes the test files at each speed to
-// MYMUSIC_STRETCH_WAV, to listen to.
+// MYTUBE_STRETCH_WAV, to listen to.
 func TestStretchListen(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_STRETCH_WAV")
+	dir := os.Getenv("MYTUBE_STRETCH_WAV")
 	if dir == "" {
-		t.Skip("MYMUSIC_STRETCH_WAV names no folder")
+		t.Skip("MYTUBE_STRETCH_WAV names no folder")
 	}
 	for name, path := range map[string]string{"speech": speech, "stereo": cuesFront} {
 		in := reference(t, path)

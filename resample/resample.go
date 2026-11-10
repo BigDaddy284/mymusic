@@ -1,4 +1,4 @@
-// Package resample converts the sample rate of audio, as MyMusic's audio
+// Package resample converts the sample rate of audio, as MyTube's audio
 // engine, which plays everything at 48 kHz, converts the 44.1 kHz of
 // YouTube's AAC and the other rates AAC has.
 //
