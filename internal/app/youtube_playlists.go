@@ -26,7 +26,7 @@ func (a *App) youtubeVideoID(ctx context.Context, t media.Track) (string, error)
 }
 
 // youtubePlaylistID returns the playlist ID of a playlist of YouTube Music,
-// by its MyMusic ID.
+// by its MyTube ID.
 func youtubePlaylistID(id string) (string, error) {
 	source, native, err := media.ParseID(id)
 	if err != nil {
@@ -117,7 +117,7 @@ func (c *Collection) RemoveFromYouTubePlaylist(ctx context.Context, playlistID s
 }
 
 // DeleteYouTubePlaylist deletes a playlist the user made on YouTube Music,
-// by its MyMusic ID: it goes from YouTube too. Mixes copied from it keep
+// by its MyTube ID: it goes from YouTube too. Mixes copied from it keep
 // their tracks, and the queue its.
 func (c *Collection) DeleteYouTubePlaylist(ctx context.Context, playlistID string) error {
 	if !c.a.youtube.SignedIn() {
@@ -149,7 +149,7 @@ func (a *App) reportYouTubePlay(t media.Track) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 		if err := a.youtube.ReportPlay(ctx, id); err != nil && !errors.Is(err, youtube.ErrSessionRejected) {
-			log.Printf("mymusic: adding a play to the YouTube Music history: %v", err)
+			log.Printf("mytube: adding a play to the YouTube Music history: %v", err)
 		}
 	}()
 }

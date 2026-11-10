@@ -204,11 +204,11 @@ func renderTo(t *testing.T, s *shell, tt *ui.Tester, dir, name string) {
 	}
 }
 
-// TestRender draws the main window's pages to MYMUSIC_RENDER, for a look.
+// TestRender draws the main window's pages to MYTUBE_RENDER, for a look.
 func TestRender(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newTestShellOf(t, func(o *app.Options) { o.ProblemWait = -1 })
 	album := media.Album{ID: "al-1", Source: media.SourceYouTube, Title: "Hurry Up, We're Dreaming", Artists: []media.Ref{{ID: "ar-m83", Name: "M83"}},
@@ -324,11 +324,11 @@ func TestRender(t *testing.T) {
 }
 
 // TestRenderThemes draws the home page and the mini player in each
-// built-in theme to MYMUSIC_RENDER, for a look at their effects.
+// built-in theme to MYTUBE_RENDER, for a look at their effects.
 func TestRenderThemes(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	var items []media.Item
@@ -366,12 +366,12 @@ func TestRenderThemes(t *testing.T) {
 }
 
 // TestRenderColorFiles draws the home page and the mini player of themes
-// in the colours of pywal's and matugen's files to MYMUSIC_RENDER, and the
+// in the colours of pywal's and matugen's files to MYTUBE_RENDER, and the
 // appearance settings that read them.
 func TestRenderColorFiles(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	var items []media.Item
@@ -407,13 +407,13 @@ func TestRenderColorFiles(t *testing.T) {
 	}
 }
 
-// TestRenderDialogs draws the dialogs to MYMUSIC_RENDER, in a window as
+// TestRenderDialogs draws the dialogs to MYTUBE_RENDER, in a window as
 // tall as usual and in one too short for them, at the largest text size,
 // and the update offer in the themes whose panels differ.
 func TestRenderDialogs(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	shell := func(theme string, scale float64) *shell {
 		s := newTestShell(t)

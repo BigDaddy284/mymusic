@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds MyMusic for each Windows platform given, as `bun run build --
+# Builds MyTube for each Windows platform given, as `bun run build --
 # -platform` does, one platform at a time.
 #
 #   .github/scripts/build.sh windows/amd64,windows/arm64
@@ -41,7 +41,7 @@ for p in "${platforms[@]}"; do
 	case "$p" in
 	windows/*) ;;
 	*)
-		echo "build.sh: MyMusic builds for Windows alone, not $p" >&2
+		echo "build.sh: MyTube builds for Windows alone, not $p" >&2
 		exit 1
 		;;
 	esac

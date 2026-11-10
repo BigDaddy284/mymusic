@@ -2,9 +2,9 @@ package settings
 
 import "slices"
 
-// Tools are the tools MyMusic runs: Settings › Playback › Tools.
+// Tools are the tools MyTube runs: Settings › Playback › Tools.
 type Tools struct {
-	// YTDLPPath is a yt-dlp of the user's own, which MyMusic runs in place
+	// YTDLPPath is a yt-dlp of the user's own, which MyTube runs in place
 	// of the one it finds or installs; "" for none.
 	YTDLPPath string `json:"ytdlpPath"`
 	// JSRuntime is the JavaScript runtime yt-dlp uses: "deno", "node",
@@ -12,7 +12,7 @@ type Tools struct {
 	JSRuntime string `json:"jsRuntime"`
 }
 
-// clean is t without a JavaScript runtime MyMusic doesn't know.
+// clean is t without a JavaScript runtime MyTube doesn't know.
 func (t Tools) clean() Tools {
 	if !slices.Contains([]string{"", "deno", "node", "bun", "quickjs"}, t.JSRuntime) {
 		t.JSRuntime = ""

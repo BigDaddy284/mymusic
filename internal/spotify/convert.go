@@ -7,7 +7,7 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// The objects of the Web API, as far as MyMusic reads them.
+// The objects of the Web API, as far as MyTube reads them.
 
 type image struct {
 	URL    string `json:"url"`

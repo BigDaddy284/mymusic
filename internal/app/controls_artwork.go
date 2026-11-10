@@ -2,7 +2,7 @@ package app
 
 import "fmt"
 
-// ControlsArtwork tells what MyMusic hands the system's media controls of
+// ControlsArtwork tells what MyTube hands the system's media controls of
 // the cover of what plays: for capture mode's act:nowplaying.
 func (a *App) ControlsArtwork() string {
 	c := &a.controls

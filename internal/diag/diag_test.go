@@ -17,7 +17,7 @@ func TestRedact(t *testing.T) {
 		"GET /2.0/?method=track.scrobble&api_key=KEY&sk=SESSION&api_sig=SIG": "GET /2.0/?method=track.scrobble&api_key=…&sk=…&api_sig=…",
 		`{"access_token":"BQD","refresh_token":"AQB","expires_in":3600}`:     `{"access_token":"…","refresh_token":"…","expires_in":3600}`,
 		"Authorization: Bearer BQDxyz.abc-123":                               "Authorization: Bearer …",
-		"mymusic: playing Let It Happen by Tame Impala":                      "mymusic: playing Let It Happen by Tame Impala",
+		"mytube: playing Let It Happen by Tame Impala":                       "mytube: playing Let It Happen by Tame Impala",
 		// The computer's own address goes from socket errors; the host's
 		// stays, and so does a dial's, which has no address of its own.
 		"read tcp 192.168.1.5:50123->142.250.74.118:443: wsarecv: reset":      "read tcp …->142.250.74.118:443: wsarecv: reset",
@@ -43,14 +43,14 @@ func TestLogRotates(t *testing.T) {
 	}
 	fmt.Fprint(l, "token=secret\n")
 	l.Close()
-	if _, err := os.Stat(filepath.Join(dir, "mymusic.1.log")); err != nil {
+	if _, err := os.Stat(filepath.Join(dir, "mytube.1.log")); err != nil {
 		t.Errorf("no older log after %d bytes: %v", maxLogSize, err)
 	}
-	data, _ := os.ReadFile(filepath.Join(dir, "mymusic.log"))
+	data, _ := os.ReadFile(filepath.Join(dir, "mytube.log"))
 	if !strings.Contains(string(data), "token=…") || strings.Contains(string(data), "secret") {
 		t.Errorf("the new log holds %q", data[max(0, len(data)-40):])
 	}
-	if info, _ := os.Stat(filepath.Join(dir, "mymusic.log")); info.Size() > maxLogSize {
+	if info, _ := os.Stat(filepath.Join(dir, "mytube.log")); info.Size() > maxLogSize {
 		t.Errorf("the log grew to %d bytes", info.Size())
 	}
 }

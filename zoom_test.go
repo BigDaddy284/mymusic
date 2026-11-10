@@ -97,7 +97,7 @@ func TestZoomRoom(t *testing.T) {
 	s.drain()
 	tt.Frame()
 	tt.Frame()
-	// The window MyMusic first opens has room for about 140%.
+	// The window MyTube first opens has room for about 140%.
 	if got := percent(s.zoom); got != "139%" {
 		t.Errorf("1280×820 at 200%% shows %s, want 139%%", got)
 	}
@@ -228,11 +228,11 @@ func TestMiniZoomToldOnce(t *testing.T) {
 }
 
 // TestRenderZoom draws Settings › Appearance and the mini player zoomed
-// to MYMUSIC_RENDER, for a look.
+// to MYTUBE_RENDER, for a look.
 func TestRenderZoom(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newZoomShell(t)
 	s.p.PlayTracks(testTracks, 0)

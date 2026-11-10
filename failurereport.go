@@ -126,7 +126,7 @@ func failureStep(st player.Step, pr privacy) string {
 }
 
 // failureStopped tells that the player stopped after a failure.
-const failureStopped = "MyMusic stopped playing after it, as the tracks just before it couldn't play either."
+const failureStopped = "MyTube stopped playing after it, as the tracks just before it couldn't play either."
 
 // failureWhen is the time of a failure, as the details show it: its
 // time of day, and its day too when it isn't today.
@@ -139,10 +139,10 @@ func failureWhen(at, now time.Time) string {
 
 // failureReport is the details of a failure as text for an issue: the
 // track, where it comes from, when it failed, what was tried, and the
-// version of MyMusic and the system it ran on.
+// version of MyTube and the system it ran on.
 func failureReport(f player.Failure, info app.Info, pr privacy) string {
 	var b strings.Builder
-	b.WriteString("MyMusic couldn't play a track\n\n")
+	b.WriteString("MyTube couldn't play a track\n\n")
 	fmt.Fprintf(&b, "- Track: %s\n", pr.clean(failureTrack(f.Track)))
 	fmt.Fprintf(&b, "- From: %s\n", failureFrom(f.Track, pr))
 	if r := f.Recording; r.ID != "" {
@@ -156,7 +156,7 @@ func failureReport(f player.Failure, info app.Info, pr privacy) string {
 	if f.Stopped {
 		fmt.Fprintf(&b, "- %s\n", failureStopped)
 	}
-	fmt.Fprintf(&b, "- MyMusic %s on %s %s\n", info.Version, info.Platform, info.Arch)
+	fmt.Fprintf(&b, "- MyTube %s on %s %s\n", info.Version, info.Platform, info.Arch)
 	return b.String()
 }
 

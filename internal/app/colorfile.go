@@ -16,11 +16,11 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
-// MatugenFile is the file in the data folder that MyMusic's matugen
+// MatugenFile is the file in the data folder that MyTube's matugen
 // template writes, which the colours of settings.ColorsMatugen come from.
 const MatugenFile = "matugen.json"
 
-// ColorFileStatus is what MyMusic read of the colour file the settings
+// ColorFileStatus is what MyTube read of the colour file the settings
 // name.
 type ColorFileStatus struct {
 	// Source is the setting followed.
@@ -77,7 +77,7 @@ var (
 	// watchReady tells whether watches may start: once the app runs, which
 	// tests don't. Until then, the file is read where its settings are.
 	watchReady = func() bool { return mygo.App.IsReady() }
-	// colorFileLook is how long MyMusic waits to look again for a file
+	// colorFileLook is how long MyTube waits to look again for a file
 	// that isn't there, or a watch that ended; colorFileRetry how long it
 	// waits to read again a file that didn't read whole, colorFileTries
 	// times. pywal and matugen empty a file before they write it again.
@@ -88,7 +88,7 @@ var (
 	readColors = colorfile.Read
 )
 
-// ColorFile returns what MyMusic read of the colour file the settings
+// ColorFile returns what MyTube read of the colour file the settings
 // name.
 func (p *Preferences) ColorFile() ColorFileStatus {
 	f := &p.a.colorFile
@@ -198,7 +198,7 @@ func (a *App) watchColorFile(ctx context.Context, gen int, s settings.Settings) 
 }
 
 // readColorFile reads the colour file at path for the settings of gen, and
-// tells whether what MyMusic shows of it changed. With retry, a file that
+// tells whether what MyTube shows of it changed. With retry, a file that
 // doesn't read whole is read again a moment later: it may be being
 // written. A file that still doesn't keeps the colours read last.
 func (a *App) readColorFile(ctx context.Context, gen int, path string, retry bool) bool {

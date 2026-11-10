@@ -1,11 +1,11 @@
 // Spectrum: a radial spectrum of what plays, as a widget of the now playing
-// page. It reads MyMusic's analyser, so it moves for what MyMusic hears:
-// tracks that play in MyMusic, and on Windows Spotify in the Spotify app on
+// page. It reads MyTube's analyser, so it moves for what MyTube hears:
+// tracks that play in MyTube, and on Windows Spotify in the Spotify app on
 // this computer, not on other devices.
 
-import type { MyMusicAPI } from "../../../sdk";
+import type { MyTubeAPI } from "../../../sdk";
 
-export default function activate(api: MyMusicAPI) {
+export default function activate(api: MyTubeAPI) {
   let data = new Uint8Array(0);
 
   api.ui.addWidget({

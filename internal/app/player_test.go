@@ -63,7 +63,7 @@ func TestPlayHereAhead(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	}), settings.Default())
 	sp := func(id string) media.Track { return media.Track{ID: "sp:" + id, Source: media.SourceSpotify} }
-	err := p.PlayHere(context.Background(), "mymusic", sp("t1"), 1500, sp("t2"), sp("t3"),
+	err := p.PlayHere(context.Background(), "mytube", sp("t1"), 1500, sp("t2"), sp("t3"),
 		media.Track{ID: "yt:v1", Source: media.SourceYouTube}, sp("t4"))
 	want := []string{"spotify:track:t1", "spotify:track:t2", "spotify:track:t3"}
 	if err != nil || !slices.Equal(body.URIs, want) || body.PositionMs != 1500 {
@@ -76,7 +76,7 @@ func TestPlayHereWaitsForTheDevice(t *testing.T) {
 	t.Cleanup(func() { playHereRetry = time.Second })
 	var calls atomic.Int32
 	p := testPlayer(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/me/player/play" || r.URL.Query().Get("device_id") != "mymusic" {
+		if r.URL.Path != "/me/player/play" || r.URL.Query().Get("device_id") != "mytube" {
 			t.Errorf("asked %s %s", r.Method, r.URL)
 		}
 		// Spotify does not know a device that just connected, for a moment.
@@ -88,17 +88,17 @@ func TestPlayHereWaitsForTheDevice(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	}), settings.Default())
 	track := media.Track{ID: "sp:t1", Source: media.SourceSpotify}
-	if err := p.PlayHere(context.Background(), "mymusic", track, 0); err != nil || calls.Load() != 3 {
+	if err := p.PlayHere(context.Background(), "mytube", track, 0); err != nil || calls.Load() != 3 {
 		t.Errorf("PlayHere = %v after %d calls, want nil after 3", err, calls.Load())
 	}
 
 	// It gives up on a device Spotify never knows.
 	calls.Store(-100)
-	if err := p.PlayHere(context.Background(), "mymusic", track, 0); err == nil || calls.Load() != -95 {
+	if err := p.PlayHere(context.Background(), "mytube", track, 0); err == nil || calls.Load() != -95 {
 		t.Errorf("PlayHere = %v after %d calls, want an error after 5", err, calls.Load()+100)
 	}
 	// And plays only Spotify tracks.
-	if err := p.PlayHere(context.Background(), "mymusic", media.Track{ID: "yt:v1", Source: media.SourceYouTube}, 0); err == nil {
+	if err := p.PlayHere(context.Background(), "mytube", media.Track{ID: "yt:v1", Source: media.SourceYouTube}, 0); err == nil {
 		t.Error("PlayHere played a YouTube track")
 	}
 }

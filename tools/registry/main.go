@@ -1,11 +1,11 @@
 // Command registry builds the index of the community's themes and plugins
-// that MyMusic's marketplace reads, community/registry-2.json, of
+// that MyTube's marketplace reads, community/registry-2.json, of
 // community/themes and community/plugins, and checks every add-on on the
 // way. Apps download the add-ons from the registry branch, where the
 // Registry workflow publishes them: the plugins' JavaScript, compiled from
 // their TypeScript by `bun run build:plugins`, which main doesn't keep.
 //
-// community/registry.json is the registry of the web interface of MyMusic
+// community/registry.json is the registry of the web interface of MyTube
 // 0.4 and before, which keep reading it: it stays as it is, with its
 // add-ons in web/ of the registry branch.
 //
@@ -35,7 +35,7 @@ import (
 // branch, which the Registry workflow publishes them to.
 const baseURL = addons.CommunityFilesURL
 
-// webBaseURL is where MyMusic 0.4 and before download the add-ons of
+// webBaseURL is where MyTube 0.4 and before download the add-ons of
 // registry.json.
 const webBaseURL = baseURL + "web/"
 
@@ -87,7 +87,7 @@ func main() {
 	fmt.Printf("wrote %s: %d themes, %d plugins\n", out, len(reg.Themes), len(reg.Plugins))
 }
 
-// checkWeb checks registry.json, the frozen registry of MyMusic 0.4 and
+// checkWeb checks registry.json, the frozen registry of MyTube 0.4 and
 // before: that it reads, and sends them to web/ of the registry branch.
 func checkWeb(community string) error {
 	data, err := os.ReadFile(filepath.Join(community, "registry.json"))
@@ -127,7 +127,7 @@ func stage(community, dir string, entries []addons.Entry) (int, error) {
 	return n, nil
 }
 
-// builtinIDs returns the IDs of the themes MyMusic ships with, which
+// builtinIDs returns the IDs of the themes MyTube ships with, which
 // community themes may not take.
 func builtinIDs(dir string) (map[string]bool, error) {
 	ids := map[string]bool{}
@@ -165,7 +165,7 @@ func collect(community string, kind addons.Kind, builtin map[string]bool, api in
 		switch {
 		case err != nil:
 		case kind == addons.KindTheme && builtin[e.ID]:
-			err = errors.New("a theme MyMusic ships with has this id")
+			err = errors.New("a theme MyTube ships with has this id")
 		case kind == addons.KindPlugin && max(e.API, 1) != api:
 			err = fmt.Errorf(`plugins here are made for the plugin API %d: "api": %d`, api, api)
 		}

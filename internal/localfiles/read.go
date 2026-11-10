@@ -30,7 +30,7 @@ func (x *Index) readFile(path string, info fs.FileInfo) (e Entry) {
 	defer func() {
 		// Tags made to break what reads them are a broken file.
 		if p := recover(); p != nil {
-			log.Printf("mymusic: reading %s: %v", path, p)
+			log.Printf("mytube: reading %s: %v", path, p)
 			e = Entry{Path: path, Size: info.Size(), Modified: info.ModTime().UnixNano(), Skipped: "it's broken"}
 		}
 	}()

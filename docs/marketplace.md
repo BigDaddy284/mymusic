@@ -1,13 +1,13 @@
 # Marketplace
 <!-- docs: group=using order=80 -->
 
-The MyMusic marketplace has community themes and plugins: install them,
+The MyTube marketplace has community themes and plugins: install them,
 enable plugins, see what a plugin can do and asks for, and reload add-ons.
 
-Themes and plugins are add-ons: a theme sets MyMusic's colours, typefaces
+Themes and plugins are add-ons: a theme sets MyTube's colours, typefaces
 and corners, and a plugin adds pages, commands and more. The community
 makes them, and the ones in the marketplace were reviewed in the open, in
-MyMusic's repository on GitHub.
+MyTube's repository on GitHub.
 
 ## Open the marketplace
 
@@ -41,7 +41,7 @@ it the theme of the mode the computer is in now.
 
 ![The marketplace's plugins: the cards of Sleep Timer and Spectrum, each with its version and author, a line on what it does, what it asks for, as "Asks for playback, storage", and Install](shots/plugin.webp)
 
-1. Choose **install** on the plugin's card. MyMusic asks first:
+1. Choose **install** on the plugin's card. MyTube asks first:
 
    > Plugins can control the player, change your library and reach the
    > internet, whatever they ask for. Install plugins from authors you
@@ -56,13 +56,13 @@ it the theme of the mode the computer is in now.
 
 A plugin that fails to start says why, in a notice and on its row in
 Settings › Plugins ("failed:" and the reason); **reload** tries it again. A
-card that says "made for an older MyMusic" is a plugin written for the
-web interface of MyMusic 0.4 and before, which doesn't run until its
-author moves it to the plugin API of MyMusic's own interface.
+card that says "made for an older MyTube" is a plugin written for the
+web interface of MyTube 0.4 and before, which doesn't run until its
+author moves it to the plugin API of MyTube's own interface.
 
 ## What a plugin can do
 
-A plugin runs in a JavaScript engine of MyMusic's own, inside MyMusic,
+A plugin runs in a JavaScript engine of MyTube's own, inside MyTube,
 not in a browser. Through the [plugin API](plugins.md#the-api), it can:
 
 - add **pages**, with an item of their own in the sidebar;
@@ -81,7 +81,7 @@ not in a browser. Through the [plugin API](plugins.md#the-api), it can:
 
 What it draws, it draws in your theme's colours and type. Everything it
 added goes when you turn it off.
-[How MyMusic works](how-it-works.md#themes-plugins-and-the-marketplace)
+[How MyTube works](how-it-works.md#themes-plugins-and-the-marketplace)
 tells how plugins run, and
 [the add-ons' part of the architecture](architecture/addons.md) shows the
 code.
@@ -99,7 +99,7 @@ for:
 | `storage` | keeps values between runs |
 
 These tell you what the plugin does. They aren't enforced: every plugin can
-use the whole API, which is why MyMusic asks you to trust it, and why the
+use the whole API, which is why MyTube asks you to trust it, and why the
 community's reviewers read every line of it before it reaches the
 marketplace.
 
@@ -123,7 +123,7 @@ in your add-ons folders again, reads your
 again the plugins that failed. **reload** in Settings › Plugins does the
 same. Run it after you put an add-on in a folder yourself, or change one.
 
-The folders are in MyMusic's
+The folders are in MyTube's
 [data folder](data-and-privacy.md#the-data-folder), `addons/themes` and
 `addons/plugins`: **open themes folder** in Settings › Appearance › Theme
 and **open plugins folder** in Settings › Plugins open them.

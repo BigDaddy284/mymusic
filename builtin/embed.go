@@ -1,4 +1,4 @@
-// Package builtin holds the add-ons MyMusic ships with, laid out as the
+// Package builtin holds the add-ons MyTube ships with, laid out as the
 // add-ons folder of the user: themes/<id>/theme.json and its files.
 package builtin
 

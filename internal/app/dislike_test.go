@@ -140,7 +140,7 @@ func TestSetDisliked(t *testing.T) {
 		t.Error("liking a disliked track left it disliked")
 	}
 
-	// Signed out of YouTube Music, a dislike stays in MyMusic.
+	// Signed out of YouTube Music, a dislike stays in MyTube.
 	a.youtube.SetCookies(nil)
 	if err := c.SetDisliked(ctx, song, true); err != nil {
 		t.Fatal(err)

@@ -2,7 +2,7 @@
   "id": "spectrum",
   "name": "Spectrum",
   "version": "2.0.0",
-  "author": "MyMusic community",
+  "author": "MyTube community",
   "description": "A radial spectrum of what plays, drawn in the accent colour on the now playing page.",
   "main": "index.js",
   "api": 2,

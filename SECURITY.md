@@ -9,18 +9,18 @@ not in a public issue. Tell what an attacker could do, and how to reproduce
 it. You will hear back within a week, and be credited in the fix unless you
 prefer not to.
 
-## What MyMusic protects
+## What MyTube protects
 
 - **Your sign-ins.** The Spotify token, the Last.fm connection and the key
   of the YouTube Music session live in Windows' Credential Manager. A
   sign-in the Credential Manager can't keep, as in a logon session without
-  credentials, is encrypted for your Windows account (DPAPI) in MyMusic's
+  credentials, is encrypted for your Windows account (DPAPI) in MyTube's
   data folder instead. Where an administrator's policy stops the
   Credential Manager from keeping credentials for the session, that file
   may keep them all the same. Like the credential store, this keeps them
   from the computer's other users, not from programs you run.
-  MyMusic never sees your passwords.
-- **Its windows.** MyMusic draws its own windows. Its one web page,
+  MyTube never sees your passwords.
+- **Its windows.** MyTube draws its own windows. Its one web page,
   Spotify's player on Windows, may call one Go service, for the Spotify
   token that player needs; other pages, as Google's sign-in, call none.
   Links to websites open in your browser, not in the app's window.
@@ -28,7 +28,7 @@ prefer not to.
   limited, and installed into a temporary folder that replaces the installed
   version only once valid. Theme manifests are checked, color by color, and
   add-on files stay inside their folder.
-- **yt-dlp.** MyMusic downloads it from its official releases and checks it
+- **yt-dlp.** MyTube downloads it from its official releases and checks it
   against the checksums the release publishes; it passes only validated
   video IDs to it.
 
@@ -39,6 +39,6 @@ control the player, read what you play, your settings and your mixes, like
 tracks and make mixes, which reaches your accounts where you signed in,
 talk to any server on the internet, and add to the interface. Each runs in a
 JavaScript engine of its own, which gives it nothing more: not your files,
-nor your sign-ins. MyMusic tells you so before enabling a plugin. Enable
+nor your sign-ins. MyTube tells you so before enabling a plugin. Enable
 plugins from authors you trust; plugins of the community registry are
 reviewed before they are listed.

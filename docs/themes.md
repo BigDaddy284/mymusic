@@ -1,7 +1,7 @@
 # Themes
 <!-- docs: group=make order=10 -->
 
-A theme sets the colors, the typefaces and the corners of MyMusic, which
+A theme sets the colors, the typefaces and the corners of MyTube, which
 draws everything with them. A theme is a folder:
 
 ```
@@ -67,9 +67,9 @@ Every change to `theme.json` shows after a reload.
 |---|---|
 | `id` | lowercase letters, digits and dashes; the folder's name |
 | `version` | a semantic version, as `1.2.0`; raise it with every change you publish |
-| `scheme` | `dark` or `light`: the controls MyMusic draws, such as switches and sliders, follow it |
+| `scheme` | `dark` or `light`: the controls MyTube draws, such as switches and sliders, follow it |
 | `colors` | every color below, as `#rgb`, `#rrggbb`, `#rrggbbaa`, `rgb()`, `rgba()`, `hsl()`, `oklch()` or `transparent` |
-| `fonts` | font-family lists, of which MyMusic uses the first the computer has: `body` for text, `display` for titles and the large lowercase words (the body's when left out) |
+| `fonts` | font-family lists, of which MyTube uses the first the computer has: `body` for text, `display` for titles and the large lowercase words (the body's when left out) |
 | `radius` | the corner radius of tiles and cards in the Tiles layout, as `12px`; smaller things round by 60% of it |
 | `preview` | an image of the theme, for the marketplace |
 | `files` | every file of the theme: the registry installs exactly these |
@@ -87,7 +87,7 @@ Every change to `theme.json` shows after a reload.
 | `youtube`, `spotify` | the marks telling where a track comes from |
 | `tile-1` … `tile-4`, `tile-text` | the flat tiles of the home page and the stats, and ink on them |
 
-A theme may also set these, as the built-in MyMusic themes do:
+A theme may also set these, as the built-in MyTube themes do:
 
 | Token | Used for |
 |---|---|
@@ -96,18 +96,18 @@ A theme may also set these, as the built-in MyMusic themes do:
 
 Keep text readable: `text-muted` on `bg`, `accent-text` on `accent` and
 `tile-text` on every tile need a contrast of at least 4.5:1. When the user
-picks an accent of their own, or lets it follow the artwork, MyMusic picks
+picks an accent of their own, or lets it follow the artwork, MyTube picks
 the accent's ink itself, and keeps the accent readable on your `bg`.
 
 The Studio, Blend, Expressive and Crate layouts fill what is chosen, as the
 current page, and their secondary buttons with `surface-3`: `text` on it
 needs 4.5:1 as well. They set the accent as small text on the panels, so
-there MyMusic darkens or lightens yours until it reads at 4.5:1 on
+there MyTube darkens or lightens yours until it reads at 4.5:1 on
 `surface`.
 
 ### Fonts
 
-MyMusic ships Selawik, Quicksand, Mochi's round face, Roboto Flex, the
+MyTube ships Selawik, Quicksand, Mochi's round face, Roboto Flex, the
 Material themes' face, at weights 400, 500 and 700, and Archivo
 SemiCondensed at 800, the Walnut themes' headings'; other families must be
 on the user's computer, so end each list with a family Windows has:
@@ -125,7 +125,7 @@ with any theme:
 - **Expressive**, after Material 3 Expressive: tonal fills, big rounded
   shapes, pill buttons, a floating player bar and springy motion.
 - **Crate**: dense rows, big covers in cards and bold, tight headings.
-- **Tiles**, MyMusic's first: flat tiles, giant light lowercase words
+- **Tiles**, MyTube's first: flat tiles, giant light lowercase words
   and outlined boxes. Only Tiles rounds with your `radius`; the others
   have corners of their own.
 
@@ -135,30 +135,30 @@ weights looks its best in all of them.
 
 ## Effects
 
-The themes MyMusic ships with add effects of their own, which MyMusic
+The themes MyTube ships with add effects of their own, which MyTube
 draws and the user tunes in
 [Settings › Appearance](look-and-feel.md#theme-options): Mix's tile textures,
 Aurora's drifting lights and frosted glass, Sakura's petals, Terminal's
 scanlines and glow, Greenroom's and Glasshouse's grounds in the colour of
 the cover playing, Anime's speed lines and screentone, and Mochi's rising
-sparkles, and the Material themes' colours, which MyMusic makes of a
+sparkles, and the Material themes' colours, which MyTube makes of a
 seed colour in Material's HCT color space, as Material's dynamic color
 does: the cover's while it plays and "Follow the artwork" is on, the
-accent you chose otherwise, or MyMusic's pink. A theme of yours sets the
-tokens above, and MyMusic draws
+accent you chose otherwise, or MyTube's pink. A theme of yours sets the
+tokens above, and MyTube draws
 everything else with them.
 
-Themes made for the web interface of MyMusic 0.4 and before still load:
-MyMusic reads their colors, fonts and radius, and ignores their stylesheet
+Themes made for the web interface of MyTube 0.4 and before still load:
+MyTube reads their colors, fonts and radius, and ignores their stylesheet
 and their options.
 
 ## Colours from a file
 
 pywal and matugen make a palette from your wallpaper, and write it to a
-file each time you change the wallpaper. MyMusic can wear those colours,
+file each time you change the wallpaper. MyTube can wear those colours,
 and follow them as they change. In Settings › Appearance › colour and type,
 set **Colours from a file** to pywal, matugen, or a file of your own.
-Under it, MyMusic shows the file it reads and when it last read it, or
+Under it, MyTube shows the file it reads and when it last read it, or
 why it can't.
 
 The file's colours replace the theme's. The theme keeps its type, corners
@@ -170,12 +170,12 @@ wallpaper's colours. The theme cards keep showing each theme's own colours.
   picked one, then the file's. Follow the artwork is on by default: turn it
   off to keep the file's accent while music plays.
 - **Light or dark.** A file with one set of colours, as pywal's, decides
-  whether MyMusic is light or dark, title bar included. With Follow the
-  computer on, MyMusic wears the theme you chose for the file's mode. A
+  whether MyTube is light or dark, title bar included. With Follow the
+  computer on, MyTube wears the theme you chose for the file's mode. A
   file with both, as matugen's, gives its light colours to a light theme
   and its dark ones to a dark theme, so Follow the computer keeps working.
 - **Readable text.** Colours made from a wallpaper can be anything, so
-  MyMusic changes the ones that don't read, keeping their hue: text,
+  MyTube changes the ones that don't read, keeping their hue: text,
   muted text and danger get 4.5:1 on the ground, the ink on the accent and
   on every tile 4.5:1, and the accent, success and the YouTube Music and
   Spotify marks 3:1. Your file's exact colours may differ a little on
@@ -185,17 +185,17 @@ wallpaper's colours. The theme cards keep showing each theme's own colours.
 
 ### pywal
 
-MyMusic reads `colors.json` where pywal writes it: in `$PYWAL_CACHE_DIR`
-if it is set, else in `%USERPROFILE%\.cache\wal`. There's nothing to set up: run `wal`, and MyMusic follows.
+MyTube reads `colors.json` where pywal writes it: in `$PYWAL_CACHE_DIR`
+if it is set, else in `%USERPROFILE%\.cache\wal`. There's nothing to set up: run `wal`, and MyTube follows.
 
-If pywal writes somewhere MyMusic doesn't look, as when you set
+If pywal writes somewhere MyTube doesn't look, as when you set
 `PYWAL_CACHE_DIR` only in your shell, which apps started from the desktop
 don't see, choose that `colors.json` as a file of your own.
 
 ### matugen
 
-MyMusic reads `matugen.json` in its data folder, `%AppData%\MyMusic`. Give matugen MyMusic's template, which
-writes MyMusic's colours for dark and light (**copy the template** in
+MyTube reads `matugen.json` in its data folder, `%AppData%\MyTube`. Give matugen MyTube's template, which
+writes MyTube's colours for dark and light (**copy the template** in
 Settings copies it):
 
 ```json
@@ -240,30 +240,30 @@ Settings copies it):
 ```
 
 Each brace of it is on a line of its own: two braces together are how
-matugen's expressions start and end. Save it as `templates/mymusic.json`
+matugen's expressions start and end. Save it as `templates/mytube.json`
 beside matugen's `config.toml`, which is in
 `%AppData%\InioX\matugen\config`, and add to `config.toml`:
 
 ```toml
-[templates.mymusic]
-input_path = "templates/mymusic.json"
-output_path = "~/AppData/Roaming/MyMusic/matugen.json"
+[templates.mytube]
+input_path = "templates/mytube.json"
+output_path = "~/AppData/Roaming/MyTube/matugen.json"
 ```
 
 matugen reads `input_path` from the folder `config.toml` is in. Then run
-`matugen image <your wallpaper>`, and MyMusic follows.
+`matugen image <your wallpaper>`, and MyTube follows.
 
 ### A file of your own
 
-Choose any file that holds one of these, and MyMusic tells which it is by
+Choose any file that holds one of these, and MyTube tells which it is by
 what it holds:
 
 - pywal's `colors.json`;
 - what `matugen image <your wallpaper> --json hex` prints, saved to a file,
   as with `> ~/matugen-colors.json`: matugen 2.x, 3.x and 4.x print it in
-  shapes of their own, and MyMusic reads all three;
-- what MyMusic's matugen template writes;
-- a `theme.json`, whose `colors` MyMusic takes, and its `scheme`; or a
+  shapes of their own, and MyTube reads all three;
+- what MyTube's matugen template writes;
+- a `theme.json`, whose `colors` MyTube takes, and its `scheme`; or a
   file of those colours alone, such as one a pywal template writes (pywal
   writes the templates of `~/.config/wal/templates` into its cache folder).
 
@@ -286,28 +286,28 @@ A path may start with `~`, your home folder; one that Windows Explorer's
 | `tile-1` to `tile-4` | the four most vivid of `color1` to `color6` | `primary`, `tertiary`, `secondary`, `source_color` |
 | `tile-text` | black or white, whichever reads on all four | `on_primary` |
 
-MyMusic's template and a `theme.json` give the tokens themselves. The
+MyTube's template and a `theme.json` give the tokens themselves. The
 fourth tile of matugen's JSON is the wallpaper's own colour, unless it is
 all but the primary: then it falls between the first two.
 
 ### Changes and failures
 
-- MyMusic watches the file. When pywal or matugen writes it again, the
+- MyTube watches the file. When pywal or matugen writes it again, the
   main window and the mini player change colour within a moment, with no
   reload. **Reload add-ons** reads it again too, as a file on a network
   share may need.
-- Both tools empty the file before they write it again, so MyMusic may
+- Both tools empty the file before they write it again, so MyTube may
   find it half written. It reads it again a moment later, and until the
   file reads whole, it keeps the colours it read last, never the broken
   ones. If the file still doesn't read, Settings says what's wrong.
 - If the file goes away, the theme's colours come back. If it isn't there
-  yet because pywal or matugen hasn't run, MyMusic looks for it every few
+  yet because pywal or matugen hasn't run, MyTube looks for it every few
   seconds.
-- If the file is over 1 MB, is a folder, or holds no colours MyMusic
-  knows, MyMusic keeps the colours it read last, or the theme's if it
+- If the file is over 1 MB, is a folder, or holds no colours MyTube
+  knows, MyTube keeps the colours it read last, or the theme's if it
   has read none, and Settings says why.
 - pywal 3.3.0 on Windows writes the wallpaper's path into `colors.json`
-  without escaping its backslashes, which isn't valid JSON. MyMusic reads
+  without escaping its backslashes, which isn't valid JSON. MyTube reads
   the colours from it anyway.
 
 ## Share it

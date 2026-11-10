@@ -150,7 +150,7 @@ func (s *shell) marketCard(c *ui.Context, kind addons.Kind, e addons.Entry, base
 						s.uninstall(kind, e)
 					}
 				case kind == addons.KindPlugin && e.API != addons.PluginAPI:
-					ui.Text(c, k.sentence("made for an older MyMusic")).FontSize(k.smallSize()).TextColor(k.muted)
+					ui.Text(c, k.sentence("made for an older MyTube")).FontSize(k.smallSize()).TextColor(k.muted)
 				default:
 					label := "install"
 					switch {

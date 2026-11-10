@@ -42,7 +42,7 @@ func (s *shell) setSpeed(v float64) {
 }
 
 // speedLocked tells why the speed of what plays can't change, or "" when
-// it can: Spotify's players, in MyMusic or on Spotify Connect, play its
+// it can: Spotify's players, in MyTube or on Spotify Connect, play its
 // tracks and episodes at their own speed, as a live stream plays as it's
 // broadcast. A Spotify track not on its device yet, as it loads, goes
 // there, unless Spotify tracks play from YouTube Music.

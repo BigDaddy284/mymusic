@@ -150,7 +150,7 @@ func fileTokens(f colorfile.Colors, mode string) (map[string]color.NRGBA, bool) 
 }
 
 // fileMode tells, of a file with a single set of colours, whether they are
-// dark: such a file decides whether MyMusic is light or dark.
+// dark: such a file decides whether MyTube is light or dark.
 func fileMode(f colorfile.Colors) (dark, one bool) {
 	if !f.OneMode() {
 		return false, false

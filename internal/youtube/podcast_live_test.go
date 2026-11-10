@@ -10,10 +10,10 @@ import (
 )
 
 // TestLivePodcasts checks the parsers of podcasts against YouTube Music
-// itself, with MYMUSIC_LIVE=1: a search, a show's page and its next page.
+// itself, with MYTUBE_LIVE=1: a search, a show's page and its next page.
 func TestLivePodcasts(t *testing.T) {
-	if os.Getenv("MYMUSIC_LIVE") == "" {
-		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube Music")
+	if os.Getenv("MYTUBE_LIVE") == "" {
+		t.Skip("set MYTUBE_LIVE=1 to test against YouTube Music")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

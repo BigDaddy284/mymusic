@@ -3,7 +3,7 @@ package app
 // A cast device as the player's output: the player's stream commands become
 // the session's, one after another beside the player's goroutine, and the
 // device's statuses the engine's events. The device fetches the audio from
-// MyMusic, through castServer.
+// MyTube, through castServer.
 
 import (
 	"context"
@@ -28,7 +28,7 @@ var (
 	castTick = 500 * time.Millisecond
 	// castAskEvery is how often the device is asked where it is.
 	castAskEvery = 5 * time.Second
-	// castEcho is how long after MyMusic set the device's volume the
+	// castEcho is how long after MyTube set the device's volume the
 	// device's word of its volume is taken as the echo of it.
 	castEcho = 1500 * time.Millisecond
 	// castCommandTimeout bounds a command of the device.
@@ -96,7 +96,7 @@ type castOut struct {
 	// wantPlay is set while the device was last asked to play, rather than
 	// to wait paused: only then does buffering tell it plays.
 	wantPlay bool
-	// volumeSet is when MyMusic last set the device's volume, and
+	// volumeSet is when MyTube last set the device's volume, and
 	// pendingVolume the volume to set once the command before is done;
 	// muted is whether the device is muted, as it last told.
 	volumeSet     time.Time
@@ -141,7 +141,7 @@ func (o *castOut) do(fn func(ctx context.Context)) {
 // errLive is why a live stream doesn't play on a cast device.
 var errLive = errors.New("live streams don't play on cast devices yet")
 
-// errLocalCast is why a track on this computer doesn't: MyMusic doesn't
+// errLocalCast is why a track on this computer doesn't: MyTube doesn't
 // hand a device its file.
 var errLocalCast = errors.New("tracks on this computer don't play on cast devices")
 
@@ -241,19 +241,19 @@ func (o *castOut) load(gen int, m cast.Media, speed float64) {
 		o.take(st)
 		if speed > 0 && speed != 1 {
 			if err := o.session.SetRate(ctx, speed); err != nil {
-				log.Printf("mymusic: the cast device didn't take the speed %v: %v", speed, err)
+				log.Printf("mytube: the cast device didn't take the speed %v: %v", speed, err)
 			}
 		}
 	})
 }
 
 // loadFailure tells why a load failed, in the interface's words: a device
-// that never fetched the audio can't reach MyMusic.
+// that never fetched the audio can't reach MyTube.
 func (o *castOut) loadFailure(err error, fetched bool) string {
 	var re *cast.RequestError
 	switch {
 	case errors.As(err, &re) && re.Type == "LOAD_FAILED" && !fetched:
-		return "The cast device couldn't reach MyMusic: let MyMusic take connections from your network in the firewall"
+		return "The cast device couldn't reach MyTube: let MyTube take connections from your network in the firewall"
 	case errors.As(err, &re) && re.Type == "LOAD_FAILED":
 		return "The cast device couldn't play this track's audio"
 	case errors.Is(err, context.DeadlineExceeded):
@@ -351,7 +351,7 @@ func (o *castOut) SetVolume(v float64) {
 		o.pendingVolume = nil
 		o.mu.Unlock()
 		if err := o.session.SetVolume(ctx, v); err != nil {
-			log.Printf("mymusic: setting the cast device's volume: %v", err)
+			log.Printf("mytube: setting the cast device's volume: %v", err)
 		}
 		o.mu.Lock()
 		o.volumeSet = time.Now()
@@ -372,7 +372,7 @@ func (o *castOut) SetMuted(muted bool) {
 	}
 	o.do(func(ctx context.Context) {
 		if err := o.session.SetMuted(ctx, muted); err != nil {
-			log.Printf("mymusic: muting the cast device: %v", err)
+			log.Printf("mytube: muting the cast device: %v", err)
 		}
 		o.mu.Lock()
 		o.volumeSet = time.Now()
@@ -386,7 +386,7 @@ func (o *castOut) SetSpeed(speed float64) {
 			speed = 1
 		}
 		if err := o.session.SetRate(ctx, speed); err != nil {
-			log.Printf("mymusic: the cast device didn't take the speed %v: %v", speed, err)
+			log.Printf("mytube: the cast device didn't take the speed %v: %v", speed, err)
 		}
 	})
 }
@@ -395,7 +395,7 @@ func (o *castOut) SetSpeed(speed float64) {
 // player, as it tells what the device does.
 func (o *castOut) command(err error) {
 	if err != nil {
-		log.Printf("mymusic: the cast device turned down a command: %v", err)
+		log.Printf("mytube: the cast device turned down a command: %v", err)
 	}
 }
 
@@ -463,7 +463,7 @@ func (o *castOut) take(st cast.MediaStatus) {
 }
 
 // onVolume takes in the device's volume, which the player shows: unless it
-// is the echo of the volume MyMusic just set.
+// is the echo of the volume MyTube just set.
 func (o *castOut) onVolume(v cast.Volume, show func(level float64, muted bool)) {
 	o.mu.Lock()
 	o.muted = v.Muted

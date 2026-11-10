@@ -1,5 +1,5 @@
 // Package match finds a Spotify track's recording on YouTube Music, so
-// that Spotify tracks play through MyMusic's own player, with its
+// that Spotify tracks play through MyTube's own player, with its
 // equalizer, crossfade and visualizer, and without Spotify Premium.
 package match
 
@@ -18,14 +18,14 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
-// threshold is the lowest score of a match MyMusic plays.
+// threshold is the lowest score of a match MyTube plays.
 const threshold = 0.6
 
 // ErrNoMatch is returned when YouTube Music has no recording close enough.
 var ErrNoMatch = errors.New("no matching recording found on YouTube Music")
 
 // ErrLocal is returned for a track on the user's computer, which is never
-// looked for on YouTube Music: MyMusic plays it from its file.
+// looked for on YouTube Music: MyTube plays it from its file.
 var ErrLocal = errors.New("a track on this computer isn't looked for on YouTube Music")
 
 // Searcher searches YouTube Music.

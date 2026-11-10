@@ -14,15 +14,15 @@ import (
 
 // TestLivePlaylistSuggestions reads the songs YouTube Music suggests for a
 // playlist of a real account, and five more by the refresh, which changes
-// nothing: the playlist MYMUSIC_YT_PLAYLIST names, or the account's first
-// playlist of its own. MYMUSIC_YT_RECORD names a folder to keep the
+// nothing: the playlist MYTUBE_YT_PLAYLIST names, or the account's first
+// playlist of its own. MYTUBE_YT_RECORD names a folder to keep the
 // answers in, for testdata:
 //
-//	MYMUSIC_LIVE=1 MYMUSIC_YT_COOKIES='SAPISID=…; …' MYMUSIC_YT_RECORD=dir go test ./internal/youtube -run LivePlaylistSuggestions -v
+//	MYTUBE_LIVE=1 MYTUBE_YT_COOKIES='SAPISID=…; …' MYTUBE_YT_RECORD=dir go test ./internal/youtube -run LivePlaylistSuggestions -v
 func TestLivePlaylistSuggestions(t *testing.T) {
-	header := os.Getenv("MYMUSIC_YT_COOKIES")
-	if os.Getenv("MYMUSIC_LIVE") == "" || header == "" {
-		t.Skip("set MYMUSIC_LIVE=1 and MYMUSIC_YT_COOKIES to read the suggestions of a signed-in account's playlist")
+	header := os.Getenv("MYTUBE_YT_COOKIES")
+	if os.Getenv("MYTUBE_LIVE") == "" || header == "" {
+		t.Skip("set MYTUBE_LIVE=1 and MYTUBE_YT_COOKIES to read the suggestions of a signed-in account's playlist")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
@@ -32,7 +32,7 @@ func TestLivePlaylistSuggestions(t *testing.T) {
 		t.Fatal(err)
 	}
 	c.SetCookies(cookies)
-	id := os.Getenv("MYMUSIC_YT_PLAYLIST")
+	id := os.Getenv("MYTUBE_YT_PLAYLIST")
 	if id == "" {
 		playlists, err := c.LibraryPlaylists(ctx)
 		if err != nil {
@@ -49,7 +49,7 @@ func TestLivePlaylistSuggestions(t *testing.T) {
 		}
 	}
 	record := func(name string, n node) {
-		dir := os.Getenv("MYMUSIC_YT_RECORD")
+		dir := os.Getenv("MYTUBE_YT_RECORD")
 		if dir == "" {
 			return
 		}

@@ -66,7 +66,7 @@ func DiscordActivity(d settings.Desktop, np NowPlaying, now time.Time) *discord.
 		Type:    discord.Listening,
 		Details: ExpandDiscordLine(d.DiscordFirstLine, t),
 		State:   ExpandDiscordLine(d.DiscordSecondLine, t),
-		// The member list says "Listening to MyMusic", whether the track
+		// The member list says "Listening to MyTube", whether the track
 		// is Spotify's or YouTube Music's.
 		StatusDisplay: discord.ShowName,
 	}
@@ -223,7 +223,7 @@ func discordServiceName(t media.Track) string {
 	case media.SourceFile:
 		return "my computer"
 	}
-	return "MyMusic"
+	return "MyTube"
 }
 
 // discordBadgeText is what the badge of t's service tells as it is

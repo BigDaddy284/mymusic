@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// NativeAudio reports whether MyMusic's audio engine plays on this
+// NativeAudio reports whether MyTube's audio engine plays on this
 // system: 64-bit Windows.
 const NativeAudio = runtime.GOOS == "windows" && (runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64")
 

@@ -59,7 +59,7 @@ var (
 const labelAhead = 5
 
 // pausedChecks tells that the checks of labels pause.
-const pausedChecks = "YouTube isn't answering MyMusic's checks for AI labels, so tracks play unchecked for now"
+const pausedChecks = "YouTube isn't answering MyTube's checks for AI labels, so tracks play unchecked for now"
 
 // errOnlyLabeled is why a radio added nothing: all it held that wasn't
 // queued is labeled as made with AI.

@@ -60,11 +60,11 @@ import (
 type group struct{ id, title string }
 
 // groups are the docs' groups, in the site's order: what a user starts
-// with, what MyMusic does, how it does it, what to make for it, and the
+// with, what MyTube does, how it does it, what to make for it, and the
 // project.
 var groups = []group{
 	{"start", "Getting started"},
-	{"using", "Using MyMusic"},
+	{"using", "Using MyTube"},
 	{"inside", "How it works"},
 	{"make", "Make your own"},
 	{"project", "Project"},

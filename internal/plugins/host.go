@@ -1,4 +1,4 @@
-// Package plugins runs MyMusic's plugins: each in a JavaScript runtime of
+// Package plugins runs MyTube's plugins: each in a JavaScript runtime of
 // its own (sobek, an ECMAScript engine in Go), on a goroutine of its own,
 // with the API of docs/plugins.md. The native interface shows what they
 // add: sidebar items, pages, widgets, track actions and commands.
@@ -215,7 +215,7 @@ func (h *Host) fail(pl *plugin, err error) {
 	}
 	h.failures[pl.id] = failure{err.Error(), pl.version}
 	h.mu.Unlock()
-	log.Printf("mymusic: the plugin %s failed: %v", pl.id, err)
+	log.Printf("mytube: the plugin %s failed: %v", pl.id, err)
 	h.toast(fmt.Sprintf("The plugin %s failed to start: %v", pl.name, err), "error")
 	h.changed()
 }
@@ -235,7 +235,7 @@ func (h *Host) stopLocked(pl *plugin) {
 		case <-pl.loop.done:
 		case <-time.After(wait):
 			if vm := pl.runtime.Load(); vm != nil {
-				vm.Interrupt("MyMusic stopped the plugin")
+				vm.Interrupt("MyTube stopped the plugin")
 			}
 		}
 	}()

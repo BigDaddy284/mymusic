@@ -1,6 +1,6 @@
 // Command discordbadges draws the badges the Discord status can show at the
 // corner of the cover (#352): brand/discord's PNGs, which Discord reads
-// from GitHub. Each is a mark of MyMusic's own on a dark ground, as the
+// from GitHub. Each is a mark of MyTube's own on a dark ground, as the
 // app tells the services apart beside their tracks: a disc for Spotify, a
 // square for YouTube Music, a record for a file on the computer, and two
 // bars for a paused track. Discord shows them round, so each mark keeps to

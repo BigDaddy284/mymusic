@@ -2,7 +2,7 @@
 // the Spotify Web API, and plays tracks on Spotify Connect devices.
 //
 // Spotify lets an app in development mode serve its owner and a few users
-// they invite, so each MyMusic user signs in with a Client ID of their own,
+// they invite, so each MyTube user signs in with a Client ID of their own,
 // which they create in the Spotify developer dashboard.
 package spotify
 
@@ -36,7 +36,7 @@ const (
 	RedirectURI = "http://127.0.0.1:47823/callback"
 )
 
-// Scopes are the permissions MyMusic asks for.
+// Scopes are the permissions MyTube asks for.
 var Scopes = []string{
 	"user-library-read",
 	"user-library-modify",
@@ -53,7 +53,7 @@ var Scopes = []string{
 	"user-top-read",
 	// Where the user left a podcast's episode, which it resumes from.
 	"user-read-playback-position",
-	// The Web Playback SDK plays in MyMusic with these.
+	// The Web Playback SDK plays in MyTube with these.
 	"streaming",
 	"user-read-email",
 	"user-read-private",
@@ -264,12 +264,12 @@ func randomString(n int) string {
 
 // writeCallbackPage tells the user, in the browser, how signing in went.
 func writeCallbackPage(w http.ResponseWriter, err error) {
-	title, msg := "Signed in to Spotify", "You can close this tab and go back to MyMusic."
+	title, msg := "Signed in to Spotify", "You can close this tab and go back to MyTube."
 	if err != nil {
 		title, msg = "Could not sign in", err.Error()
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprintf(w, `<!doctype html><meta charset="utf-8"><title>MyMusic</title>
+	fmt.Fprintf(w, `<!doctype html><meta charset="utf-8"><title>MyTube</title>
 <body style="font-family:system-ui,sans-serif;display:grid;place-items:center;height:100vh;margin:0;background:#0e0f13;color:#f2f2f5">
 <div style="text-align:center"><h1>%s</h1><p style="color:#a3a3b2">%s</p></div></body>`, html.EscapeString(title), html.EscapeString(msg))
 }

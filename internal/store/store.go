@@ -337,7 +337,7 @@ func (f *File[T]) write(data []byte) error {
 			if err == nil {
 				return nil
 			}
-			log.Printf("mymusic: %s links to %s, which can't be written (%v): saving over the link", f.path, target, err)
+			log.Printf("mytube: %s links to %s, which can't be written (%v): saving over the link", f.path, target, err)
 		}
 	}
 	return WriteFile(f.path, data)

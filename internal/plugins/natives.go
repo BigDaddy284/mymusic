@@ -228,7 +228,7 @@ func themeJSON(t Theme) map[string]any {
 	}
 }
 
-// analyserObject is the analyser of MyMusic's own player, for
+// analyserObject is the analyser of MyTube's own player, for
 // visualizers: an object with the reading methods and properties of Web
 // Audio's AnalyserNode, of fftSize 256.
 func (pl *plugin) analyserObject() sobek.Value {

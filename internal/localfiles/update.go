@@ -155,7 +155,7 @@ func (x *Index) update(ctx context.Context, changed map[string]bool) (rescan boo
 	x.version++
 	x.mu.Unlock()
 	if err := x.save(); err != nil {
-		log.Printf("mymusic: keeping the index of the music on this computer: %v", err)
+		log.Printf("mytube: keeping the index of the music on this computer: %v", err)
 	}
 	x.changed()
 	return rescan

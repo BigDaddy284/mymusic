@@ -27,7 +27,7 @@ var eqPresets = []struct {
 
 func init() { addSettings("playback", 50, (*shell).equalizerSettings) }
 
-// equalizerSettings shape the sound of what MyMusic plays itself.
+// equalizerSettings shape the sound of what MyTube plays itself.
 func (s *shell) equalizerSettings(c *ui.Context) {
 	k := &s.lk
 	eq := &s.set.Equalizer
@@ -88,7 +88,7 @@ func (s *shell) equalizerSettings(c *ui.Context) {
 		// change: only the system's equalizer reaches it.
 		s.found(c, "", spotifyEqualizerNote, func() {
 			ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Padding(12, 0).MaxWidth(720).Children(func() {
-				ui.Text(c, "The equalizer works only on YouTube Music, which MyMusic plays itself, Spotify tracks played from it included. For Spotify, use a system-wide equalizer: ")
+				ui.Text(c, "The equalizer works only on YouTube Music, which MyTube plays itself, Spotify tracks played from it included. For Spotify, use a system-wide equalizer: ")
 				s.linkOf(c, "Spotify notes", spotifyEqualizer)
 				ui.Text(c, " that its audio settings can't change while another device plays it.")
 			})
@@ -97,7 +97,7 @@ func (s *shell) equalizerSettings(c *ui.Context) {
 }
 
 // spotifyEqualizerNote is what the equalizer's note on Spotify says.
-const spotifyEqualizerNote = "The equalizer works only on YouTube Music, which MyMusic plays itself, Spotify tracks played from it included. For Spotify, use a system-wide equalizer: Spotify notes that its audio settings can't change while another device plays it."
+const spotifyEqualizerNote = "The equalizer works only on YouTube Music, which MyTube plays itself, Spotify tracks played from it included. For Spotify, use a system-wide equalizer: Spotify notes that its audio settings can't change while another device plays it."
 
 // spotifyEqualizer is Spotify's page on its equalizer, which says that its
 // audio settings can't change while Spotify Connect plays on another device.

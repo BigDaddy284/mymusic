@@ -37,7 +37,7 @@ var GlobalCommands = []GlobalCommand{
 	{"player.mute", "Mute"},
 	{"player.like", "Like what plays"},
 	{"player.dislike", "Dislike what plays"},
-	{"app.show", "Show MyMusic"},
+	{"app.show", "Show MyTube"},
 }
 
 // globalVolumeStep is how much a press of Volume up or Volume down turns
@@ -177,7 +177,7 @@ func (a *App) globalPass(hk Hotkeys, retry bool) bool {
 			continue
 		}
 		if err := hk.Register(acc, func() { a.globalPressed(id) }); err != nil {
-			log.Printf("mymusic: global shortcut %s: %v", acc, err)
+			log.Printf("mytube: global shortcut %s: %v", acc, err)
 			problems[id] = globalShortcutError(err)
 			continue
 		}
@@ -242,7 +242,7 @@ func (a *App) globalCommand(id string) {
 // OnGlobalShortcut has fn see each press of a global shortcut first, on
 // the main thread, until cancel: the command's ID and its keys, as the
 // settings write them. A press fn takes, returning true, runs no command:
-// so the window that records the keys of shortcuts takes MyMusic's own
+// so the window that records the keys of shortcuts takes MyTube's own
 // global keys, which never reach it.
 func (a *App) OnGlobalShortcut(fn func(id, keys string) bool) (cancel func()) {
 	f := &fn

@@ -26,7 +26,7 @@ func (s *shell) castShown() bool {
 // castButton chooses where the player's tracks play: on this computer, or
 // on a cast device on the network, listed by its name, which tells its
 // room, and its model. Choosing one moves what plays there, from where it
-// was. Spotify tracks that play on Spotify Connect, or in MyMusic as a
+// was. Spotify tracks that play on Spotify Connect, or in MyTube as a
 // Spotify device, stay where they play.
 func (s *shell) castButton(c *ui.Context) {
 	if !s.castShown() {

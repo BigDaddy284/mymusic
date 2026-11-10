@@ -14,7 +14,7 @@ import (
 )
 
 // presenceSkew is how far the position may drift from what Discord was
-// told before MyMusic tells it again, as after a seek.
+// told before MyTube tells it again, as after a seek.
 const presenceSkew = 3 * time.Second
 
 // presence shows what plays on the user's Discord profile.
@@ -98,7 +98,7 @@ func (p *presence) update(d settings.Desktop, np NowPlaying) {
 			p.trackID, p.playing = "", false
 			if !errors.Is(err, discord.ErrNotRunning) && !p.warned {
 				p.warned = true
-				log.Printf("mymusic: Discord presence: %v", err)
+				log.Printf("mytube: Discord presence: %v", err)
 			}
 		}
 	}()

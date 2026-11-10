@@ -58,6 +58,6 @@
   streams tells (`parseIndex`), since WebView2 hands a page a custom
   scheme's response only once it is whole. Its answers are tested against recorded ones in
   `testdata/`, and against YouTube with
-  `MYMUSIC_LIVE=1 go test ./internal/stream -run Live`.
+  `MYTUBE_LIVE=1 go test ./internal/stream -run Live`.
 - **`internal/tools`** finds yt-dlp and a JavaScript runtime, and installs
   yt-dlp from its releases, checked against their published checksums.

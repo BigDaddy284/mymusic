@@ -1,6 +1,6 @@
 package app
 
-// Track info (#342): what MyMusic knows of a track and of how it plays,
+// Track info (#342): what MyTube knows of a track and of how it plays,
 // as the dialog of Track info in a track's menu shows it. It reads the
 // file a track plays from, and what the resolver and the engine hold of
 // it, and asks no service.
@@ -26,9 +26,9 @@ import (
 type TrackPlays string
 
 const (
-	// PlaysEngine plays it in MyMusic's own audio engine.
+	// PlaysEngine plays it in MyTube's own audio engine.
 	PlaysEngine TrackPlays = "engine"
-	// PlaysSpotify plays it in Spotify's own player, in MyMusic.
+	// PlaysSpotify plays it in Spotify's own player, in MyTube.
 	PlaysSpotify TrackPlays = "spotify"
 	// PlaysConnect plays it on a Spotify Connect device.
 	PlaysConnect TrackPlays = "connect"
@@ -47,27 +47,27 @@ const (
 	FileCache FileKind = "cache"
 )
 
-// TrackInfo is what MyMusic knows of a track, and of how it plays.
+// TrackInfo is what MyTube knows of a track, and of how it plays.
 type TrackInfo struct {
 	// Plays is what plays it: Spotify's tracks play in Spotify's own
-	// player while the settings ask for it, which tells MyMusic nothing
-	// of their audio, and the rest in MyMusic's engine.
+	// player while the settings ask for it, which tells MyTube nothing
+	// of their audio, and the rest in MyTube's engine.
 	Plays TrackPlays
 	// Playing is set for the track that plays.
 	Playing bool
 	// Recording is the track of YouTube Music that plays for a Spotify
-	// track, once MyMusic found it, or that its download holds.
+	// track, once MyTube found it, or that its download holds.
 	Recording *media.Track
 	// File is the file its audio plays from, when one holds it: its own,
 	// its download, or the offline cache's copy.
 	File *TrackFile
 	// Stream is YouTube's stream of its audio, when it plays from none of
-	// those and MyMusic holds the one it found last.
+	// those and MyTube holds the one it found last.
 	Stream *TrackStream
 	// Surround is set when it plays YouTube's 5.1 surround audio, as the
 	// settings ask.
 	Surround bool
-	// Engine is what MyMusic's audio engine plays of the track playing,
+	// Engine is what MyTube's audio engine plays of the track playing,
 	// once it loaded it.
 	Engine *audio.Loaded
 	// LKFS is how loud YouTube measured its audio, when Measured.
@@ -118,7 +118,7 @@ type TrackStream struct {
 	Live     bool
 }
 
-// engineLoaded returns what MyMusic's audio engine plays, while the
+// engineLoaded returns what MyTube's audio engine plays, while the
 // player plays in it: tests replace it.
 var engineLoaded = func(a *App) (audio.Loaded, bool) {
 	if a.goPlayer.Load() == nil || a.cast.remote.Load() {
@@ -131,7 +131,7 @@ var engineLoaded = func(a *App) (audio.Loaded, bool) {
 	return e.Loaded()
 }
 
-// TrackInfo tells what MyMusic knows of a track, and of how it plays:
+// TrackInfo tells what MyTube knows of a track, and of how it plays:
 // now is how it plays when it's the track that plays, nil otherwise. It
 // reads the file the track plays from, and asks no service: of a track
 // that didn't play, it may know no more than where it comes from.
@@ -215,7 +215,7 @@ func spotifyPlayer(t media.Track, st settings.Settings, now *player.Source) (Tra
 }
 
 // recordingOf returns the track of YouTube Music that plays for t, and
-// its video's ID, when MyMusic knows it: the one that plays, as now
+// its video's ID, when MyTube knows it: the one that plays, as now
 // tells, else the one its download holds, else of a Spotify track, the
 // one found for it before.
 func recordingOf(a *App, t media.Track, now *player.Source) (media.Track, string) {
@@ -273,7 +273,7 @@ func readTrackFile(kind FileKind, path string, withTags bool) *TrackFile {
 		tf.Size = fi.Size()
 	}
 	if tf.Format, err = audio.Inspect(f); err != nil {
-		tf.Problem = "MyMusic can't play this file"
+		tf.Problem = "MyTube can't play this file"
 		if !errors.Is(err, audio.ErrCantPlay) {
 			tf.Problem = "Can't read the file"
 		}

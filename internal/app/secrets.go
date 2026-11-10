@@ -63,7 +63,7 @@ func newSecretStore(dir, key, plain, sealed string) *secretStore {
 }
 
 // purpose is the sealer's purpose for the secret.
-func (s *secretStore) purpose() []byte { return []byte("MyMusic " + s.key) }
+func (s *secretStore) purpose() []byte { return []byte("MyTube " + s.key) }
 
 // Load returns the secret, or mygo.ErrSecretNotFound. One found in a file
 // moves into the credential store when the store answers that it has
@@ -101,9 +101,9 @@ func (s *secretStore) Load() ([]byte, error) {
 		case rerr == nil:
 			if s.seal != nil || notFound {
 				if serr := s.save(data); serr != nil {
-					log.Printf("mymusic: moving %s: %v", filepath.Base(s.plain), serr)
+					log.Printf("mytube: moving %s: %v", filepath.Base(s.plain), serr)
 				} else {
-					log.Printf("mymusic: moved %s out of %s, in plain text", s.key, filepath.Base(s.plain))
+					log.Printf("mytube: moved %s out of %s, in plain text", s.key, filepath.Base(s.plain))
 				}
 			}
 			return data, nil
@@ -138,11 +138,11 @@ func (s *secretStore) save(data []byte) error {
 		return err
 	case s.seal != nil:
 		if serr := s.writeSealed(data); serr != nil {
-			log.Printf("mymusic: the Credential Manager can't keep %s: %v", s.key, err)
-			return fmt.Errorf("Windows did not let MyMusic keep your sign-in: %w", serr)
+			log.Printf("mytube: the Credential Manager can't keep %s: %v", s.key, err)
+			return fmt.Errorf("Windows did not let MyTube keep your sign-in: %w", serr)
 		}
 		removeFile(s.plain)
-		s.tell("store", "mymusic: the Credential Manager can't keep %s (%v): keeping it encrypted for the Windows user in %s", s.key, err, filepath.Base(s.sealed))
+		s.tell("store", "mytube: the Credential Manager can't keep %s (%v): keeping it encrypted for the Windows user in %s", s.key, err, filepath.Base(s.sealed))
 		return nil
 	case s.plain != "":
 		// os.CreateTemp makes it readable by the user alone.
@@ -180,13 +180,13 @@ func (s *secretStore) readSealed() ([]byte, bool) {
 	sealed, err := os.ReadFile(s.sealed)
 	if err != nil {
 		if !errors.Is(err, os.ErrNotExist) {
-			s.tell("read", "mymusic: reading %s: %v", filepath.Base(s.sealed), err)
+			s.tell("read", "mytube: reading %s: %v", filepath.Base(s.sealed), err)
 		}
 		return nil, false
 	}
 	data, err := s.seal.unprotect(sealed, s.purpose())
 	if err != nil {
-		s.tell("open", "mymusic: %s doesn't open, as if signed out: %v", filepath.Base(s.sealed), err)
+		s.tell("open", "mytube: %s doesn't open, as if signed out: %v", filepath.Base(s.sealed), err)
 		return nil, false
 	}
 	return data, true
@@ -206,7 +206,7 @@ func removeFile(f string) {
 		return
 	}
 	if err := os.Remove(f); err != nil && !errors.Is(err, os.ErrNotExist) {
-		log.Printf("mymusic: removing %s: %v", filepath.Base(f), err)
+		log.Printf("mytube: removing %s: %v", filepath.Base(f), err)
 	}
 }
 

@@ -55,7 +55,7 @@ func (a *App) openLocalFiles() error {
 	return nil
 }
 
-// startLocalFiles scans the folders of the settings, quietly, as MyMusic
+// startLocalFiles scans the folders of the settings, quietly, as MyTube
 // starts, and from then on as the settings change them.
 func (a *App) startLocalFiles() {
 	a.localScans.mu.Lock()
@@ -94,13 +94,13 @@ func (a *App) scanLocalFiles(folders []string, force bool) {
 	go func() {
 		defer sc.wg.Done()
 		if err := a.localFiles.Scan(sc.ctx, folders); err != nil && !errors.Is(err, context.Canceled) {
-			log.Printf("mymusic: scanning the music on this computer: %v", err)
+			log.Printf("mytube: scanning the music on this computer: %v", err)
 		}
 	}()
 }
 
 // closeLocalFiles stops a scan and the watch of the folders, and waits for
-// them, as MyMusic quits.
+// them, as MyTube quits.
 func (a *App) closeLocalFiles() {
 	if a.localFiles == nil {
 		return

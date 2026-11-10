@@ -2,7 +2,7 @@
 
 - **`internal/app`** gives the windows the services (`App.Services`), tells
   them when the settings, the accounts, the add-ons or the updates change
-  (`App.Watch`), makes the player, and puts MyMusic on the desktop: the
+  (`App.Watch`), makes the player, and puts MyTube on the desktop: the
   tray, media keys, global shortcuts, deep links, notifications, updates.
 - **`internal/nowplaying`** shows what the engine plays in the system's media
   controls, and passes on what they ask: the SystemMediaTransportControls
@@ -19,7 +19,7 @@
 - **`internal/keypad`** takes Ctrl and the keypad's +, which MyGo gives its
   windows as no key, so that they zoom in as Ctrl+= does (#251): in a
   keyboard hook of the window's thread.
-- **`internal/diag`** writes the log, `mymusic.log` in the logs folder,
+- **`internal/diag`** writes the log, `mytube.log` in the logs folder,
   rotated at a megabyte and without the cookies, hashes and tokens a line
   may hold, and has Go write a crash to `crash.log` there, which the next
   start keeps as `crash-<time>.log` and offers to report. Its

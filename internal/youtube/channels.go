@@ -25,7 +25,7 @@ type AccountChannel struct {
 	// Current is set for the channel the session uses.
 	Current bool `json:"current,omitempty"`
 	// Unswitchable is set for a brand channel the list tells no page ID
-	// of: without one, MyMusic would use the account itself.
+	// of: without one, MyTube would use the account itself.
 	Unswitchable bool `json:"unswitchable,omitempty"`
 }
 
@@ -68,7 +68,7 @@ func (c *Client) Channels(ctx context.Context) ([]AccountChannel, error) {
 // Of the items of an account that tell no page ID, one is the account
 // itself: the one whose data sync ID says so, else the first, as the list
 // puts the account before its brand channels. The others are brand
-// channels that MyMusic can't tell apart from it: Unswitchable.
+// channels that MyTube can't tell apart from it: Unswitchable.
 func parseChannels(n node, asked int) []AccountChannel {
 	var channels []AccountChannel
 	// Of each item, whether it named its account, and whether its tokens

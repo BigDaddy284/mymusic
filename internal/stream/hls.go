@@ -17,7 +17,7 @@ import (
 // errPlaylist is wrapped by the errors of a playlist the live route can't
 // read, or can't play. They never quote the playlist, whose URIs are
 // stream URLs.
-var errPlaylist = errors.New("stream: an HLS playlist MyMusic can't read")
+var errPlaylist = errors.New("stream: an HLS playlist MyTube can't read")
 
 // mediaPlaylist is what the live route reads of an HLS media playlist
 // (RFC 8216, section 4.3.3): its segments, and how to go on with it.

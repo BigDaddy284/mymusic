@@ -57,7 +57,7 @@ func (p Position) Left() time.Duration {
 
 // Positions keeps where the user left podcasts' episodes, in a file of
 // their own: while an episode plays its place changes each second, and the
-// file is written once it rested writeAfter, and as MyMusic quits. Its
+// file is written once it rested writeAfter, and as MyTube quits. Its
 // methods are safe for concurrent use.
 type Positions struct {
 	file *store.File[map[string]Position]
@@ -154,7 +154,7 @@ func (p *Positions) Get(id string) (Position, bool) {
 
 // ResumeAt returns where an episode plays from as it starts: a little
 // before where the user left it, or where its service says they left it
-// when MyMusic has no place of its own, or YouTube Music's place outranks
+// when MyTube has no place of its own, or YouTube Music's place outranks
 // it (toldOutranks); 0 for one played, and for a track that is no episode.
 func (p *Positions) ResumeAt(t media.Track) time.Duration {
 	if !t.IsEpisode() {
@@ -233,7 +233,7 @@ func (p *Positions) changed() {
 	if p.timer == nil {
 		p.timer = time.AfterFunc(writeAfter, func() {
 			if err := p.Flush(); err != nil {
-				log.Printf("mymusic: keeping where episodes were left: %v", err)
+				log.Printf("mytube: keeping where episodes were left: %v", err)
 			}
 		})
 	}

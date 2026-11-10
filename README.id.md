@@ -1,10 +1,10 @@
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <strong>Bahasa Indonesia</strong></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="Ikon MyMusic: lima batang suara bergradasi biru ke ungu di atas ubin gelap membulat" />
+  <img src="brand/icon.png" width="112" height="112" alt="Ikon MyTube: lima batang suara bergradasi biru ke ungu di atas ubin gelap membulat" />
 </p>
 
-<h1 align="center">MyMusic</h1>
+<h1 align="center">MyTube</h1>
 
 <p align="center"><strong>Satu pemutar untuk YouTube Music dan Spotify.</strong></p>
 
@@ -31,29 +31,29 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.webp" alt="MyMusic 0.5.9 dengan tampilan bawaannya, tata letak Blend dengan tema Mix, berdiri tegak di atas panggung gelap dan menghadap ke arah Anda: di tengah, アイドル oleh YOASOBI sedang diputar, bergaris tepi merah muda, dengan romaji di bawah setiap baris liriknya dan pemutar mini di depannya; di kiri sebuah pencarian, di kanan mix di pustaka" />
+  <img src="docs/banner.webp" alt="MyTube 0.5.9 dengan tampilan bawaannya, tata letak Blend dengan tema Mix, berdiri tegak di atas panggung gelap dan menghadap ke arah Anda: di tengah, アイドル oleh YOASOBI sedang diputar, bergaris tepi merah muda, dengan romaji di bawah setiap baris liriknya dan pemutar mini di depannya; di kiri sebuah pencarian, di kanan mix di pustaka" />
 </p>
 
-## Mengapa MyMusic
+## Mengapa MyTube
 
 Jika musik Anda terbagi antara YouTube Music dan Spotify, biasanya Anda
 perlu dua aplikasi, dengan dua pencarian, dua antrean, dan dua pustaka.
-MyMusic menyatukan kedua layanan itu dalam satu pemutar:
+MyTube menyatukan kedua layanan itu dalam satu pemutar:
 
-- **Satu pencarian.** MyMusic mencari di YouTube Music dan Spotify
+- **Satu pencarian.** MyTube mencari di YouTube Music dan Spotify
   sekaligus, dan menandai setiap hasil dengan layanan asalnya.
 - **Satu antrean dan satu pustaka.** Lagu Spotify bisa diputar tepat setelah
   lagu YouTube Music, dan satu playlist bisa berisi lagu dari keduanya.
 - **Tidak perlu akun.** YouTube Music langsung bisa diputar begitu aplikasi
   dibuka. Masuk ke akun hanya jika Anda ingin memakai pustaka Anda sendiri.
   Spotify bersifat opsional.
-- **Program kecil.** MyMusic adalah satu program Go yang menggambar
+- **Program kecil.** MyTube adalah satu program Go yang menggambar
   jendelanya sendiri di GPU. Tidak ada browser di dalamnya yang harus
   diunduh atau ditampung di memori.
 - **Bebas diubah.** Ada sepuluh tema bawaan, komunitas menambahkan tema dan
   plugin lainnya, dan setiap perintah bisa diberi tombol pilihan Anda
   sendiri.
-- **Privat.** MyMusic tidak punya akun, server, analitik, atau telemetri
+- **Privat.** MyTube tidak punya akun, server, analitik, atau telemetri
   sendiri.
 - **Gratis dan open source,** di bawah lisensi MIT atau GPL 3.0.
 
@@ -90,10 +90,10 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 
 ### Tiga cara memutar Spotify
 
-- **Langsung di MyMusic,** dengan kualitas Spotify, tanpa membuka aplikasi
+- **Langsung di MyTube,** dengan kualitas Spotify, tanpa membuka aplikasi
   Spotify (Premium).
 - **Lewat Spotify Connect:** di aplikasi Spotify, ponsel, atau speaker Anda.
-- **Dari YouTube Music:** MyMusic memutar rekaman lagu Spotify tersebut yang
+- **Dari YouTube Music:** MyTube memutar rekaman lagu Spotify tersebut yang
   ada di YouTube Music, yang bisa diputar tanpa Premium.
 
 ### Suara
@@ -109,12 +109,12 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
 - Tombol pemutar di thumbnail taskbar Windows.
 - Kontrol di tray, notifikasi setiap kali lagu baru diputar, dan berjalan
   otomatis saat login.
-- Tautan `mymusic://`.
+- Tautan `mytube://`.
 - **Last.fm:** setiap lagu yang Anda dengar tercatat di profil Anda, dan
   scrobble yang dibuat saat offline dikirim begitu Anda kembali online.
 - **Discord:** profil Anda menampilkan lagu yang sedang diputar, lengkap
   dengan sampul dan sisa waktunya.
-- **Pembaruan:** MyMusic memeriksa rilis baru saat dibuka dan setiap
+- **Pembaruan:** MyTube memeriksa rilis baru saat dibuka dan setiap
   beberapa jam, memeriksa tanda tangan digitalnya, lalu memasangnya saat
   Anda memintanya, atau secara otomatis jika Anda memilih opsi itu.
 
@@ -130,34 +130,34 @@ MyMusic menyatukan kedua layanan itu dalam satu pemutar:
   pilihan Anda sendiri untuk perintah apa pun (termasuk perintah dari
   plugin), dan palet perintah (<kbd>Ctrl</kbd> <kbd>K</kbd>) untuk sisanya.
 - **File pengaturan.** Pengaturan Anda tersimpan sebagai `settings.json` di
-  folder data Anda (`%AppData%\MyMusic`), jadi bisa Anda simpan bersama dotfiles Anda. Simpan file itu saat
-  MyMusic berjalan, dan perubahannya langsung berlaku; file ini bisa dibuka
+  folder data Anda (`%AppData%\MyTube`), jadi bisa Anda simpan bersama dotfiles Anda. Simpan file itu saat
+  MyTube berjalan, dan perubahannya langsung berlaku; file ini bisa dibuka
   lewat Settings › Desktop › Settings file (Pengaturan › Desktop › File
   pengaturan).
 
 ## Sekilas tampilan
 
 <p align="center">
-  <img src="docs/look-listen.webp" alt="Halaman-halaman MyMusic dengan tata letak Blend, berdiri tegak di atas panggung gelap dan menghadap ke arah Anda: di tengah, アイドル oleh YOASOBI sedang diputar, bergaris tepi merah muda, setiap baris liriknya dengan romaji dan terjemahan bahasa Inggris di bawahnya; di kiri album THE BOOK 3, di kanan halaman podcast yang diikuti" />
+  <img src="docs/look-listen.webp" alt="Halaman-halaman MyTube dengan tata letak Blend, berdiri tegak di atas panggung gelap dan menghadap ke arah Anda: di tengah, アイドル oleh YOASOBI sedang diputar, bergaris tepi merah muda, setiap baris liriknya dengan romaji dan terjemahan bahasa Inggris di bawahnya; di kiri album THE BOOK 3, di kanan halaman podcast yang diikuti" />
 </p>
 
 <p align="center"><sub><b>Dengarkan.</b> Di tengah, アイドル oleh YOASOBI sedang diputar: setiap baris menyala saat dinyanyikan, dengan romaji dan terjemahan di bawahnya. Di kiri, sebuah album; di kanan, podcast yang Anda ikuti.</sub></p>
 
 <p align="center">
-  <img src="docs/look-yours.webp" alt="Bagian lain MyMusic, berdiri tegak di atas panggung gelap dan menghadap ke arah Anda: di tengah, Settings › Appearance (Pengaturan › Tampilan) dengan keempat tata letak, bergaris tepi merah muda; di kiri, tema Material yang diwarnai sampul lagu yang diputar; di kanan, tema komunitas di marketplace" />
+  <img src="docs/look-yours.webp" alt="Bagian lain MyTube, berdiri tegak di atas panggung gelap dan menghadap ke arah Anda: di tengah, Settings › Appearance (Pengaturan › Tampilan) dengan keempat tata letak, bergaris tepi merah muda; di kiri, tema Material yang diwarnai sampul lagu yang diputar; di kanan, tema komunitas di marketplace" />
 </p>
 
 <p align="center"><sub><b>Sesuaikan sesuka Anda.</b> Di tengah, keempat tata letak: Blend, yang bawaan, Expressive, Crate, dan Tiles, di atas tema-temanya. Di kiri, tema Material yang mengambil warnanya dari sampul lagu yang diputar. Di kanan, tema komunitas di marketplace.</sub></p>
 
 ## Pemasangan
 
-MyMusic berjalan di Windows 10 dan 11. Unduh dari
+MyTube berjalan di Windows 10 dan 11. Unduh dari
 [rilis terbaru](https://github.com/bigdaddy284/mymusic/releases/latest):
 
 | Windows | Unduhan |
 |---|---|
-| 10 dan 11 (x64, Arm), installer | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| Portabel, tanpa instalasi | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| 10 dan 11 (x64, Arm), installer | [`mytube-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| Portabel, tanpa instalasi | [`mytube-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` adalah `amd64` untuk x64 dan `arm64` untuk Arm. Setiap rilis
 menyertakan `SHA256SUMS` untuk memeriksa file yang Anda unduh. Anda tidak
@@ -166,19 +166,19 @@ file-file itu dipakai aplikasi yang sudah terpasang untuk memperbarui
 dirinya.
 
 Installer dan zip portabel bisa memperbarui dirinya sendiri. Untuk zip
-portabel, ekstrak di mana saja lalu buka `MyMusic.exe`.
+portabel, ekstrak di mana saja lalu buka `MyTube.exe`.
 
 ### Pertama kali dijalankan
 
 - Installer ini belum ditandatangani, jadi SmartScreen mungkin memberi
   peringatan: pilih More info (Info selengkapnya), lalu Run anyway (Tetap
   jalankan).
-- Masuk ke YouTube Music dan memutar Spotify di MyMusic memerlukan
+- Masuk ke YouTube Music dan memutar Spotify di MyTube memerlukan
   WebView2 Runtime, yang sudah ada di Windows 11. Di Windows 10, pasang
   dari [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
-- MyMusic menemukan sendiri audio sebagian besar lagu YouTube Music. Untuk
-  sisanya, seperti lagu yang dibuat untuk anak-anak, MyMusic memakai
-  [yt-dlp](https://github.com/yt-dlp/yt-dlp), yang dipasang MyMusic untuk
+- MyTube menemukan sendiri audio sebagian besar lagu YouTube Music. Untuk
+  sisanya, seperti lagu yang dibuat untuk anak-anak, MyTube memakai
+  [yt-dlp](https://github.com/yt-dlp/yt-dlp), yang dipasang MyTube untuk
   Anda dari Settings › Playback (Pengaturan › Pemutaran) dan selalu
   diperbaruinya. yt-dlp memerlukan runtime JavaScript:
   [Deno](https://deno.com), Node.js, Bun, atau QuickJS.
@@ -187,7 +187,7 @@ portabel, ekstrak di mana saja lalu buka `MyMusic.exe`.
 
 - **YouTube Music:** pilih Sign in to YouTube Music (Masuk ke YouTube Music)
   di Settings › Accounts (Pengaturan › Akun), lalu masuk ke Google di jendela
-  yang terbuka. Apa yang Anda ketik hanya dikirim ke Google. MyMusic
+  yang terbuka. Apa yang Anda ketik hanya dikirim ke Google. MyTube
   menyimpan sesi itu dalam keadaan terenkripsi, dengan kunci di Credential
   Manager (Manajer Kredensial) Windows.
 - **Spotify:** Spotify hanya mengizinkan sebuah aplikasi melayani paling
@@ -198,7 +198,7 @@ portabel, ekstrak di mana saja lalu buka `MyMusic.exe`.
 - **Last.fm:** buat akun API di
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (nama apa saja, tanpa callback URL), tempelkan API key dan shared secret
-  dari akun itu di Settings › Accounts, lalu setujui MyMusic di browser
+  dari akun itu di Settings › Accounts, lalu setujui MyTube di browser
   Anda.
 - **Discord:** selama aplikasi Discord berjalan, profil Anda menampilkan apa
   yang sedang Anda dengarkan. Matikan di Settings › Desktop (Pengaturan ›
@@ -224,7 +224,7 @@ Buka terminal baru, lalu:
 
 ```powershell
 git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
+cd mytube
 bun install
 bun run dev
 ```
@@ -242,8 +242,8 @@ alat-alat yang dipakai untuk membangun rilis, pada versi yang dikunci oleh
 ### Pengembangan
 
 `bun run dev` membangun aplikasi, menjalankannya, dan membangunnya ulang
-setiap kali Anda mengedit kode. Datanya terpisah dari MyMusic yang
-terpasang, dengan nama `MyMusic Dev`.
+setiap kali Anda mengedit kode. Datanya terpisah dari MyTube yang
+terpasang, dengan nama `MyTube Dev`.
 
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
@@ -279,7 +279,7 @@ didokumentasikan di [pkg.go.dev](https://pkg.go.dev/github.com/bigdaddy284/mymus
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
 internal/player      the queue, played by the audio engine or on Spotify's devices
-internal/audio       MyMusic's audio engine, and the system's audio output
+internal/audio       MyTube's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
 internal/spotify     the Spotify Web API, its sign-in and Spotify Connect
@@ -290,7 +290,7 @@ internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins, and the community registry
-builtin/themes       the themes MyMusic ships with
+builtin/themes       the themes MyTube ships with
 public/              the page of Spotify's player, on Windows
 sdk/                 the types of the plugin API
 community/           community themes and plugins, and their registry
@@ -305,7 +305,7 @@ webm/                the audio of WebM files: packets, times and seeking
 mp4/                 the audio of MP4 files: packets, times and seeking
 resample/            sample rate conversion, with Kaiser-windowed sincs
 lyrics/              synced lyrics from LRCLIB, and the LRC format
-brand/               MyMusic's logo, for code that draws it
+brand/               MyTube's logo, for code that draws it
 ```
 
 ## Komunitas
@@ -349,8 +349,8 @@ karya Anda akan muncul di marketplace semua orang. Detailnya ada di
 
 ## Privasi
 
-MyMusic tidak punya akun, server, analitik, atau telemetri sendiri.
-MyMusic berkomunikasi dengan:
+MyTube tidak punya akun, server, analitik, atau telemetri sendiri.
+MyTube berkomunikasi dengan:
 
 - **YouTube dan Google:** katalog YouTube Music, stream audionya, dan
   tingkat kenyaringan setiap lagu, yang diminta tanpa login, serta gambar
@@ -359,7 +359,7 @@ MyMusic berkomunikasi dengan:
   kecuali Anda mematikannya di Settings › Accounts (Pengaturan › Akun).
 - **Spotify,** setelah Anda masuk: pustaka Anda, perangkat Spotify Connect
   Anda, dan pemutar Spotify, yang dimuat dari `sdk.scdn.co` saat Spotify
-  diputar di MyMusic.
+  diputar di MyTube.
 - **LRCLIB:** judul, artis, album, dan durasi lagu yang sedang diputar,
   untuk mencari liriknya.
 - **GitHub:** pemeriksaan versi baru saat aplikasi dibuka dan setiap
@@ -371,7 +371,7 @@ MyMusic berkomunikasi dengan:
   ke aplikasi Discord di komputer Anda, yang kemudian menampilkannya di
   profil Anda.
 
-Yang disimpan MyMusic di komputer Anda:
+Yang disimpan MyTube di komputer Anda:
 
 - Pengaturan dan pustaka Anda (lagu yang disukai, mix, riwayat, dan
   pencarian terakhir), di folder yang disebutkan di Settings › About.
@@ -389,16 +389,16 @@ putar, Settings › Playback bisa menghapus cache dan sampul, dan keluar dari
 sebuah layanan akan menghapus data login layanan tersebut.
 
 Di Windows, visualizer mendengarkan audio Spotify yang diputar di komputer
-ini, baik di MyMusic maupun di aplikasi Spotify, lewat process loopback
+ini, baik di MyTube maupun di aplikasi Spotify, lewat process loopback
 Windows, yang hanya mendengar aplikasi itu saja. Visualizer menganalisis
 audio itu di memori dan tidak pernah merekam atau mengirimkannya.
 
 ## Kredit
 
-MyMusic dibangun di atas proyek-proyek berikut:
+MyTube dibangun di atas proyek-proyek berikut:
 
 - **[MyGo](https://github.com/egoist/mygo)**, framework desktop yang dipakai
-  untuk membangun MyMusic. MyMusic memakai UI native MyGo: MyGo menggambar
+  untuk membangun MyTube. MyTube memakai UI native MyGo: MyGo menggambar
   sendiri setiap jendela, dengan Go, tanpa webview, mulai dari halaman dan
   bilah pemutar hingga pemutar mini. CLI MyGo mengemas aplikasi ini,
   lengkap dengan installer dan pembaruan bertanda tangan yang dipakai
@@ -418,10 +418,10 @@ MyMusic dibangun di atas proyek-proyek berikut:
 - **[Zola](https://www.getzola.org)**, yang membangun situs web.
 - **[NSIS](https://nsis.sourceforge.io)**, yang membuat installer Windows.
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**, yang menemukan audio
-  lagu-lagu yang tidak bisa ditemukan MyMusic sendiri.
+  lagu-lagu yang tidak bisa ditemukan MyTube sendiri.
 - **[LRCLIB](https://lrclib.net)**, database terbuka berisi lirik
   tersinkron.
-- **[libopus](https://opus-codec.org)**, karena decoder Opus MyMusic adalah
+- **[libopus](https://opus-codec.org)**, karena decoder Opus MyTube adalah
   port dari decodernya, dan **[SharpJaad](https://github.com/jimm98y/SharpJaad)**,
   port C# dari [JAAD](https://sourceforge.net/projects/jaadec/) yang
   menjadi dasar decoder AAC.
@@ -450,11 +450,11 @@ senang hati.
 - **Bagikan tema atau plugin:** lihat [Komunitas](#komunitas).
 
 [CONTRIBUTORS.md](CONTRIBUTORS.md) berterima kasih kepada orang-orang yang
-kode, ide, dan laporannya ikut membentuk MyMusic.
+kode, ide, dan laporannya ikut membentuk MyTube.
 
 ## Lisensi
 
-MyMusic memiliki lisensi ganda: gunakan di bawah [lisensi MIT](LICENSE-MIT)
+MyTube memiliki lisensi ganda: gunakan di bawah [lisensi MIT](LICENSE-MIT)
 atau [GNU General Public License, versi 3](LICENSE-GPL), mana pun yang Anda
 pilih. Kontribusi diterima di bawah kedua lisensi tersebut. Jenis huruf di
 `fonts` berada di bawah SIL Open Font License:
@@ -463,9 +463,9 @@ pilih. Kontribusi diterima di bawah kedua lisensi tersebut. Jenis huruf di
 libopus, di bawah [lisensi BSD-nya](opus/LICENSE.libopus), dan decoder AAC
 berasal dari SharpJaad, di bawah [lisensi MIT-nya](aac/LICENSE.sharpjaad).
 
-MyMusic tidak berafiliasi dengan, tidak didukung secara resmi oleh, dan
-tidak disponsori oleh Spotify maupun Google. MyMusic memutar apa yang
+MyTube tidak berafiliasi dengan, tidak didukung secara resmi oleh, dan
+tidak disponsori oleh Spotify maupun Google. MyTube memutar apa yang
 disediakan layanan-layanan ini untuk penggunanya, melalui antarmuka milik
-layanan itu sendiri; gunakan MyMusic sesuai dengan yang diizinkan oleh
+layanan itu sendiri; gunakan MyTube sesuai dengan yang diizinkan oleh
 ketentuan layanan tersebut. Spotify dan YouTube Music adalah merek dagang
 milik pemiliknya masing-masing.

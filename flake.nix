@@ -1,5 +1,5 @@
 {
-  description = "MyMusic: Spotify and YouTube Music in one customizable desktop player";
+  description = "MyTube: Spotify and YouTube Music in one customizable desktop player";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -7,8 +7,8 @@
     { self, nixpkgs }:
     let
       inherit (nixpkgs) lib;
-      # MyMusic is built for Windows alone, cross-compiled on Linux: the
-      # systems the shell runs on, not those MyMusic runs on.
+      # MyTube is built for Windows alone, cross-compiled on Linux: the
+      # systems the shell runs on, not those MyTube runs on.
       systems = [
         "x86_64-linux"
         "aarch64-linux"

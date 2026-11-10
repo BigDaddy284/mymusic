@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// errWAV is wrapped by the errors of a WAV file MyMusic can't read.
+// errWAV is wrapped by the errors of a WAV file MyTube can't read.
 var errWAV = errors.New("wav: invalid data")
 
 const (

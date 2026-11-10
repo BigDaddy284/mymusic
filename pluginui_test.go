@@ -134,12 +134,12 @@ func TestSpectrum(t *testing.T) {
 	}
 }
 
-// TestRenderPlugins draws the community plugins to MYMUSIC_RENDER, for a
+// TestRenderPlugins draws the community plugins to MYTUBE_RENDER, for a
 // look.
 func TestRenderPlugins(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	withCommunityPlugins(t, s, "sleep-timer", "spectrum")

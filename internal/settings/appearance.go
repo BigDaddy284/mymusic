@@ -21,11 +21,11 @@ const (
 type Layout string
 
 // DefaultTheme is the theme of a new install, and DefaultLightTheme the
-// one it shows in light mode while it follows the computer: MyMusic's own,
+// one it shows in light mode while it follows the computer: MyTube's own,
 // the look of StackSpace and Stills & Reels.
 const (
-	DefaultTheme      = "mymusic"
-	DefaultLightTheme = "mymusic-light"
+	DefaultTheme      = "mytube"
+	DefaultLightTheme = "mytube-light"
 )
 
 const (
@@ -41,7 +41,7 @@ const (
 	// LayoutCrate is restrained: dense rows, big covers in cards and bold
 	// tight headings, so that the covers do the work.
 	LayoutCrate Layout = "crate"
-	// LayoutTiles is MyMusic's first layout: flat tiles, giant light
+	// LayoutTiles is MyTube's first layout: flat tiles, giant light
 	// lowercase words and outlined boxes.
 	LayoutTiles Layout = "tiles"
 )
@@ -59,7 +59,7 @@ const (
 	// ColorsPywal reads pywal's colors.json, in pywal's cache folder.
 	ColorsPywal ColorSource = "pywal"
 	// ColorsMatugen reads matugen.json in the data folder, which
-	// MyMusic's matugen template writes.
+	// MyTube's matugen template writes.
 	ColorsMatugen ColorSource = "matugen"
 	// ColorsFile reads the file of Settings.ColorFile.
 	ColorsFile ColorSource = "file"
@@ -126,7 +126,7 @@ func defaultAppearance() Appearance {
 	a.LightTheme = DefaultLightTheme
 	a.DarkTheme = DefaultTheme
 	a.ThemeOptions = map[string]map[string]string{}
-	// The MyMusic themes keep their own gradient: the artwork's colour
+	// The MyTube themes keep their own gradient: the artwork's colour
 	// would take its place.
 	a.DynamicAccent = false
 	a.Density = DensityComfortable
@@ -139,7 +139,16 @@ func defaultAppearance() Appearance {
 
 // clean is a with every value in its range, and d's in place of values
 // that are missing or invalid.
+// renamedThemes are the built-in themes' ids from before the app was
+// MyTube, by the ids that replaced them.
+var renamedThemes = map[string]string{"mymusic": DefaultTheme, "mymusic-light": DefaultLightTheme}
+
 func (a Appearance) clean(d Appearance) Appearance {
+	for _, id := range []*string{&a.Theme, &a.LightTheme, &a.DarkTheme} {
+		if to, ok := renamedThemes[*id]; ok {
+			*id = to
+		}
+	}
 	if !ValidID(a.Theme) {
 		a.Theme = d.Theme
 	}

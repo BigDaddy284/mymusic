@@ -330,3 +330,11 @@ func TestColorSource(t *testing.T) {
 		}
 	}
 }
+
+// TestRenamedThemes gives settings from before MyTube its themes.
+func TestRenamedThemes(t *testing.T) {
+	s := Settings{Appearance: Appearance{Theme: "mymusic", LightTheme: "mymusic-light", DarkTheme: "mymusic"}}.Clean()
+	if s.Theme != DefaultTheme || s.LightTheme != DefaultLightTheme || s.DarkTheme != DefaultTheme {
+		t.Errorf("cleaned to %q, %q and %q", s.Theme, s.LightTheme, s.DarkTheme)
+	}
+}

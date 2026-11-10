@@ -18,7 +18,7 @@ import (
 )
 
 // lastfmSecret is the key, in the system's credential store, of what
-// connects MyMusic to Last.fm: the API account and the user's session.
+// connects MyTube to Last.fm: the API account and the user's session.
 const lastfmSecret = "lastfm"
 
 // lastfmPoll is how often connecting asks Last.fm whether the user approved.
@@ -81,7 +81,7 @@ func (a *App) startScrobbling(c lastfmCredentials) {
 			err = store.WriteFile(queue, data)
 		}
 		if err != nil {
-			log.Printf("mymusic: keeping the scrobbles to send: %v", err)
+			log.Printf("mytube: keeping the scrobbles to send: %v", err)
 		}
 	}
 	a.mu.Lock()
@@ -121,7 +121,7 @@ func (a *App) scrobble(np NowPlaying) {
 			a.mu.Unlock()
 			notify()
 		case err != nil && !lastfm.IsTemporary(err):
-			log.Printf("mymusic: scrobbling: %v", err)
+			log.Printf("mytube: scrobbling: %v", err)
 		}
 	}()
 }
@@ -156,9 +156,9 @@ func lastfmTrack(np NowPlaying) (string, lastfm.Track) {
 	return np.Track.ID, t
 }
 
-// LastfmLogin connects MyMusic to the user's Last.fm account, with the
+// LastfmLogin connects MyTube to the user's Last.fm account, with the
 // API account they made on Last.fm: the user approves in their browser,
-// and MyMusic waits for it.
+// and MyTube waits for it.
 func (s *Accounts) LastfmLogin(ctx context.Context, apiKey, secret string) (AccountsStatus, error) {
 	apiKey, secret = strings.TrimSpace(apiKey), strings.TrimSpace(secret)
 	if apiKey == "" || secret == "" {
@@ -185,7 +185,7 @@ func (s *Accounts) LastfmLogin(ctx context.Context, apiKey, secret string) (Acco
 		}
 		select {
 		case <-ctx.Done():
-			return AccountsStatus{}, errors.New("Last.fm did not hear from you in time: approve MyMusic in the browser, then connect again")
+			return AccountsStatus{}, errors.New("Last.fm did not hear from you in time: approve MyTube in the browser, then connect again")
 		case <-time.After(lastfmPoll):
 		}
 	}
@@ -202,7 +202,7 @@ func (s *Accounts) LastfmLogin(ctx context.Context, apiKey, secret string) (Acco
 	return status, nil
 }
 
-// LastfmLogout disconnects MyMusic from Last.fm.
+// LastfmLogout disconnects MyTube from Last.fm.
 func (s *Accounts) LastfmLogout(ctx context.Context) error {
 	s.a.mu.Lock()
 	s.a.lastfm = nil

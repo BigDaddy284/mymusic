@@ -115,7 +115,7 @@ func (s *shell) page(c *ui.Context, r *ui.Route) {
 	case r.Match("/marketplace/{tab}"):
 		s.marketplacePage(c, r.Param("tab"))
 	default:
-		s.lost(c, "This page isn't one of MyMusic's.")
+		s.lost(c, "This page isn't one of MyTube's.")
 	}
 	s.collecting = false
 }

@@ -164,7 +164,7 @@ func (c *colorTest) watch() *fakeWatch {
 
 func groundIn(st ColorFileStatus) string { return st.Colors.Mode("dark")["background"] }
 
-// TestColorFileFollows reads the file as MyMusic opens, before its first
+// TestColorFileFollows reads the file as MyTube opens, before its first
 // frame, then again each time it changes, telling the windows once for
 // each change, and not at all for a write of the same colours.
 func TestColorFileFollows(t *testing.T) {

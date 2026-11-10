@@ -87,8 +87,8 @@ func (p *Preferences) Reset() (settings.Settings, error) {
 	return d, nil
 }
 
-// OpenAtLogin reports whether MyMusic starts when the user logs in.
+// OpenAtLogin reports whether MyTube starts when the user logs in.
 func (p *Preferences) OpenAtLogin() bool { return mygo.App.OpenAtLogin() }
 
-// SetOpenAtLogin makes MyMusic start when the user logs in, or not.
+// SetOpenAtLogin makes MyTube start when the user logs in, or not.
 func (p *Preferences) SetOpenAtLogin(open bool) error { return mygo.App.SetOpenAtLogin(open) }

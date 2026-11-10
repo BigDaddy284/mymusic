@@ -107,11 +107,11 @@ func TestFailureDetails(t *testing.T) {
 		t.Fatalf("copied %q", copied)
 	}
 	for _, line := range []string{
-		"MyMusic couldn't play a track\n\n",
+		"MyTube couldn't play a track\n\n",
 		"- Track: Broken Song, by The Band\n",
 		"- From: YouTube Music, yt:broken\n",
 		"- What was tried:\n  1. YouTube's player API: YouTube's player API answered LOGIN_REQUIRED: Sign in to confirm your age\n  2. yt-dlp: this track is private\n",
-		"- MyMusic 0.4.0 on ",
+		"- MyTube 0.4.0 on ",
 	} {
 		if !strings.Contains(copied[0], line) {
 			t.Errorf("the text copied has no %q:\n%s", line, copied[0])
@@ -186,25 +186,25 @@ func TestFailureReport(t *testing.T) {
 		Recording: media.Track{ID: "yt:dQw4w9WgXcQ", Source: media.SourceYouTube, Title: "Song (Official Audio)", Artists: []media.Ref{{Name: "Artist"}}},
 		Steps: []player.Step{
 			{What: "Spotify Connect", Why: "Spotify refused robin.example's request: Authorization: Bearer abc.def", Times: 1},
-			{What: "Spotify in MyMusic", Why: "the player sent Bearer abc.def, api_key=\"k1\"", Times: 1},
+			{What: "Spotify in MyTube", Why: "the player sent Bearer abc.def, api_key=\"k1\"", Times: 1},
 			{What: "the stream", Why: "GET https://rr1.googlevideo.com/videoplayback?ip=203.0.113.9&sig=xyz: dial tcp 203.0.113.9:443 and [2001:db8::1]:443 refused, token=abc Cookie: SAPISID=x; SID=y", Times: 1},
 			{What: "the stream, tried again", Why: "the file " + path + " of @robinmusic is gone", Times: 3},
 		},
 		Stopped: true,
 	}
 	got := failureReport(f, app.Info{Version: "0.5.11", Platform: "windows", Arch: "amd64"}, pr)
-	want := "MyMusic couldn't play a track\n\n" +
+	want := "MyTube couldn't play a track\n\n" +
 		"- Track: Song, by Artist, on Album\n" +
 		"- From: Spotify, spotify:4uLU6hMCjMI75M1A2tKUQC\n" +
 		"- Played as: Song (Official Audio), by Artist, from YouTube Music, yt:dQw4w9WgXcQ\n" +
 		"- When: 2026-11-08 14:03:12 +07:00\n" +
 		"- What was tried:\n" +
 		"  1. Spotify Connect: Spotify refused (account)'s request: Authorization: (hidden)\n" +
-		"  2. Spotify in MyMusic: the player sent Bearer (hidden), api_key=(hidden)\n" +
+		"  2. Spotify in MyTube: the player sent Bearer (hidden), api_key=(hidden)\n" +
 		"  3. The stream: GET https://rr1.googlevideo.com/videoplayback: dial tcp (address) and (address) refused, token=(hidden) Cookie: (hidden)\n" +
 		"  4. The stream, tried again, 3 times: the file " + inHome + " of (account) is gone\n" +
 		"- " + failureStopped + "\n" +
-		"- MyMusic 0.5.11 on windows amd64\n"
+		"- MyTube 0.5.11 on windows amd64\n"
 	if got != want {
 		t.Errorf("the report is\n%s\nwant\n%s", got, want)
 	}

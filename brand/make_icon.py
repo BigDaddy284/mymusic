@@ -1,4 +1,4 @@
-"""Draws MyMusic's icon, five sound bars, and the Music mark, a music note, in the theme's accent
+"""Draws MyTube's icon, five sound bars, and the Music mark, a music note, in the theme's accent
 gradient, the icon on a dark rounded tile.
 
 The same style as StackSpace's and Stills & Reels' icons (StackSpace tool/make_icon.py): a dark
@@ -154,12 +154,12 @@ def bars_svg():
 
 def write_svgs():
     defs, body = glyph_svg()
-    note = '<!-- MyMusic\'s Music mark: drawn by brand/make_icon.py; edit that, not this. -->\n'
+    note = '<!-- MyTube\'s Music mark: drawn by brand/make_icon.py; edit that, not this. -->\n'
     with open('brand/mark.svg', 'w') as f:
         f.write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="180 172 620 620">\n' + note)
         f.write(f'<defs>{defs}</defs>{body}\n</svg>\n')
     defs, body = bars_svg()
-    note = '<!-- MyMusic\'s icon: drawn by brand/make_icon.py; edit that, not this. -->\n'
+    note = '<!-- MyTube\'s icon: drawn by brand/make_icon.py; edit that, not this. -->\n'
     tile = (
         '<linearGradient id="tile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e1e2c"/><stop offset="1" stop-color="#0c0c12"/></linearGradient>'
         f'<linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{hexc(A)}"/><stop offset="1" stop-color="{hexc(B)}"/></linearGradient>'

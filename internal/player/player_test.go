@@ -1882,7 +1882,7 @@ func TestConnectFallsBack(t *testing.T) {
 	}
 }
 
-// here plays Spotify tracks in MyMusic itself, and the others from their
+// here plays Spotify tracks in MyTube itself, and the others from their
 // stream.
 func here(t media.Track) (Source, error) {
 	if t.Source == media.SourceSpotify {
@@ -1891,18 +1891,18 @@ func here(t media.Track) (Source, error) {
 	return streamOf(t), nil
 }
 
-// TestSpotifyHereNowhere plays a Spotify track in MyMusic, where it
+// TestSpotifyHereNowhere plays a Spotify track in MyTube, where it
 // can't: from YouTube Music.
 func TestSpotifyHereNowhere(t *testing.T) {
 	h := newHarness(t, Saved{}, func(f *fakeServices) { f.prepare = here })
 	h.p.PlayTracks([]media.Track{spotifyTrack("1")}, 0)
 	h.wait("a stream instead", func(p *Player) bool { return h.stream.lastLoad() == "load url:spotify:1 0s true" })
-	if n := h.notices(); len(n) != 1 || !strings.Contains(n[0].Message, "can't play inside MyMusic") {
+	if n := h.notices(); len(n) != 1 || !strings.Contains(n[0].Message, "can't play inside MyTube") {
 		t.Errorf("notices %+v", n)
 	}
 }
 
-// TestSpotifyHere plays a Spotify track on MyMusic's own device, then
+// TestSpotifyHere plays a Spotify track on MyTube's own device, then
 // leaves it in the middle for a stream, which pauses it.
 func TestSpotifyHere(t *testing.T) {
 	connectTick, connectAskEvery, connectSettle = 5*time.Millisecond, 10*time.Millisecond, 0
@@ -1911,19 +1911,19 @@ func TestSpotifyHere(t *testing.T) {
 	own := &fakeDevice{}
 	h.p.SpotifyHere(own)
 	h.p.PlayTracks([]media.Track{spotifyTrack("1"), track("b", "B")}, 0)
-	h.wait("MyMusic's device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
+	h.wait("MyTube's device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
 	if !own.has("play spotify:1 0s") || h.device.has("play spotify:1 0s") {
-		t.Errorf("MyMusic's device %v, Spotify Connect's %v", own.calls, h.device.calls)
+		t.Errorf("MyTube's device %v, Spotify Connect's %v", own.calls, h.device.calls)
 	}
 	h.p.Next()
 	h.wait("b playing", playing("b"))
-	h.wait("MyMusic's device paused", func(p *Player) bool { return own.has("pause") })
+	h.wait("MyTube's device paused", func(p *Player) bool { return own.has("pause") })
 	if h.device.has("pause") {
 		t.Errorf("Spotify Connect's device was paused: %v", h.device.calls)
 	}
 }
 
-// aheadDevice is MyMusic's own Spotify device, which plays the tracks
+// aheadDevice is MyTube's own Spotify device, which plays the tracks
 // after the one it's asked to by itself.
 type aheadDevice struct{ fakeDevice }
 
@@ -1964,7 +1964,7 @@ func goesOn(h *harness, d *aheadDevice, t media.Track, at time.Duration, playing
 	h.p.HereChanged()
 }
 
-// TestSpotifyGapless has MyMusic's own device play the Spotify tracks
+// TestSpotifyGapless has MyTube's own device play the Spotify tracks
 // after the current one by itself: the player follows it to each, without
 // telling it to play them, and the stream after them plays once the last
 // ends. The device tells when what it plays changes: nothing else asks it.

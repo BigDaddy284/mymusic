@@ -300,7 +300,7 @@ func TestMediaFlyout(t *testing.T) {
 	}
 	defer syscall.SyscallN(procRoUninitialize.Addr())
 
-	// The cover comes after the track, as MyMusic hands it once it has it.
+	// The cover comes after the track, as MyTube hands it once it has it.
 	info := Info{
 		ID:       "yt:abc",
 		Title:    fmt.Sprintf("Song %d", time.Now().UnixNano()),
@@ -336,7 +336,7 @@ func TestMediaFlyout(t *testing.T) {
 		t.Errorf("position %v at %v, want about 10 s at %v", f.at, f.updated, info.At)
 	}
 	if f.thumbnail {
-		t.Error("the flyout shows a cover before MyMusic has it")
+		t.Error("the flyout shows a cover before MyTube has it")
 	}
 	info.Cover, info.At = testCover(), time.Now()
 	c.Show(&info)

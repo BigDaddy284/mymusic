@@ -6,7 +6,7 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// playCounter counts how many times each track was played in MyMusic,
+// playCounter counts how many times each track was played in MyTube,
 // by its ID, from the history, which the library's version tells the
 // changes of: app.Collection.
 type playCounter interface {

@@ -1,4 +1,4 @@
-// Package brand holds MyMusic's brand files: the app's icon, which
+// Package brand holds MyTube's brand files: the app's icon, which
 // mygo.config.ts names, and the tray's, which the app embeds, both sound
 // bars, and the Music mark, a music note, which the sidebar shows.
 // make_icon.py draws them all.

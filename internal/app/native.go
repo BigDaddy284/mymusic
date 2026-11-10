@@ -1,6 +1,6 @@
 package app
 
-// The audio engine: MyMusic's own player, which plays the stream of each
+// The audio engine: MyTube's own player, which plays the stream of each
 // track, and the player's view of it.
 
 import (
@@ -22,7 +22,7 @@ import (
 )
 
 // errNoNative is returned where the system has no audio engine.
-var errNoNative = errors.New("MyMusic's audio engine isn't available on this system")
+var errNoNative = errors.New("MyTube's audio engine isn't available on this system")
 
 // engineEvents passes the engine's events to the player, once there is one.
 type engineEvents struct{ a *App }
@@ -77,14 +77,14 @@ func (a *App) nativeEngine() *audio.Engine {
 }
 
 // Silent reports whether the engine plays into no device, as
-// MYMUSIC_SILENT asks: for screenshots of what plays, its visualizer and
+// MYTUBE_SILENT asks: for screenshots of what plays, its visualizer and
 // lyrics moving, without a sound.
-func Silent() bool { return os.Getenv("MYMUSIC_SILENT") != "" }
+func Silent() bool { return os.Getenv("MYTUBE_SILENT") != "" }
 
 // startSilent starts an output that plays into no device: it renders at a
 // device's pace, in stereo, and drops what it renders.
 func startSilent(_ int, render func([]float32, int), _ func(error)) (audio.Output, error) {
-	log.Print("mymusic: the audio engine plays into no device (MYMUSIC_SILENT)")
+	log.Print("mytube: the audio engine plays into no device (MYTUBE_SILENT)")
 	o := &silentOutput{stop: make(chan struct{}), done: make(chan struct{})}
 	go func() {
 		defer close(o.done)
@@ -117,7 +117,7 @@ func (o *silentOutput) Stop() {
 func (o *silentOutput) Delay() time.Duration { return 0 }
 
 // openNative opens, for the native engine, the audio at a URL PrepareStream
-// gave: with its loudness, when MyMusic knows it, for the engine to play
+// gave: with its loudness, when MyTube knows it, for the engine to play
 // it at an even loudness; or the live stream of a video, which has none;
 // or the file of a track on this computer.
 func (a *App) openNative(ctx context.Context, rawURL string, interrupted func() bool) (audio.Source, error) {
@@ -186,7 +186,7 @@ type NativeAnalysis struct {
 
 // NativeAnalyser returns what the analyser gives now: the native engine's,
 // or, while the track plays outside the engine, the listener's, which hears
-// Spotify where MyMusic can, while the analyser is read.
+// Spotify where MyTube can, while the analyser is read.
 func (p *Player) NativeAnalyser(decibels, waveform bool) NativeAnalysis {
 	var a audio.Analysis
 	if l := p.a.listen.Load(); l != nil && l.outside.Load() {

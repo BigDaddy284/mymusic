@@ -24,7 +24,7 @@ func TestFitSize(t *testing.T) {
 	}
 }
 
-// TestWordmarkFits checks that MyMusic's name in the unfolded rail fits
+// TestWordmarkFits checks that MyTube's name in the unfolded rail fits
 // whole in every built-in theme, layout design and density, as Sakura's
 // wide serif didn't, and keeps its size where it fitted.
 func TestWordmarkFits(t *testing.T) {

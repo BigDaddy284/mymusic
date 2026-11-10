@@ -86,7 +86,7 @@ func (s *shell) nowPlayingInfo(c *ui.Context) {
 					line += " · on Spotify"
 				}
 			}
-			// While MyMusic plays it at another speed than its own.
+			// While MyTube plays it at another speed than its own.
 			if sp := s.st.Speed; sp > 0 && sp != 1 && s.st.Source != nil {
 				line += " · " + speedLabel(sp)
 			}

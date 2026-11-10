@@ -59,7 +59,7 @@ func TestOpenNativeTakesStreamURLs(t *testing.T) {
 }
 
 // TestOpenNativeMeasures gives the engine the loudness of the tracks
-// MyMusic knows, from the cache too.
+// MyTube knows, from the cache too.
 func TestOpenNativeMeasures(t *testing.T) {
 	webm, err := os.ReadFile("../../webm/testdata/stereo-cues-front.webm")
 	if err != nil {

@@ -97,7 +97,7 @@ func TestYouTubeChannelWithoutPageID(t *testing.T) {
 	if !archive.Unswitchable || archive.Current || !channelNamed(t, list, "Ada").Current {
 		t.Errorf("channels = %+v", list)
 	}
-	if _, err := s.SetYouTubeChannel(ctx, archive); err == nil || err.Error() != "YouTube doesn't let MyMusic switch to this channel" {
+	if _, err := s.SetYouTubeChannel(ctx, archive); err == nil || err.Error() != "YouTube doesn't let MyTube switch to this channel" {
 		t.Errorf("choosing it: %v", err)
 	}
 	if a.youtube.Channel() != "" || a.youtube.AuthUser() != 0 || a.settings.Get().YouTubeChannel != "" {
@@ -144,7 +144,7 @@ func TestYouTubeChannelChosen(t *testing.T) {
 func TestYouTubeChannelAnswersAsAccount(t *testing.T) {
 	a, s := channelsApp(t, answeringAs("Ada", "@ada"))
 	_, err := chooseRecords(t, s)
-	if err == nil || err.Error() != "YouTube Music answered as the account Ada, not as its channel Ada Records: MyMusic goes on as before" {
+	if err == nil || err.Error() != "YouTube Music answered as the account Ada, not as its channel Ada Records: MyTube goes on as before" {
 		t.Errorf("choosing a channel YouTube Music answers as the account: %v", err)
 	}
 	if a.youtube.Channel() != "" || a.settings.Get().YouTubeChannel != "" {

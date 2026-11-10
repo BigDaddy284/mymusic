@@ -1,7 +1,7 @@
 package audio
 
 // Tap analyses audio that plays outside the engine, as Spotify's when it
-// plays in MyMusic's own page, which a loopback capture hears: through the
+// plays in MyTube's own page, which a loopback capture hears: through the
 // engine's analyser, so that what draws it moves alike.
 type Tap struct{ an *analyser }
 

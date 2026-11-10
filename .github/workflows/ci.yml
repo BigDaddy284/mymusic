@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   go:
-    # MyMusic is built for Windows alone: its tests run on Windows. The job
+    # MyTube is built for Windows alone: its tests run on Windows. The job
     # keeps the name the branch's rules require.
     name: Go (windows-latest)
     runs-on: windows-latest

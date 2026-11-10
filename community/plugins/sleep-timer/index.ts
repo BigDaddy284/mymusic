@@ -2,7 +2,7 @@
 // end of the track. It adds a page to the sidebar and commands to the
 // command palette.
 
-import type { MyMusicAPI } from "../../../sdk";
+import type { MyTubeAPI } from "../../../sdk";
 
 /** How long the music fades out before it pauses, in milliseconds. */
 const FADE_MS = 30_000;
@@ -10,7 +10,7 @@ const FADE_MS = 30_000;
 const icon =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10Z"/></svg>';
 
-export default function activate(api: MyMusicAPI) {
+export default function activate(api: MyTubeAPI) {
   let deadline = 0; // when the music pauses, or 0
   let atTrackEnd = false;
   let tick: ReturnType<typeof setInterval> | null = null;

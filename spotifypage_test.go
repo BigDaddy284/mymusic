@@ -9,7 +9,7 @@ import (
 )
 
 // spotifyPage runs the script of public/spotify.html, the page of
-// MyMusic's own Spotify device, without a document, in a webview whose
+// MyTube's own Spotify device, without a document, in a webview whose
 // EME grants the key systems of granted, or that has no EME when granted
 // is nil, and returns its runtime. asked lists the key systems the page
 // asked for.
@@ -50,7 +50,7 @@ func spotifyPage(t *testing.T, secure bool, granted []string) *sobek.Runtime {
 	return vm
 }
 
-// TestSpotifyPageDecrypts has the page of MyMusic's own Spotify device
+// TestSpotifyPageDecrypts has the page of MyTube's own Spotify device
 // take Widevine and PlayReady in WebView2, and nothing else: ClearKey
 // doesn't play Spotify's audio (#295).
 func TestSpotifyPageDecrypts(t *testing.T) {

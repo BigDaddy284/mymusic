@@ -471,7 +471,7 @@ func (s *shell) youtubeLibraryItems(m *ui.Menu, p media.Playlist) {
 // another device.
 func (s *shell) deleteYouTubePlaylist(p media.Playlist) {
 	s.ask("delete playlist", "Delete "+p.Title+" from YouTube Music? It goes from YouTube too, and you can't undo this. "+
-		"To keep its tracks in MyMusic, copy it into a mix first.", "delete", func() {
+		"To keep its tracks in MyTube, copy it into a mix first.", "delete", func() {
 		key := "delete:" + p.ID
 		s.keeping[key] = true
 		go func() {
@@ -668,7 +668,7 @@ func (s *shell) artistPage(c *ui.Context, id string) {
 		if len(a.TopTracks) > 0 {
 			h.play = func() { s.p.PlayAll(a.TopTracks, false) }
 		}
-		// Signed out of the artist's service, they're followed in MyMusic.
+		// Signed out of the artist's service, they're followed in MyTube.
 		// An artist of the music on this computer has no releases to follow.
 		following := s.followsArtist(a)
 		if a.Source != media.SourceFile {

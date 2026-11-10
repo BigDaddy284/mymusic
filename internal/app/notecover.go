@@ -58,7 +58,7 @@ func (a *App) noteCover(t media.Track) []byte {
 	}
 	square, err := artwork.Square(data, noteCoverSize)
 	if err != nil {
-		log.Printf("mymusic: the cover of the notification of %s: %v", t.ID, err)
+		log.Printf("mytube: the cover of the notification of %s: %v", t.ID, err)
 		return nil
 	}
 	return square

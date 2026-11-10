@@ -4,7 +4,7 @@ import _ "embed"
 
 // UnihanLicense is the Unicode License of Unihan, whose readings of
 // Chinese characters and simplified forms pinyin.bin holds: copies of
-// MyMusic must reproduce it.
+// MyTube must reproduce it.
 //
 //go:embed LICENSE.unicode
 var UnihanLicense string

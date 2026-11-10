@@ -1,7 +1,7 @@
 package diag
 
 // Recording memory use (#384): while the user has it on, memory.log in the
-// logs folder gets a line of how MyMusic uses its memory each minute, and
+// logs folder gets a line of how MyTube uses its memory each minute, and
 // a heap profile, heap-<time>.pprof, is saved there when the user asks,
 // and once as the memory passes a threshold. Capture mode's act:memory and
 // act:heap read and save them the same way.
@@ -35,7 +35,7 @@ const (
 	MemoryThreshold = 1 << 30
 )
 
-// Memory is how MyMusic uses its memory at a moment: the Go heap's, as
+// Memory is how MyTube uses its memory at a moment: the Go heap's, as
 // the runtime tells it, and the process's, where the system tells it
 // cheaply.
 type Memory struct {
@@ -52,7 +52,7 @@ type Memory struct {
 	Private uint64
 }
 
-// ReadMemory reads how MyMusic uses its memory now.
+// ReadMemory reads how MyTube uses its memory now.
 func ReadMemory() Memory {
 	var ms runtime.MemStats
 	runtime.ReadMemStats(&ms)
@@ -122,7 +122,7 @@ func profiles(dir string) []string {
 	return found
 }
 
-// MemoryRecorder records how MyMusic uses its memory, while it's on, in
+// MemoryRecorder records how MyTube uses its memory, while it's on, in
 // a logs folder. Its methods are safe for concurrent use.
 type MemoryRecorder struct {
 	dir string
@@ -215,7 +215,7 @@ func (r *MemoryRecorder) Stop() {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if err := r.write("Stopped"); err != nil {
-		log.Printf("mymusic: recording memory use: %v", err)
+		log.Printf("mytube: recording memory use: %v", err)
 	}
 }
 
@@ -229,7 +229,7 @@ func (r *MemoryRecorder) record() {
 		return
 	}
 	if err := r.write(m.String()); err != nil {
-		log.Printf("mymusic: recording memory use: %v", err)
+		log.Printf("mytube: recording memory use: %v", err)
 		return
 	}
 	if r.passed || m.Process() < MemoryThreshold {
@@ -238,11 +238,11 @@ func (r *MemoryRecorder) record() {
 	r.passed = true
 	name, err := r.saveProfile()
 	if err != nil {
-		log.Printf("mymusic: saving a heap profile: %v", err)
+		log.Printf("mytube: saving a heap profile: %v", err)
 		return
 	}
 	if err := r.write(fmt.Sprintf("Passed %d MB: saved %s", MemoryThreshold>>20, name)); err != nil {
-		log.Printf("mymusic: recording memory use: %v", err)
+		log.Printf("mytube: recording memory use: %v", err)
 	}
 }
 
@@ -269,7 +269,7 @@ func (r *MemoryRecorder) SaveProfile() (string, error) {
 	name, err := r.saveProfile()
 	if err == nil && r.on {
 		if err := r.write("Saved " + name); err != nil {
-			log.Printf("mymusic: recording memory use: %v", err)
+			log.Printf("mytube: recording memory use: %v", err)
 		}
 	}
 	return name, err

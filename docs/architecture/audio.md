@@ -1,6 +1,6 @@
 # The audio engine
 
-- **`internal/audio`** is MyMusic's audio engine: two decks, each a
+- **`internal/audio`** is MyTube's audio engine: two decks, each a
   goroutine that reads a track, Opus in WebM with `webm` and `opus`, AAC
   in MP4 with `mp4`, `aac` and `resample`, or the AAC of a live stream's
   packed audio, its ID3 tags passed over, which has no length and can't
@@ -12,7 +12,7 @@
   a ring the audio thread plays from, at 48 kHz, each turning a
   track louder than -14 LKFS down to it, from the loudness its `Measured`
   source tells (Even loudness), and the preamp, equalizer, levelling
-  compressor, volume and analyser of the web player MyMusic had, ported
+  compressor, volume and analyser of the web player MyTube had, ported
   from Chromium's Web Audio, which they match sample for sample. A deck
   plays its track faster or slower at its own pitch by WSOLA
   (`stretch.go`), the waveform-similarity overlap-add of Verhelst and
@@ -23,9 +23,9 @@
   web player's audio element, but a read of a `Local` source, a file on
   this computer or a download, that fails is the file's failure ("Can't
   read the file"), not the network's.
-  `MYMUSIC_STRETCH_WAV=<dir> go test ./internal/audio -run StretchListen`
+  `MYTUBE_STRETCH_WAV=<dir> go test ./internal/audio -run StretchListen`
   writes the test files at each speed, to listen to.
-  `MYMUSIC_LIVE=1 go test ./internal/audio -run Live` plays songs of both
+  `MYTUBE_LIVE=1 go test ./internal/audio -run Live` plays songs of both
   codecs, and a 24/7 live stream, as the app finds them on YouTube,
   against ffmpeg's decode. `Probe` tells whether a deck plays a file, and
   how long, reading little of it, for the index of the music on this
@@ -44,11 +44,11 @@
   changes, and tells the windows when the device goes away and comes
   back. The player bar's device button and `outputChoices` and
   `outputMenu` in the root package's `outputdevice.go` show the choice.
-  `MYMUSIC_AUDIO=1 go test ./internal/audio/output -run TestStream`
+  `MYTUBE_AUDIO=1 go test ./internal/audio/output -run TestStream`
   plays on the default device by its ID, and on one that isn't there.
   It also hears what a process and its children play, through WASAPI's
   process loopback: `internal/app`'s listener hears
-  Spotify there, in MyMusic's webview, or the Spotify app on Windows,
+  Spotify there, in MyTube's webview, or the Spotify app on Windows,
   into a `Tap`, the analyser of the engine for audio outside it, which
   the visualizer and the plugins' analyser read while Spotify plays. It
   hears only while they read it.
@@ -57,7 +57,7 @@
   down to -40 dB, and Linear, whose gain is the slider's position. The
   player keeps the position, as settings.json does whatever the curve
   (`Saved`, `Of`). The app gives the engine the curve
-  (`Engine.SetVolumeCurve`, in `applyEngine`), Spotify's page in MyMusic
+  (`Engine.SetVolumeCurve`, in `applyEngine`), Spotify's page in MyTube
   the gain of the position on it (`hereDevice.gain`), and a Spotify
   Connect device the square root of that gain (`connectPercent`). As the
   curve changes, the player sends the device that plays the volume again.

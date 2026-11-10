@@ -38,5 +38,5 @@ DESIGN.md
 # which the registry branch publishes and main does not keep.
 /community/plugins/*/*.js
 # What `go build` writes at the root.
-/mymusic
-/mymusic.exe
+/mytube
+/mytube.exe

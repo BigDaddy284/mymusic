@@ -1,4 +1,4 @@
-- When YouTube's player API gives MyMusic no stream, as while it rests,
+- When YouTube's player API gives MyTube no stream, as while it rests,
   yt-dlp first finds the track's audio a quick way: as YouTube's app for
   visionOS alone, which needs no JavaScript challenge solved, rather than
   the several seconds of the computer's time the full way takes. The full

@@ -223,14 +223,14 @@ func TestWavePoints(t *testing.T) {
 
 // TestRenderWavyProgress draws the player bar and the now playing page
 // with the wavy progress bar in each layout, in Mix, Daylight, Aurora and
-// Terminal, to MYMUSIC_RENDER, for a look; MYMUSIC_THEMES lists others.
+// Terminal, to MYTUBE_RENDER, for a look; MYTUBE_THEMES lists others.
 func TestRenderWavyProgress(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	themes := []string{"mix", "daylight", "aurora", "terminal"}
-	if only := os.Getenv("MYMUSIC_THEMES"); only != "" {
+	if only := os.Getenv("MYTUBE_THEMES"); only != "" {
 		themes = strings.Split(only, ",")
 	}
 	s := playingAt(t)

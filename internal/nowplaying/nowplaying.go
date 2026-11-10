@@ -1,4 +1,4 @@
-// Package nowplaying shows what MyMusic's own audio engine plays in the
+// Package nowplaying shows what MyTube's own audio engine plays in the
 // system's media controls, and passes on what they ask: Windows' media
 // flyout, which the volume keys and Quick Settings show. The webview does
 // this for the audio it plays itself; the engine plays outside it.
@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// ErrUnsupported is returned where MyMusic can't reach the system's media
+// ErrUnsupported is returned where MyTube can't reach the system's media
 // controls.
 var ErrUnsupported = errors.New("nowplaying: the system's media controls are not supported here")
 
@@ -23,10 +23,10 @@ type Info struct {
 	Artists []string
 	Album   string
 	// Artwork is the address of an https image of the track, or of the
-	// cover of a track on this computer that MyMusic keeps, or empty,
+	// cover of a track on this computer that MyTube keeps, or empty,
 	// which tells covers apart: Windows takes Cover.
 	Artwork string
-	// Cover is the image at Artwork, as its host sent it, once MyMusic
+	// Cover is the image at Artwork, as its host sent it, once MyTube
 	// has it. Show keeps it, so it mustn't change after.
 	Cover    []byte
 	Duration time.Duration
@@ -41,7 +41,7 @@ type Info struct {
 	Rate float64
 }
 
-// The speeds MyMusic plays at, which the system's controls may ask.
+// The speeds MyTube plays at, which the system's controls may ask.
 const (
 	MinRate = 0.5
 	MaxRate = 3
@@ -240,7 +240,7 @@ func (c *Controls) Show(info *Info) {
 	}
 }
 
-// Close takes MyMusic out of the system's media controls.
+// Close takes MyTube out of the system's media controls.
 func (c *Controls) Close() {
 	close(c.stop)
 	<-c.done

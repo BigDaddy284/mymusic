@@ -185,7 +185,7 @@ func TestLocalCatalog(t *testing.T) {
 }
 
 // TestLocalNotices shows the licenses of the decoders of the music on this
-// computer that MyMusic didn't write: go-mp3's and jfreymuth/vorbis's.
+// computer that MyTube didn't write: go-mp3's and jfreymuth/vorbis's.
 func TestLocalNotices(t *testing.T) {
 	for _, want := range []struct{ name, text string }{
 		{"go-mp3", "Apache License"},

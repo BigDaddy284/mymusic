@@ -4,7 +4,7 @@ package main
 // dialog, what a track is and how it plays: where it comes from, its codec
 // and file, its bitrate, sample rate, bit depth, channels and length, and
 // of a file on this computer, its path, size and tags; of the track that
-// plays, what MyMusic's audio engine plays and how loud. What it tells
+// plays, what MyTube's audio engine plays and how loud. What it tells
 // comes from internal/app's TrackInfo.
 
 import (
@@ -40,7 +40,7 @@ const trackInfoWait = 10 * time.Second
 // it.
 var showInFolder = func(path string) { mygo.Shell.ShowItemInFolder(path) }
 
-// trackInfoOf tells what MyMusic knows of t, which plays as now tells
+// trackInfoOf tells what MyTube knows of t, which plays as now tells
 // when it's the track playing; tests replace it.
 var trackInfoOf = func(s *shell, ctx context.Context, t media.Track, now *player.Source) (app.TrackInfo, error) {
 	return s.svc.Player.TrackInfo(ctx, t, now)
@@ -145,7 +145,7 @@ func (s *shell) trackInfoBody(c *ui.Context, t media.Track, l *loaded[app.TrackI
 }
 
 // trackCopies is where a song's copies are to show, side by side, the one
-// that plays marked, once MyMusic links the copies of a song (#340): on
+// that plays marked, once MyTube links the copies of a song (#340): on
 // Spotify, on YouTube Music, downloaded and on this computer. Until then a
 // song has none, and nothing shows here.
 func (s *shell) trackCopies(c *ui.Context, t media.Track, info app.TrackInfo) {}
@@ -197,12 +197,12 @@ func trackFacts(t media.Track, info app.TrackInfo) []infoRow {
 	}
 	switch info.Plays {
 	case app.PlaysSpotify, app.PlaysConnect:
-		where := "In Spotify's own player, in MyMusic"
+		where := "In Spotify's own player, in MyTube"
 		if info.Plays == app.PlaysConnect {
 			where = "On a Spotify Connect device"
 		}
 		rows = append(rows, infoRow{"Plays", where, false},
-			infoRow{"Quality", "As your Spotify account and Spotify's settings choose: Spotify tells MyMusic nothing of its audio.", false})
+			infoRow{"Quality", "As your Spotify account and Spotify's settings choose: Spotify tells MyTube nothing of its audio.", false})
 		if t.DurationMs > 0 {
 			rows = append(rows, infoRow{"Length", clock(ms(t.DurationMs)), false})
 		}
@@ -216,9 +216,9 @@ func trackFacts(t media.Track, info app.TrackInfo) []infoRow {
 	case st != nil:
 		rows = append(rows, infoRow{"Format", formatName(st.Codec, st.Container), false})
 	case info.File == nil && t.Source == media.SourceSpotify && info.Recording == nil:
-		rows = append(rows, infoRow{"Format", "MyMusic finds its recording on YouTube Music as it plays, and tells its format then.", false})
+		rows = append(rows, infoRow{"Format", "MyTube finds its recording on YouTube Music as it plays, and tells its format then.", false})
 	case info.File == nil:
-		rows = append(rows, infoRow{"Format", "MyMusic finds its stream as it plays, and tells its format then.", false})
+		rows = append(rows, infoRow{"Format", "MyTube finds its stream as it plays, and tells its format then.", false})
 	}
 	switch file := info.File; {
 	case st != nil && st.Bitrate > 0:
@@ -343,14 +343,14 @@ func fileLabel(kind app.FileKind) string {
 	return "File"
 }
 
-// playingLine tells what MyMusic's audio engine plays of the track
+// playingLine tells what MyTube's audio engine plays of the track
 // playing, and from where, once it opened it.
 func playingLine(info app.TrackInfo) string {
 	e := info.Engine
 	if e == nil || !e.Ready {
-		return "MyMusic's audio engine is opening it…"
+		return "MyTube's audio engine is opening it…"
 	}
-	line := "In MyMusic's audio engine, "
+	line := "In MyTube's audio engine, "
 	if info.Surround {
 		line += "its 5.1 surround audio, "
 	}
@@ -386,7 +386,7 @@ func loudnessLine(t media.Track, info app.TrackInfo) string {
 	case t.Source == media.SourceFile:
 		line = "It plays at its own level: Even loudness turns tracks down from YouTube's measure of each, which a file on this computer hasn't."
 	default:
-		line = "MyMusic has no measure of it yet: it plays at its own level."
+		line = "MyTube has no measure of it yet: it plays at its own level."
 	}
 	if info.Levelling {
 		line += " Volume levelling squeezes its loud and quiet moments closer together."

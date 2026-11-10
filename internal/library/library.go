@@ -1,4 +1,4 @@
-// Package library keeps what the user collects in MyMusic itself, across
+// Package library keeps what the user collects in MyTube itself, across
 // services: liked and disliked tracks, playlists that mix tracks of every
 // service, the history of what they played, their recent searches, the
 // podcasts and the artists they follow, and where they left the episodes.
@@ -26,7 +26,7 @@ const (
 // ErrNoPlaylist is returned for playlists that do not exist.
 var ErrNoPlaylist = errors.New("library: no such playlist")
 
-// Playlist is a playlist made in MyMusic, which may hold tracks of every
+// Playlist is a playlist made in MyTube, which may hold tracks of every
 // service. Cover names the file of the cover the user chose for it, in
 // the folder of covers (covers.go), or is empty while it shows its
 // tracks' covers.
@@ -56,7 +56,7 @@ type Data struct {
 	History   []Play        `json:"history"`
 	Searches  []string      `json:"searches"`
 
-	// Artists are the artists the user follows in MyMusic, rather than on
+	// Artists are the artists the user follows in MyTube, rather than on
 	// their service, the last followed first.
 	Artists []FollowedArtist `json:"artists,omitempty"`
 

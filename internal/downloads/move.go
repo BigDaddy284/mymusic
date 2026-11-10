@@ -20,18 +20,18 @@ var rename = os.Rename
 
 // moveFolder is the folder Move makes for the downloads in a folder that
 // holds other files.
-const moveFolder = "MyMusic downloads"
+const moveFolder = "MyTube downloads"
 
 // Move moves the downloads to the folder dir, telling progress how many of
 // their bytes moved, and returns the folder they are in then: dir itself
-// when it's empty, or holds MyMusic's downloads, as on a drive used
+// when it's empty, or holds MyTube's downloads, as on a drive used
 // before, whose downloads the moved ones join; else a folder in it, so as
 // to keep apart from its files, unless exact. The downloads wait
 // meanwhile, and go on from their parts there. A move that fails leaves
 // them where they were.
 func (m *Manager) Move(ctx context.Context, dir string, exact bool, progress func(done, total int64)) (string, error) {
 	if m == nil {
-		return "", errors.New("MyMusic keeps no downloads here")
+		return "", errors.New("MyTube keeps no downloads here")
 	}
 	dir, err := filepath.Abs(dir)
 	if err != nil {
@@ -57,7 +57,7 @@ func (m *Manager) Move(ctx context.Context, dir string, exact bool, progress fun
 	for _, avoid := range m.opts.Avoid {
 		if same(target, avoid) || inside(target, avoid) || inside(avoid, target) {
 			m.mu.Unlock()
-			return "", errors.New("the downloads can't share a folder with MyMusic's cache")
+			return "", errors.New("the downloads can't share a folder with MyTube's cache")
 		}
 	}
 	m.setHold(holdMoving, true, "Moving to "+target, time.Time{})
@@ -75,7 +75,7 @@ func (m *Manager) Move(ctx context.Context, dir string, exact bool, progress fun
 	}
 	if err := writable(target); err != nil {
 		release()
-		return "", fmt.Errorf("MyMusic can't write to %s: %w", target, err)
+		return "", fmt.Errorf("MyTube can't write to %s: %w", target, err)
 	}
 	theirs, _, err := readIndex(target)
 	if err != nil {
@@ -106,7 +106,7 @@ func (m *Manager) Move(ctx context.Context, dir string, exact bool, progress fun
 	// moved, those the new folder held already, and its index.
 	for _, p := range mv.leave {
 		if err := os.Remove(p); err != nil && !errors.Is(err, fs.ErrNotExist) {
-			log.Printf("mymusic: removing a download moved: %v", err)
+			log.Printf("mytube: removing a download moved: %v", err)
 		}
 	}
 	os.Remove(filepath.Join(cur, "index.json"))
@@ -134,7 +134,7 @@ func (m *Manager) idle(ctx context.Context) error {
 }
 
 // emptyOrOurs reports whether dir is empty, doesn't exist yet, or holds
-// MyMusic's downloads.
+// MyTube's downloads.
 func emptyOrOurs(dir string) bool {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -152,7 +152,7 @@ func writable(dir string) error {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
-	f, err := os.CreateTemp(dir, ".mymusic-*.tmp")
+	f, err := os.CreateTemp(dir, ".mytube-*.tmp")
 	if err != nil {
 		return err
 	}
@@ -190,7 +190,7 @@ type moved struct {
 func (mv moved) undo() {
 	for _, r := range slices.Backward(mv.renamed) {
 		if err := os.Rename(r[1], r[0]); err != nil {
-			log.Printf("mymusic: putting a download back: %v", err)
+			log.Printf("mytube: putting a download back: %v", err)
 		}
 	}
 	for _, p := range mv.copied {

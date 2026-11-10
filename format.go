@@ -94,7 +94,7 @@ func sourceName(s media.Source) string {
 	case media.SourceFile:
 		return "this computer"
 	}
-	return "MyMusic"
+	return "MyTube"
 }
 
 // trackLine is "Title - Artist", for notices.

@@ -53,7 +53,7 @@ func posixRename(from, to string) error {
 }
 
 // TestReadLetsAnEditorSave saves settings.json, in each way editors do,
-// while MyMusic has it open to read: through os.Open's handle, which
+// while MyTube has it open to read: through os.Open's handle, which
 // shares no deletes, the saves fail; through openShared's, they go
 // through. Only a rename over the file without POSIX semantics, which
 // MoveFileEx does, fails either way: Windows doesn't replace a file that
@@ -88,13 +88,13 @@ func TestReadLetsAnEditorSave(t *testing.T) {
 			t.Errorf("%s went through os.Open's handle too: openShared is no longer needed for it", c.name)
 		}
 		if err := try(openShared, c.save); err != nil {
-			t.Errorf("%s while MyMusic reads the file: %v", c.name, err)
+			t.Errorf("%s while MyTube reads the file: %v", c.name, err)
 		}
 	}
 	// As editors that write the file in place save: os.Open shares writes
 	// too.
 	if err := try(openShared, func() error { return os.WriteFile(path, []byte(`{"theme": "aurora"}`), 0o644) }); err != nil {
-		t.Errorf("writing in place while MyMusic reads the file: %v", err)
+		t.Errorf("writing in place while MyTube reads the file: %v", err)
 	}
 	if err := try(openShared, func() error { return os.Rename(saved, path) }); err != nil {
 		t.Logf("MoveFileEx over a file open to read: %v", err)
@@ -130,7 +130,7 @@ func TestWriteWaitsForAnEditor(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// What MyMusic's write did before: it fails while the file is open.
+	// What MyTube's write did before: it fails while the file is open.
 	other := filepath.Join(dir, "other.tmp")
 	writeText(t, other, "{}")
 	if err := os.Rename(other, path); err == nil {

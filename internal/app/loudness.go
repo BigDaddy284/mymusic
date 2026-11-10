@@ -16,14 +16,14 @@ const (
 	// loudnessAsk bounds asking YouTube how loud a video is.
 	loudnessAsk = 15 * time.Second
 	// loudnessGrace is how long the engine, opening a track, waits for
-	// YouTube to tell how loud it is, while MyMusic asks.
+	// YouTube to tell how loud it is, while MyTube asks.
 	loudnessGrace = 500 * time.Millisecond
 	// unknownFor is how long a video YouTube told no loudness of goes
 	// without asking again.
 	unknownFor = time.Hour
 )
 
-// loudnessBook keeps how loud YouTube measured the videos MyMusic played,
+// loudnessBook keeps how loud YouTube measured the videos MyTube played,
 // in LKFS, in loudness.json in the cache folder, so that tracks play at an
 // even loudness from the cache too, offline. Its methods are safe for
 // concurrent use, and a nil book knows nothing.
@@ -112,7 +112,7 @@ func (b *loudnessBook) keep(videoID string, lkfs float64) {
 		return nil
 	})
 	if err != nil {
-		log.Printf("mymusic: keeping the loudness of %s: %v", videoID, err)
+		log.Printf("mytube: keeping the loudness of %s: %v", videoID, err)
 	}
 }
 
@@ -155,7 +155,7 @@ func (b *loudnessBook) learn(videoID string) <-chan struct{} {
 			b.unknown[videoID] = time.Now().Add(unknownFor)
 			b.mu.Unlock()
 			if err != nil && !errors.Is(err, stream.ErrNoLoudness) {
-				log.Printf("mymusic: asking the loudness of %s: %v", videoID, err)
+				log.Printf("mytube: asking the loudness of %s: %v", videoID, err)
 			}
 		}
 		b.mu.Lock()
@@ -166,7 +166,7 @@ func (b *loudnessBook) learn(videoID string) <-chan struct{} {
 	return done
 }
 
-// measured is the audio of a video whose loudness MyMusic knows, which
+// measured is the audio of a video whose loudness MyTube knows, which
 // the engine plays at an even loudness.
 type measured struct {
 	*stream.Source

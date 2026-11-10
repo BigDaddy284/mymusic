@@ -2,7 +2,7 @@ package main
 
 import "github.com/egoist/mygo/ui"
 
-// The MyMusic themes' gradient, after Stills & Reels' Theme.cs and
+// The MyTube themes' gradient, after Stills & Reels' Theme.cs and
 // UiControls.cs: its primary buttons are filled with the accent gradient,
 // blue to purple from left to right, under white ink that hovering lightens
 // with 28 of 255 of white and pressing with 50; its checked buttons with

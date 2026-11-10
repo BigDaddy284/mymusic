@@ -321,7 +321,7 @@ func setColors(t *testing.T, s *shell, source settings.ColorSource, file string)
 }
 
 // TestColorFileSettings shows each source of the colours, with what
-// MyMusic read of its file, or why it couldn't, and copies the matugen
+// MyTube read of its file, or why it couldn't, and copies the matugen
 // template.
 func TestColorFileSettings(t *testing.T) {
 	t.Setenv("PYWAL_CACHE_DIR", t.TempDir())
@@ -349,7 +349,7 @@ func TestColorFileSettings(t *testing.T) {
 		says   string
 	}{
 		{settings.ColorsPywal, "", "It isn't there yet: pywal writes it when you run wal."},
-		{settings.ColorsMatugen, "", "It isn't there yet: add MyMusic's template to matugen's config.toml, and run matugen."},
+		{settings.ColorsMatugen, "", "It isn't there yet: add MyTube's template to matugen's config.toml, and run matugen."},
 		{settings.ColorsFile, "", "Choose a file: pywal's colors.json, what matugen --json prints, or a theme.json."},
 		{settings.ColorsFile, "colors.json", "It can't be read: it isn't a full path"},
 		{settings.ColorsFile, broken, "It can't be read: it ends partway through. The theme's colours show."},
@@ -416,7 +416,7 @@ func TestColorFileNote(t *testing.T) {
 		t.Errorf("%q, %v", got, bad)
 	}
 	read.ReadAt, read.Err = now.AddDate(0, 0, -1), "it's empty"
-	if got, bad := colorFileNote(read, set, now); got != "It can't be read: it's empty. MyMusic keeps the colours it read at 1 Nov 14:30." || !bad {
+	if got, bad := colorFileNote(read, set, now); got != "It can't be read: it's empty. MyTube keeps the colours it read at 1 Nov 14:30." || !bad {
 		t.Errorf("%q, %v", got, bad)
 	}
 	if got, _ := colorFileNote(app.ColorFileStatus{Source: settings.ColorsMatugen}, set, now); got != "Reading it…" {

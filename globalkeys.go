@@ -18,7 +18,7 @@ import (
 const globalRecording = "global:"
 
 // globalHint is the first line of the group of global shortcuts.
-const globalHint = "These keys control MyMusic whichever window is in front, and while it runs they do nothing else."
+const globalHint = "These keys control MyTube whichever window is in front, and while it runs they do nothing else."
 
 // globalShortcutSettings list the commands that global shortcuts run, and
 // their keys, which the user records as the window's shortcuts.
@@ -138,7 +138,7 @@ func (s *shell) takeGlobalKeys(gc app.GlobalCommand, keys string) {
 
 // setGlobalShortcut gives a command the keys of a global shortcut, "" for
 // none. Another command that had them gives them up, a command of the
-// window too: the global shortcut takes them in MyMusic's window as well.
+// window too: the global shortcut takes them in MyTube's window as well.
 func (s *shell) setGlobalShortcut(gc app.GlobalCommand, keys string) {
 	s.recording = ""
 	if s.set.GlobalShortcuts == nil {
@@ -178,7 +178,7 @@ func (s *shell) giveUpGlobal(id, keys string) {
 	}
 }
 
-// globalPress takes the press of one of MyMusic's own global shortcuts,
+// globalPress takes the press of one of MyTube's own global shortcuts,
 // whose keys never reach the window, as the user records the keys of a
 // shortcut in Settings › Shortcuts, or in a search of the settings that
 // found it: on the main thread, while the window has the focus. Then too,

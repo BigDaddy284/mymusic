@@ -1,8 +1,8 @@
 {
-  "id": "mymusic",
-  "name": "MyMusic",
+  "id": "mytube",
+  "name": "MyTube",
   "version": "1.0.0",
-  "author": "MyMusic",
+  "author": "MyTube",
   "description": "The default: deep navy with a blue to purple gradient, the look of StackSpace and Stills & Reels.",
   "scheme": "dark",
   "colors": {

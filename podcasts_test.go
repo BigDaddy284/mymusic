@@ -283,11 +283,11 @@ func TestReleasedLabel(t *testing.T) {
 }
 
 // TestRenderPodcasts draws a show's page, the search's podcasts and
-// Library › Podcasts to MYMUSIC_RENDER, for a look.
+// Library › Podcasts to MYTUBE_RENDER, for a look.
 func TestRenderPodcasts(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newPodcastShell(t)
 	s.loads["podcast:"+testShow.ID] = &loaded[media.Podcast]{done: true, value: testShow}

@@ -56,14 +56,14 @@ func TestOpen(t *testing.T) {
 	s.panel = ""
 	s.open("/lyrics")
 	if s.panel != "lyrics" {
-		t.Errorf("mymusic://lyrics shows the panel %q", s.panel)
+		t.Errorf("mytube://lyrics shows the panel %q", s.panel)
 	}
 	s.open("/album/al-1?from=link")
 	if got := s.router.Path(); got != "/album/al-1" {
-		t.Errorf("mymusic://album/al-1 went to %q", got)
+		t.Errorf("mytube://album/al-1 went to %q", got)
 	}
 	s.open("/search?q=daft+punk")
 	if got := s.router.Path(); got != "/search" || s.query != "daft punk" {
-		t.Errorf("mymusic://search?q=daft+punk went to %q, the search box holding %q", got, s.query)
+		t.Errorf("mytube://search?q=daft+punk went to %q, the search box holding %q", got, s.query)
 	}
 }

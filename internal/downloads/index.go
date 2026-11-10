@@ -12,7 +12,7 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/store"
 )
 
-// indexVersion is the version of index.json this MyMusic writes.
+// indexVersion is the version of index.json this MyTube writes.
 const indexVersion = 1
 
 // index is what the folder's index.json keeps: the tracks downloaded or
@@ -99,7 +99,7 @@ type Collection struct {
 	// Tracks are its tracks' IDs, in its order, as it was downloaded.
 	Tracks []string `json:"tracks"`
 	// Total is how many tracks its service counts, when it gave fewer:
-	// MyMusic reads about a thousand tracks of a playlist at most.
+	// MyTube reads about a thousand tracks of a playlist at most.
 	Total int       `json:"total,omitempty"`
 	Added time.Time `json:"added"`
 	// Art is the cover kept, relative to the folder.
@@ -113,7 +113,7 @@ func newIndex() *index {
 
 // readIndex reads the index of the folder dir: an empty one when it has
 // none, and when it doesn't decode, which goes aside to index.json.broken,
-// so that a corrupt index never keeps MyMusic from starting. It tells
+// so that a corrupt index never keeps MyTube from starting. It tells
 // whether the folder held one.
 func readIndex(dir string) (*index, bool, error) {
 	path := filepath.Join(dir, "index.json")
@@ -127,8 +127,8 @@ func readIndex(dir string) (*index, bool, error) {
 	idx := newIndex()
 	if err := json.Unmarshal(data, idx); err != nil || idx.Version > indexVersion {
 		if err == nil {
-			// A later MyMusic's: kept as it is, and not read.
-			return nil, true, errors.New("the downloads were kept by a later version of MyMusic")
+			// A later MyTube's: kept as it is, and not read.
+			return nil, true, errors.New("the downloads were kept by a later version of MyTube")
 		}
 		if err := os.Rename(path, path+".broken"); err != nil {
 			return nil, true, err

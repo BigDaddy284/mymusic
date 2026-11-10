@@ -1,13 +1,13 @@
 # License
 <!-- docs: group=project order=30 -->
 
-MyMusic is free and open source, under the MIT license or the GNU GPL version 3, whichever you choose. Here is what that means, and what else it includes.
+MyTube is free and open source, under the MIT license or the GNU GPL version 3, whichever you choose. Here is what that means, and what else it includes.
 
-MyMusic is a fork of [MixMusic](https://github.com/fzn0x/mixmusic), by
+MyTube is a fork of [MixMusic](https://github.com/fzn0x/mixmusic), by
 fzn0x and the MixMusic contributors, whose copyright notice
 [LICENSE-MIT](../LICENSE-MIT) keeps.
 
-MyMusic's own code is dual-licensed: use it under the
+MyTube's own code is dual-licensed: use it under the
 [MIT license](../LICENSE-MIT) or under the
 [GNU General Public License, version 3](../LICENSE-GPL), whichever you
 prefer. Settings › About says so too. Some parts it includes, such as the
@@ -19,10 +19,10 @@ typefaces and the code it ports, keep licences of their own, listed below.
 
 ## What the two licences mean
 
-- **Using MyMusic** is free under either licence, for any purpose. You
+- **Using MyTube** is free under either licence, for any purpose. You
   need to accept neither to run it.
 - **The MIT license** lets you use, copy, change, merge, publish, share,
-  sublicense and sell MyMusic's code, in open or closed programs, as long
+  sublicense and sell MyTube's code, in open or closed programs, as long
   as copies keep its copyright notice and the licence's text. It comes
   without any warranty.
 - **The GPL, version 3**, lets you do the same, as long as what you share,
@@ -31,10 +31,10 @@ typefaces and the code it ports, keep licences of their own, listed below.
   It comes without any warranty too.
 - **Choosing.** You pick the licence that suits what you do, and follow
   that one. The MIT license asks the least, as when you use one of
-  MyMusic's decoders in a program of your own. The GPL fits a program
+  MyTube's decoders in a program of your own. The GPL fits a program
   that is under the GPL itself.
 - **Contributions** are accepted under both licences, so that the whole of
-  MyMusic stays under both. That includes the community's themes and
+  MyTube stays under both. That includes the community's themes and
   plugins: opening a pull request for one agrees to it.
 
 The Go packages anyone can import, `opus`, `aac`, `ac3`, `webm`, `mp4`,
@@ -59,23 +59,23 @@ choice, with the licences of the code they derive from, below.
 | Roboto Flex, the Material themes' face | by Google Fonts | SIL Open Font License 1.1 | [fonts/robotoflex-OFL.txt](../fonts/robotoflex-OFL.txt) |
 | Archivo, the Walnut themes' headings | by Omnibus-Type | SIL Open Font License 1.1 | [fonts/archivo-OFL.txt](../fonts/archivo-OFL.txt) |
 
-The Go modules MyMusic is built with keep their own licences: MyGo and
+The Go modules MyTube is built with keep their own licences: MyGo and
 Sobek under MIT, purego under Apache 2.0, and golang.org/x/image and
 golang.org/x/text under Go's BSD license. [go.mod](../go.mod) lists them
 all.
 
-Copies of MyMusic must keep these notices, as the licences ask:
+Copies of MyTube must keep these notices, as the licences ask:
 Settings › About › Licenses shows each of them in the app.
 
-## What MyMusic doesn't include
+## What MyTube doesn't include
 
 - **Lyrics** come from Unison, LRCLIB and YouTube Music as you play, and
-  aren't part of MyMusic. Unison's are under the
+  aren't part of MyTube. Unison's are under the
   [Open Database License](https://opendatacommons.org/licenses/odbl/),
   which asks apps that show them to credit them, as the lyrics panel does:
   "lyrics from Unison (https://unison.boidu.dev)".
 - **yt-dlp and the JavaScript runtimes** are programs of their own, which
-  MyMusic runs, under their own licences. MyMusic downloads yt-dlp from
+  MyTube runs, under their own licences. MyTube downloads yt-dlp from
   its releases when you install it.
 - **The music on this website** is by Kevin MacLeod
   ([incompetech.com](https://incompetech.com)), under
@@ -84,7 +84,7 @@ Settings › About › Licenses shows each of them in the app.
 
 ## Trademarks
 
-MyMusic is not affiliated with, endorsed by or sponsored by Spotify or
+MyTube is not affiliated with, endorsed by or sponsored by Spotify or
 Google. It plays what these services offer their users, through the
 services' own interfaces; use it as their terms allow. Spotify and YouTube
 Music are trademarks of their owners.

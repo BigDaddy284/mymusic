@@ -25,12 +25,12 @@ type Index struct {
 	Segments []Segment
 }
 
-// headSize is how much of a video stream MyMusic reads to find its index:
+// headSize is how much of a video stream MyTube reads to find its index:
 // YouTube's DASH streams put it within the first few kilobytes, as WebM
 // Cues before the clusters, or an MP4 sidx before the fragments.
 const headSize = 64 << 10
 
-// maxHead bounds how much of a stream MyMusic reads for an index that
+// maxHead bounds how much of a stream MyTube reads for an index that
 // goes on past headSize.
 const maxHead = 1 << 20
 

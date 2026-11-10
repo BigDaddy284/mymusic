@@ -220,7 +220,7 @@ func TestYTDLPSkipsTheQuickRunTheDirectRouteRulesOut(t *testing.T) {
 			t.Errorf("%s: yt-dlp ran %q; want the quick run %v", name, all, c.quick)
 		}
 	}
-	// Without the direct route, as with MYMUSIC_YTDLP_ONLY, quickly first.
+	// Without the direct route, as with MYTUBE_YTDLP_ONLY, quickly first.
 	if !quickHelps(nil) || !quickHelps(errDirectPaused) || !quickHelps(context.DeadlineExceeded) {
 		t.Error("no quick run without the direct route's answer")
 	}

@@ -2,7 +2,7 @@ package stream
 
 // Known returns the stream of a video the resolver holds, fresh, as
 // Resolve would return it, without finding one or waiting for one: what
-// Track info tells of a track MyMusic found the stream of.
+// Track info tells of a track MyTube found the stream of.
 func (r *Resolver) Known(videoID string) (Stream, bool) { return r.known(videoID, false) }
 
 // KnownSurround is Known of a video's 5.1 surround audio: the stream of it

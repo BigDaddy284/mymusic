@@ -1,16 +1,16 @@
 # Your library
 <!-- docs: group=using order=20 -->
 
-MyMusic keeps your liked songs, mixes, downloads, history and stats for Spotify and YouTube Music tracks together, beside each service's own library.
+MyTube keeps your liked songs, mixes, downloads, history and stats for Spotify and YouTube Music tracks together, beside each service's own library.
 
-What MyMusic keeps itself, as your liked and disliked songs, your mixes, the artists you follow without an account and your history, is in `library.json` in your [data folder](data-and-privacy.md#the-data-folder), and works with no account. What you keep on a service, as its playlists and saved albums, shows once you [sign in](accounts.md) to it, and the changes you make in MyMusic reach it.
+What MyTube keeps itself, as your liked and disliked songs, your mixes, the artists you follow without an account and your history, is in `library.json` in your [data folder](data-and-privacy.md#the-data-folder), and works with no account. What you keep on a service, as its playlists and saved albums, shows once you [sign in](accounts.md) to it, and the changes you make in MyTube reach it.
 
 ## The Library page
 
 Library, in the sidebar or with Alt+2, has these pivots, each with how many it holds:
 
 - **Liked:** the songs you liked, of every service.
-- **Mixes:** the playlists you make in MyMusic.
+- **Mixes:** the playlists you make in MyTube.
 - **Podcasts:** the episodes you're listening to and the shows you follow: see [Podcasts](podcasts.md#following-shows).
 - **Artists:** the new releases of the artists you follow, and the artists themselves: see [Artists you follow](#artists-you-follow).
 - **Downloads:** what plays without the network.
@@ -27,7 +27,7 @@ Like a track with the heart in the player bar, on the now playing page, in the [
 - **Signed in, a like reaches the service too:** a Spotify track is saved to your Spotify library, and a YouTube Music track is liked on YouTube Music.
 - **Liking a song you disliked** takes the dislike back.
 - **The list** has Play, Shuffle and Download, a box that searches it and a Sort menu: the list's own order, Title, Artist, Length or Plays. What you search shows how many tracks of the list match.
-- **Plays** puts the songs you played most in MyMusic first, as your [history](#history-and-recently-played) counts them, over its last 1,000 plays; songs played as often, and those not played, keep the list's order. The list follows the plays as they're counted.
+- **Plays** puts the songs you played most in MyTube first, as your [history](#history-and-recently-played) counts them, over its last 1,000 plays; songs played as often, and those not played, keep the list's order. The list follows the plays as they're counted.
 
 The songs you liked on a service before, or in its own app, are in that service's pivot of the library: Liked on Spotify, in pages that Load more adds to, and Liked on YouTube Music.
 
@@ -37,7 +37,7 @@ Library › Disliked lists the songs you disliked, newest first, with the same s
 
 ## Mixes
 
-A mix is a playlist of MyMusic's own, which holds tracks of every service.
+A mix is a playlist of MyTube's own, which holds tracks of every service.
 
 ![Library › Mixes: the New mix tile, "Tracks of every service, together", then three mixes, Anisong night, Focus, no words and Weekend, each with its cover and how many tracks it holds, and the same mixes under Your mixes in the sidebar](shots/mixes.webp)
 
@@ -54,7 +54,7 @@ Your mixes show in the sidebar under Your mixes, with how many tracks each holds
 A mix shows the cover of its first song that has one, until you choose another.
 
 - **Change cover…**, in the More menu of the mix's page, or in the menu of its tile in Library › Mixes and on Home, opens a dialog: **choose an image…** opens a PNG, JPEG or WebP file of yours, and the covers of the mix's songs below are a click away.
-- **The cover** shows cut to a centred square, on the mix's page and its tiles. MyMusic keeps a copy of it, at most 600 pixels across, in `mix-covers` in your [data folder](data-and-privacy.md#the-data-folder): the file you chose can move or go.
+- **The cover** shows cut to a centred square, on the mix's page and its tiles. MyTube keeps a copy of it, at most 600 pixels across, in `mix-covers` in your [data folder](data-and-privacy.md#the-data-folder): the file you chose can move or go.
 - **Use the songs' covers**, in the same dialog, goes back to them. Deleting the mix deletes its cover too.
 
 ## Artists you follow
@@ -62,18 +62,18 @@ A mix shows the cover of its first song that has one, until you choose another.
 Follow an artist with Follow on their page, with Follow in the page's More menu (⋯), or with Follow in the menu of their tile, a right click on it in the search, on Home or in the library. Following, or Unfollow in those menus, stops.
 
 - **Signed in to the artist's service,** you follow them there: you subscribe on YouTube Music, or follow on Spotify, as in the service's own app.
-- **Signed out,** MyMusic keeps them itself, in `library.json`, as it keeps the podcasts you follow, and the toast says "following in MyMusic". Signing in later doesn't follow them on the service: MyMusic never writes to your account on its own. Their page still says Following, and stopping stops in MyMusic, and on the service too where you follow them there.
-- **Library › Artists** has their new releases first, then Followed in MyMusic, the artists MyMusic keeps, then Followed on Spotify and Followed on YouTube Music, the artists you follow on each service you signed in to, past those MyMusic keeps. The pivot counts the artists MyMusic keeps.
+- **Signed out,** MyTube keeps them itself, in `library.json`, as it keeps the podcasts you follow, and the toast says "following in MyTube". Signing in later doesn't follow them on the service: MyTube never writes to your account on its own. Their page still says Following, and stopping stops in MyTube, and on the service too where you follow them there.
+- **Library › Artists** has their new releases first, then Followed in MyTube, the artists MyTube keeps, then Followed on Spotify and Followed on YouTube Music, the artists you follow on each service you signed in to, past those MyTube keeps. The pivot counts the artists MyTube keeps.
 
 ### New releases
 
-Home shows "New from artists you follow" after your own shelves, and Library › Artists shows it first, once there are any: the albums, singles and EPs of the artists you follow, in MyMusic and on the services you signed in to, newest first. Home's Spotify and YouTube Music pivots keep that service's.
+Home shows "New from artists you follow" after your own shelves, and Library › Artists shows it first, once there are any: the albums, singles and EPs of the artists you follow, in MyTube and on the services you signed in to, newest first. Home's Spotify and YouTube Music pivots keep that service's.
 
 - **New** is out in the last 8 weeks. Spotify tells the day a release came out, which its tile shows, as Nov 1. YouTube Music tells only the year, which its tile shows: a release of this year counts as new all year, and last year's in the first 8 weeks of the new one.
 - **Newest first:** a release known by its year alone counts from the first day of its year, so this year's come after those of the last weeks. Of one day, or one year, an artist's newest come first.
 - **At most** an artist's four newest show, and 30 in all.
 - **Where they come from:** the artist's page on YouTube Music, which lists their latest albums and singles, or Spotify's list of their albums and singles, the 10 newest of each. Neither service gives apps a feed of the new releases of the artists you follow: YouTube Music's New releases are everyone's, and Spotify took its own list from apps in February 2026. Spotify's artists need you signed in to Spotify.
-- **How often:** MyMusic asks for an artist's releases at most every 12 hours, and an hour after their service failed, as Home or Library › Artists shows and when you [refresh](settings.md#refresh-a-page) them: up to 30 artists in one go, 3 at a time, those never asked first, and the rest the next time. An artist whose service fails shows what was read before. What it read is kept in `releases.json` in the [cache folder](data-and-privacy.md#the-cache-folder), so that Home shows it at once at the next start, then what's new once it's read.
+- **How often:** MyTube asks for an artist's releases at most every 12 hours, and an hour after their service failed, as Home or Library › Artists shows and when you [refresh](settings.md#refresh-a-page) them: up to 30 artists in one go, 3 at a time, those never asked first, and the rest the next time. An artist whose service fails shows what was read before. What it read is kept in `releases.json` in the [cache folder](data-and-privacy.md#the-cache-folder), so that Home shows it at once at the next start, then what's new once it's read.
 
 ## YouTube Music playlists, albums and artists
 
@@ -94,12 +94,12 @@ Signed in to YouTube Music, Library › YouTube Music has your Playlists, with a
 Signed in to Spotify, Library › Spotify has your Playlists, your Albums, the Artists you follow, and Liked on Spotify.
 
 - **Save** an album or a playlist, and **follow** an artist, from their pages, as for YouTube Music: it happens on Spotify.
-- **Spotify playlists** don't change from MyMusic. To add to one, copy it into a mix.
-- Spotify shows an app in development mode, as your Spotify app is, the tracks of the playlists you own or collaborate on, not of playlists others made: MyMusic tells you when a playlist is one of those. [Spotify](spotify.md#what-spotify-allows-apps) lists the other limits.
+- **Spotify playlists** don't change from MyTube. To add to one, copy it into a mix.
+- Spotify shows an app in development mode, as your Spotify app is, the tracks of the playlists you own or collaborate on, not of playlists others made: MyTube tells you when a playlist is one of those. [Spotify](spotify.md#what-spotify-allows-apps) lists the other limits.
 
 ## Long playlists
 
-MyMusic reads playlists of up to 20,000 tracks, and the songs you liked on YouTube Music as far.
+MyTube reads playlists of up to 20,000 tracks, and the songs you liked on YouTube Music as far.
 
 - The first hundred tracks or so show at once, and the rest load beside them, as "Loading tracks" above the list says, with how many came.
 - Play and Shuffle, pressed meanwhile, wait for all of them. The menu's queue items and the download show once they're read.
@@ -139,7 +139,7 @@ Download tracks, albums, playlists, mixes and your liked songs, and they play wi
 
 - **Download** in a track's menu downloads it. The download button of an album's, a playlist's or a mix's page, or of your liked songs, downloads it whole, as Download in its More menu does.
 - **YouTube Music tracks** download as they are. **Spotify tracks** download as their [recording on YouTube Music](playing-music.md#how-spotify-tracks-play).
-- **[Live streams](playing-music.md#live-streams)** don't download: a playlist holding one downloads the rest, and once MyMusic has found a stream live, its menu offers no Download. **Podcast episodes** don't download.
+- **[Live streams](playing-music.md#live-streams)** don't download: a playlist holding one downloads the rest, and once MyTube has found a stream live, its menu offers no Download. **Podcast episodes** don't download.
 - **Many at once:** over a hundred tracks, or about a gigabyte, asks first, with the size.
 
 ### Following a download
@@ -170,17 +170,17 @@ A playlist, an album, a mix or your liked songs that you downloaded download the
 
 Settings › Playback › Downloads shows how many tracks the downloads hold and their size, with Show, which opens Library › Downloads, and:
 
-- **Folder:** where they are, with open, change and, once you moved it, use the default. Moving the downloads asks first, and they wait meanwhile. By default, the folder is `%LocalAppData%\MyMusic\downloads`: never a folder the system treats as a cache, whose files cleaning tools delete.
+- **Folder:** where they are, with open, change and, once you moved it, use the default. Moving the downloads asks first, and they wait meanwhile. By default, the folder is `%LocalAppData%\MyTube\downloads`: never a folder the system treats as a cache, whose files cleaning tools delete.
 - **Download on metered connections:** off by default, so that downloads wait on a phone's hotspot and the like.
 - **Download songs added later:** on by default.
 
-The folder holds the tracks' audio as WebM or M4A files, their covers and an index of what it holds, which MyMusic reads. It moves whole. [Where the audio streams come from](streams.md#downloads-and-the-cache) tells what a download fetches, and [the library's part of the architecture](architecture/library.md) how the folder is kept.
+The folder holds the tracks' audio as WebM or M4A files, their covers and an index of what it holds, which MyTube reads. It moves whole. [Where the audio streams come from](streams.md#downloads-and-the-cache) tells what a download fetches, and [the library's part of the architecture](architecture/library.md) how the folder is kept.
 
 When the network goes while you have downloads, a toast says that they still play, with a link to them, and Home offers to open them when it can't load.
 
 ## The offline cache
 
-Apart from downloads, MyMusic keeps the tracks you played, so that they play again without the network. Settings › Playback › Offline cache shows it:
+Apart from downloads, MyTube keeps the tracks you played, so that they play again without the network. Settings › Playback › Offline cache shows it:
 
 - **Tracks kept:** how many tracks the cache holds and their size, with Clear. Clearing the cache leaves your downloads.
 - **Covers kept:** the covers you saw, up to 256 MB, which show again without the network, with Clear.

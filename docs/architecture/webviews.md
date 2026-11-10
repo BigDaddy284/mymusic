@@ -2,12 +2,12 @@
 
 Three web pages still show, and only while they're needed:
 
-- **Spotify in MyMusic itself** (`internal/app/spotifyhere.go`): Spotify's
+- **Spotify in MyTube itself** (`internal/app/spotifyhere.go`): Spotify's
   Web Playback SDK, which decrypts Spotify's protected audio, in the hidden
   window of `public/spotify.html`, one of the app's two pages, which it
   embeds.
-  It opens at the first Spotify track that plays in MyMusic, and makes
-  MyMusic a Spotify device of its own, which the player plays tracks on
+  It opens at the first Spotify track that plays in MyTube, and makes
+  MyTube a Spotify device of its own, which the player plays tracks on
   through the Web API and follows by asking the page (`Page.Eval`); the page
   gets its token from `SpotifyPage.Token`, and tells `SpotifyPage.Changed`
   when what it plays changes, for the player to ask at once. A track plays
@@ -17,8 +17,8 @@ Three web pages still show, and only while they're needed:
   to 2 s to go on before it plays the next track itself: after a seek into
   a track's last seconds, Spotify stops on it a moment while it loads the
   next. WebView2 decrypts Spotify's audio with Widevine:
-  [Spotify in MyMusic](spotify-here.md) tells what the SDK asks for.
-- **Google's sign-in to YouTube Music**, whose cookies MyMusic keeps.
+  [Spotify in MyTube](spotify-here.md) tells what the SDK asks for.
+- **Google's sign-in to YouTube Music**, whose cookies MyTube keeps.
 - **The picture of music videos** (`video.go`, `internal/app/video.go`),
   with "Show the video of music videos" on in Settings › Playback: a web
   view of the main window, on the now playing page, in place of the

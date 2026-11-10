@@ -38,7 +38,7 @@ func TestDiscordStatusRows(t *testing.T) {
 	}
 	// Nothing plays: the preview shows a song of the sample's, as a new
 	// install shows it, a minute and 12 seconds in.
-	for _, text := range []string{"Listening to MyMusic", "Song title", "Artist", "1:12", "3:34", "Nothing plays: this is how a song would show."} {
+	for _, text := range []string{"Listening to MyTube", "Song title", "Artist", "1:12", "3:34", "Nothing plays: this is how a song would show."} {
 		if _, ok := tt.Find(text); !ok {
 			t.Errorf("the preview doesn't show %q: %q", text, tt.Texts())
 		}

@@ -259,13 +259,13 @@ func (p *Player) fallBackToStereo(why string) {
 	p.tried("its 5.1 surround audio", why)
 	p.stereoOnly = true
 	p.retry = retryState{played: p.retry.played, from: p.s.Position}
-	log.Printf("mymusic: the 5.1 surround audio of %s stopped at %s: %s; playing it in stereo", cur.Track.ID, p.s.Position.Round(time.Second), why)
+	log.Printf("mytube: the 5.1 surround audio of %s stopped at %s: %s; playing it in stereo", cur.Track.ID, p.s.Position.Round(time.Second), why)
 	p.notify(Notice{Message: fmt.Sprintf("The 5.1 surround audio of %s couldn't play (%s), so it plays in stereo", cur.Track.Title, strings.TrimSuffix(why, "."))})
 	p.loaded = true
 	_ = p.stream.Load(p.s.Source.URL, p.cue(p.s.Position, !p.paused))
 }
 
-// speedOf is the speed the settings s play t at in MyMusic's own engine:
+// speedOf is the speed the settings s play t at in MyTube's own engine:
 // a podcast's episode's, or a song's, of which a Spotify track played from
 // YouTube Music is one. A live stream plays at its own, as it is
 // broadcast: from near its live edge, faster would run out of what came of
@@ -391,7 +391,7 @@ func (p *Player) playAt(i int, start time.Duration, autoplay bool) {
 		case src.Mode == ModeSpotify && p.here != nil:
 			p.playOnDevice(token, entry, src, start, autoplay, p.here)
 		case src.Mode == ModeSpotify:
-			p.fellBack("Spotify can't play inside MyMusic on this computer")
+			p.fellBack("Spotify can't play inside MyTube on this computer")
 			p.streamInstead(token, entry, start, autoplay)
 		default:
 			p.loadStream(src, start, autoplay)
@@ -400,7 +400,7 @@ func (p *Player) playAt(i int, start time.Duration, autoplay bool) {
 }
 
 // playOnDevice plays a Spotify track on a Spotify device: a Spotify
-// Connect device, or MyMusic's own.
+// Connect device, or MyTube's own.
 func (p *Player) playOnDevice(token int, entry Item, src Source, start time.Duration, autoplay bool, d Device) {
 	p.stopStream()
 	p.s.Live = false
@@ -618,7 +618,7 @@ func (p *Player) retryStream(why string) {
 	r.n++
 	token, at, autoplay := p.loadToken, p.s.Position, !p.paused
 	r.from = at
-	log.Printf("mymusic: the audio of %s stopped at %s: %s; trying again in %s, %d of %d",
+	log.Printf("mytube: the audio of %s stopped at %s: %s; trying again in %s, %d of %d",
 		entry.Track.ID, at.Round(time.Second), why, wait, r.n, tries)
 	// Meanwhile the track loads again, as one chosen does: it can't be
 	// paused or moved, and Next or another track takes over.
@@ -1106,7 +1106,7 @@ func (p *Player) onTime(position, duration time.Duration) {
 	if !p.askedAt.IsZero() && p.loaded && position > p.askedFrom {
 		took := time.Since(p.askedAt)
 		if src := p.s.Source; took > slowStart && src != nil && src.Mode == ModeStream {
-			log.Printf("mymusic: %s started %.1fs after it was asked to play", src.Track.ID, took.Seconds())
+			log.Printf("mytube: %s started %.1fs after it was asked to play", src.Track.ID, took.Seconds())
 		}
 		p.askedAt = time.Time{}
 	}

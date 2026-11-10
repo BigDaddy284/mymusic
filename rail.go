@@ -133,7 +133,7 @@ func (s *shell) rail(c *ui.Context) {
 // own icon is the sound bars.
 var brandMark = mustSVG(brand.Mark)
 
-// mustSVG parses an SVG MyMusic ships.
+// mustSVG parses an SVG MyTube ships.
 func mustSVG(data []byte) *ui.SVG {
 	svg, err := ui.ParseSVG(data)
 	if err != nil {
@@ -142,7 +142,7 @@ func mustSVG(data []byte) *ui.SVG {
 	return svg
 }
 
-// brand is MyMusic's mark and name, where the window drags under a
+// brand is MyTube's mark and name, where the window drags under a
 // hidden title bar, and the button that collapses the rail, in inner DIPs,
 // the rail's width inside its padding. Where the title bar keeps room at
 // the left of that row, where the name doesn't fit beside it, nor the
@@ -223,7 +223,7 @@ func (s *shell) railButton(c *ui.Context, collapsed bool) {
 	}
 }
 
-// wordmarkFit is the size of MyMusic's name in the rail, the face, weight
+// wordmarkFit is the size of MyTube's name in the rail, the face, weight
 // and room it was measured for, and its width at 24.
 type wordmarkFit struct {
 	font   string
@@ -233,7 +233,7 @@ type wordmarkFit struct {
 	width  float32
 }
 
-// wordmarkSize is the size of MyMusic's name in room DIPs: 24, or less
+// wordmarkSize is the size of MyTube's name in room DIPs: 24, or less
 // when the theme's face is too wide for it there, as Sakura's Georgia is,
 // so that the name never shows cut. It measures the name once for each
 // face, weight and room, not every frame.

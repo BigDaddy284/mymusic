@@ -1,13 +1,13 @@
 # Capture mode
 
-`MYMUSIC_CAPTURE=<dir>` screenshots pages of the main window, and
-`MYMUSIC_CAPTURE_QUIT=1` quits once they are saved:
+`MYTUBE_CAPTURE=<dir>` screenshots pages of the main window, and
+`MYTUBE_CAPTURE_QUIT=1` quits once they are saved:
 
 ```sh
-MYMUSIC_CAPTURE=shots MYMUSIC_CAPTURE_QUIT=1 MYMUSIC_CAPTURE_ROUTES="/|/search?q=jazz|/settings" MYMUSIC_CAPTURE_SIZE=1440x900 ./MyMusic
+MYTUBE_CAPTURE=shots MYTUBE_CAPTURE_QUIT=1 MYTUBE_CAPTURE_ROUTES="/|/search?q=jazz|/settings" MYTUBE_CAPTURE_SIZE=1440x900 ./MyTube
 ```
 
-`MYMUSIC_CAPTURE_WAIT` sets how long each step gets (`5s`). Steps that
+`MYTUBE_CAPTURE_WAIT` sets how long each step gets (`5s`). Steps that
 aren't pages act: `act:shot:<name>` saves the window as it is,
 `act:mute` mutes the player, `act:play:<search>` plays what a search
 finds, `act:local:<search>` the music on this computer it finds, all of
@@ -23,16 +23,16 @@ scrolls the page, `act:theme:<id>` wears a theme,
 Settings › Appearance does, `act:mini` opens the mini player, which saves
 `mini.png`, `act:library:<add|remove>:<search>` saves the first YouTube
 Music song a search finds to the library there, or takes it out, as its
-menu does, `act:spotify` logs whether MyMusic's own Spotify device
+menu does, `act:spotify` logs whether MyTube's own Spotify device
 could play, `act:title` logs the window's title, which the screenshots
-leave out, `act:nowplaying` the cover MyMusic hands the system's media controls,
+leave out, `act:nowplaying` the cover MyTube hands the system's media controls,
 and `act:memory` and `act:heap` log the Go heap and save a
 profile of it. Nothing plays unless the player is muted,
-or `MYMUSIC_SILENT=1` has the audio engine play into no device, which
+or `MYTUBE_SILENT=1` has the audio engine play into no device, which
 keeps the visualizer and the lyrics moving without a sound.
-`MYMUSIC_CAPTURE_COMMUNITY=<dir>` has the marketplace read the community
+`MYTUBE_CAPTURE_COMMUNITY=<dir>` has the marketplace read the community
 registry from a copy of `community/`, for add-ons not on GitHub yet. The
 site's screenshots are made this way, from a throwaway profile, at
-1536x900 (`MYMUSIC_CAPTURE_SIZE=1552x909`: the size includes the
+1536x900 (`MYTUBE_CAPTURE_SIZE=1552x909`: the size includes the
 window's invisible borders). `go test . -run Render` with
-`MYMUSIC_RENDER=<dir>` draws the pages and themes without a window.
+`MYTUBE_RENDER=<dir>` draws the pages and themes without a window.

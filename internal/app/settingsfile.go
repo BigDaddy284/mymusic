@@ -17,11 +17,11 @@ import (
 
 // The kinds of FileNotice.
 const (
-	// NoticeAside tells that settings.json didn't read as MyMusic started,
+	// NoticeAside tells that settings.json didn't read as MyTube started,
 	// which kept it as settings.json.broken, and started with the
 	// settings of a new install.
 	NoticeAside = "aside"
-	// NoticeStart tells that settings.json read as MyMusic started, but
+	// NoticeStart tells that settings.json read as MyTube started, but
 	// wasn't UTF-8.
 	NoticeStart = "start"
 	// NoticeProblem tells that settings.json has a mistake.
@@ -36,7 +36,7 @@ type SettingsFile struct {
 	Path string
 	// Problem is the mistake it has, once it has had it a moment, as
 	// "line 4, column 1: a comma before } has nothing after it"; "" while
-	// it reads. MyMusic doesn't save to it meanwhile.
+	// it reads. MyTube doesn't save to it meanwhile.
 	Problem string
 	// Seq counts the notices, the last of which is Notice: a window tells
 	// of it once Seq grows.
@@ -50,7 +50,7 @@ type FileNotice struct {
 	// Problem is why the file doesn't read, of NoticeAside and
 	// NoticeProblem.
 	Problem string
-	// Of NoticeApplied and NoticeStart: what of the file MyMusic didn't
+	// Of NoticeApplied and NoticeStart: what of the file MyTube didn't
 	// take as it was.
 	settings.Report
 }
@@ -103,7 +103,7 @@ func (a *App) watchSettings(ctx context.Context) {
 	for ctx.Err() == nil {
 		// A missing file can't be watched; nor opened, in the settings.
 		if err := a.settings.Create(); err != nil {
-			log.Printf("mymusic: saving settings.json: %v", err)
+			log.Printf("mytube: saving settings.json: %v", err)
 		}
 		w, err := mygo.WatchFiles(ctx, path, watchOptions)
 		if err != nil {
@@ -111,14 +111,14 @@ func (a *App) watchSettings(ctx context.Context) {
 				return
 			}
 			if !told {
-				log.Printf("mymusic: watching settings.json: %v; looking at it every %v instead", err, pollEvery)
+				log.Printf("mytube: watching settings.json: %v; looking at it every %v instead", err, pollEvery)
 				told = true
 			}
 			a.pollSettings(ctx, pollFor)
 			continue
 		}
 		a.watcher.Store(w)
-		// What changed since MyMusic read it, or since the watch before.
+		// What changed since MyTube read it, or since the watch before.
 		a.ReloadSettings()
 		for {
 			if _, err := w.Next(ctx); err != nil {
@@ -149,7 +149,7 @@ func moved(path, root string) bool {
 }
 
 // rewatch starts the watch of settings.json again when it links to
-// another file now, which MyMusic just saved to.
+// another file now, which MyTube just saved to.
 func (a *App) rewatch() {
 	if w := a.watcher.Load(); w != nil && moved(a.settings.Path(), w.Root()) {
 		w.Close()
@@ -204,7 +204,7 @@ func statChanged(was, now os.FileInfo) bool {
 }
 
 // ReloadSettings reads settings.json again, and applies what changed, as
-// Settings applies a change: MyMusic's own saves change nothing. A file
+// Settings applies a change: MyTube's own saves change nothing. A file
 // that doesn't read is told of once it has had a mistake for problemWait;
 // the settings stay as they were meanwhile. The watch of the file calls it
 // as the file changes.
@@ -215,7 +215,7 @@ func (a *App) ReloadSettings() {
 		return
 	}
 	if err != nil {
-		log.Printf("mymusic: reading settings.json again: %v", err)
+		log.Printf("mytube: reading settings.json again: %v", err)
 	}
 	told := a.settingsRead()
 	var report settings.Report
@@ -270,7 +270,7 @@ func (a *App) tellProblem() {
 	problem := a.file.problem
 	a.fileMu.Unlock()
 	if first {
-		log.Printf("mymusic: settings.json has a mistake (%s): MyMusic goes on with the settings it had, and saves to it once it reads again", problem)
+		log.Printf("mytube: settings.json has a mistake (%s): MyTube goes on with the settings it had, and saves to it once it reads again", problem)
 	}
 	notify()
 }
@@ -289,7 +289,7 @@ func (a *App) settingsRead() (told bool) {
 	return told
 }
 
-// tellStart tells the windows how settings.json read as MyMusic started:
+// tellStart tells the windows how settings.json read as MyTube started:
 // that it didn't, and is settings.json.broken now, or that it wasn't
 // UTF-8. It runs once the main window opened.
 func (a *App) tellStart() {
@@ -336,7 +336,7 @@ func (a *App) settingsChanged(prev, s settings.Settings, outside bool) {
 
 // ErrNoJSONApp is what OpenSettingsFile returns where no app opens JSON
 // files, once it showed settings.json in its folder instead.
-var ErrNoJSONApp = errors.New("no app on this computer opens .json files, so MyMusic showed settings.json in its folder")
+var ErrNoJSONApp = errors.New("no app on this computer opens .json files, so MyTube showed settings.json in its folder")
 
 // OpenSettingsFile opens settings.json in the app the computer opens JSON
 // files with; where none does, it shows the file in its folder, and
@@ -347,7 +347,7 @@ func (s *System) OpenSettingsFile() error {
 		return err
 	}
 	if err := mygo.Shell.OpenPath(path); err != nil {
-		log.Printf("mymusic: opening settings.json: %v", err)
+		log.Printf("mytube: opening settings.json: %v", err)
 		mygo.Shell.ShowItemInFolder(path)
 		return ErrNoJSONApp
 	}

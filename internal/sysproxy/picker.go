@@ -117,10 +117,10 @@ func (p *Picker) ask(u *url.URL) (*url.URL, bool) {
 	if err != nil {
 		if global {
 			p.failed = now
-			p.logOnce("failed", "mymusic: automatic proxy setup failed, %s: %v", p.fallback(), err)
+			p.logOnce("failed", "mytube: automatic proxy setup failed, %s: %v", p.fallback(), err)
 		} else {
 			p.answers[target] = answer{failed: true, at: now}
-			p.logOnce("failed "+u.Host, "mymusic: automatic proxy setup failed for %s, %s: %v", u.Host, p.fallback(), err)
+			p.logOnce("failed "+u.Host, "mytube: automatic proxy setup failed for %s, %s: %v", u.Host, p.fallback(), err)
 		}
 		return nil, false
 	}
@@ -130,9 +130,9 @@ func (p *Picker) ask(u *url.URL) (*url.URL, bool) {
 	}
 	p.answers[target] = answer{proxy: chosen, at: now}
 	if chosen == nil {
-		p.logOnce("direct", "mymusic: the proxy setup connects directly, first to %s", u.Host)
+		p.logOnce("direct", "mytube: the proxy setup connects directly, first to %s", u.Host)
 	} else {
-		p.logOnce(chosen.String(), "mymusic: the proxy setup connects through %s, first to %s", redacted(chosen), u.Host)
+		p.logOnce(chosen.String(), "mytube: the proxy setup connects through %s, first to %s", redacted(chosen), u.Host)
 	}
 	return chosen, true
 }
@@ -152,7 +152,7 @@ func (p *Picker) known(target string) (proxy *url.URL, known, ok bool) {
 	return nil, false, false
 }
 
-// fallback says what MyMusic connects through when automatic setup fails.
+// fallback says what MyTube connects through when automatic setup fails.
 func (p *Picker) fallback() string {
 	if p.servers.empty() {
 		return "connecting directly"
@@ -203,7 +203,7 @@ type servers struct {
 // scheme, as "http=host:port;https=host:port;socks=host:port", each with or
 // without a scheme of its own, as "http://host:port". It reads a setup
 // script's answer too, "PROXY host:port; DIRECT". Of a list of proxies to
-// fall back on it keeps the first: MyMusic doesn't fall back. A proxy it
+// fall back on it keeps the first: MyTube doesn't fall back. A proxy it
 // can't use, as SOCKS4, is left out.
 func parseServers(s string) servers {
 	var sv servers

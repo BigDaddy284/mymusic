@@ -20,13 +20,13 @@ func (s *shell) spotifyTrackSettings(c *ui.Context) {
 	sp := s.accounts().Spotify
 	signedIn := sp.SignedIn
 	s.group(c, "Spotify tracks", func() {
-		here := "MyMusic plays them itself, at Spotify's own quality, and shows among your Spotify devices. Needs Spotify Premium, and no Spotify app."
+		here := "MyTube plays them itself, at Spotify's own quality, and shows among your Spotify devices. Needs Spotify Premium, and no Spotify app."
 		modes := []settings.SpotifyPlayback{settings.SpotifyPlaybackHere, settings.SpotifyPlaybackConnect, settings.SpotifyPlaybackMatch}
 		mode := slices.Index(modes, s.set.SpotifyPlayback)
 		if s.choices(c, "spotify-mode", "How Spotify tracks play", &mode, []choice{
-			{k.words("In MyMusic, from Spotify"), here, false},
+			{k.words("In MyTube, from Spotify"), here, false},
 			{k.words("On Spotify Connect"), "Your Spotify app, or another Spotify device, plays them, at Spotify's own quality. Needs Spotify Premium and a device with Spotify open.", false},
-			{k.words("In MyMusic, from YouTube Music"), "MyMusic plays their recording on YouTube Music, with the equalizer, crossfade and visualizer. Works without Premium.", false},
+			{k.words("In MyTube, from YouTube Music"), "MyTube plays their recording on YouTube Music, with the equalizer, crossfade and visualizer. Works without Premium.", false},
 		}) {
 			s.set.SpotifyPlayback = modes[mode]
 			s.save()
@@ -46,7 +46,7 @@ func (s *shell) spotifyTrackSettings(c *ui.Context) {
 			if busy {
 				label = "waiting for the browser…"
 			}
-			const title, again = "Sign in to Spotify again", "You signed in before MyMusic played Spotify itself, which your sign-in doesn't allow yet. Until you sign in again, Spotify tracks play from YouTube Music."
+			const title, again = "Sign in to Spotify again", "You signed in before MyTube played Spotify itself, which your sign-in doesn't allow yet. Until you sign in again, Spotify tracks play from YouTube Music."
 			s.found(c, title, again, func() {
 				s.alert(c, title, again, func() {
 					if s.button(c, "spotify-again", label, true).Disabled(busy).Clicked() {

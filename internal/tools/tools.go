@@ -1,5 +1,5 @@
-// Package tools finds and installs the programs MyMusic runs: yt-dlp,
-// which finds the audio streams YouTube's player API won't give MyMusic
+// Package tools finds and installs the programs MyTube runs: yt-dlp,
+// which finds the audio streams YouTube's player API won't give MyTube
 // itself, and a JavaScript runtime, which yt-dlp needs to solve the
 // challenges YouTube sends.
 package tools
@@ -55,7 +55,7 @@ const (
 
 // Manager finds the tools, and installs yt-dlp into Dir.
 type Manager struct {
-	// Dir holds the tools MyMusic installs.
+	// Dir holds the tools MyTube installs.
 	Dir string
 	// HTTP downloads them.
 	HTTP *http.Client
@@ -141,7 +141,7 @@ func lookPath(name string) (string, error) {
 }
 
 // YTDLP returns the path of yt-dlp: the one the user chose, else the one
-// that comes with MyMusic, else the one MyMusic installed, else one
+// that comes with MyTube, else the one MyTube installed, else one
 // installed on the system.
 func (m *Manager) YTDLP() (string, error) {
 	m.mu.Lock()
@@ -192,7 +192,7 @@ func (m *Manager) JSRuntime() (name, path string, ok bool) {
 
 // YTDLPArgs returns the arguments every yt-dlp run gets: the JavaScript
 // runtime to use, where to cache what it learns about YouTube's player,
-// and the proxy MyMusic uses when yt-dlp wouldn't find it.
+// and the proxy MyTube uses when yt-dlp wouldn't find it.
 func (m *Manager) YTDLPArgs(cacheDir string) []string {
 	args := []string{"--no-warnings", "--no-progress"}
 	if cacheDir != "" {
@@ -210,7 +210,7 @@ type Tool struct {
 	Name    string `json:"name,omitempty"`
 	Path    string `json:"path,omitempty"`
 	Version string `json:"version,omitempty"`
-	// Managed is set for tools MyMusic installed, which it can update.
+	// Managed is set for tools MyTube installed, which it can update.
 	Managed bool `json:"managed,omitempty"`
 	// Latest is the version of the latest yt-dlp release, set when the
 	// yt-dlp found is older.
@@ -220,7 +220,7 @@ type Tool struct {
 	UpdateCommand string `json:"updateCommand,omitempty"`
 }
 
-// Status describes the tools MyMusic runs.
+// Status describes the tools MyTube runs.
 type Status struct {
 	YTDLP     Tool `json:"ytdlp"`
 	JSRuntime Tool `json:"jsRuntime"`
@@ -274,7 +274,7 @@ func (m *Manager) version(ctx context.Context, path, flag string) string {
 }
 
 // ytdlpTool describes the yt-dlp at path, whose version is v. That of
-// MyMusic's package is as new as the package: GitHub isn't asked.
+// MyTube's package is as new as the package: GitHub isn't asked.
 func (m *Manager) ytdlpTool(ctx context.Context, path, v string) Tool {
 	t := Tool{Found: true, Name: "yt-dlp", Path: path, Version: v, Managed: path == m.managedPath()}
 	if latest := m.knownLatest(ctx); older(v, latest) {
@@ -404,7 +404,7 @@ type Progress func(done, total int64)
 // InstallYTDLP downloads the latest yt-dlp for this platform into Dir,
 // checking it against the checksums the release publishes. It replaces a
 // yt-dlp installed before, so it also updates it. With the yt-dlp that
-// comes with MyMusic there, it downloads none: that one runs once the
+// comes with MyTube there, it downloads none: that one runs once the
 // user's choice of another is cleared.
 func (m *Manager) InstallYTDLP(ctx context.Context, progress Progress) error {
 	name, err := asset(goarch)
@@ -468,7 +468,7 @@ func (m *Manager) LatestYTDLP(ctx context.Context) (string, error) {
 	return v, nil
 }
 
-// UpdateYTDLP replaces the yt-dlp MyMusic installed with the latest
+// UpdateYTDLP replaces the yt-dlp MyTube installed with the latest
 // release when that is newer, and reports whether it did. It leaves alone
 // a yt-dlp the user installed or chose, which they keep up to date.
 func (m *Manager) UpdateYTDLP(ctx context.Context) (bool, error) {

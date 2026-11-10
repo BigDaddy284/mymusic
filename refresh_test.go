@@ -452,11 +452,11 @@ func TestSpotifyLikedStartsAgain(t *testing.T) {
 
 // TestRenderRefresh draws the top bar's refresh button, idle, as a spinner
 // while a refresh is out, and the toast of one that failed, to
-// MYMUSIC_RENDER, for a look.
+// MYTUBE_RENDER, for a look.
 func TestRenderRefresh(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	s.loads["album:al-x"] = &loaded[media.Album]{done: true, value: media.Album{ID: "al-x", Title: "Mezzanine", Source: media.SourceSpotify,

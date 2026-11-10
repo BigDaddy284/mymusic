@@ -156,9 +156,9 @@ func (s *shell) readLine(c *ui.Context, r *playlistRead, noun string) {
 			s.problem(c, errors.New(what+" could be loaded: "+r.err.Error()), func() { s.readRest(r) })
 		})
 	case r.p.Cut:
-		text := "MyMusic shows and plays the first " + thousands(media.MaxTracks) + " tracks of a " + noun + ": this one has more."
+		text := "MyTube shows and plays the first " + thousands(media.MaxTracks) + " tracks of a " + noun + ": this one has more."
 		if count > n {
-			text = "This " + noun + " has " + thousands(count) + " tracks: MyMusic shows and plays its first " + thousands(n) + "."
+			text = "This " + noun + " has " + thousands(count) + " tracks: MyTube shows and plays its first " + thousands(n) + "."
 		}
 		ui.Text(c, text).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 16).MaxWidth(640)
 	}

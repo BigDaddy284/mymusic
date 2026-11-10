@@ -74,7 +74,7 @@ func moreMenu(t *testing.T, tt *ui.Tester) []string {
 	return tt.Menu()
 }
 
-// TestFollowArtistSignedOut follows an artist in MyMusic, signed out of
+// TestFollowArtistSignedOut follows an artist in MyTube, signed out of
 // their service, from their page's button and its More menu: nothing
 // reaches the service, and Library › Artists lists them.
 func TestFollowArtistSignedOut(t *testing.T) {
@@ -87,7 +87,7 @@ func TestFollowArtistSignedOut(t *testing.T) {
 	if !s.svc.Collection.FollowsArtist(testArtist.ID) || !headSays(tt, "following") {
 		t.Fatalf("following: %q", tt.Texts())
 	}
-	if !tt.HasText("Harbour Lights: following in MyMusic") {
+	if !tt.HasText("Harbour Lights: following in MyTube") {
 		t.Errorf("no toast: %q", tt.Texts())
 	}
 	if l := s.loads["releases"].(*loaded[[]media.Release]); !l.again {
@@ -115,7 +115,7 @@ func TestFollowArtistSignedOut(t *testing.T) {
 	}
 	s.drain()
 	show(s, tt, "/library/artists")
-	if !showsText(tt.Texts(), "Followed in MyMusic") || !tt.HasText("Harbour Lights") {
+	if !showsText(tt.Texts(), "Followed in MyTube") || !tt.HasText("Harbour Lights") {
 		t.Errorf("Library › Artists shows %q", tt.Texts())
 	}
 	if calls := f.made(); len(calls) != 0 {
@@ -125,7 +125,7 @@ func TestFollowArtistSignedOut(t *testing.T) {
 
 // TestFollowArtistSignedIn follows an artist on their service, signed in
 // there, at once on the page, which goes back if the service refuses;
-// Library › Artists lists them under the service, and MyMusic keeps
+// Library › Artists lists them under the service, and MyTube keeps
 // nothing of it.
 func TestFollowArtistSignedIn(t *testing.T) {
 	s, tt, f := newFollowShell(t, true)
@@ -142,7 +142,7 @@ func TestFollowArtistSignedIn(t *testing.T) {
 		t.Errorf("no toast: %q", tt.Texts())
 	}
 	show(s, tt, "/library/artists")
-	if !showsText(tt.Texts(), "Followed on YouTube Music") || !tt.HasText("Harbour Lights") || showsText(tt.Texts(), "Followed in MyMusic") {
+	if !showsText(tt.Texts(), "Followed on YouTube Music") || !tt.HasText("Harbour Lights") || showsText(tt.Texts(), "Followed in MyTube") {
 		t.Errorf("Library › Artists shows %q", tt.Texts())
 	}
 
@@ -163,7 +163,7 @@ func TestFollowArtistSignedIn(t *testing.T) {
 	}
 }
 
-// TestLocalFollowSignedIn keeps an artist followed in MyMusic before the
+// TestLocalFollowSignedIn keeps an artist followed in MyTube before the
 // user signed in to their service there: the page says following, and
 // unfollowing touches the service only where they follow there too.
 func TestLocalFollowSignedIn(t *testing.T) {

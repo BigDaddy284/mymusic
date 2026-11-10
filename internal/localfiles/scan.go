@@ -32,7 +32,7 @@ const workers = 4
 // tags and their audio are read of again. It drops the files that are
 // gone, and those of folders no longer named, but keeps the files of a
 // folder it can't read, as on a drive unplugged, or one in a folder that
-// MyMusic isn't allowed to read, until a scan reads it. A scan asked for
+// MyTube isn't allowed to read, until a scan reads it. A scan asked for
 // while one runs runs after it, of the folders asked for last.
 func (x *Index) Scan(ctx context.Context, folders []string) error {
 	x.mu.Lock()
@@ -142,7 +142,7 @@ func (x *Index) scan(ctx context.Context, folders []string) error {
 	}
 	for i, f := range status {
 		if len(f.Unread) > 0 {
-			log.Printf("mymusic: scanning the music on this computer: %d of the folders in %s can't be read, as %v", len(f.Unread), f.Path, why[i])
+			log.Printf("mytube: scanning the music on this computer: %d of the folders in %s can't be read, as %v", len(f.Unread), f.Path, why[i])
 		}
 	}
 	for i := range status {
@@ -162,7 +162,7 @@ func (x *Index) scan(ctx context.Context, folders []string) error {
 	x.version++
 	x.mu.Unlock()
 	if err := x.save(); err != nil {
-		log.Printf("mymusic: keeping the index of the music on this computer: %v", err)
+		log.Printf("mytube: keeping the index of the music on this computer: %v", err)
 	}
 	return nil
 }
@@ -178,7 +178,7 @@ type walked struct {
 
 // walkFolder finds the music files of root, the folder scanned i, and of
 // the folders in it, but hidden ones. A folder in it that can't be read,
-// as one MyMusic isn't allowed to, or one that holds a file that can't
+// as one MyTube isn't allowed to, or one that holds a file that can't
 // be looked at, is unread; one that's gone holds nothing. err is why root
 // itself can't be read.
 func (x *Index) walkFolder(ctx context.Context, i int, root string) (w walked, err error) {
@@ -307,7 +307,7 @@ func problemOf(err error) string {
 	case errors.Is(err, fs.ErrNotExist):
 		return "It isn't there: is its drive plugged in?"
 	case errors.Is(err, fs.ErrPermission):
-		return "MyMusic isn't allowed to read it"
+		return "MyTube isn't allowed to read it"
 	}
 	return "It can't be read"
 }

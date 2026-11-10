@@ -1,9 +1,9 @@
 {
-  "id": "mymusic-light",
-  "name": "MyMusic Light",
+  "id": "mytube-light",
+  "name": "MyTube Light",
   "version": "1.0.0",
-  "author": "MyMusic",
-  "description": "MyMusic's light look: white panels with the blue to purple gradient, as StackSpace and Stills & Reels in light mode.",
+  "author": "MyTube",
+  "description": "MyTube's light look: white panels with the blue to purple gradient, as StackSpace and Stills & Reels in light mode.",
   "scheme": "light",
   "colors": {
     "bg": "#f4f6fb",

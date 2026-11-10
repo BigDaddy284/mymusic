@@ -3,7 +3,7 @@ package app
 import "github.com/bigdaddy284/mymusic/internal/localfiles"
 
 // watchLocalFiles has the watch of the folders of music follow folders,
-// those scanned: once MyMusic started, so that what changes in them
+// those scanned: once MyTube started, so that what changes in them
 // shows without a scan, or, for an app whose options give their own watch,
 // as tests do, from its first scan. The watch is made the first time;
 // localScans.mu is held.
@@ -24,7 +24,7 @@ func (a *App) watchLocalFiles(folders []string) {
 }
 
 // closeLocalWatch stops the watch of the folders, and waits for what it
-// reads, as MyMusic quits: once the scans' context ended, so that it asks
+// reads, as MyTube quits: once the scans' context ended, so that it asks
 // for none.
 func (a *App) closeLocalWatch() {
 	a.localScans.mu.Lock()
@@ -35,9 +35,9 @@ func (a *App) closeLocalWatch() {
 	}
 }
 
-// Unwatched tells why MyMusic can't watch a folder of music for changes,
+// Unwatched tells why MyTube can't watch a folder of music for changes,
 // as when it's on a network drive, so that what changes in it shows only
-// after a scan: "" while it watches it, before MyMusic watches the
+// after a scan: "" while it watches it, before MyTube watches the
 // folders, and while the folder isn't there, as its scan tells.
 func (l *LocalFiles) Unwatched(folder string) string {
 	l.a.localScans.mu.Lock()

@@ -6,10 +6,10 @@ import (
 	"unsafe"
 )
 
-// webViewAudio returns the browser process of MyMusic's WebView2, whose
+// webViewAudio returns the browser process of MyTube's WebView2, whose
 // children play what its web views play, or 0 for none: Windows hears a
 // process and its children, but not theirs, so not WebView2's audio from
-// MyMusic's own process.
+// MyTube's own process.
 func webViewAudio(procs []proc) uint32 {
 	return childNamed(procs, uint32(os.Getpid()), "msedgewebview2.exe")
 }

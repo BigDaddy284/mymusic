@@ -9,8 +9,8 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
-// TestListenerFollows hears MyMusic's own process tree, whose webview
-// plays Spotify, while Spotify plays in MyMusic, the Spotify app while it
+// TestListenerFollows hears MyTube's own process tree, whose webview
+// plays Spotify, while Spotify plays in MyTube, the Spotify app while it
 // plays on Spotify Connect, and nothing otherwise, and has the analyser
 // read the tap while the track plays outside the engine.
 func TestListenerFollows(t *testing.T) {
@@ -20,7 +20,7 @@ func TestListenerFollows(t *testing.T) {
 		want    hearing
 		outside bool
 	}{
-		{"spotify in mymusic", player.State{Playing: true, Source: &player.Source{Mode: player.ModeSpotify}}, hearMyMusic, true},
+		{"spotify in mytube", player.State{Playing: true, Source: &player.Source{Mode: player.ModeSpotify}}, hearMyTube, true},
 		{"spotify connect", player.State{Playing: true, Source: &player.Source{Mode: player.ModeConnect}}, hearSpotifyApp, true},
 		{"paused", player.State{Source: &player.Source{Mode: player.ModeSpotify}}, hearNothing, true},
 		{"the engine", player.State{Playing: true, Source: &player.Source{Mode: player.ModeStream}}, hearNothing, false},
@@ -35,7 +35,7 @@ func TestListenerFollows(t *testing.T) {
 	}
 }
 
-// TestChildNamed finds the browser process of MyMusic's webview: its
+// TestChildNamed finds the browser process of MyTube's webview: its
 // child, whose own children play, as WebView2's audio service.
 func TestChildNamed(t *testing.T) {
 	own := uint32(os.Getpid())
@@ -45,10 +45,10 @@ func TestChildNamed(t *testing.T) {
 		{pid: 61, parent: 60, name: "msedgewebview2.exe"}, // its audio service
 	}
 	if got := childNamed(procs, own, "msedgewebview2.exe"); got != 60 {
-		t.Errorf("MyMusic's webview is process %d, want 60", got)
+		t.Errorf("MyTube's webview is process %d, want 60", got)
 	}
 	if got := childNamed(procs[:1], own, "msedgewebview2.exe"); got != 0 {
-		t.Errorf("without a webview of MyMusic's, found process %d", got)
+		t.Errorf("without a webview of MyTube's, found process %d", got)
 	}
 }
 

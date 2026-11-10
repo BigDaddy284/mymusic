@@ -7,7 +7,7 @@ package player
 // settle and knows its track by more than its ID.
 //
 // A device that plays a run of tracks by itself (aheadPlayer), as
-// MyMusic's own does, gets the Spotify tracks the queue moves on to after
+// MyTube's own does, gets the Spotify tracks the queue moves on to after
 // the current one along with it: it goes on to them without a gap, and the
 // engine follows it there rather than telling it to play them.
 
@@ -58,7 +58,7 @@ var (
 const maxAhead = 20
 
 // aheadPlayer is a device that plays tracks after the one it's asked to,
-// by itself and without a gap between them, as MyMusic's own does.
+// by itself and without a gap between them, as MyTube's own does.
 type aheadPlayer interface {
 	PlayAhead(ctx context.Context, track media.Track, position time.Duration, ahead []media.Track) error
 }
@@ -84,12 +84,12 @@ const (
 	connectStill = 1500 * time.Millisecond
 	// connectOver is how far past its end a device may tell a track plays
 	// before the track is taken as ended: the length the device knows may
-	// be a little longer than the one MyMusic does.
+	// be a little longer than the one MyTube does.
 	connectOver = 2 * time.Second
 )
 
 // pastEnd tells whether the device tells it plays its track past the
-// track's end: Spotify's own player in MyMusic, given a track with
+// track's end: Spotify's own player in MyTube, given a track with
 // nothing after it, may stay on it once it ended, its position counting
 // on as if it still played.
 func pastEnd(state *DeviceState, dur time.Duration) bool {
@@ -497,7 +497,7 @@ func (c *connectEngine) ended() {
 	if time.Since(c.endedAt) < c.goOn {
 		return
 	}
-	log.Printf("mymusic: Spotify's player didn't go on by itself after %s", c.track.ID)
+	log.Printf("mytube: Spotify's player didn't go on by itself after %s", c.track.ID)
 	c.finish()
 }
 

@@ -11,7 +11,7 @@ import (
 )
 
 // PlaylistStart returns a playlist with its first page of tracks, of any
-// service or made in MyMusic, as soon as it comes: while it has more,
+// service or made in MyTube, as soon as it comes: while it has more,
 // ReadOn reads them.
 func (c *Catalog) PlaylistStart(ctx context.Context, id string) (media.Playlist, error) {
 	return c.a.playlist(ctx, id)

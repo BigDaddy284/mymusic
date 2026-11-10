@@ -1,13 +1,13 @@
 # Accounts
 <!-- docs: group=start order=20 -->
 
-Sign in to YouTube Music, Spotify and Last.fm in MyMusic, all optional:
+Sign in to YouTube Music, Spotify and Last.fm in MyTube, all optional:
 the sign-in window, a browser's session, brand channels, scrobbling and signing out.
 
-MyMusic needs no account: YouTube Music's search, artists, albums,
+MyTube needs no account: YouTube Music's search, artists, albums,
 playlists and radios work signed out, as soon as you open it. Sign in for
 your own library and recommendations. All three accounts are in Settings ›
-Accounts, and MyMusic keeps each sign-in in your system's
+Accounts, and MyTube keeps each sign-in in your system's
 [credential store](data-and-privacy.md#sign-ins), the Credential Manager:
 one the Credential Manager can't keep goes in a file encrypted for your
 Windows account.
@@ -22,9 +22,9 @@ refuses it.
 
 ### The sign-in window
 
-Choose **sign in to youtube music**. A window of MyMusic opens on Google's
+Choose **sign in to youtube music**. A window of MyTube opens on Google's
 own sign-in page: sign in there as you would in a browser. What you type
-goes to Google only, so MyMusic never sees your password, and it keeps
+goes to Google only, so MyTube never sees your password, and it keeps
 the session encrypted on your computer. The window closes once you're in.
 
 The window needs the system's web view, WebView2, which Windows 11
@@ -34,7 +34,7 @@ again later or from another network, or use one of the two ways below.
 
 ### Import from a browser
 
-If you're signed in to music.youtube.com in a browser, MyMusic can take
+If you're signed in to music.youtube.com in a browser, MyTube can take
 that session:
 
 1. Sign in to music.youtube.com in the browser, if you aren't.
@@ -45,16 +45,16 @@ that session:
    type its name or its folder under **Profile**.
 4. Choose **import**.
 
-MyMusic reads the browser's cookies with its yt-dlp, keeps YouTube's
+MyTube reads the browser's cookies with its yt-dlp, keeps YouTube's
 alone, encrypted on your computer, and deletes the rest at once.
 
 It reads Firefox, Chrome, Chromium, Edge, Brave, Opera, Vivaldi, Helium
 and Zen.
 
 - **Chrome on Windows.** Recent versions of Chrome on Windows seal their
-  cookies against other programs, so MyMusic can't read them. Import from
+  cookies against other programs, so MyTube can't read them. Import from
   Firefox there, or paste a cookie header.
-- **Zen and Helium** are read from their profile folders. When MyMusic
+- **Zen and Helium** are read from their profile folders. When MyTube
   doesn't find them, give the folder of a profile under Profile.
 
 ### Paste a cookie header
@@ -79,13 +79,13 @@ several in the browser or the window, and an account can have brand
 channels, each with its own home feed, library and likes. When yours
 does, Settings › Accounts shows an **Account and channel** row (or
 **Channel**, for one account with brand channels), which lists each by
-name, with its handle and, for several accounts, its email. MyMusic uses
+name, with its handle and, for several accounts, its email. MyTube uses
 the first account until you choose another there.
 
-- A brand channel that YouTube lists without the ID MyMusic needs shows in
+- A brand channel that YouTube lists without the ID MyTube needs shows in
   the list, but can't be chosen, and says so.
 - If YouTube Music still answers as the account itself after you choose a
-  brand channel, MyMusic goes back to the one it used before, and tells
+  brand channel, MyTube goes back to the one it used before, and tells
   you.
 
 ### What signing in adds
@@ -93,9 +93,9 @@ the first account until you choose another there.
 | | Signed out | Signed in |
 |---|---|---|
 | Home | YouTube Music's home, as it shows signed out | your own home feed and recommendations |
-| Library | [MyMusic's own](library.md): liked songs, mixes, podcasts, artists, downloads and history | also [Library › YouTube Music](library.md#youtube-music-playlists-albums-and-artists): your liked songs, the songs in your library, playlists, albums and artists there, in full |
-| Likes and dislikes | kept in MyMusic | kept in MyMusic, and they reach YouTube Music |
-| Albums, playlists, artists | [follow artists](library.md#artists-you-follow) in MyMusic, and see their new releases | save albums and playlists, and follow artists, on YouTube Music, from their pages |
+| Library | [MyTube's own](library.md): liked songs, mixes, podcasts, artists, downloads and history | also [Library › YouTube Music](library.md#youtube-music-playlists-albums-and-artists): your liked songs, the songs in your library, playlists, albums and artists there, in full |
+| Likes and dislikes | kept in MyTube | kept in MyTube, and they reach YouTube Music |
+| Albums, playlists, artists | [follow artists](library.md#artists-you-follow) in MyTube, and see their new releases | save albums and playlists, and follow artists, on YouTube Music, from their pages |
 | Playlists | | make playlists on YouTube Music, add tracks of either service to them, take tracks out, and delete the ones you made |
 | Podcasts | | the shows you follow are saved on YouTube Music, and episodes [start where you left them](podcasts.md#with-youtube-music) on another device |
 | History | | what you play joins your YouTube Music history |
@@ -111,11 +111,11 @@ don't play either way.
 Music and on by default, adds the tracks you play to your history on
 YouTube Music, which its home and its radios are made from. A track joins
 it once it [played a while](library.md#history-and-recently-played), as it
-does on Last.fm, not as soon as it starts. The switch also lets MyMusic
+does on Last.fm, not as soon as it starts. The switch also lets MyTube
 tell YouTube Music how far you got in an episode, as its own player does,
 so that YouTube Music on your phone
 [goes on from there](podcasts.md#with-youtube-music). Turn it off to keep
-what you play in MyMusic.
+what you play in MyTube.
 
 ### When YouTube ends the session
 
@@ -142,19 +142,19 @@ Spotify app of your own. It takes a few minutes, once:
 
 [Spotify](spotify.md) walks through each step, says what to do when
 Spotify refuses the sign-in, and explains the three ways Spotify tracks
-play: in MyMusic itself (Premium), on Spotify
+play: in MyTube itself (Premium), on Spotify
 Connect, or from their recording on YouTube Music, which needs no Premium.
 
-Signed in, MyMusic searches Spotify beside YouTube Music, and shows your
+Signed in, MyTube searches Spotify beside YouTube Music, and shows your
 Spotify library in
 [Library › Spotify](library.md#spotify-playlists-albums-and-artists);
 likes, saved albums and playlists, followed artists and followed shows
 reach Spotify. [Dislikes](playing-music.md#dislikes-and-skipping) stay in
-MyMusic, as Spotify takes none.
+MyTube, as Spotify takes none.
 
 ## Last.fm
 
-MyMusic scrobbles what you listen to to your Last.fm profile, with a
+MyTube scrobbles what you listen to to your Last.fm profile, with a
 Last.fm API account of your own:
 
 1. Create an API account at
@@ -162,9 +162,9 @@ Last.fm API account of your own:
    Any name and description will do, and the callback URL can stay empty.
 2. Paste its **API key** and **shared secret** in Settings › Accounts ›
    Last.fm, and choose **connect to last.fm**.
-3. Approve MyMusic on the page that opens in your browser.
+3. Approve MyTube on the page that opens in your browser.
 
-![Settings › Accounts › Last.fm, not connected: the three steps, with a link to Last.fm, the API key and Shared secret boxes, each "32 letters and digits", the connect to last.fm button, and a note that MyMusic keeps them in your system's credential store](shots/accounts-lastfm.webp)
+![Settings › Accounts › Last.fm, not connected: the three steps, with a link to Last.fm, the API key and Shared secret boxes, each "32 letters and digits", the connect to last.fm button, and a note that MyTube keeps them in your system's credential store](shots/accounts-lastfm.webp)
 
 Settings › Accounts then says **Scrobbling as** your name, with a switch
 that pauses scrobbling and starts it again. A track counts once half of it
@@ -180,13 +180,13 @@ disconnect, then connect again.
 
 Each account has its button in Settings › Accounts, which asks first:
 
-- **YouTube Music: sign out.** MyMusic forgets your session; your library
+- **YouTube Music: sign out.** MyTube forgets your session; your library
   stays on YouTube Music.
-- **Spotify: sign out.** MyMusic forgets your Spotify sign-in.
-- **Last.fm: disconnect.** MyMusic forgets the connection; your scrobbles
+- **Spotify: sign out.** MyTube forgets your Spotify sign-in.
+- **Last.fm: disconnect.** MyTube forgets the connection; your scrobbles
   stay on Last.fm.
 
-Signing out deletes the sign-in from your computer. What MyMusic keeps
+Signing out deletes the sign-in from your computer. What MyTube keeps
 itself, your [liked songs, mixes and history](library.md), stays. The YouTube Music
 session is a browser session, which can do with your account what YouTube
 Music can: treat it like a password, and sign out to delete it.

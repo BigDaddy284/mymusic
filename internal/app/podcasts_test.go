@@ -66,7 +66,7 @@ func TestSpotifyEpisodePlaysFromSpotify(t *testing.T) {
 		t.Fatal(err)
 	}
 	song := media.Track{ID: "sp:t1", Source: media.SourceSpotify}
-	if err := p.PlayHere(context.Background(), "mymusic", spotifyEpisode, 0, song); err != nil {
+	if err := p.PlayHere(context.Background(), "mytube", spotifyEpisode, 0, song); err != nil {
 		t.Fatal(err)
 	}
 	want := []string{"spotify:episode:e1", "spotify:episode:e1", "spotify:track:t1"}
@@ -143,7 +143,7 @@ func spotifyAPI(t *testing.T, answers map[string]string) (*spotify.Client, func(
 	}
 }
 
-// TestFollowSpotifyPodcast follows a show in MyMusic, and saves it to the
+// TestFollowSpotifyPodcast follows a show in MyTube, and saves it to the
 // user's library on Spotify, signed in.
 func TestFollowSpotifyPodcast(t *testing.T) {
 	sp, requests := spotifyAPI(t, map[string]string{
@@ -180,7 +180,7 @@ func TestFollowSpotifyPodcast(t *testing.T) {
 
 // TestUnfollowSavedPodcast stops following a show the user saved on
 // Spotify only, there, and fails when Spotify refuses, but stops one they
-// followed in MyMusic even so.
+// followed in MyTube even so.
 func TestUnfollowSavedPodcast(t *testing.T) {
 	show := media.Podcast{ID: "sp:s1", Source: media.SourceSpotify, Title: "The Daily Thing"}
 	collection := func(answers map[string]string) (*Collection, func() []string) {
@@ -208,7 +208,7 @@ func TestUnfollowSavedPodcast(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err := c.SetPodcastFollowed(ctx, show, false); err != nil || c.Follows(show.ID) {
-		t.Errorf("Spotify refused a show followed in MyMusic: %v, follows %v", err, c.Follows(show.ID))
+		t.Errorf("Spotify refused a show followed in MyTube: %v, follows %v", err, c.Follows(show.ID))
 	}
 }
 

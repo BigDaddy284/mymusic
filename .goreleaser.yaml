@@ -5,7 +5,7 @@
 # release.yml takes from CHANGELOG.md (--release-notes), and builds nothing
 # itself.
 version: 2
-project_name: mymusic
+project_name: mytube
 
 builds:
   - skip: true
@@ -22,8 +22,8 @@ checksum:
 release:
   github:
     owner: bigdaddy284
-    name: mymusic
-  name_template: "MyMusic {{ .Tag }}"
+    name: mytube
+  name_template: "MyTube {{ .Tag }}"
   make_latest: true
   # release.yml run by hand builds an existing tag again: its release
   # takes the new notes and files.

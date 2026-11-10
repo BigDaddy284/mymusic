@@ -35,7 +35,7 @@ type look struct {
 	hover, press, rule, outline, scrim ui.Color
 	// gradient tells whether what the accent fills takes the theme's
 	// gradient, from gradFrom, its accent, to gradTo, its "accent-2", as
-	// the MyMusic themes' buttons and selections do. The fills keep the
+	// the MyTube themes' buttons and selections do. The fills keep the
 	// theme's own colours while the accent itself, which also sets text,
 	// is made readable; the user's accent, the artwork's and a colour
 	// file's turn the gradient off.
@@ -261,7 +261,7 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	t.Border, t.Text, t.TextMuted = k.border, k.text, k.muted
 	t.Accent, t.AccentText = k.accent, k.accentText
 	// The sliders and switches keep the accent while another window is in
-	// front, as the rest of MyMusic does: MyGo fades its widgets' to gray
+	// front, as the rest of MyTube does: MyGo fades its widgets' to gray
 	// there.
 	t.InactiveAccent = t.Accent
 	t.AccentHover = col(mix(accent, text, 0.14))
@@ -311,7 +311,7 @@ func cssLength(s string) float32 {
 	return float32(v * unit)
 }
 
-// fontFamily picks the first family of a CSS font stack that MyMusic or
+// fontFamily picks the first family of a CSS font stack that MyTube or
 // the system has, or the system's font.
 func fontFamily(stack string) string {
 	have := map[string]bool{}

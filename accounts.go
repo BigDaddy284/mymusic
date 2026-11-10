@@ -32,13 +32,13 @@ const (
 		"Add this redirect URI to it. In its settings, under Users Management, add your name and the email of the Spotify account you sign in with. " +
 		"Paste the app's Client ID here, and sign in to Spotify. Log in. " + spotifyHint
 
-	youtubeHint    = "YouTube Music needs no account: search, artists, albums, playlists and radios work signed out. Signed in, MyMusic shows your own home feed and library, and saves what you like and follow to YouTube Music. Tracks play as they do signed out: your session never goes to yt-dlp."
-	youtubeSession = "You sign in on Google's own page, in a window of MyMusic: MyMusic never sees your password, and keeps the session encrypted on this computer. YouTube Music does not offer this to apps officially, so it may stop working when YouTube changes."
+	youtubeHint    = "YouTube Music needs no account: search, artists, albums, playlists and radios work signed out. Signed in, MyTube shows your own home feed and library, and saves what you like and follow to YouTube Music. Tracks play as they do signed out: your session never goes to yt-dlp."
+	youtubeSession = "You sign in on Google's own page, in a window of MyTube: MyTube never sees your password, and keeps the session encrypted on this computer. YouTube Music does not offer this to apps officially, so it may stop working when YouTube changes."
 	youtubeForm    = "Sign in to YouTube Music. Log in. Google account. " + youtubeHint + " " + youtubeSession
 
 	youtubeImport       = "Sign in with the session of a browser you signed in to YouTube Music with."
-	youtubeProfile      = "Another profile than the browser's own, by its name or its folder. MyMusic finds those of Zen and Helium in their folders."
-	youtubeImportHint   = "MyMusic reads the browser's cookies with yt-dlp, keeps YouTube's alone, encrypted on this computer, and deletes the rest at once. Close the browser first: while it's open, it may hold its cookies, or not have saved a new sign-in yet. Recent Chrome on Windows seals its cookies against other programs: use Firefox there, or paste a cookie header."
+	youtubeProfile      = "Another profile than the browser's own, by its name or its folder. MyTube finds those of Zen and Helium in their folders."
+	youtubeImportHint   = "MyTube reads the browser's cookies with yt-dlp, keeps YouTube's alone, encrypted on this computer, and deletes the rest at once. Close the browser first: while it's open, it may hold its cookies, or not have saved a new sign-in yet. Recent Chrome on Windows seals its cookies against other programs: use Firefox there, or paste a cookie header."
 	youtubePaste        = "In a tab signed in to music.youtube.com, open the developer tools, and copy the Cookie header of a request to music.youtube.com from the Network panel. The text of a cookies.txt file will do too."
 	youtubePasteHint    = "A cookie header is as good as your password: paste it here alone. YouTube may end a session that goes on in the browser; one from a private window you then close lasts longest."
 	youtubeCookieTitle  = "Sign in to YouTube Music with a browser's cookies"
@@ -49,11 +49,11 @@ const (
 	youtubeAccountAbout = "Each Google account of the session, and each of their brand channels, has its own home feed, library and likes."
 	// youtubeUnswitchable follows a brand channel YouTube lists without its
 	// page ID, which can't be chosen.
-	youtubeUnswitchable = "YouTube doesn't let MyMusic switch to this channel"
+	youtubeUnswitchable = "YouTube doesn't let MyTube switch to this channel"
 
-	lastfmHint = "MyMusic keeps them in your system's credential store, with the connection."
+	lastfmHint = "MyTube keeps them in your system's credential store, with the connection."
 	lastfmForm = "Create an API account on Last.fm; any name and description will do, and the callback URL can stay empty. " +
-		"Paste its API key and shared secret here, and connect. Approve MyMusic on the page that opens in your browser. " +
+		"Paste its API key and shared secret here, and connect. Approve MyTube on the page that opens in your browser. " +
 		"Connect to Last.fm. Scrobble, scrobbling. Sign in, log in. " + lastfmHint
 )
 
@@ -147,9 +147,9 @@ func (s *shell) spotifyAccount(c *ui.Context, sp app.SpotifyAccount) {
 	})
 }
 
-// signOutOfSpotify asks, then has MyMusic forget the Spotify sign-in.
+// signOutOfSpotify asks, then has MyTube forget the Spotify sign-in.
 func (s *shell) signOutOfSpotify() {
-	s.ask("sign out of Spotify", "MyMusic forgets your Spotify sign-in.", "sign out", func() {
+	s.ask("sign out of Spotify", "MyTube forgets your Spotify sign-in.", "sign out", func() {
 		s.account("", "", func(context.Context) error { return s.svc.Accounts.SpotifyLogout() })
 	})
 }
@@ -189,7 +189,7 @@ func (s *shell) youtubeAccount(c *ui.Context, yt app.YouTubeAccount) {
 		}
 		s.row(c, who, "Your home feed, your library, and likes that reach YouTube Music.", func() {
 			if s.button(c, "youtube-out", "sign out", false).Clicked() {
-				s.ask("sign out of YouTube Music", "MyMusic forgets your YouTube Music session; your library stays on YouTube Music.", "sign out", func() {
+				s.ask("sign out of YouTube Music", "MyTube forgets your YouTube Music session; your library stays on YouTube Music.", "sign out", func() {
 					s.youtubePick = false
 					s.account("", "", func(ctx context.Context) error { return s.svc.Accounts.YouTubeLogout(ctx) })
 				})
@@ -224,7 +224,7 @@ func (s *shell) youtubeCookieSignIn(c *ui.Context, busy bool) {
 	}
 	s.show(c, func() {
 		if yc.problem != "" {
-			s.alert(c, "MyMusic didn't sign in to YouTube Music", yc.problem, nil).Margin(12, 0)
+			s.alert(c, "MyTube didn't sign in to YouTube Music", yc.problem, nil).Margin(12, 0)
 		}
 		s.row(c, "Import from a browser", youtubeImport, func() {
 			s.selectOf(c.Key("youtube-browser"), &yc.browser, yc.names).Width(200).Label("Browser")
@@ -341,9 +341,9 @@ func (s *shell) youtubeChannels(c *ui.Context) {
 	}
 	switch {
 	case current < 0:
-		about = "The account or channel MyMusic used is no longer one of this session: choose one."
+		about = "The account or channel MyTube used is no longer one of this session: choose one."
 	case s.youtubePick:
-		about = "Your session reaches more than one account or channel. MyMusic uses the first account: choose another here."
+		about = "Your session reaches more than one account or channel. MyTube uses the first account: choose another here."
 	}
 	s.row(c, title, about, func() {
 		if s.selectOf(c.Key("channel"), &chosen, labels).Width(260).Label(title).Changed() {
@@ -351,7 +351,7 @@ func (s *shell) youtubeChannels(c *ui.Context) {
 			case i < 0:
 			case list[i].Unswitchable:
 				// It stays listed, and the one used stays chosen.
-				s.notes = append(s.notes, noticeOf(fmt.Errorf("YouTube doesn't let MyMusic switch to %s", list[i].Name)))
+				s.notes = append(s.notes, noticeOf(fmt.Errorf("YouTube doesn't let MyTube switch to %s", list[i].Name)))
 			default:
 				ch := list[i]
 				s.youtubePick = false
@@ -381,7 +381,7 @@ func (s *shell) lastfmAccount(c *ui.Context, lf app.LastfmAccount) {
 			s.found(c, "disconnect", "sign out log out of Last.fm", func() {
 				ui.Row(c).Padding(12, 0).Children(func() {
 					if s.button(c, "lastfm-out", "disconnect", false).Clicked() {
-						s.ask("disconnect Last.fm", "MyMusic forgets your Last.fm connection; your scrobbles stay on Last.fm.", "disconnect", func() {
+						s.ask("disconnect Last.fm", "MyTube forgets your Last.fm connection; your scrobbles stay on Last.fm.", "disconnect", func() {
 							s.account("", "", func(ctx context.Context) error { return s.svc.Accounts.LastfmLogout(ctx) })
 						})
 					}
@@ -398,7 +398,7 @@ func (s *shell) lastfmAccount(c *ui.Context, lf app.LastfmAccount) {
 					ui.Text(c, "; any name and description will do, and the callback URL can stay empty.")
 				},
 				func() { ui.Text(c, "Paste its API key and shared secret here, and connect.") },
-				func() { ui.Text(c, "Approve MyMusic on the page that opens in your browser.") },
+				func() { ui.Text(c, "Approve MyTube on the page that opens in your browser.") },
 			)
 			s.row(c, "API key", "", func() {
 				ui.TextInput(c.Key("lastfm-key"), &s.lastfmKey).Placeholder("32 letters and digits").Width(260).Label("API key")
@@ -414,7 +414,7 @@ func (s *shell) lastfmAccount(c *ui.Context, lf app.LastfmAccount) {
 			ui.Row(c).Padding(12, 0).Children(func() {
 				key, secret := strings.TrimSpace(s.lastfmKey), strings.TrimSpace(s.lastfmSecret)
 				if s.button(c, "lastfm-in", label, true).Disabled(busy || key == "" || secret == "").Clicked() {
-					s.notes = append(s.notes, notice("Approve MyMusic on Last.fm, in your browser"))
+					s.notes = append(s.notes, notice("Approve MyTube on Last.fm, in your browser"))
 					s.account("lastfm", "Connected to Last.fm", func(ctx context.Context) error {
 						_, err := s.svc.Accounts.LastfmLogin(ctx, key, secret)
 						return err

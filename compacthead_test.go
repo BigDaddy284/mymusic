@@ -300,11 +300,11 @@ func TestBarHeadOtherPage(t *testing.T) {
 
 // TestRenderBarHead draws a playlist scrolled past its head, in each
 // layout design and in themes of grounds of their own, to
-// MYMUSIC_RENDER, for a look.
+// MYTUBE_RENDER, for a look.
 func TestRenderBarHead(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	for _, layout := range settings.Layouts {
 		for _, theme := range []string{"mix", "aurora", "glasshouse", "daylight"} {

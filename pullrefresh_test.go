@@ -471,11 +471,11 @@ func TestPullHeight(t *testing.T) {
 }
 
 // TestRenderPull draws a pull short of the threshold and one past it, to
-// MYMUSIC_RENDER, for a look.
+// MYTUBE_RENDER, for a look.
 func TestRenderPull(t *testing.T) {
-	dir := os.Getenv("MYMUSIC_RENDER")
+	dir := os.Getenv("MYTUBE_RENDER")
 	if dir == "" {
-		t.Skip("MYMUSIC_RENDER names no folder")
+		t.Skip("MYTUBE_RENDER names no folder")
 	}
 	s := newTestShell(t)
 	pullAlbum(s, 12)

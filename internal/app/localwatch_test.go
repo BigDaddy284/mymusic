@@ -35,7 +35,7 @@ func localTitles(a *App) []string {
 }
 
 // TestLocalWatch shows a file added to a folder of music, and one removed,
-// once MyMusic started, as the system tells of them, without a scan.
+// once MyTube started, as the system tells of them, without a scan.
 func TestLocalWatch(t *testing.T) {
 	a, music := localApp(t)
 	a.startLocalFiles()
@@ -152,7 +152,7 @@ func TestLocalWatchFollows(t *testing.T) {
 }
 
 // TestLocalUnwatched tells why a folder of music can't be watched, as on
-// a network drive; before MyMusic starts, it tells nothing.
+// a network drive; before MyTube starts, it tells nothing.
 func TestLocalUnwatched(t *testing.T) {
 	a, music := localApp(t)
 	l := &LocalFiles{a}

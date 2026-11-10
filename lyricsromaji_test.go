@@ -49,7 +49,7 @@ func TestLyricsRomaji(t *testing.T) {
 }
 
 // TestLyricsRomajiRemembered keeps the romaji of lyrics whose language
-// MyMusic couldn't tell, but that hold kana, as that of Japanese.
+// MyTube couldn't tell, but that hold kana, as that of Japanese.
 func TestLyricsRomajiRemembered(t *testing.T) {
 	s, texts := lyricsIn(t, "", nil)
 	texts()
@@ -65,7 +65,7 @@ func TestLyricsRomajiRemembered(t *testing.T) {
 }
 
 // TestLyricsRomajiNotJapanese offers no romaji for lyrics in Japanese
-// already in Latin letters, nor for kanji alone in a language MyMusic
+// already in Latin letters, nor for kanji alone in a language MyTube
 // couldn't tell, which may be Chinese.
 func TestLyricsRomajiNotJapanese(t *testing.T) {
 	for _, c := range []struct {

@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "mymusic",
+      "name": "mytube",
       "devDependencies": {
         "mygo-cli": "^0.8.1",
         "typescript": "^7.0.0",

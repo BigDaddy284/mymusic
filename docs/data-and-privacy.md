@@ -1,35 +1,35 @@
 # Your data and privacy
 <!-- docs: group=inside order=50 -->
 
-MyMusic has no account, server, analytics or telemetry of its own. This page tells where it keeps your data and what each feature sends where.
+MyTube has no account, server, analytics or telemetry of its own. This page tells where it keeps your data and what each feature sends where.
 
-Everything MyMusic knows of you stays in folders on your computer and in
+Everything MyTube knows of you stays in folders on your computer and in
 your system's credential store, apart from what you keep on YouTube Music,
 Spotify and Last.fm themselves. For the code, read
 [the data's part of the architecture](architecture/data.md).
 
-## Where MyMusic keeps its data
+## Where MyTube keeps its data
 
-MyMusic keeps its data in four folders, and your sign-ins in the
+MyTube keeps its data in four folders, and your sign-ins in the
 system's credential store. Settings › About names the data folder, and
 opens the logs folder. A development copy, run with `bun run dev`, uses
-`MyMusic Dev` in place of `MyMusic` in these names, so it never touches
+`MyTube Dev` in place of `MyTube` in these names, so it never touches
 an installed copy's data.
 
-- Data (settings, library, add-ons, yt-dlp): `%AppData%\MyMusic`
-- Cache: `%LocalAppData%\MyMusic`
-- Logs: `%AppData%\MyMusic\logs`
-- Downloads: `%LocalAppData%\MyMusic\downloads`
+- Data (settings, library, add-ons, yt-dlp): `%AppData%\MyTube`
+- Cache: `%LocalAppData%\MyTube`
+- Logs: `%AppData%\MyTube\logs`
+- Downloads: `%LocalAppData%\MyTube\downloads`
 - Sign-ins: the Credential Manager
 
 ### The data folder
 
-- `settings.json`: your settings. You can edit it while MyMusic runs, and
+- `settings.json`: your settings. You can edit it while MyTube runs, and
   what you save applies at once.
 - `library.json`: your liked and disliked songs, your mixes, the last
   1,000 tracks you played, which the history and the stats read, your
   last 20 searches, the shows you follow, and the artists you follow
-  in MyMusic.
+  in MyTube.
 - `mix-covers/`: the covers you chose for your mixes, cut to a square.
 - `local-files.json`: the index of the [music on this computer](local-music.md):
   the path, size, time of change and tags of each music file of the
@@ -42,7 +42,7 @@ an installed copy's data.
 - `updater.json`: your choices of updates.
 - `addons/`: the themes and plugins you installed, and what plugins keep
   in `addons/.storage`.
-- `bin/`: MyMusic's own yt-dlp.
+- `bin/`: MyTube's own yt-dlp.
 - `youtube-session.bin`: your YouTube Music session, encrypted with a key
   that the credential store keeps.
 - `matugen.json`, when you follow the colours that matugen writes there.
@@ -68,7 +68,7 @@ an installed copy's data.
 
 ### The logs folder
 
-- `mymusic.log`: what went wrong, started anew at a megabyte, with the
+- `mytube.log`: what went wrong, started anew at a megabyte, with the
   three before it kept. It leaves out the cookies, hashes, keys and
   tokens a line may hold, and the addresses of streams, which carry your
   IP address.
@@ -77,10 +77,10 @@ an installed copy's data.
   yourself.
 - `memory.log` and `heap-<time>.pprof`, only while you
   [record memory use](settings.md#about): a line each minute of how much
-  memory MyMusic uses, its Go heap's and the whole app's as the system
+  memory MyTube uses, its Go heap's and the whole app's as the system
   tells it, and profiles of the Go heap, the last five kept, which tell
-  where in MyMusic's code its memory was taken, and how much. They hold
-  only how MyMusic uses its memory: nothing of your music, your
+  where in MyTube's code its memory was taken, and how much. They hold
+  only how MyTube uses its memory: nothing of your music, your
   library or your accounts. Report a problem tells of them, for you to
   attach.
 
@@ -88,7 +88,7 @@ an installed copy's data.
 
 Your Spotify sign-in, your Last.fm connection and the key of your YouTube
 Music session are in the system's credential store, which encrypts them
-for your account. MyMusic never sees your passwords: you sign in on
+for your account. MyTube never sees your passwords: you sign in on
 Google's, Spotify's and Last.fm's own pages.
 
 Where the credential store can't keep a secret:
@@ -96,7 +96,7 @@ Where the credential store can't keep a secret:
 - As in a session without credentials, the secret is encrypted for your
   Windows account with DPAPI, in `spotify-token.dpapi`, `lastfm.dpapi` or
   `youtube-session-key.dpapi` in the data folder.
-- Once the store can keep them, MyMusic moves them into it, and deletes
+- Once the store can keep them, MyTube moves them into it, and deletes
   the files.
 
 ## What each feature sends where
@@ -111,7 +111,7 @@ Where the credential store can't keep a secret:
 | Skip songs made with AI, while it's on | YouTube (`www.youtube.com`), signed out | the video's ID, once a video |
 | Covers | the image servers of YouTube, Google and Spotify | the image asked for |
 | Spotify, once you sign in | Spotify (`accounts.spotify.com`, `api.spotify.com`) | what you search and open, your library's changes, and the commands of what plays |
-| Spotify in MyMusic | Spotify's player, loaded from `sdk.scdn.co` | what Spotify's own player sends |
+| Spotify in MyTube | Spotify's player, loaded from `sdk.scdn.co` | what Spotify's own player sends |
 | Lyrics | Unison (`unison.boidu.dev`) | the video ID of the track that plays, or, without one, its title, artists, album and length |
 | Lyrics, when Unison has none | LRCLIB (`lrclib.net`) | the title, artists, album and length of the track that plays |
 | Lyrics of a track on this computer | Unison, then LRCLIB | its title, artists, album and length, as its tags tell, unless they name no artist; never its file |
@@ -119,14 +119,14 @@ Where the credential store can't keep a secret:
 | Romaji, the first time you turn it on | GitHub | a download of the dictionary of kanji readings; the lyrics stay on your computer |
 | Last.fm, once you connect it | Last.fm | the title, artists, album and length of what you play, and when |
 | Discord, unless you turn it off in Settings › Desktop | the Discord app on your computer | the title, artists, album and cover address of what plays, and its times, as you choose them; with the Listen button, the track's link on its service |
-| Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyMusic while you cast |
+| Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyTube while you cast |
 | Checks for updates, unless you turn them off in Settings › About | GitHub | a request for the newest release, and its download when you install it |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
 | The marketplace, when you open it | GitHub | a download of the registry, and of the add-ons you install |
 | Knowing whether the network answers | YouTube and Spotify | a request over HTTPS for an empty answer |
 
 - **Plugins** can send what they like: a plugin's permissions are shown
-  to you, not enforced, which is why MyMusic asks you to trust a plugin
+  to you, not enforced, which is why MyTube asks you to trust a plugin
   before it enables it.
 - **Report a problem**, in Settings › About, opens a new GitHub issue in
   your browser, with your version, system, tools, theme and plugins
@@ -135,15 +135,15 @@ Where the credential store can't keep a secret:
 ## What stays on your computer
 
 - Your settings, your library, your history and your searches.
-- The [music on this computer](local-music.md#privacy): MyMusic plays it
+- The [music on this computer](local-music.md#privacy): MyTube plays it
   from its files, and sends no file anywhere. Last.fm and Discord hear of
   what plays as of any track, as their settings say.
-- Latin letters for lyrics, Japanese romaji included: MyMusic makes them
+- Latin letters for lyrics, Japanese romaji included: MyTube makes them
   itself, and sends no lyrics for them. Only Arabic's come from Unison,
   while romanize is on.
 - The audio: the offline cache, the downloads, and what the visualizer
   hears of Spotify through Windows' process loopback, which hears only
-  Spotify's app. MyMusic analyzes that
+  Spotify's app. MyTube analyzes that
   audio in memory, and never records or sends it.
 - The log and the crash reports, until you choose to send one.
 
@@ -158,7 +158,7 @@ Where the credential store can't keep a secret:
   settings of a new install. Your accounts, library and add-ons stay.
 - **The downloads:** Settings › Playback › Downloads › Folder moves them
   to another folder, with what they hold.
-- **Everything:** sign out of each service, quit MyMusic, then delete
+- **Everything:** sign out of each service, quit MyTube, then delete
   the data, cache, logs and downloads folders above.
 
 **To bring your data to another copy**, as to another computer, quit both copies, copy `settings.json`, `library.json`,
@@ -168,6 +168,6 @@ there: sign-ins stay in the credential store of the computer they were
 made on.
 
 **To keep everything in one folder**, as for a portable copy or a test
-run, start MyMusic with the environment variable
-`MYMUSIC_DATA_DIR` set to a folder: it keeps its data, cache, logs and
+run, start MyTube with the environment variable
+`MYTUBE_DATA_DIR` set to a folder: it keeps its data, cache, logs and
 downloads in the `data`, `cache`, `logs` and `downloads` folders inside.

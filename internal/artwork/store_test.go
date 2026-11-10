@@ -438,7 +438,7 @@ func TestStoreLogsOncePerHostAMinute(t *testing.T) {
 	h.set(nil)
 	mustBytes(t, s, h.srv.URL+"/vi/6/hq.jpg")
 	got = l.get()
-	if len(got) != 3 || got[2] != "mymusic: artwork: covers from 127.0.0.1 load again" {
+	if len(got) != 3 || got[2] != "mytube: artwork: covers from 127.0.0.1 load again" {
 		t.Fatalf("logged %q", got)
 	}
 	for _, line := range got {

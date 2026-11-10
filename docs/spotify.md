@@ -1,7 +1,7 @@
 # Spotify
 <!-- docs: group=start order=30 -->
 
-MyMusic reads your Spotify library and searches Spotify through the Spotify
+MyTube reads your Spotify library and searches Spotify through the Spotify
 Web API, and plays Spotify tracks itself, on Spotify Connect, or from their
 recording on YouTube Music.
 
@@ -21,12 +21,12 @@ an app of your own. It takes two minutes:
    ```
 
 3. In the app's settings, under **Users Management**, add your name and the
-   e-mail address of the Spotify account you sign in to MyMusic with, as
+   e-mail address of the Spotify account you sign in to MyTube with, as
    your Spotify account page shows it.
 4. Copy the app's **Client ID**.
-5. In MyMusic, open [Settings › Accounts](accounts.md#spotify), paste the
+5. In MyTube, open [Settings › Accounts](accounts.md#spotify), paste the
    Client ID and choose **sign in to spotify**. Your browser opens Spotify's
-   sign-in page; once you agree, it sends you back to MyMusic.
+   sign-in page; once you agree, it sends you back to MyTube.
 
 To let a friend sign in with your app, add their name and Spotify e-mail
 address under **Users Management** too.
@@ -48,26 +48,26 @@ Settings › Accounts says which refusal it was:
   Web API since you do not have a Spotify Premium subscription", and the
   **Web API** box can't be ticked when you create an app. A new app of the
   same account doesn't help: Spotify blocks them all. Without Premium,
-  MyMusic still searches and plays YouTube Music, with no account at all.
+  MyTube still searches and plays YouTube Music, with no account at all.
 - **Spotify refused (HTTP 403)**, without a word of why: check both of the
   above. Spotify can take a few minutes to let in an account just added.
 
 Then choose **sign in to spotify** again, or **sign out** to stop using
 Spotify.
 
-MyMusic never sees your password. It keeps the token Spotify gives it in
+MyTube never sees your password. It keeps the token Spotify gives it in
 Windows' [credential store](data-and-privacy.md#sign-ins), the
 Credential Manager. Where the Credential Manager can't keep it, it is
-encrypted for your Windows account in `spotify-token.dpapi`, in MyMusic's
+encrypted for your Windows account in `spotify-token.dpapi`, in MyTube's
 [data folder](data-and-privacy.md#the-data-folder).
 
 ## How Spotify tracks play
 
 Settings › Playback chooses:
 
-- **In MyMusic, from Spotify** (the default). MyMusic plays the track
+- **In MyTube, from Spotify** (the default). MyTube plays the track
   itself, with Spotify's Web Playback SDK, at Spotify's own quality, and no
-  Spotify app needs to be open: MyMusic shows among your Spotify devices
+  Spotify app needs to be open: MyTube shows among your Spotify devices
   while it plays. It needs Spotify Premium; WebView2 plays Spotify's protected audio with
   Widevine ([how](architecture/spotify-here.md)). The
   equalizer and crossfade leave Spotify's audio as it is, as on Spotify
@@ -76,23 +76,23 @@ Settings › Playback chooses:
   settings can't change while another device plays it. The
   [visualizer](audio-engine.md#the-visualizer) and the plugins' analyser
   hear it on Windows 10 build 20348 and later.
-  Sign-ins made before MyMusic played Spotify itself do not allow it:
+  Sign-ins made before MyTube played Spotify itself do not allow it:
   Settings › Playback asks you to sign in again. When Spotify cannot play
-  here, MyMusic plays the track from YouTube Music instead, and says why.
+  here, MyTube plays the track from YouTube Music instead, and says why.
 - **On Spotify Connect.** A Spotify device plays the track: your
   Spotify app on this computer, your phone, a speaker. It needs Spotify
   Premium, and a device with Spotify open. The devices button of the player
   bar chooses which device plays; by default, the active one. When no device
-  can play, MyMusic plays the track from YouTube Music instead, and says so.
+  can play, MyTube plays the track from YouTube Music instead, and says so.
   On Windows, the visualizer and the plugins' analyser hear the Spotify app
   on this computer, as it plays, never recording it; other devices they
   can't hear, and the visualizer shows nothing then.
-- **In MyMusic, from YouTube Music.** MyMusic finds the track's recording
+- **In MyTube, from YouTube Music.** MyTube finds the track's recording
   on YouTube Music and plays it in its own player, with the equalizer,
   crossfade and the visualizer. It works without Premium. When a match is
   wrong, choose **Find another YouTube Music match** in the track's menu.
 
-![Settings › Playback › Spotify tracks: In MyMusic, from Spotify, On Spotify Connect and In MyMusic, from YouTube Music, the one chosen, each with a line on what it needs, and a link to sign in to Spotify in accounts](shots/playback.webp)
+![Settings › Playback › Spotify tracks: In MyTube, from Spotify, On Spotify Connect and In MyTube, from YouTube Music, the one chosen, each with a line on what it needs, and a link to sign in to Spotify in accounts](shots/playback.webp)
 
 [How Spotify tracks play](spotify-playback.md), under How it works, tells
 what each way does inside.
@@ -105,8 +105,8 @@ Apps in Spotify's development mode, as yours is, have limits:
 - Up to five accounts, added under **Users Management**, can use it.
 - A search returns at most ten results of each kind.
 - Apps see the tracks of the playlists you own or collaborate on, not of
-  playlists others made. MyMusic tells you when a playlist is one of those.
-- Spotify removed the artist top tracks endpoint: MyMusic finds an artist's
+  playlists others made. MyTube tells you when a playlist is one of those.
+- Spotify removed the artist top tracks endpoint: MyTube finds an artist's
   popular tracks with a search instead.
-- Requests are counted against a quota; when MyMusic hits it, Spotify asks it
-  to wait, and MyMusic says so.
+- Requests are counted against a quota; when MyTube hits it, Spotify asks it
+  to wait, and MyTube says so.

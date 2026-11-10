@@ -182,7 +182,7 @@ func TestPrepareStreamLearnsTheLoudness(t *testing.T) {
 	}
 }
 
-// TestPrepareStreamAsksOnline asks how loud a track MyMusic holds is, from
+// TestPrepareStreamAsksOnline asks how loud a track MyTube holds is, from
 // the cache or found before, only while the network answers: offline, the
 // engine would wait for the ask in vain.
 func TestPrepareStreamAsksOnline(t *testing.T) {

@@ -12,14 +12,14 @@ const (
 	// recordMemoryTitle and recordMemoryAbout are the row of Record memory
 	// use.
 	recordMemoryTitle = "Record memory use"
-	recordMemoryAbout = "Writes how MyMusic uses its memory to memory.log in the logs folder, once a minute, " +
+	recordMemoryAbout = "Writes how MyTube uses its memory to memory.log in the logs folder, once a minute, " +
 		"and saves a heap profile there once it passes 1 GB, for a report of a problem. " +
-		"They hold only how MyMusic uses its memory, nothing of your music or accounts. It's off again at the next start."
+		"They hold only how MyTube uses its memory, nothing of your music or accounts. It's off again at the next start."
 	// heapProfileAbout tells what Save a heap profile saves.
-	heapProfileAbout = "Saves where MyMusic's Go code holds memory now, as heap-<time>.pprof beside memory.log. The newest five are kept."
+	heapProfileAbout = "Saves where MyTube's Go code holds memory now, as heap-<time>.pprof beside memory.log. The newest five are kept."
 )
 
-// memorySettings record how MyMusic uses its memory, for a report of a
+// memorySettings record how MyTube uses its memory, for a report of a
 // problem: Settings › About › Memory use.
 func (s *shell) memorySettings(c *ui.Context) {
 	sys := s.svc.System

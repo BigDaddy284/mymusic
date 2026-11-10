@@ -139,7 +139,7 @@ func (s *shell) podcastPage(c *ui.Context, id string) {
 		s.collectionHead(c, h)
 		if p.Source == media.SourceSpotify && !s.svc.Catalog.SpotifyEpisodesPlay() {
 			ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 16).Children(func() {
-				ui.Text(c, "Spotify's podcasts play only from Spotify: choose In MyMusic, from Spotify or On Spotify Connect in ")
+				ui.Text(c, "Spotify's podcasts play only from Spotify: choose In MyTube, from Spotify or On Spotify Connect in ")
 				s.linkOf(c, "Settings › Playback", "/settings/playback")
 				ui.Text(c, ".")
 			})
@@ -166,7 +166,7 @@ func (s *shell) resumable(episodes []media.Track) int {
 }
 
 // followsPodcast reports whether the user follows the podcast p: in
-// MyMusic, or on its service, signed in there, as p's page tells or the
+// MyTube, or on its service, signed in there, as p's page tells or the
 // podcasts saved there do, which Library › Podcasts lists.
 func (s *shell) followsPodcast(p media.Podcast) bool {
 	if !s.signedIn(p.Source) {
@@ -180,7 +180,7 @@ func (s *shell) followsPodcast(p media.Podcast) bool {
 }
 
 // followPodcast follows the podcast of the page of key, or stops: in
-// MyMusic, and on its service where the user signed in, as saved, the
+// MyTube, and on its service where the user signed in, as saved, the
 // page's word, and the podcasts saved there then tell.
 func (s *shell) followPodcast(key string, p media.Podcast, saved *bool, on bool) {
 	s.keeping[key] = true
@@ -549,7 +549,7 @@ func (s *shell) podcastLibrary(c *ui.Context) {
 }
 
 // savedPodcasts is a shelf of the podcasts saved on a service, past those
-// the user follows in MyMusic, which show above.
+// the user follows in MyTube, which show above.
 func (s *shell) savedPodcasts(c *ui.Context, key, title string, saved *loaded[[]media.Podcast]) {
 	switch {
 	case !saved.done:

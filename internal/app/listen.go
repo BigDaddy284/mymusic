@@ -1,11 +1,11 @@
 package app
 
-// The analyser hears MyMusic's own engine. Spotify, when it plays in
-// MyMusic, plays in the page of a webview, which the engine never hears,
+// The analyser hears MyTube's own engine. Spotify, when it plays in
+// MyTube, plays in the page of a webview, which the engine never hears,
 // and on Spotify Connect in a Spotify app: the listener hears them there,
 // for the visualizer and the plugins' analyser, while one of them reads it.
 // Windows hears a process and its children through process loopback. It
-// hears the Spotify app on this computer; other devices MyMusic can't hear.
+// hears the Spotify app on this computer; other devices MyTube can't hear.
 
 import (
 	"log"
@@ -32,9 +32,9 @@ type hearing int
 
 const (
 	hearNothing hearing = iota
-	// hearMyMusic hears what MyMusic's web views play, Spotify in
-	// MyMusic among them: webViewAudio's process.
-	hearMyMusic
+	// hearMyTube hears what MyTube's web views play, Spotify in
+	// MyTube among them: webViewAudio's process.
+	hearMyTube
 	// hearSpotifyApp hears the Spotify app on this computer, which plays
 	// what plays on Spotify Connect when it is the device.
 	hearSpotifyApp
@@ -47,7 +47,7 @@ func heard(st player.State) hearing {
 	}
 	switch st.Source.Mode {
 	case player.ModeSpotify:
-		return hearMyMusic
+		return hearMyTube
 	case player.ModeConnect:
 		return hearSpotifyApp
 	}
@@ -58,7 +58,7 @@ func heard(st player.State) hearing {
 // while the Spotify app doesn't run.
 func (h hearing) process() uint32 {
 	switch h {
-	case hearMyMusic:
+	case hearMyTube:
 		return webViewAudio(processes())
 	case hearSpotifyApp:
 		return rootNamed(processes(), "Spotify.exe")
@@ -122,7 +122,7 @@ type listener struct {
 	done chan struct{}
 	mu   sync.Mutex
 	want hearing
-	// closed is set as MyMusic quits.
+	// closed is set as MyTube quits.
 	closed bool
 
 	// find finds the process that plays what is heard, and start starts
@@ -186,7 +186,7 @@ func (l *listener) reading() bool {
 	return time.Since(time.Unix(0, l.read.Load())) < unread
 }
 
-// close stops the listener's capture, as MyMusic quits, waiting a moment
+// close stops the listener's capture, as MyTube quits, waiting a moment
 // at most.
 func (l *listener) close() {
 	l.mu.Lock()
@@ -275,6 +275,6 @@ func (l *listener) hear(want hearing) {
 func (l *listener) fail(err error) {
 	if !l.failed {
 		l.failed = true
-		log.Printf("mymusic: the visualizer can't hear Spotify: %v", err)
+		log.Printf("mytube: the visualizer can't hear Spotify: %v", err)
 	}
 }

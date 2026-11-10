@@ -8,7 +8,7 @@ import (
 // pageIDRe matches the page ID of a YouTube brand channel, a number.
 var pageIDRe = regexp.MustCompile(`^[0-9]{1,32}$`)
 
-// Accounts is how MyMusic uses the user's accounts: Settings › Accounts.
+// Accounts is how MyTube uses the user's accounts: Settings › Accounts.
 type Accounts struct {
 	// SpotifyClientID is the Client ID of the user's Spotify app, which
 	// they sign in to Spotify with; "" until they paste one.

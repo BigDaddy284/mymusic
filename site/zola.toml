@@ -1,4 +1,4 @@
-# The MyMusic website, built with Zola: `zola --root site serve` to
+# The MyTube website, built with Zola: `zola --root site serve` to
 # preview it, `zola --root site build` to build it into site/public, after
 # `go run ./tools/sitedocs`, which makes the docs' pages from docs/*.md, the
 # folders of docs/ with a README.md, and CONTRIBUTING.md, CODE_OF_CONDUCT.md
@@ -11,12 +11,12 @@
 
 # GitHub Pages' address.
 base_url = "https://bigdaddy284.github.io/mymusic"
-title = "MyMusic"
+title = "MyTube"
 description = "Spotify and YouTube Music in one free, open-source desktop player for Windows."
 default_language = "en"
 
 # robots.txt is only read at a domain's root: GitHub Pages' copy, under
-# /mymusic/, has none.
+# /mytube/, has none.
 generate_robots_txt = false
 
 # The docs are Markdown for GitHub as much as for the site: what looks like

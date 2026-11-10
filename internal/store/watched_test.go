@@ -79,7 +79,7 @@ func TestVersionCountsEdits(t *testing.T) {
 	}
 	v := f.Version()
 	if c, err := f.Reload(); err != nil || c.Changed {
-		t.Fatalf("a reload of MyMusic's own save: changed %v, %v", c.Changed, err)
+		t.Fatalf("a reload of MyTube's own save: changed %v, %v", c.Changed, err)
 	}
 	if got := f.Version(); got != v {
 		t.Errorf("a reload that found nothing new moved the version from %d to %d", v, got)
@@ -131,7 +131,7 @@ func TestReloadTakesAnEdit(t *testing.T) {
 	if got := f.Get(); got.Theme != "daylight" {
 		t.Errorf("Get = %+v", got)
 	}
-	// The edit stays as it was saved: MyMusic doesn't write it again.
+	// The edit stays as it was saved: MyTube doesn't write it again.
 	if got := readText(t, path); got != `{"theme": "daylight", "volume": 0.5}` {
 		t.Errorf("the file was written: %q", got)
 	}
@@ -217,7 +217,7 @@ func TestUpdateMergesAnUnreadEdit(t *testing.T) {
 	if err := f.Update(setVolume(0.5)); err != nil {
 		t.Fatal(err)
 	}
-	// Saved by hand just before MyMusic saves a change of its own, as
+	// Saved by hand just before MyTube saves a change of its own, as
 	// the volume, 600 ms after it moved.
 	writeText(t, path, `{"theme": "aurora", "volume": 0.5, "keys": {"a": 1}}`)
 	if err := f.Update(setVolume(0.3)); err != nil {
@@ -230,7 +230,7 @@ func TestUpdateMergesAnUnreadEdit(t *testing.T) {
 	if got := onDisk(t, path); !reflect.DeepEqual(got, want) {
 		t.Errorf("the file holds %+v, want %+v", got, want)
 	}
-	// Where both changed a key, the newer change wins: MyMusic's own.
+	// Where both changed a key, the newer change wins: MyTube's own.
 	writeText(t, path, `{"theme": "daylight", "volume": 0.9}`)
 	if err := f.Update(setVolume(0.1)); err != nil {
 		t.Fatal(err)
@@ -248,7 +248,7 @@ func TestUpdateHeldWhileBroken(t *testing.T) {
 	}
 	const broken = `{"theme": "daylight",}`
 	writeText(t, path, broken)
-	// MyMusic hasn't read it yet: the write finds it broken.
+	// MyTube hasn't read it yet: the write finds it broken.
 	if err := f.Update(setVolume(0.3)); err != nil {
 		t.Fatal(err)
 	}

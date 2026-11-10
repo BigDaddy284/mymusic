@@ -369,7 +369,7 @@ func TestNowPlayingVideoRefresh(t *testing.T) {
 }
 
 // TestNowPlayingVideoSettingsFile turns the picture off and on again from
-// settings.json, as an edit of it applies while MyMusic runs.
+// settings.json, as an edit of it applies while MyTube runs.
 func TestNowPlayingVideoSettingsFile(t *testing.T) {
 	track := musicVideo()
 	s, tt, page, _ := videoShell(t, track)

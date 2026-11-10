@@ -1,6 +1,6 @@
 // Package colorfile reads the colours of a file that a tool makes of the
-// wallpaper, for MyMusic to wear over the theme's: pywal's colors.json,
-// matugen's JSON, and MyMusic's own tokens, as its matugen template and a
+// wallpaper, for MyTube to wear over the theme's: pywal's colors.json,
+// matugen's JSON, and MyTube's own tokens, as its matugen template and a
 // theme.json write them. It tells them apart by what they hold.
 package colorfile
 
@@ -21,7 +21,7 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
-// MaxSize is the largest colour file MyMusic reads, in bytes.
+// MaxSize is the largest colour file MyTube reads, in bytes.
 const MaxSize = 1 << 20
 
 // Format is the kind of a colour file.
@@ -34,7 +34,7 @@ const (
 	// FormatMaterial is matugen's JSON: Material colour roles, such as
 	// surface, on_surface and primary.
 	FormatMaterial Format = "material"
-	// FormatTokens is MyMusic's theme tokens, such as bg, text and accent:
+	// FormatTokens is MyTube's theme tokens, such as bg, text and accent:
 	// what its matugen template writes, or the colors of a theme.json.
 	FormatTokens Format = "tokens"
 )
@@ -55,7 +55,7 @@ type Colors struct {
 func (c Colors) Empty() bool { return len(c.Modes) == 0 }
 
 // OneMode tells whether the file has a single set of colours, as pywal's
-// and a theme.json's, which decides whether MyMusic is light or dark.
+// and a theme.json's, which decides whether MyTube is light or dark.
 func (c Colors) OneMode() bool {
 	_, dark := c.Modes["dark"]
 	_, light := c.Modes["light"]
@@ -86,8 +86,8 @@ var (
 	// ErrPartial is a file that ends partway through its JSON, as one does
 	// that is being written.
 	ErrPartial = errors.New("it ends partway through")
-	// ErrUnknown is a file that holds no colours MyMusic knows.
-	ErrUnknown = errors.New("it holds no colours MyMusic knows. MyMusic reads pywal's colors.json, matugen's JSON, what MyMusic's matugen template writes, and the colors of a theme.json")
+	// ErrUnknown is a file that holds no colours MyTube knows.
+	ErrUnknown = errors.New("it holds no colours MyTube knows. MyTube reads pywal's colors.json, matugen's JSON, what MyTube's matugen template writes, and the colors of a theme.json")
 	// ErrFolder is a path of a folder.
 	ErrFolder = errors.New("it's a folder")
 	// ErrTooBig is a file over MaxSize.
@@ -123,7 +123,7 @@ func plain(err error) error {
 	var pe *fs.PathError
 	switch {
 	case errors.Is(err, fs.ErrPermission):
-		return fmt.Errorf("MyMusic may not read it: %w", fs.ErrPermission)
+		return fmt.Errorf("MyTube may not read it: %w", fs.ErrPermission)
 	case errors.As(err, &pe):
 		return pe.Err
 	}
@@ -253,7 +253,7 @@ func pywalColors(pairs map[string]string) (Colors, error) {
 	return Colors{Format: FormatPywal, Modes: map[string]map[string]string{"": set}}, nil
 }
 
-// tokens reads MyMusic's theme tokens: the dark and light sets of its
+// tokens reads MyTube's theme tokens: the dark and light sets of its
 // matugen template, the colors of a theme.json, or tokens at the top.
 func tokens(top map[string]json.RawMessage) (Colors, bool, error) {
 	isTokens := func(m map[string]json.RawMessage) bool { return m != nil && m["bg"] != nil }
@@ -307,7 +307,7 @@ func tokens(top map[string]json.RawMessage) (Colors, bool, error) {
 	return c, true, nil
 }
 
-// materialRoles are the Material colour roles MyMusic wears.
+// materialRoles are the Material colour roles MyTube wears.
 var materialRoles = []string{
 	"background", "on_background", "surface", "on_surface", "on_surface_variant",
 	"surface_container_low", "surface_container", "surface_container_high", "surface_container_highest",
@@ -459,8 +459,8 @@ func Expand(p string) (string, error) {
 	return filepath.Clean(p), nil
 }
 
-// MatugenTemplate is MyMusic's template for matugen, which writes its
-// colours for dark and light as MyMusic's tokens. Each brace of its JSON
+// MatugenTemplate is MyTube's template for matugen, which writes its
+// colours for dark and light as MyTube's tokens. Each brace of its JSON
 // is on a line of its own: two together are how matugen's expressions
 // start and end.
 const MatugenTemplate = `{

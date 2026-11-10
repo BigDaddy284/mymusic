@@ -28,9 +28,9 @@ type romajiView struct {
 	again   string
 }
 
-// japanese tells whether lyrics are in Japanese, whose romaji MyMusic
+// japanese tells whether lyrics are in Japanese, whose romaji MyTube
 // makes: lines in kana or kanji, of lyrics in Japanese, or of a language
-// MyMusic couldn't tell, with kana among them. It looks at their lines
+// MyTube couldn't tell, with kana among them. It looks at their lines
 // once, while the views show the same lyrics.
 func (s *shell) japanese(ly lyrics.Lyrics) bool {
 	if ly.Language != "ja" && ly.Language != "" || len(ly.Lines) == 0 {

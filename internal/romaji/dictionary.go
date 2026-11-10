@@ -180,7 +180,7 @@ func (d *Dictionary) romanizer() (*Romanizer, Readings) {
 	}
 	if !errors.Is(err, fs.ErrNotExist) {
 		// What isn't the dictionary goes, and the dictionary comes again.
-		log.Printf("mymusic: the dictionary of the readings of kanji didn't load (%v): downloading it again", err)
+		log.Printf("mytube: the dictionary of the readings of kanji didn't load (%v): downloading it again", err)
 		os.Remove(d.path)
 	}
 	return nil, d.download()
@@ -240,7 +240,7 @@ func (d *Dictionary) download() Readings {
 		defer d.mu.Unlock()
 		d.done = nil
 		if err != nil {
-			log.Printf("mymusic: the dictionary of the readings of kanji didn't download: %v", err)
+			log.Printf("mytube: the dictionary of the readings of kanji didn't download: %v", err)
 			d.hold = min(max(d.hold*2, firstHold), longestHold)
 			d.until = d.now().Add(d.hold)
 			return
@@ -297,7 +297,7 @@ func (d *Dictionary) fetch() error {
 	return err
 }
 
-// clearParts deletes the parts of downloads left in dir by a MyMusic
+// clearParts deletes the parts of downloads left in dir by a MyTube
 // that quit as they came: those older than a download lasts at most.
 func (d *Dictionary) clearParts(dir string) {
 	parts, _ := filepath.Glob(filepath.Join(dir, "*.part"))

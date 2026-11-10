@@ -37,13 +37,13 @@ func TestReportURL(t *testing.T) {
 		t.Errorf("template and version = %q, %q", q.Get("template"), q.Get("version"))
 	}
 	more := q.Get("more")
-	// The first line tells how MyMusic was installed: the installer, or a
+	// The first line tells how MyTube was installed: the installer, or a
 	// portable copy.
 	first, _, _ := strings.Cut(more, "\n")
-	if want := "MyMusic 9.9.9 on " + runtime.GOOS + " " + runtime.GOARCH + ", installed as " + installKind(); first != want {
+	if want := "MyTube 9.9.9 on " + runtime.GOOS + " " + runtime.GOARCH + ", installed as " + installKind(); first != want {
 		t.Errorf("the report starts %q, want %q", first, want)
 	}
-	for _, want := range []string{"Theme: aurora", "Plugins: sleep-timer", "yt-dlp: not installed", "mymusic.log"} {
+	for _, want := range []string{"Theme: aurora", "Plugins: sleep-timer", "yt-dlp: not installed", "mytube.log"} {
 		if !strings.Contains(more, want) {
 			t.Errorf("the report lacks %q:\n%s", want, more)
 		}

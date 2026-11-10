@@ -135,7 +135,7 @@ func addedKind(key string) bool {
 }
 
 // keySource returns the source of the shelves key names: a service's, or
-// MyMusic's own for the user's shelves.
+// MyTube's own for the user's shelves.
 func keySource(key string) media.Source {
 	switch prefix, rest, _ := strings.Cut(key, ":"); prefix {
 	case string(media.SourceSpotify):

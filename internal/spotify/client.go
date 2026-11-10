@@ -121,7 +121,7 @@ func (c *Client) SignedIn() bool {
 }
 
 // Granted reports whether the user's sign-in grants scope. Sign-ins made
-// before MyMusic asked for a scope do not.
+// before MyTube asked for a scope do not.
 func (c *Client) Granted(scope string) bool {
 	c.mu.Lock()
 	defer c.mu.Unlock()

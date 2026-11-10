@@ -15,7 +15,7 @@ type command struct {
 	run                        func()
 }
 
-// commands are MyMusic's own commands, and those of plugins.
+// commands are MyTube's own commands, and those of plugins.
 func (s *shell) commands() []command {
 	cur, playing := s.st.Current()
 	cmds := []command{

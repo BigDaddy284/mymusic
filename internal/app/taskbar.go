@@ -31,7 +31,7 @@ func (a *App) attachTaskbar(win *mygo.Window) {
 	})
 	if err != nil {
 		if !errors.Is(err, taskbar.ErrUnsupported) {
-			log.Printf("mymusic: the taskbar's buttons: %v", err)
+			log.Printf("mytube: the taskbar's buttons: %v", err)
 		}
 		return
 	}

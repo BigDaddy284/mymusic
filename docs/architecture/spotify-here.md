@@ -1,10 +1,10 @@
-# Spotify in MyMusic
+# Spotify in MyTube
 
-"In MyMusic, from Spotify" plays Spotify tracks with Spotify's Web
+"In MyTube, from Spotify" plays Spotify tracks with Spotify's Web
 Playback SDK, in the hidden window of `public/spotify.html`
 ([its web view](webviews.md)). Spotify encrypts its audio, and the SDK
 plays only where the web view has a decryption module (a CDM) it takes.
-On Windows, WebView2 is Chromium with Widevine, so MyMusic plays Spotify
+On Windows, WebView2 is Chromium with Widevine, so MyTube plays Spotify
 itself, and does so by default (as tried for #295 in November 2026).
 
 ## What the SDK asks for

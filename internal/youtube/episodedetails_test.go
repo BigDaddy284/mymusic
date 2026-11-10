@@ -67,10 +67,10 @@ func TestEpisodeDetails(t *testing.T) {
 }
 
 // TestLiveEpisodeDetails reads the details of an episode a search finds
-// on YouTube Music itself, with MYMUSIC_LIVE=1.
+// on YouTube Music itself, with MYTUBE_LIVE=1.
 func TestLiveEpisodeDetails(t *testing.T) {
-	if os.Getenv("MYMUSIC_LIVE") == "" {
-		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube Music")
+	if os.Getenv("MYTUBE_LIVE") == "" {
+		t.Skip("set MYTUBE_LIVE=1 to test against YouTube Music")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()

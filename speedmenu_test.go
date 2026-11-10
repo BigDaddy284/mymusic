@@ -267,7 +267,7 @@ func TestSpeedButtonOnSpotify(t *testing.T) {
 		t.Error("the mini player's menu changes the speed of a Spotify device")
 	}
 
-	// The song after it plays in MyMusic, at a speed the button sets.
+	// The song after it plays in MyTube, at a speed the button sets.
 	s.p.Next()
 	s.settle(t, func(st player.State) bool {
 		return st.Index == 1 && st.Source != nil && st.Source.Mode == player.ModeStream

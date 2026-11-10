@@ -1,4 +1,4 @@
-// Package sysproxy picks the proxy of MyMusic's requests: the one the
+// Package sysproxy picks the proxy of MyTube's requests: the one the
 // environment names, as Go's own clients do, and on Windows, failing that,
 // the one set in Windows' settings, which browsers, WebView2 and yt-dlp use
 // too. It sets it as the Proxy of http.DefaultTransport as it initializes,
@@ -46,13 +46,13 @@ func Proxy(r *http.Request) (*url.URL, error) {
 }
 
 // Install reads the proxy of Windows' settings and follows it as it
-// changes, logging what MyMusic connects through. Elsewhere it does
+// changes, logging what MyTube connects through. Elsewhere it does
 // nothing.
 func Install() {
 	if fromEnv() {
 		for _, name := range []string{"HTTPS_PROXY", "HTTP_PROXY"} {
 			if v := getenv(name); v != "" {
-				logf("mymusic: connecting through %s, from %s", redactedServer(v), name)
+				logf("mytube: connecting through %s, from %s", redactedServer(v), name)
 				return
 			}
 		}
@@ -61,7 +61,7 @@ func Install() {
 }
 
 // YTDLPArgs returns the --proxy yt-dlp needs to reach target through the
-// proxy MyMusic would use, when yt-dlp wouldn't find it itself: it reads
+// proxy MyTube would use, when yt-dlp wouldn't find it itself: it reads
 // the environment and the proxy server of Windows' settings, but not a
 // setup script, automatic detection or the bypass list.
 func YTDLPArgs(target string) []string {
@@ -110,7 +110,7 @@ func getenv(name string) string {
 }
 
 // loopback reports whether host is this computer, which no proxy can reach
-// for MyMusic: the player's own stream proxy, say.
+// for MyTube: the player's own stream proxy, say.
 func loopback(host string) bool {
 	host = strings.ToLower(strings.TrimSuffix(host, "."))
 	if host == "localhost" || strings.HasSuffix(host, ".localhost") {

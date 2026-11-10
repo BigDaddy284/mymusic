@@ -1,7 +1,7 @@
 # Look and feel
 <!-- docs: group=using order=50 -->
 
-MyMusic's look is a layout and a theme: four layouts, fourteen built-in
+MyTube's look is a layout and a theme: four layouts, fourteen built-in
 themes, light and dark, and colours from the artwork or from pywal and matugen.
 
 Everything on this page is in [Settings › Appearance](settings.md#appearance).
@@ -21,7 +21,7 @@ Choose one in Settings › Appearance › Layout.
 | **Blend**, the default | Expressive's rounded shapes and springy motion on Crate's dense rows: big covers in cards, bold headings, pill buttons and a floating player bar. |
 | **Expressive** | After Material 3 Expressive: tonal fills, large rounded cards, pill buttons and chips, a floating player bar, and springs that overshoot a little. The Material themes are made for it. |
 | **Crate** | Restrained: dense rows, big covers in cards, bold and tight headings and small corners, so that the covers do the work. Its player bar stays at the foot of the window. |
-| **Tiles** | MyMusic's look before 0.5.9: flat tiles, giant light lowercase words and outlined boxes, and presses that show at once. |
+| **Tiles** | MyTube's look before 0.5.9: flat tiles, giant light lowercase words and outlined boxes, and presses that show at once. |
 
 Tiles is the only layout that rounds with the theme's own corner radius;
 the others have corners of their own. The layouts set the theme's heading
@@ -30,7 +30,7 @@ Blend and Crate.
 
 ### After the update to 0.5.9
 
-MyMusic opens in Blend after the update to 0.5.9, whatever it looked like
+MyTube opens in Blend after the update to 0.5.9, whatever it looked like
 before. Your theme, your accent and your other settings stay. To keep the
 look you had, choose **Tiles**.
 
@@ -76,7 +76,7 @@ named after it, as **Aurora options**: switches for its effects, sliders
 for its blur or glow, and Aurora's colour of light. Each theme keeps its
 own options.
 
-![MyMusic wearing Aurora, its northern lights behind the settings: the last rows of theme cards, then the Aurora options group, with the Drifting lights switch on, the Glass blur slider at 22px and the Light color swatch, violet](shots/theme-options.webp)
+![MyTube wearing Aurora, its northern lights behind the settings: the last rows of theme cards, then the Aurora options group, with the Drifting lights switch on, the Glass blur slider at 22px and the Light color swatch, violet](shots/theme-options.webp)
 
 While your system asks for less motion, Aurora's lights, Anime's speed
 lines and Mochi's sparkles hold still (see
@@ -86,7 +86,7 @@ lines and Mochi's sparkles hold still (see
 
 Turn on **Follow the computer** in Settings › Appearance › Theme, and two
 more rows show: **In light mode** and **In dark mode**, each with a list of
-your themes, light ones first. MyMusic then wears one theme while your
+your themes, light ones first. MyTube then wears one theme while your
 computer is in light mode and the other while it is in dark mode, and
 switches as the computer does. They start as Daylight and Mix.
 
@@ -110,8 +110,8 @@ colour of what is chosen, of links and of the progress bars:
 Material and Material Dark make every colour they have, the ground, the
 surfaces, the text and the tiles, of one colour, as Material's dynamic
 colour does: the cover's while a track plays and Follow the artwork is on,
-else your Accent colour, else MyMusic's pink. So the whole window changes
-colour with each cover. They are set in Roboto Flex, which MyMusic brings
+else your Accent colour, else MyTube's pink. So the whole window changes
+colour with each cover. They are set in Roboto Flex, which MyTube brings
 with it, and are made for the Expressive layout, though they work in any.
 
 ![The Material theme on the now playing page of アイドル by YOASOBI: a pale ground, and the buttons, switches, seek bars and the visualizer in a violet blue taken from the cover](shots/material.webp)
@@ -121,22 +121,22 @@ artwork, and choose an Accent colour for them to start from.
 
 ## Colours from a file
 
-MyMusic can wear the colours that [pywal](https://github.com/dylanaraps/pywal)
+MyTube can wear the colours that [pywal](https://github.com/dylanaraps/pywal)
 or [matugen](https://github.com/InioX/matugen) make of your wallpaper, or the
 colours of a file of your own, and change colour as the file changes, with
 nothing to reload. In Settings › Appearance › Colour and type, set
 **Colours from a file** to pywal, matugen, or "A file of your own".
 
-- The **Colour file** row under it shows the file MyMusic reads, and when
+- The **Colour file** row under it shows the file MyTube reads, and when
   it last read it, or why it can't. "how to set it up" opens the steps;
-  with matugen, "copy the template" copies MyMusic's matugen template; with
+  with matugen, "copy the template" copies MyTube's matugen template; with
   a file of your own, type its path or choose it.
 - The theme keeps its type, corners and effects: Mochi's round face or
   Terminal's scanlines can wear your wallpaper's colours. The theme cards
   keep each theme's own colours.
 - Colours that wouldn't read are changed, keeping their hue, so text stays
   readable on any wallpaper.
-- A file with one set of colours, as pywal's, decides whether MyMusic is
+- A file with one set of colours, as pywal's, decides whether MyTube is
   light or dark, title bar included.
 - While Follow the artwork is on, the cover still sets the accent. Turn it
   off to keep the file's.
@@ -144,7 +144,7 @@ nothing to reload. In Settings › Appearance › Colour and type, set
 ![Settings › Appearance › Colour and type with Colours from a file set to pywal: the window in the file's dark blue ground with an orange accent, the Colour file row, its path covered here, "Read at 01:14, and followed as it changes." and How to set it up, then Follow the artwork, off, and an orange Accent colour](shots/colours-file.webp)
 
 [Themes: Colours from a file](themes.md#colours-from-a-file) has the
-setup for pywal and matugen, the files MyMusic reads, and how each colour
+setup for pywal and matugen, the files MyTube reads, and how each colour
 maps.
 
 ## Density, text size and zoom
@@ -180,9 +180,9 @@ unfolds the sidebar.
 
 ## Reduced motion
 
-MyMusic has no motion setting of its own: it follows your system's. While
+MyTube has no motion setting of its own: it follows your system's. While
 the system asks for less motion (Animation effects turned off in Windows'
-accessibility settings), MyMusic moves less:
+accessibility settings), MyTube moves less:
 
 - Aurora's lights, Anime's speed lines and Mochi's sparkles hold still.
 - The [wavy progress bar](#density-text-size-and-zoom) holds still, and

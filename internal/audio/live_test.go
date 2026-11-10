@@ -34,23 +34,23 @@ var liveSongs = []struct {
 // TestLivePlays finds the streams of liveSongs as the app does, through
 // YouTube's player API, else yt-dlp, and plays a few seconds of each on a
 // deck, from the proxy: from the start, and after a seek. It finds them
-// with yt-dlp alone too, in both qualities, when the yt-dlp MyMusic
+// with yt-dlp alone too, in both qualities, when the yt-dlp MyTube
 // installed, or one on the PATH, is there. With ffmpeg on the PATH, it
 // checks what the deck played against ffmpeg's decode of the same file. It
-// runs with MYMUSIC_LIVE=1:
+// runs with MYTUBE_LIVE=1:
 //
-//	MYMUSIC_LIVE=1 go test ./internal/audio -run Live -v
+//	MYTUBE_LIVE=1 go test ./internal/audio -run Live -v
 //
 // Neither the streams' URLs nor their files leave the test: the files go
 // to its temporary folder.
 func TestLivePlays(t *testing.T) {
-	if os.Getenv("MYMUSIC_LIVE") == "" {
-		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYTUBE_LIVE") == "" {
+		t.Skip("set MYTUBE_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	config, _ := os.UserConfigDir()
-	tm := tools.New(filepath.Join(config, "MyMusic", "bin"))
+	tm := tools.New(filepath.Join(config, "MyTube", "bin"))
 	_, noYTDLP := tm.YTDLP()
 
 	for _, song := range liveSongs {
@@ -229,16 +229,16 @@ func compareLive(t *testing.T, what string, got, want []float32, at, slack int64
 // API gives, else yt-dlp, near its live edge, and on past the segments
 // that were there as it started, which a reload of the playlist brings.
 // It finds the stream with yt-dlp alone too, in both qualities, when the
-// yt-dlp MyMusic installed is there. It runs with MYMUSIC_LIVE=1:
+// yt-dlp MyTube installed is there. It runs with MYTUBE_LIVE=1:
 //
-//	MYMUSIC_LIVE=1 go test ./internal/audio -run LiveStream -v
+//	MYTUBE_LIVE=1 go test ./internal/audio -run LiveStream -v
 //
 // With ffmpeg on the PATH, it checks what the deck played of format 234
 // against ffmpeg's decode of the same packed audio. It plays into no
 // device, and tells neither the playlist's URL nor its segments'.
 func TestLiveStreamPlays(t *testing.T) {
-	if os.Getenv("MYMUSIC_LIVE") == "" {
-		t.Skip("set MYMUSIC_LIVE=1 to test against YouTube")
+	if os.Getenv("MYTUBE_LIVE") == "" {
+		t.Skip("set MYTUBE_LIVE=1 to test against YouTube")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
@@ -328,7 +328,7 @@ func TestLiveStreamPlays(t *testing.T) {
 		play(t, r)
 	})
 	config, _ := os.UserConfigDir()
-	tm := tools.New(filepath.Join(config, "MyMusic", "bin"))
+	tm := tools.New(filepath.Join(config, "MyTube", "bin"))
 	if _, err := tm.YTDLP(); err != nil {
 		t.Logf("yt-dlp: %v", err)
 		return

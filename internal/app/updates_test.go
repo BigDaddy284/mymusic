@@ -39,7 +39,7 @@ func TestNewerVersion(t *testing.T) {
 }
 
 func TestKindOf(t *testing.T) {
-	const installer = `C:\Users\me\AppData\Local\Programs\MyMusic`
+	const installer = `C:\Users\me\AppData\Local\Programs\MyTube`
 	for _, c := range []struct {
 		name  string
 		dir   string
@@ -47,7 +47,7 @@ func TestKindOf(t *testing.T) {
 		want  string
 	}{
 		{"installer", installer, []string{filepath.Join(installer, "Uninstall.exe")}, "installer"},
-		{"portable zip", `D:\Apps\MyMusic`, nil, "portable"},
+		{"portable zip", `D:\Apps\MyTube`, nil, "portable"},
 	} {
 		exists := func(p string) bool {
 			for _, f := range c.files {
@@ -65,8 +65,8 @@ func TestKindOf(t *testing.T) {
 
 func TestReleaseFile(t *testing.T) {
 	for kind, want := range map[string]string{
-		"installer":   "mymusic-0.3.0-windows-amd64-setup.exe",
-		"portable":    "mymusic-0.3.0-windows-amd64-portable.zip",
+		"installer":   "mytube-0.3.0-windows-amd64-setup.exe",
+		"portable":    "mytube-0.3.0-windows-amd64-portable.zip",
 		"development": "",
 	} {
 		if got := releaseFile(kind, "0.3.0", "amd64"); got != want {
@@ -82,9 +82,9 @@ func TestLatestRelease(t *testing.T) {
 		"published_at": "2026-10-21T10:00:00Z",
 		"body": "Playlists of your own, and an [About page](https://example.com) that shows the newest version.\r\n\r\n### Added\r\n\r\n- Make playlists.",
 		"assets": [
-			{"name": "mymusic-0.3.0-windows-amd64-setup.exe", "browser_download_url": "https://example.com/amd64-setup.exe"},
-			{"name": "mymusic-0.3.0-windows-arm64-setup.exe", "browser_download_url": "https://example.com/arm64-setup.exe"},
-			{"name": "mymusic-0.3.0-windows-amd64-portable.zip", "browser_download_url": "https://example.com/amd64-portable.zip"},
+			{"name": "mytube-0.3.0-windows-amd64-setup.exe", "browser_download_url": "https://example.com/amd64-setup.exe"},
+			{"name": "mytube-0.3.0-windows-arm64-setup.exe", "browser_download_url": "https://example.com/arm64-setup.exe"},
+			{"name": "mytube-0.3.0-windows-amd64-portable.zip", "browser_download_url": "https://example.com/amd64-portable.zip"},
 			{"name": "update-GOOS-arm64.json", "browser_download_url": "https://example.com/v0.3.0/update-arm64.json"},
 			{"name": "update-GOOS-amd64.json", "browser_download_url": "https://example.com/v0.3.0/update-amd64.json"},
 			{"name": "SHA256SUMS", "browser_download_url": "https://example.com/SHA256SUMS"}
@@ -108,13 +108,13 @@ func TestLatestRelease(t *testing.T) {
 		Notes:    "Playlists of your own, and an About page that shows the newest version.",
 		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v0.3.0",
 		Download: "https://example.com/arm64-setup.exe",
-		File:     "mymusic-0.3.0-windows-arm64-setup.exe",
+		File:     "mytube-0.3.0-windows-arm64-setup.exe",
 		manifest: "https://example.com/v0.3.0/update-arm64.json",
 	}
 	if r != want {
 		t.Errorf("latestRelease = %+v, want %+v", r, want)
 	}
-	if agent != "MyMusic/0.2.0" {
+	if agent != "MyTube/0.2.0" {
 		t.Errorf("User-Agent = %q", agent)
 	}
 
@@ -133,7 +133,7 @@ func TestLatestRelease(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.Download != "https://example.com/amd64-portable.zip" || r.File != "mymusic-0.3.0-windows-amd64-portable.zip" {
+	if r.Download != "https://example.com/amd64-portable.zip" || r.File != "mytube-0.3.0-windows-amd64-portable.zip" {
 		t.Errorf("latestRelease of a portable copy = %+v", r)
 	}
 	r, err = latestRelease(context.Background(), srv.Client(), srv.URL, "portable", "arm64", "0.2.0")
@@ -207,7 +207,7 @@ func TestLatestReleaseRateLimited(t *testing.T) {
 
 func TestSummary(t *testing.T) {
 	for _, c := range []struct{ notes, want string }{
-		{"MyMusic tells you when a yt-dlp you installed\nis out of date, and offers `its own`.\n\n### Added\n\n- More.", "MyMusic tells you when a yt-dlp you installed is out of date, and offers its own."},
+		{"MyTube tells you when a yt-dlp you installed\nis out of date, and offers `its own`.\n\n### Added\n\n- More.", "MyTube tells you when a yt-dlp you installed is out of date, and offers its own."},
 		{"**Discord** shows what plays, on [Windows](https://example.com) too.", "Discord shows what plays, on Windows too."},
 		{"### Fixed\n\n- A crash.", ""},
 		{"", ""},
@@ -259,7 +259,7 @@ func TestUpdatePrefsOfTheUpdateWindow(t *testing.T) {
 	if p.checks() || !p.AutomaticDownloads || p.SkippedVersion != "0.3.1" || p.LastCheck.IsZero() {
 		t.Errorf("prefs = %+v", p)
 	}
-	// Until the user chose, MyMusic checks.
+	// Until the user chose, MyTube checks.
 	if !(updatePrefs{}).checks() {
 		t.Error("new prefs do not check")
 	}

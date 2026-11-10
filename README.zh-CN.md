@@ -1,10 +1,10 @@
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong> · <a href="README.id.md">Bahasa Indonesia</a></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="MyMusic 的图标：深色圆角方块上的蓝紫渐变的五根声音条" />
+  <img src="brand/icon.png" width="112" height="112" alt="MyTube 的图标：深色圆角方块上的蓝紫渐变的五根声音条" />
 </p>
 
-<h1 align="center">MyMusic</h1>
+<h1 align="center">MyTube</h1>
 
 <p align="center"><strong>一个播放器，同时播放 YouTube Music 和 Spotify。</strong></p>
 
@@ -31,19 +31,19 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.webp" alt="MyMusic 0.5.9 的默认外观（Blend 布局、Mix 主题），竖立在深色舞台上、正对着你：中间是正在播放 YOASOBI《アイドル》的页面，带粉色描边，每行歌词下方显示罗马音，前面是迷你播放器；左边是搜索，右边是音乐库里的混合歌单" />
+  <img src="docs/banner.webp" alt="MyTube 0.5.9 的默认外观（Blend 布局、Mix 主题），竖立在深色舞台上、正对着你：中间是正在播放 YOASOBI《アイドル》的页面，带粉色描边，每行歌词下方显示罗马音，前面是迷你播放器；左边是搜索，右边是音乐库里的混合歌单" />
 </p>
 
-## 为什么选择 MyMusic
+## 为什么选择 MyTube
 
-如果你的音乐分散在 YouTube Music 和 Spotify 两边，通常就得用两个应用，也就有两处搜索、两个播放队列和两个音乐库。MyMusic 把这两个服务放进同一个播放器里：
+如果你的音乐分散在 YouTube Music 和 Spotify 两边，通常就得用两个应用，也就有两处搜索、两个播放队列和两个音乐库。MyTube 把这两个服务放进同一个播放器里：
 
 - **统一搜索**：同时搜索 YouTube Music 和 Spotify，并在每条结果上标明它来自哪个服务。
 - **统一的播放队列和音乐库**：Spotify 的歌曲可以紧接着 YouTube Music 的歌曲播放，一个歌单里也可以同时放两边的歌。
 - **无需账号**：打开应用就能播放 YouTube Music。只有想用自己的音乐库时才需要登录。Spotify 是可选的。
-- **程序小巧**：MyMusic 是一个 Go 程序，用 GPU 自己绘制窗口。它内部不带浏览器，既不用额外下载，也不会让浏览器常驻内存。
+- **程序小巧**：MyTube 是一个 Go 程序，用 GPU 自己绘制窗口。它内部不带浏览器，既不用额外下载，也不会让浏览器常驻内存。
 - **随你改造**：自带十个主题，社区还提供更多主题和插件，任何命令都可以设置你自己的快捷键。
-- **注重隐私**：MyMusic 没有自己的账号体系、服务器、统计分析或遥测。
+- **注重隐私**：MyTube 没有自己的账号体系、服务器、统计分析或遥测。
 - **免费开源**：可按 MIT 许可证或 GPL 3.0 使用。
 
 ## 功能
@@ -65,9 +65,9 @@
 
 ### Spotify 的三种播放方式
 
-- **直接在 MyMusic 里播放**：音质与 Spotify 相同，无需打开 Spotify 应用（需要 Premium）。
+- **直接在 MyTube 里播放**：音质与 Spotify 相同，无需打开 Spotify 应用（需要 Premium）。
 - **通过 Spotify Connect 播放**：在你的 Spotify 应用、手机或音箱上播放。
-- **通过 YouTube Music 播放**：MyMusic 播放这首 Spotify 歌曲在 YouTube Music 上的同一录音，不需要 Premium 也能播放。
+- **通过 YouTube Music 播放**：MyTube 播放这首 Spotify 歌曲在 YouTube Music 上的同一录音，不需要 Premium 也能播放。
 
 ### 音频
 
@@ -81,10 +81,10 @@
 - 支持媒体键和 Windows 的媒体控制。
 - 在 Windows 上，任务栏缩略图中带有播放器按钮。
 - 托盘控制、切换到新歌曲时的通知，以及开机自启。
-- `mymusic://` 链接。
+- `mytube://` 链接。
 - **Last.fm**：你听的每首歌都会记录到你的个人资料中，离线时产生的 scrobble 会在恢复联网后补发。
 - **Discord**：你的个人资料上会显示正在播放的歌曲，以及它的封面和剩余时间。
-- **更新**：MyMusic 在启动时以及之后每隔几小时检查一次新版本，验证它的签名，在你确认后安装；你也可以选择让它自动安装。
+- **更新**：MyTube 在启动时以及之后每隔几小时检查一次新版本，验证它的签名，在你确认后安装；你也可以选择让它自动安装。
 
 ### 个性化
 
@@ -92,46 +92,46 @@
 - **社区主题和插件**：在市场里一键安装。
 - **插件**：通过带类型的 API 添加页面、命令、歌曲操作和小组件，并按你的主题绘制。
 - **键盘优先**：常用操作都有快捷键；任何命令（包括插件的命令）都可以设置你自己的快捷键；其余操作可以用命令面板（<kbd>Ctrl</kbd> <kbd>K</kbd>）完成。
-- **设置文件**：你的设置保存在数据文件夹中的 `settings.json` 里（`%AppData%\MyMusic`），可以和你的 dotfiles 放在一起管理。在 MyMusic 运行时保存这个文件，改动会立即生效；在 Settings › Desktop › Settings file（设置 › 桌面 › 设置文件）中可以打开它。
+- **设置文件**：你的设置保存在数据文件夹中的 `settings.json` 里（`%AppData%\MyTube`），可以和你的 dotfiles 放在一起管理。在 MyTube 运行时保存这个文件，改动会立即生效；在 Settings › Desktop › Settings file（设置 › 桌面 › 设置文件）中可以打开它。
 
 ## 界面一览
 
 <p align="center">
-  <img src="docs/look-listen.webp" alt="Blend 布局下的 MyMusic 各个页面，竖立在深色舞台上、正对着你：中间是正在播放 YOASOBI《アイドル》的页面，带粉色描边，每行歌词下方显示罗马音和英文翻译；左边是专辑《THE BOOK 3》，右边是一个已关注播客的页面" />
+  <img src="docs/look-listen.webp" alt="Blend 布局下的 MyTube 各个页面，竖立在深色舞台上、正对着你：中间是正在播放 YOASOBI《アイドル》的页面，带粉色描边，每行歌词下方显示罗马音和英文翻译；左边是专辑《THE BOOK 3》，右边是一个已关注播客的页面" />
 </p>
 
 <p align="center"><sub><b>听歌。</b>中间是正在播放的 YOASOBI《アイドル》：每行歌词随演唱逐字亮起，下方显示罗马音和翻译。左边是一张专辑，右边是你关注的播客。</sub></p>
 
 <p align="center">
-  <img src="docs/look-yours.webp" alt="MyMusic 的更多页面，竖立在深色舞台上、正对着你：中间是 Settings › Appearance（设置 › 外观）和四种布局，带粉色描边；左边是随正在播放的封面变色的 Material 主题，右边是市场里的社区主题" />
+  <img src="docs/look-yours.webp" alt="MyTube 的更多页面，竖立在深色舞台上、正对着你：中间是 Settings › Appearance（设置 › 外观）和四种布局，带粉色描边；左边是随正在播放的封面变色的 Material 主题，右边是市场里的社区主题" />
 </p>
 
 <p align="center"><sub><b>个性化。</b>中间是四种布局：默认的 Blend，以及 Expressive、Crate 和 Tiles，下方是主题。左边是从正在播放的封面取色的 Material 主题。右边是市场里的社区主题。</sub></p>
 
 ## 安装
 
-MyMusic 可在 Windows 10 和 11 上运行。从[最新版本](https://github.com/bigdaddy284/mymusic/releases/latest)中下载：
+MyTube 可在 Windows 10 和 11 上运行。从[最新版本](https://github.com/bigdaddy284/mymusic/releases/latest)中下载：
 
 | Windows | 下载 |
 |---|---|
-| 10 和 11（x64、Arm），安装程序 | [`mymusic-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
-| 便携版，无需安装 | [`mymusic-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| 10 和 11（x64、Arm），安装程序 | [`mytube-<version>-windows-<arch>-setup.exe`](https://github.com/bigdaddy284/mymusic/releases/latest) |
+| 便携版，无需安装 | [`mytube-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` 在 x64 上是 `amd64`，在 Arm 上是 `arm64`。每个版本都附有 `SHA256SUMS`，可以用来校验下载的文件。名为 `update-…`、`….delta` 或 `-windows-<arch>.tar.gz` 的文件不需要下载：它们是已安装的应用自动更新时用的。
 
-安装程序和便携版 zip 会自行更新。便携版 zip 解压到任意位置，打开 `MyMusic.exe` 即可。
+安装程序和便携版 zip 会自行更新。便携版 zip 解压到任意位置，打开 `MyTube.exe` 即可。
 
 ### 首次启动
 
 - 安装程序还没有签名，所以 SmartScreen 可能会发出警告：选择 More info（更多信息），然后选择 Run anyway（仍要运行）。
-- 登录 YouTube Music 和在 MyMusic 中播放 Spotify 需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
-- 大多数 YouTube Music 歌曲的音频，MyMusic 都能自己找到。其余的歌曲（比如面向儿童的内容），它会使用 [yt-dlp](https://github.com/yt-dlp/yt-dlp)：你可以在 Settings › Playback（设置 › 播放）中让 MyMusic 替你安装 yt-dlp，之后它也会让 yt-dlp 保持最新。yt-dlp 需要一个 JavaScript 运行时：[Deno](https://deno.com)、Node.js、Bun 或 QuickJS。
+- 登录 YouTube Music 和在 MyTube 中播放 Spotify 需要 WebView2 Runtime，Windows 11 已自带。Windows 10 上请从 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/) 安装。
+- 大多数 YouTube Music 歌曲的音频，MyTube 都能自己找到。其余的歌曲（比如面向儿童的内容），它会使用 [yt-dlp](https://github.com/yt-dlp/yt-dlp)：你可以在 Settings › Playback（设置 › 播放）中让 MyTube 替你安装 yt-dlp，之后它也会让 yt-dlp 保持最新。yt-dlp 需要一个 JavaScript 运行时：[Deno](https://deno.com)、Node.js、Bun 或 QuickJS。
 
 ### 账号（均为可选）
 
-- **YouTube Music**：在 Settings › Accounts（设置 › 账号）中选择 Sign in to YouTube Music（登录 YouTube Music），然后在弹出的窗口中登录 Google。你输入的内容只会发送给 Google。MyMusic 会加密保存登录会话，密钥存放在 Windows 的凭据管理器（Credential Manager）中。
+- **YouTube Music**：在 Settings › Accounts（设置 › 账号）中选择 Sign in to YouTube Music（登录 YouTube Music），然后在弹出的窗口中登录 Google。你输入的内容只会发送给 Google。MyTube 会加密保存登录会话，密钥存放在 Windows 的凭据管理器（Credential Manager）中。
 - **Spotify**：Spotify 规定一个应用最多只能服务五个用户，而且只有在应用的所有者订阅了 Premium 时才行，所以你需要用自己创建的 Spotify 应用登录。只需两分钟：[docs/spotify.md](docs/spotify.md) 会一步步带你完成。
-- **Last.fm**：在 [last.fm/api/account/create](https://www.last.fm/api/account/create) 创建一个 API 账号（名称随意，不用填回调 URL），把它的 API key 和 shared secret 粘贴到 Settings › Accounts 中，然后在浏览器中授权 MyMusic。
+- **Last.fm**：在 [last.fm/api/account/create](https://www.last.fm/api/account/create) 创建一个 API 账号（名称随意，不用填回调 URL），把它的 API key 和 shared secret 粘贴到 Settings › Accounts 中，然后在浏览器中授权 MyTube。
 - **Discord**：Discord 应用运行时，你的个人资料上会显示你正在听的内容。可以在 Settings › Desktop（设置 › 桌面）中关闭。
 
 遇到问题？[docs/troubleshooting.md](docs/troubleshooting.md) 列出了常见问题和已知问题。
@@ -150,7 +150,7 @@ winget install Git.Git
 
 ```powershell
 git clone https://github.com/bigdaddy284/mymusic
-cd mymusic
+cd mytube
 bun install
 bun run dev
 ```
@@ -163,7 +163,7 @@ bun run dev
 
 ### 开发
 
-`bun run dev` 会构建并启动应用，并在你修改代码时重新构建。它的数据以 `MyMusic Dev` 的名称单独存放，与已安装的 MyMusic 互不干扰。
+`bun run dev` 会构建并启动应用，并在你修改代码时重新构建。它的数据以 `MyTube Dev` 的名称单独存放，与已安装的 MyTube 互不干扰。
 
 ```sh
 bun run build:plugins          # the plugins' JavaScript, from their TypeScript
@@ -190,7 +190,7 @@ bun run build -- -platform windows/amd64,windows/arm64
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
 internal/player      the queue, played by the audio engine or on Spotify's devices
-internal/audio       MyMusic's audio engine, and the system's audio output
+internal/audio       MyTube's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
 internal/spotify     the Spotify Web API, its sign-in and Spotify Connect
@@ -201,7 +201,7 @@ internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins, and the community registry
-builtin/themes       the themes MyMusic ships with
+builtin/themes       the themes MyTube ships with
 public/              the page of Spotify's player, on Windows
 sdk/                 the types of the plugin API
 community/           community themes and plugins, and their registry
@@ -216,7 +216,7 @@ webm/                the audio of WebM files: packets, times and seeking
 mp4/                 the audio of MP4 files: packets, times and seeking
 resample/            sample rate conversion, with Kaiser-windowed sincs
 lyrics/              synced lyrics from LRCLIB, and the LRC format
-brand/               MyMusic's logo, for code that draws it
+brand/               MyTube's logo, for code that draws it
 ```
 
 ## 社区
@@ -242,10 +242,10 @@ brand/               MyMusic's logo, for code that draws it
 
 ## 隐私
 
-MyMusic 没有自己的账号体系、服务器、统计分析或遥测。它会与以下服务通信：
+MyTube 没有自己的账号体系、服务器、统计分析或遥测。它会与以下服务通信：
 
 - **YouTube 和 Google**：YouTube Music 的曲库、音频流和每首歌的响度（这些都在未登录状态下请求），以及封面图片；部分音频流通过 yt-dlp 获取。登录后，还有你在那里的音乐库；另外，除非你在 Settings › Accounts（设置 › 账号）中关闭，你播放的歌曲也会发送过去，进入你的 YouTube Music 播放记录。
-- **Spotify**（登录之后）：你的音乐库、你的 Spotify Connect 设备；在 MyMusic 内播放 Spotify 时，还有从 `sdk.scdn.co` 加载的 Spotify 播放器。
+- **Spotify**（登录之后）：你的音乐库、你的 Spotify Connect 设备；在 MyTube 内播放 Spotify 时，还有从 `sdk.scdn.co` 加载的 Spotify 播放器。
 - **LRCLIB**：正在播放的歌曲的标题、艺人、专辑和时长，用来查找歌词。
 - **GitHub**：启动时以及之后每隔几小时检查一次新版本，可以在 Settings › About（设置 › 关于）中关闭；打开市场时获取社区注册表；以及下载 yt-dlp。
 - **Last.fm**（连接之后）：你播放的内容。
@@ -261,13 +261,13 @@ MyMusic 没有自己的账号体系、服务器、统计分析或遥测。它会
 
 在音乐库的播放历史页面可以清除播放记录，在 Settings › Playback 中可以清除缓存和封面，退出某个服务的登录会删除它的登录信息。
 
-在 Windows 上，可视化效果通过 Windows 的进程环回（process loopback）获取 Spotify 在这台电脑上播放的音频，无论是在 MyMusic 中还是在 Spotify 应用中播放；进程环回只采集那一个应用的声音。音频只在内存中分析，从不录制或发送。
+在 Windows 上，可视化效果通过 Windows 的进程环回（process loopback）获取 Spotify 在这台电脑上播放的音频，无论是在 MyTube 中还是在 Spotify 应用中播放；进程环回只采集那一个应用的声音。音频只在内存中分析，从不录制或发送。
 
 ## 致谢
 
-MyMusic 基于以下项目构建：
+MyTube 基于以下项目构建：
 
-- **[MyGo](https://github.com/egoist/mygo)**：MyMusic 所用的桌面框架。MyMusic 使用 MyGo 的原生 UI：从各个页面、播放栏到迷你播放器，每个窗口都由 MyGo 用 Go 自己绘制，不使用 webview。它的命令行工具负责打包应用，包括安装程序，以及应用自我更新所用的签名更新包。
+- **[MyGo](https://github.com/egoist/mygo)**：MyTube 所用的桌面框架。MyTube 使用 MyGo 的原生 UI：从各个页面、播放栏到迷你播放器，每个窗口都由 MyGo 用 Go 自己绘制，不使用 webview。它的命令行工具负责打包应用，包括安装程序，以及应用自我更新所用的签名更新包。
 - **[Go](https://go.dev)**：应用使用的语言；以及 [purego](https://github.com/ebitengine/purego)（无需 cgo 即可调用系统库）、[golang.org/x/image](https://pkg.go.dev/golang.org/x/image) 和 [golang.org/x/text](https://pkg.go.dev/golang.org/x/text)。
 - **[Sobek](https://github.com/grafana/sobek)**：每个插件运行所在的 JavaScript 引擎。
 - **[Nix](https://nixos.org)**：锁定构建正式版本所用的工具。
@@ -275,9 +275,9 @@ MyMusic 基于以下项目构建：
 - **[Bun](https://bun.sh)**：运行构建流程。**[TypeScript](https://www.typescriptlang.org)**：编译插件，并检查插件 SDK 的类型。
 - **[Zola](https://www.getzola.org)**：构建网站。
 - **[NSIS](https://nsis.sourceforge.io)**：制作 Windows 安装程序。
-- **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**：为 MyMusic 自己找不到音频的歌曲找到音频。
+- **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**：为 MyTube 自己找不到音频的歌曲找到音频。
 - **[LRCLIB](https://lrclib.net)**：开放的同步歌词数据库。
-- **[libopus](https://opus-codec.org)**：MyMusic 的 Opus 解码器移植自它的解码器。**[SharpJaad](https://github.com/jimm98y/SharpJaad)**：[JAAD](https://sourceforge.net/projects/jaadec/) 的 C# 移植版，MyMusic 的 AAC 解码器就源自它。
+- **[libopus](https://opus-codec.org)**：MyTube 的 Opus 解码器移植自它的解码器。**[SharpJaad](https://github.com/jimm98y/SharpJaad)**：[JAAD](https://sourceforge.net/projects/jaadec/) 的 C# 移植版，MyTube 的 AAC 解码器就源自它。
 - **[FFmpeg](https://ffmpeg.org)**：解码器的测试以它作为对照。
 - **[Selawik](https://github.com/microsoft/Selawik)** 和 **[Quicksand](https://github.com/andrew-paglinawan/QuicksandFamily)**：窗口中使用的字体。
 - **[Kevin MacLeod](https://incompetech.com)**：网站中播放的是他的音乐，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可。
@@ -290,10 +290,10 @@ MyMusic 基于以下项目构建：
 - **提交改动**：以 pull request 的形式提交。[CONTRIBUTING.md](CONTRIBUTING.md) 说明了需要运行的检查、提交信息的风格，以及用户能感知到的改动需要附带的更新日志条目。
 - **分享主题或插件**：见[社区](#社区)。
 
-[CONTRIBUTORS.md](CONTRIBUTORS.md) 列出了以代码、想法和问题报告帮助塑造 MyMusic 的人，感谢他们。
+[CONTRIBUTORS.md](CONTRIBUTORS.md) 列出了以代码、想法和问题报告帮助塑造 MyTube 的人，感谢他们。
 
 ## 许可证
 
-MyMusic 采用双重许可：你可以任选 [MIT 许可证](LICENSE-MIT)或 [GNU General Public License, version 3](LICENSE-GPL) 来使用它。贡献同时以这两种许可证接受。`fonts` 中的字体采用 SIL Open Font License：[Selawik 的许可证](fonts/OFL.txt)和 [Quicksand 的许可证](fonts/quicksand-OFL.txt)。Opus 解码器移植自 libopus，采用[它的 BSD 许可证](opus/LICENSE.libopus)；AAC 解码器源自 SharpJaad，采用[它的 MIT 许可证](aac/LICENSE.sharpjaad)。
+MyTube 采用双重许可：你可以任选 [MIT 许可证](LICENSE-MIT)或 [GNU General Public License, version 3](LICENSE-GPL) 来使用它。贡献同时以这两种许可证接受。`fonts` 中的字体采用 SIL Open Font License：[Selawik 的许可证](fonts/OFL.txt)和 [Quicksand 的许可证](fonts/quicksand-OFL.txt)。Opus 解码器移植自 libopus，采用[它的 BSD 许可证](opus/LICENSE.libopus)；AAC 解码器源自 SharpJaad，采用[它的 MIT 许可证](aac/LICENSE.sharpjaad)。
 
-MyMusic 与 Spotify 和 Google 没有任何关联，也未获得它们的认可或赞助。它通过这些服务自己的接口，播放它们向用户提供的内容；请在它们的条款允许的范围内使用。Spotify 和 YouTube Music 是其各自所有者的商标。
+MyTube 与 Spotify 和 Google 没有任何关联，也未获得它们的认可或赞助。它通过这些服务自己的接口，播放它们向用户提供的内容；请在它们的条款允许的范围内使用。Spotify 和 YouTube Music 是其各自所有者的商标。

@@ -27,7 +27,7 @@ var (
 	errLoad = errors.New("the network failed while loading the audio")
 )
 
-// Source is the audio of a video as MyMusic's own player reads it: what
+// Source is the audio of a video as MyTube's own player reads it: what
 // the proxy serves at the video's path, from the cache or YouTube, which it
 // downloads from the start in the background and keeps in memory, so that
 // reading again and seeking back cost nothing. A read far beyond the

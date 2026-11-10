@@ -160,7 +160,7 @@ func TestPlaylistReadOn(t *testing.T) {
 		t.Errorf("the playlist's count is %d, not its header's", p.TrackCount)
 	}
 
-	// A mix of MyMusic's own has no pages.
+	// A mix of MyTube's own has no pages.
 	local := media.Playlist{ID: "mx:1", Source: media.SourceLocal, Tracks: []media.Track{{ID: "yt:1"}}}
 	if got, err := c.ReadOn(ctx, local, nil); err != nil || len(got.Tracks) != 1 {
 		t.Errorf("a mix: %+v, %v", got, err)

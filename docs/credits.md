@@ -1,14 +1,14 @@
 # Credits
 <!-- docs: group=project order=20 -->
 
-MyMusic is built on open-source projects, open data and published standards. This page credits each, with what MyMusic uses it for.
+MyTube is built on open-source projects, open data and published standards. This page credits each, with what MyTube uses it for.
 
-The licences of the parts MyMusic includes are on [the license page](license.md),
+The licences of the parts MyTube includes are on [the license page](license.md),
 and Settings › About › Licenses shows their texts in the app.
 
 ## The people
 
-MyMusic is made by [fzn0x](https://github.com/fzn0x) with the people whose
+MyTube is made by [fzn0x](https://github.com/fzn0x) with the people whose
 code, ideas and reports shaped it. [CONTRIBUTORS.md](../CONTRIBUTORS.md)
 thanks each of them by name, with the issues and pull requests they
 helped with. Thank you all. Helped too? Add yourself, or someone you'd
@@ -18,9 +18,9 @@ of its own.
 ## The framework and the language
 
 - **[MyGo](https://github.com/egoist/mygo)**, the desktop framework
-  MyMusic is built with. MyGo draws every window itself, in Go, without a
+  MyTube is built with. MyGo draws every window itself, in Go, without a
   web view, from the pages and the player bar to the mini player. It gives
-  MyMusic its windows, menus, tray, web views, file watching and
+  MyTube its windows, menus, tray, web views, file watching and
   credential store, and its command line packages the app, with its
   installers and the signed updates it updates itself from.
 - **[Go](https://go.dev)**, the language of the app, with
@@ -43,20 +43,20 @@ of its own.
 ## The audio
 
 - **[libopus](https://opus-codec.org)**, by Xiph.Org and the other authors
-  of the Opus codec: MyMusic's Opus decoder is a port of libopus 1.6.1's.
+  of the Opus codec: MyTube's Opus decoder is a port of libopus 1.6.1's.
 - **[SharpJaad](https://github.com/jimm98y/SharpJaad)**, the C# port of
   [JAAD](https://sourceforge.net/projects/jaadec/), which the AAC decoder
   derives from.
 - **[Chromium](https://www.chromium.org)**'s Web Audio, in Blink: the
   equalizer's filters, the compressor of volume levelling and the
   visualizer's analyser are ports of its biquad, DynamicsCompressor and
-  AnalyserNode, so MyMusic sounds as its web player did.
+  AnalyserNode, so MyTube sounds as its web player did.
 - **[go-mp3](https://github.com/hajimehoshi/go-mp3)**, by Hajime Hoshi
   and its authors, a port of PDMP3, which decodes the MP3 files on your
   computer, and **[jfreymuth/vorbis](https://github.com/jfreymuth/vorbis)**,
   by Johann Freymuth, which decodes their Vorbis.
 - **[Xiph.Org](https://xiph.org)**, whose FLAC (RFC 9639) and Ogg
-  (RFC 3533) MyMusic's `flac` and `ogg` read, as their specifications
+  (RFC 3533) MyTube's `flac` and `ogg` read, as their specifications
   have them.
 - **[FFmpeg](https://ffmpeg.org)**, which the tests of the decoders and of
   the resampler compare with.
@@ -67,7 +67,7 @@ of its own.
 ## The streams
 
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**, which finds the audio of
-  the tracks MyMusic can't find itself, and the 5.1 surround mixes, and
+  the tracks MyTube can't find itself, and the 5.1 surround mixes, and
   reads a browser's YouTube sign-in.
 - **[Deno](https://deno.com)**, **[Node.js](https://nodejs.org)**,
   **[Bun](https://bun.sh)** and **[QuickJS](https://bellard.org/quickjs/)**,
@@ -82,20 +82,20 @@ of its own.
   Unison (https://unison.boidu.dev)". Unison also translates lyrics, and
   romanizes Arabic, while you turn those on.
 - **[LRCLIB](https://lrclib.net)**, the open database of synced lyrics,
-  which MyMusic asks when Unison has none.
+  which MyTube asks when Unison has none.
 - **[kagome](https://github.com/ikawaha/kagome)**, by ikawaha, the
   Japanese morphological analyser that reads the kanji of lyrics for
   their romaji, with the IPA dictionary of
   [kagome-dict](https://github.com/ikawaha/kagome-dict), made from
   mecab-ipadic 2.7.0-20070801 of the Nara Institute of Science and
-  Technology, much of it from ICOT's free software. MyMusic downloads the
+  Technology, much of it from ICOT's free software. MyTube downloads the
   dictionary the first time you turn romaji on.
 - **The [Unihan database](https://www.unicode.org/charts/unihan.html)** of
   the Unicode Consortium, and mozillazg's
   [pinyin-data](https://github.com/mozillazg/pinyin-data) and
   [phrase-pinyin-data](https://github.com/mozillazg/phrase-pinyin-data),
-  from which MyMusic makes the readings of Chinese it builds in.
-- **The romanization standards** MyMusic writes lyrics in Latin letters
+  from which MyTube makes the readings of Chinese it builds in.
+- **The romanization standards** MyTube writes lyrics in Latin letters
   by, on your computer:
   - Japanese: Hepburn romaji;
   - Korean: the Revised Romanization of Korean (2000);
@@ -132,9 +132,9 @@ of its own.
   port of.
 - **[pywal](https://github.com/dylanaraps/pywal)** and
   **[matugen](https://github.com/InioX/matugen)**, whose colour files
-  MyMusic follows.
+  MyTube follows.
 
-## Standards MyMusic is written from
+## Standards MyTube is written from
 
 - Opus: RFC 6716, with RFC 8251, and the OpusHead of RFC 7845.
 - AAC: ISO/IEC 14496-3, and the ADTS of ISO/IEC 13818-7.

@@ -9,7 +9,7 @@ import (
 )
 
 // The answers below are in the shape the Web API's reference gives them,
-// trimmed to what MyMusic reads.
+// trimmed to what MyTube reads.
 
 const showJSON = `{"id": "s1", "name": "The Daily Thing", "type": "show", "total_episodes": 120,
 	"description": "News, daily.", "images": [{"url": "https://i/show-640", "width": 640, "height": 640}, {"url": "https://i/show-64", "width": 64, "height": 64}],

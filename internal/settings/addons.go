@@ -5,11 +5,11 @@ import (
 	"strings"
 )
 
-// DefaultRegistryURL is the community registry in MyMusic's repository.
+// DefaultRegistryURL is the community registry in MyTube's repository.
 const DefaultRegistryURL = "https://raw.githubusercontent.com/bigdaddy284/mymusic/main/community/registry-2.json"
 
 // WebRegistryURL is the registry of the add-ons of the web interface,
-// which the versions of MyMusic before its own interface read, and kept
+// which the versions of MyTube before its own interface read, and kept
 // in their settings.
 const WebRegistryURL = "https://raw.githubusercontent.com/bigdaddy284/mymusic/main/community/registry.json"
 

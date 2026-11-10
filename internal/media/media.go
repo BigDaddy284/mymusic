@@ -19,9 +19,9 @@ const (
 	SourceYouTube Source = "youtube"
 	// SourceSpotify is Spotify.
 	SourceSpotify Source = "spotify"
-	// SourceLocal is MyMusic itself: playlists made in the app.
+	// SourceLocal is MyTube itself: playlists made in the app.
 	SourceLocal Source = "local"
-	// SourceFile is the music kept on the user's computer, which MyMusic
+	// SourceFile is the music kept on the user's computer, which MyTube
 	// plays from its files, and sends to no service.
 	SourceFile Source = "file"
 )
@@ -84,7 +84,7 @@ type Track struct {
 	Video bool `json:"video,omitempty"`
 	// VideoType is the kind of video YouTube Music says a Video is, as
 	// VideoOfficial or VideoUser, or another, as a podcast's episode. It is
-	// empty for tracks kept before MyMusic read it.
+	// empty for tracks kept before MyTube read it.
 	VideoType string `json:"videoType,omitempty"`
 	// Plays is how many times the track played, as its service counts
 	// them: a song's plays on YouTube Music, a video's views. 0 is unknown,
@@ -112,7 +112,7 @@ const (
 // MusicVideo reports whether the track is a music video whose picture is
 // worth showing: an official one, or one someone uploaded. A song is none,
 // whose video is a still of its cover, nor is a podcast's episode. A video
-// kept before MyMusic read their kinds counts as one: songs were never
+// kept before MyTube read their kinds counts as one: songs were never
 // videos.
 func (t Track) MusicVideo() bool {
 	switch t.VideoType {
@@ -209,7 +209,7 @@ type Playlist struct {
 	// holds, while its service has more: its token there, which ReadOn
 	// reads on from.
 	More string `json:"-"`
-	// Cut is set for a playlist of more tracks than MyMusic reads,
+	// Cut is set for a playlist of more tracks than MyTube reads,
 	// MaxTracks: it holds the first of them.
 	Cut bool `json:"-"`
 }
@@ -245,7 +245,7 @@ type Shelf struct {
 	// Key names the shelf among its service's, in words that stay the
 	// same in every language and from day to day, as its title doesn't:
 	// on YouTube Music, the page its title or its More button opens, and
-	// the kind of shelf on Spotify and in MyMusic. It is "" where the
+	// the kind of shelf on Spotify and in MyTube. It is "" where the
 	// service names it by its title alone.
 	Key string `json:"key,omitempty"`
 }

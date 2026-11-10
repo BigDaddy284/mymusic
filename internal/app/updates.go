@@ -20,11 +20,11 @@ import (
 	"github.com/egoist/mygo/netproxy"
 )
 
-// releasesAPI answers with the newest release of MyMusic.
+// releasesAPI answers with the newest release of MyTube.
 const releasesAPI = "https://api.github.com/repos/bigdaddy284/mymusic/releases/latest"
 
 const (
-	// firstUpdateCheck is how long after start MyMusic looks for a new
+	// firstUpdateCheck is how long after start MyTube looks for a new
 	// version.
 	firstUpdateCheck = 10 * time.Second
 	// updateEvery is how often it looks again while it runs.
@@ -32,12 +32,12 @@ const (
 	// updateRetry is how soon it looks again after a check failed.
 	updateRetry = time.Hour
 	// putOff is how long "later" puts off the version offered while
-	// MyMusic runs; the next start offers it again.
+	// MyTube runs; the next start offers it again.
 	putOff = 24 * time.Hour
 )
 
 // updatePrefs are the user's choices of updates. They are kept in
-// updater.json, where MyGo's update window kept them until MyMusic 0.4.0,
+// updater.json, where MyGo's update window kept them until MyTube 0.4.0,
 // so that the choices made there carry over.
 type updatePrefs struct {
 	// AutomaticChecks is nil until the user chose, which checks.
@@ -48,10 +48,10 @@ type updatePrefs struct {
 	LastCheck      time.Time `json:"lastCheck,omitzero"`
 }
 
-// checks reports whether MyMusic looks for new versions.
+// checks reports whether MyTube looks for new versions.
 func (p updatePrefs) checks() bool { return p.AutomaticChecks == nil || *p.AutomaticChecks }
 
-// UpdateStatus is whether MyMusic updates itself, and how.
+// UpdateStatus is whether MyTube updates itself, and how.
 type UpdateStatus struct {
 	// Enabled is false for builds that cannot replace themselves: those
 	// of development, and installs of a package manager.
@@ -66,10 +66,10 @@ type UpdateStatus struct {
 	// AutomaticDownloads installs new versions without asking; they run
 	// at the next launch.
 	AutomaticDownloads bool `json:"automaticDownloads"`
-	// LastCheck is when MyMusic last checked, as RFC 3339, or "".
+	// LastCheck is when MyTube last checked, as RFC 3339, or "".
 	LastCheck string `json:"lastCheck"`
 	// Installed is the version InstallUpdate put in place of this one,
-	// which runs once MyMusic restarts, or "".
+	// which runs once MyTube restarts, or "".
 	Installed string `json:"installed"`
 }
 
@@ -115,7 +115,7 @@ func (a *App) watchUpdates() {
 	}()
 }
 
-// checkUpdatesNow has MyMusic look for a new version at once.
+// checkUpdatesNow has MyTube look for a new version at once.
 func (a *App) checkUpdatesNow() {
 	select {
 	case a.checkUpdates <- struct{}{}:
@@ -123,7 +123,7 @@ func (a *App) checkUpdatesNow() {
 	}
 }
 
-// updateAction is what MyMusic does of the newest release.
+// updateAction is what MyTube does of the newest release.
 type updateAction int
 
 const (
@@ -159,11 +159,11 @@ func (a *App) lookForUpdate() time.Duration {
 	r, err := latestRelease(ctx, http.DefaultClient, releasesAPI, installKind(), runtime.GOARCH, a.version())
 	cancel()
 	if err != nil {
-		log.Printf("mymusic: looking for a new version: %v", err)
+		log.Printf("mytube: looking for a new version: %v", err)
 		return updateRetry
 	}
 	if err := a.updates.Update(func(p *updatePrefs) error { p.LastCheck = time.Now(); return nil }); err != nil {
-		log.Printf("mymusic: keeping the update preferences: %v", err)
+		log.Printf("mytube: keeping the update preferences: %v", err)
 	}
 	notify()
 	a.mu.Lock()
@@ -175,7 +175,7 @@ func (a *App) lookForUpdate() time.Duration {
 		defer cancel()
 		if _, err := a.installUpdate(ctx, nil); err != nil {
 			// As when GitHub lists the release before its update files.
-			log.Printf("mymusic: installing MyMusic %s: %v", r.Version, err)
+			log.Printf("mytube: installing MyTube %s: %v", r.Version, err)
 			return updateRetry
 		}
 	case updateOffer:
@@ -197,11 +197,11 @@ func (a *App) offerUpdate(r Release) {
 	notify()
 }
 
-// Updates returns whether MyMusic updates itself, and how.
+// Updates returns whether MyTube updates itself, and how.
 func (s *System) Updates() UpdateStatus { return s.a.updateStatus() }
 
 // SetUpdates turns the checks for new versions and the installs without
-// asking on or off. Turned on, MyMusic looks for a new version at once.
+// asking on or off. Turned on, MyTube looks for a new version at once.
 func (s *System) SetUpdates(automaticChecks, automaticDownloads bool) (UpdateStatus, error) {
 	before := s.a.updates.Get()
 	err := s.a.updates.Update(func(p *updatePrefs) error {
@@ -250,7 +250,7 @@ func (s *System) DismissUpdate(skip bool) error {
 	return a.updates.Update(func(p *updatePrefs) error { p.SkippedVersion = offer.Version; return nil })
 }
 
-// Release is the newest release of MyMusic, as this copy gets it.
+// Release is the newest release of MyTube, as this copy gets it.
 type Release struct {
 	// Version is the newest version, without its "v".
 	Version string `json:"version"`
@@ -275,7 +275,7 @@ type Release struct {
 	manifest string
 }
 
-// LatestRelease asks GitHub for the newest release of MyMusic.
+// LatestRelease asks GitHub for the newest release of MyTube.
 func (s *System) LatestRelease(ctx context.Context) (Release, error) {
 	ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
@@ -295,7 +295,7 @@ func (a *App) installUpdate(ctx context.Context, progress func(done, total int64
 	}
 	switch {
 	case errors.Is(err, mygo.ErrUpdatesDisabled):
-		return "", errors.New("this copy of MyMusic cannot replace its own files: download the new version instead")
+		return "", errors.New("this copy of MyTube cannot replace its own files: download the new version instead")
 	case err != nil:
 		return "", err
 	case up == nil:
@@ -323,7 +323,7 @@ func (a *App) installUpdate(ctx context.Context, progress func(done, total int64
 // release's address and the API worked (#412). It returns failed when the
 // API doesn't tell the release's manifest.
 func (a *App) checkTagged(ctx context.Context, failed error) (*mygo.Update, error) {
-	log.Printf("mymusic: checking for updates again, at the release's address: %v", failed)
+	log.Printf("mytube: checking for updates again, at the release's address: %v", failed)
 	apiCtx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	r, err := latestRelease(apiCtx, http.DefaultClient, releasesAPI, installKind(), runtime.GOARCH, a.version())
 	cancel()
@@ -375,7 +375,7 @@ func getUpdateFile(ctx context.Context, url string) (io.ReadCloser, error) {
 	return res.Body, nil
 }
 
-// Restart quits MyMusic and starts it again, as the update it installed.
+// Restart quits MyTube and starts it again, as the update it installed.
 func (s *System) Restart() { mygo.App.Relaunch() }
 
 // githubRelease is what GitHub tells of a release.
@@ -398,7 +398,7 @@ func latestRelease(ctx context.Context, client *http.Client, api, kind, arch, ru
 		return Release{}, err
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("User-Agent", "MyMusic/"+running)
+	req.Header.Set("User-Agent", "MyTube/"+running)
 	res, err := client.Do(req)
 	if err != nil {
 		return Release{}, fmt.Errorf("asking GitHub for the newest version: %w", err)
@@ -455,14 +455,14 @@ func summary(notes string) string {
 func releaseFile(kind, version, arch string) string {
 	switch kind {
 	case "installer":
-		return fmt.Sprintf("mymusic-%s-windows-%s-setup.exe", version, arch)
+		return fmt.Sprintf("mytube-%s-windows-%s-setup.exe", version, arch)
 	case "portable":
-		return fmt.Sprintf("mymusic-%s-windows-%s-portable.zip", version, arch)
+		return fmt.Sprintf("mytube-%s-windows-%s-portable.zip", version, arch)
 	}
 	return ""
 }
 
-// installKind tells how this copy of MyMusic was installed.
+// installKind tells how this copy of MyTube was installed.
 func installKind() string {
 	if mygo.IsDev() {
 		return "development"

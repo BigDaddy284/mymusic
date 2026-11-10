@@ -29,8 +29,8 @@ var (
 	// elsewhere.
 	ErrNoBrowserCookies = errors.New("no cookies of the browser were found")
 	// ErrCookiesDenied is returned when the system keeps the browser's
-	// cookies from MyMusic.
-	ErrCookiesDenied = errors.New("the system keeps the browser's cookies from MyMusic")
+	// cookies from MyTube.
+	ErrCookiesDenied = errors.New("the system keeps the browser's cookies from MyTube")
 )
 
 // cookieErrors tell the reason of an error line of yt-dlp, by a part of it,

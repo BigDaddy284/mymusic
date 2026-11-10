@@ -7,7 +7,7 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// TestSpotifyPastItsEnd has MyMusic's own device, given a Spotify track
+// TestSpotifyPastItsEnd has MyTube's own device, given a Spotify track
 // with a stream after it in the queue, tell it plays on past the track's
 // end, its position counting on (#373). The time shown stops at the end,
 // a little past it is still the track's, and further past it the track
@@ -65,7 +65,7 @@ func TestSpotifyPastItsEndAhead(t *testing.T) {
 }
 
 // TestPastEnd takes a track as ended only well past its end, by the longer
-// of the two lengths MyMusic and the device know.
+// of the two lengths MyTube and the device know.
 func TestPastEnd(t *testing.T) {
 	long := spotifyTrack("1")
 	long.DurationMs = 204000

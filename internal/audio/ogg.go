@@ -14,7 +14,7 @@ import (
 )
 
 // VorbisLicense is the license of jfreymuth/vorbis, the Vorbis decoder
-// of Johann Freymuth, which MyMusic is built with, and whose binary
+// of Johann Freymuth, which MyTube is built with, and whose binary
 // copies must give it.
 //
 //go:embed LICENSE.vorbis

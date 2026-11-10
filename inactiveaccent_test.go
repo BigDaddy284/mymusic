@@ -7,7 +7,7 @@ import (
 )
 
 // TestAccentWhileBehind keeps the accent of the sliders and switches in a
-// window another is in front of, as MyMusic's own parts keep theirs, in
+// window another is in front of, as MyTube's own parts keep theirs, in
 // every layout: MyGo 0.8 fades its widgets' to gray
 // there unless the theme keeps it.
 func TestAccentWhileBehind(t *testing.T) {

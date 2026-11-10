@@ -1,8 +1,8 @@
 {
-  "theme": "mymusic",
+  "theme": "mytube",
   "followSystem": false,
-  "lightTheme": "mymusic-light",
-  "darkTheme": "mymusic",
+  "lightTheme": "mytube-light",
+  "darkTheme": "mytube",
   "themeOptions": {},
   "accent": "",
   "dynamicAccent": false,

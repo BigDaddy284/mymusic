@@ -33,8 +33,8 @@ type SpotifyAccount struct {
 	RedirectURI string `json:"redirectUri"`
 	// Error tells why the profile could not be read, if it could not.
 	Error string `json:"error,omitempty"`
-	// Streaming is set when the sign-in lets Spotify play in MyMusic;
-	// sign-ins of MyMusic 0.4.0 and before do not.
+	// Streaming is set when the sign-in lets Spotify play in MyTube;
+	// sign-ins of MyTube 0.4.0 and before do not.
 	Streaming bool `json:"streaming"`
 }
 
@@ -78,7 +78,7 @@ func (s *Accounts) Status(ctx context.Context) AccountsStatus {
 	return s.a.knownAccountsStatus()
 }
 
-// knownAccountsStatus is the state of the accounts as MyMusic knows it,
+// knownAccountsStatus is the state of the accounts as MyTube knows it,
 // without asking the services; it has the profiles it lacks read in the
 // background.
 func (a *App) knownAccountsStatus() AccountsStatus {
@@ -195,7 +195,7 @@ func (s *Accounts) SpotifyLogin(ctx context.Context) (AccountsStatus, error) {
 	s.a.mu.Lock()
 	s.a.spotifyMe, s.a.profileErrs.spotify = nil, ""
 	s.a.mu.Unlock()
-	// MyMusic's own device connects again, with the new sign-in.
+	// MyTube's own device connects again, with the new sign-in.
 	s.a.here.close()
 	if err := s.a.tokens.Save(t); err != nil {
 		return AccountsStatus{}, err

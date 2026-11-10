@@ -76,7 +76,7 @@ func newPlugin(h *Host, p addons.Plugin) *plugin {
 // the API.
 func (pl *plugin) activate(p addons.Plugin) error {
 	if p.API != addons.PluginAPI {
-		return errors.New("it was made for the web interface MyMusic had before: its author can update it for MyMusic's own interface (\"api\": 2)")
+		return errors.New("it was made for the web interface MyTube had before: its author can update it for MyTube's own interface (\"api\": 2)")
 	}
 	files, err := pl.h.a.AddonFiles(addons.KindPlugin, p.ID)
 	if err != nil {
@@ -109,7 +109,7 @@ func (pl *plugin) activate(p addons.Plugin) error {
 	return nil
 }
 
-// settle keeps what activate returned: a function MyMusic calls when it
+// settle keeps what activate returned: a function MyTube calls when it
 // stops the plugin, or a promise of one.
 func (pl *plugin) settle(result sobek.Value) {
 	if fn, ok := sobek.AssertFunction(result); ok {
@@ -217,13 +217,13 @@ func (pl *plugin) globals() {
 	}
 }
 
-// log writes what the plugin logs to MyMusic's log.
+// log writes what the plugin logs to MyTube's log.
 func (pl *plugin) log(level string, args []sobek.Value) {
 	parts := make([]string, len(args))
 	for i, a := range args {
 		parts[i] = pl.describe(a)
 	}
-	log.Printf("mymusic: plugin %s: %s%s", pl.id, prefix(level), strings.Join(parts, " "))
+	log.Printf("mytube: plugin %s: %s%s", pl.id, prefix(level), strings.Join(parts, " "))
 }
 
 func prefix(level string) string {
@@ -317,7 +317,7 @@ func (pl *plugin) call(fn jsFunc, args ...sobek.Value) sobek.Value {
 	}
 	v, err := fn(sobek.Undefined(), args...)
 	if err != nil {
-		log.Printf("mymusic: plugin %s: %v", pl.id, err)
+		log.Printf("mytube: plugin %s: %v", pl.id, err)
 		return sobek.Undefined()
 	}
 	return v
@@ -372,7 +372,7 @@ func (pl *plugin) toGo(v sobek.Value, out any) {
 		return
 	}
 	if err := json.Unmarshal([]byte(s.String()), out); err != nil {
-		panic(pl.vm.NewTypeError(fmt.Sprintf("not what MyMusic takes: %v", err)))
+		panic(pl.vm.NewTypeError(fmt.Sprintf("not what MyTube takes: %v", err)))
 	}
 }
 
@@ -499,7 +499,7 @@ func (pl *plugin) playerState() snapshot {
 func jsError(err error) error {
 	var exc *sobek.Exception
 	if errors.As(err, &exc) {
-		log.Printf("mymusic: plugin: %v", err)
+		log.Printf("mytube: plugin: %v", err)
 		return jsValueError(exc.Value())
 	}
 	return err

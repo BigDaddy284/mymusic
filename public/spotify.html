@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>MyMusic's Spotify player</title>
+    <title>MyTube's Spotify player</title>
     <!--
-      MyMusic as a Spotify device of its own: Spotify's Web Playback SDK
+      MyTube as a Spotify device of its own: Spotify's Web Playback SDK
       plays Spotify tracks in this page, in a hidden window, with no Spotify
-      app open, and MyMusic shows among the user's Spotify devices while it
+      app open, and MyTube shows among the user's Spotify devices while it
       plays. It needs Spotify Premium, a sign-in that grants streaming, and a
       webview that decrypts Spotify's audio, as WebView2 does on Windows.
       The Go side (internal/app/spotifyhere.go) plays tracks on the device
@@ -16,15 +16,15 @@
       (() => {
         const SDK_URL = "https://sdk.scdn.co/spotify-player.js";
         /** NAME is the device's name among the user's Spotify devices. */
-        const NAME = "MyMusic";
+        const NAME = "MyTube";
         /** READY_MS is how long the player may take to connect. */
         const READY_MS = 20000;
 
         /** problems say in plain words why Spotify can't play here. */
         const problems = {
           initialization_error: "this computer's webview can't play Spotify's protected audio",
-          authentication_error: "sign in to Spotify again in Settings › Accounts, for MyMusic to play it itself",
-          account_error: "Spotify plays in MyMusic with Spotify Premium only",
+          authentication_error: "sign in to Spotify again in Settings › Accounts, for MyTube to play it itself",
+          account_error: "Spotify plays in MyTube with Spotify Premium only",
         };
 
         let supported = null;
@@ -59,7 +59,7 @@
             script.onerror = () => {
               script.remove();
               sdk = null;
-              reject(new Error("Spotify's player did not load: is MyMusic online?"));
+              reject(new Error("Spotify's player did not load: is MyTube online?"));
             };
             document.head.append(script);
           }));
@@ -69,7 +69,7 @@
         let problem = null;
         let gain = 0.64;
         /**
-         * start is the track MyMusic waits for, as mm.expect named it: the
+         * start is the track MyTube waits for, as mm.expect named it: the
          * number expect returned, its Spotify ID, sounds, which done settles,
          * and whether it did. The player tells it plays as soon as it takes a
          * track, while it still loads its audio, about 0.3 s before it
@@ -79,9 +79,9 @@
         let start = null;
         let starts = 0;
         /**
-         * hushed is set from when MyMusic hushes the player, as it went on
-         * by itself to a track MyMusic no longer plays next, until a track
-         * MyMusic waits for sounds: the player plays at no volume, and what
+         * hushed is set from when MyTube hushes the player, as it went on
+         * by itself to a track MyTube no longer plays next, until a track
+         * MyTube waits for sounds: the player plays at no volume, and what
          * it plays meanwhile stops. A pause alone didn't hold: the player
          * still loading the track played it once loaded.
          */
@@ -112,8 +112,8 @@
         }
 
         /**
-         * telling is set while MyMusic is told that what the player plays
-         * changed, and again once it changed once more meanwhile: MyMusic
+         * telling is set while MyTube is told that what the player plays
+         * changed, and again once it changed once more meanwhile: MyTube
          * asks what it plays, at once rather than at its next report, and
          * so hears of a track's end, or of the player going on to the next.
          */
@@ -177,7 +177,7 @@
           });
         }
 
-        /** close disconnects the player: MyMusic leaves the user's devices. */
+        /** close disconnects the player: MyTube leaves the user's devices. */
         function close() {
           player?.disconnect();
           player = null;
@@ -199,14 +199,14 @@
             await player?.resume();
           },
           seek: async (positionMs) => void (await player?.seek(positionMs)),
-          /** setVolume sets the gain, which MyMusic works out on its own player's curve. */
+          /** setVolume sets the gain, which MyTube works out on its own player's curve. */
           async setVolume(g) {
             gain = g;
             if (!hushed) await player?.setVolume(g);
           },
           /**
            * hush has the player play at no volume, at once, and stop what it
-           * plays, until a track MyMusic waits for sounds (see hushed).
+           * plays, until a track MyTube waits for sounds (see hushed).
            */
           async hush() {
             hushed = true;
@@ -217,7 +217,7 @@
           },
           /**
            * expect has started wait for the track of id, a Spotify ID, which
-           * MyMusic is about to play, and returns the number started takes.
+           * MyTube is about to play, and returns the number started takes.
            * It comes before the play, so that started misses none of what the
            * player tells. The track expected before is no longer waited for.
            */
@@ -272,7 +272,7 @@
             return {
               playing: !s.paused,
               progressMs: s.position,
-              // A relinked copy keeps the ID MyMusic asked for in linked_from.
+              // A relinked copy keeps the ID MyTube asked for in linked_from.
               track: t && {
                 id: `sp:${t.linked_from?.id ?? t.id}`,
                 title: t.name,
