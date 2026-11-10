@@ -125,13 +125,6 @@ func (s *shell) rail(c *ui.Context) {
 		} else {
 			ui.Spacer(c)
 		}
-		// The live tile shows where the rail has room for it whole, with
-		// the entries tight and the mixes short, above the player bar,
-		// which covered it in a short window when the rail ran on (#258).
-		_, h := c.Size()
-		if h-k.barRoom()-least >= railGap+liveSize(collapsed) {
-			s.liveTile(c, collapsed)
-		}
 	})
 }
 
@@ -429,58 +422,6 @@ func (s *shell) newMix() {
 		}
 		s.notes = append(s.notes, player.Notice{Message: "Created " + p.Title + ": add tracks of any service to it"})
 		s.navigate(playlistPath(p.ID))
-	})
-}
-
-// liveSize is the size of the live tile's artwork, and its height: the
-// line it shows while nothing plays is shorter.
-func liveSize(collapsed bool) float32 {
-	if collapsed {
-		return 42
-	}
-	return 76
-}
-
-// liveTile shows what plays, and opens now playing.
-func (s *shell) liveTile(c *ui.Context, collapsed bool) {
-	k := &s.lk
-	cur, ok := s.st.Current()
-	if !ok {
-		if !collapsed {
-			ui.Column(c).Padding(12, 0).BorderWidth(1, 0, 0, 0).BorderColor(k.rule).Shrink(0).Children(func() {
-				ui.Text(c, k.words("Nothing playing yet")).FontSize(k.smallSize()).TextColor(k.muted)
-			})
-		}
-		return
-	}
-	size := liveSize(collapsed)
-	t := cur.Track
-	// While a track plays with another up next, the artwork turns over to
-	// it now and then.
-	next, flips := s.st.UpNext()
-	flips = flips && s.st.Playing && next.Track.ID != t.ID && !collapsed && !c.Preferences().ReduceMotion
-	switch {
-	case !flips:
-		s.liveSince = time.Time{}
-	case s.liveSince.IsZero():
-		s.liveSince = c.Now()
-	}
-	tile := s.buttonBase(c.Key("live")).Gap(12).Justify(ui.Start).Shrink(0).Label("Open now playing").Cursor(ui.CursorPointer)
-	if tile.Clicked() {
-		s.navigate("/now-playing")
-	}
-	tile.Children(func() {
-		if !flips {
-			s.cover(c, "live-cover", t.Artwork, size, false)
-		} else {
-			s.liveCard(c, t, next.Track, size)
-		}
-		if !collapsed {
-			ui.Column(c).Grow(1).MinWidth(0).Children(func() {
-				ui.Text(c, t.Title).FontSize(k.bodySize()).SingleLine()
-				ui.Text(c, names(t.Artists)).FontSize(k.smallSize()).TextColor(k.muted).SingleLine()
-			})
-		}
 	})
 }
 
