@@ -16,8 +16,9 @@ const musicMiniWidth = 400
 const musicMiniHeight = 92
 
 // showsMusicMini reports whether the Video side shows the music's small
-// player: while a track is the queue's, but for a video that plays, the
-// watch page, which the video fills, and a track the user closed it for.
+// player: while a track is the queue's, playing or paused for a video, to
+// go back to, but for the watch page, which the video fills, and a track
+// the user closed it for.
 func (s *shell) showsMusicMini() bool {
 	if !s.mode.video {
 		return false
@@ -27,7 +28,7 @@ func (s *shell) showsMusicMini() bool {
 		return false
 	}
 	vp := &s.videos.player
-	if vp.state.Playing || vp.filling() {
+	if vp.filling() {
 		return false
 	}
 	return vp.current.ID == "" || s.router.Path() != watchPath(vp.current.ID)

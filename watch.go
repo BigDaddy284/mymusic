@@ -902,12 +902,14 @@ func (s *shell) followWatch() {
 	defer s.followFullScreen()
 	defer s.followPreview()
 	// The video goes on as the Music side shows, until music starts to
-	// play: a video started while music plays pauses it (playVideo).
+	// play, which pauses it, as a video started while music plays pauses
+	// the music (playVideo): it stays where it shows, to go back to.
 	playing := s.st.Playing
 	started := playing && !vp.musicPlayed
 	vp.musicPlayed = playing
-	if started && vp.current.ID != "" {
-		s.stopWatching()
+	if started && vp.current.ID != "" && vp.state.Playing {
+		s.videoCommand("pause", nil)
+		vp.state.Playing = false
 	}
 	s.videoKeys.Store(vp.current.ID != "")
 }

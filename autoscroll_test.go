@@ -77,3 +77,19 @@ func TestMusicMiniOnVideoSide(t *testing.T) {
 		t.Error("the Music side shows it too")
 	}
 }
+
+// TestMusicMiniStaysForAVideo keeps the music's player on the Video side's
+// home while a video plays, paused, to go back to.
+func TestMusicMiniStaysForAVideo(t *testing.T) {
+	s := playing(t)
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	tt := testerOf(t, s, 1280, 820)
+	show(s, tt, "/videos")
+	vp.current = youtube.Video{ID: "a", Title: "A video"}
+	vp.state.Playing = true
+	tt.Frame()
+	if !s.showsMusicMini() {
+		t.Error("the music's player went as a video played")
+	}
+}

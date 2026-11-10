@@ -132,12 +132,13 @@ func TestResizerClamps(t *testing.T) {
 }
 
 // TestVideoOnMusicSide keeps the video playing as the Music side shows,
-// until music starts to play.
+// until music starts to play, which pauses it, and keeps it there.
 func TestVideoOnMusicSide(t *testing.T) {
 	s := newTestShell(t)
 	vp := &s.videos.player
 	vp.problem = "no web view in tests"
 	vp.current = youtube.Video{ID: "a"}
+	vp.state.Playing = true
 	s.mode.video = false
 	s.followWatch()
 	if vp.current.ID != "a" {
@@ -148,8 +149,8 @@ func TestVideoOnMusicSide(t *testing.T) {
 	}
 	s.st.Playing = true
 	s.followWatch()
-	if vp.current.ID != "" {
-		t.Error("the video goes on as music starts")
+	if vp.state.Playing || vp.current.ID != "a" {
+		t.Errorf("as music starts, the video plays %v, or went: %q", vp.state.Playing, vp.current.ID)
 	}
 }
 
