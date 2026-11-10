@@ -111,6 +111,7 @@ type App struct {
 	settings     *store.File[settings.Settings]
 	library      *library.Library
 	positions    *library.Positions
+	videoStats   *videoStats
 	youtube      *youtube.Client
 	lastfmStore  lastfmStore
 	youtubeStore *youtubeStore
@@ -241,6 +242,9 @@ func New(opts Options) (*App, error) {
 	}
 	if a.positions, err = library.OpenPositions(filepath.Join(opts.DataDir, "positions.json")); err != nil {
 		return nil, fmt.Errorf("opening where episodes were left: %w", err)
+	}
+	if a.videoStats, err = openVideoStats(filepath.Join(opts.DataDir, "video-stats.json")); err != nil {
+		return nil, fmt.Errorf("opening the video stats: %w", err)
 	}
 	if a.updates, err = store.Open(filepath.Join(opts.DataDir, "updater.json"), updatePrefs{}); err != nil {
 		return nil, fmt.Errorf("opening the update preferences: %w", err)

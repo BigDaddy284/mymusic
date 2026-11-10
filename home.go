@@ -32,7 +32,14 @@ func (s *shell) homePage(c *ui.Context) {
 		for i, f := range homeFilters {
 			labels[i] = f.label
 		}
+		// Edit home goes beside the pivots.
+		s.afterPivots = func() {
+			if s.pivotButton(c, "home-edit", "Edit home") {
+				s.home.editing = true
+			}
+		}
 		s.pageHeader(c, "Home", labels, &s.homeFilter)
+		s.afterPivots = nil
 		s.toolProblems(c)
 
 		// The track played last, as the library has it now.
@@ -42,11 +49,6 @@ func (s *shell) homePage(c *ui.Context) {
 		} else if cur, ok := s.st.Current(); ok {
 			last = &cur.Track
 		}
-		ui.Row(c).Justify(ui.End).Margin(0, 0, 16).Children(func() {
-			if s.button(c, "home-edit", "edit home", false).Clicked() {
-				s.home.editing = true
-			}
-		})
 		s.tileGrid(c, func(columns int) {
 			title, caption, label := "Start here", k.words("Search for something to play"), "Search for music"
 			var art []media.Image
@@ -61,13 +63,9 @@ func (s *shell) homePage(c *ui.Context) {
 					s.navigate("/search")
 				}
 			}
-			span := tileWide
-			if s.flatTile(c, "tile-liked", 1, span, columns, "Liked songs", plural(len(s.svc.Collection.Liked()), "track"), "Liked songs", solidIcons["heart"], nil) {
-				s.navigate("/library/liked")
-			}
-			if s.flatTile(c, "tile-mixes", 2, span, columns, "Your mixes", plural(len(s.svc.Collection.Playlists()), "mix", "mixes"), "Your mixes", icon("queue"), nil) {
-				s.navigate("/library/mixes")
-			}
+			// The video that plays goes on beside it, as the Music side
+			// shows: Liked songs and the mixes are in the sidebar.
+			s.homeVideo(c, columns)
 		})
 		// The user's own shelves show at once, then those of each service
 		// once they came: one that still loads holds back those after it,

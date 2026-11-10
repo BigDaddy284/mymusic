@@ -114,5 +114,11 @@
   },
   "enabledPlugins": [
     "spectrum"
-  ]
+  ],
+  "videoVolume": 40,
+  "videoMuted": true,
+  "videoRate": 1.5,
+  "videoCaptions": true,
+  "videoShuffle": true,
+  "videoRepeat": 2
 }

@@ -106,12 +106,12 @@ func TestVideoNext(t *testing.T) {
 	if vp.current.ID != "c" {
 		t.Errorf("the end of up next without repeat plays %q", vp.current.ID)
 	}
-	vp.repeat = videoRepeatAll
+	s.set.VideoRepeat = videoRepeatAll
 	s.videoNext(true)
 	if vp.current.ID != "a" {
 		t.Errorf("repeat all goes on to %q, not the first", vp.current.ID)
 	}
-	vp.repeat = videoRepeatOne
+	s.set.VideoRepeat = videoRepeatOne
 	s.videoNext(true)
 	if vp.current.ID != "a" {
 		t.Errorf("repeat one goes on to %q", vp.current.ID)
@@ -128,5 +128,27 @@ func TestResizerClamps(t *testing.T) {
 	s.set.SidebarWidth = 10
 	if got := s.railWidth(); got != railLeast {
 		t.Errorf("a sidebar dragged too narrow is %v wide", got)
+	}
+}
+
+// TestVideoOnMusicSide keeps the video playing as the Music side shows,
+// until music starts to play.
+func TestVideoOnMusicSide(t *testing.T) {
+	s := newTestShell(t)
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	vp.current = youtube.Video{ID: "a"}
+	s.mode.video = false
+	s.followWatch()
+	if vp.current.ID != "a" {
+		t.Fatal("the video stopped as the Music side showed")
+	}
+	if !s.showsMini() && s.router.Path() != "/" {
+		t.Error("the video doesn't show on the Music side")
+	}
+	s.st.Playing = true
+	s.followWatch()
+	if vp.current.ID != "" {
+		t.Error("the video goes on as music starts")
 	}
 }

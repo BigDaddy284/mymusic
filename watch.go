@@ -22,6 +22,7 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
+	"github.com/bigdaddy284/mymusic/internal/settings"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -69,9 +70,12 @@ type videoPlayer struct {
 	stop  chan struct{}
 	// endedOf is the video whose end was taken in, once.
 	endedOf string
-	// shuffle and repeat order up next.
-	shuffle bool
-	repeat  int
+	// settled counts the polls since the video loaded that brought the
+	// player the user's volume, speed and captions: YouTube's player turns
+	// captions on by itself, as the account's own settings ask, after it
+	// starts.
+	settled    int
+	settledFor string
 	// fullApp fills the window with the video; fullScreen, the screen,
 	// as the player's own button does (fullscreen.go).
 	fullApp    bool
@@ -82,6 +86,9 @@ type videoPlayer struct {
 	ownsScreen  bool
 	takesEscape bool
 	blurred     bool
+	// musicPlayed is whether music played in the last frame: the video
+	// stops as music starts.
+	musicPlayed bool
 	// seeking and seekTo follow the seek bar while it's dragged; volume
 	// follows the volume's slider.
 	seeking bool
@@ -193,7 +200,7 @@ const fs = !!document.fullscreenElement;
 if (p) {
   const st = p.getPlayerState();
   let caps = false;
-  try { caps = !!(p.getOption('captions', 'track') || {}).languageCode; } catch (e) {}
+  try { caps = (p.getOptions() || []).indexOf('captions') >= 0 && !!(p.getOption('captions', 'track') || {}).languageCode; } catch (e) {}
   return {t: p.getCurrentTime() || 0, d: p.getDuration() || 0, playing: st === 1 || st === 3, ended: st === 0,
     rate: p.getPlaybackRate() || 1, volume: p.getVolume(), muted: p.isMuted(), captions: caps, esc, fs};
 }
@@ -227,7 +234,18 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 			if vp.web != web {
 				return
 			}
+			// Watching counts in the stats while the video plays; repeat
+			// one, back at its start, counts as another view.
+			if st.Time < vp.state.Time-5 && st.Time < 3 {
+				s.svc.Videos.Started()
+			}
+			if st.Playing {
+				v := vp.current
+				go s.svc.Videos.Watched(v, videoPoll.Seconds())
+			}
 			vp.state = st
+			s.settleVideo()
+			s.keepVideoPlace()
 			if st.Esc {
 				s.leaveFullApp()
 			}
@@ -293,6 +311,64 @@ switch (cmd) {
 return true;
 `
 
+const (
+	// videoResumeAfter and videoResumeBefore bound where a video goes on
+	// from: not in its first seconds, nor its last.
+	videoResumeAfter  = 10
+	videoResumeBefore = 15
+)
+
+// keepVideoPlace keeps where the video is, to go on from there when it
+// plays again; one watched to its end, or gone back to its start, starts
+// over. It waits for the player to have gone on from where the video was
+// left (settleVideo).
+func (s *shell) keepVideoPlace() {
+	vp := &s.videos.player
+	st := vp.state
+	if vp.current.ID == "" || st.Duration <= 0 || vp.settled < 4 {
+		return
+	}
+	at := st.Time
+	if st.Ended || at < videoResumeAfter || at > st.Duration-videoResumeBefore {
+		at = 0
+	}
+	id := vp.current.ID
+	s.svc.Videos.LeftAt(id, at)
+}
+
+// settleVideo brings the player the user's volume, speed and captions,
+// kept in the settings: once the video's length is known, and again a
+// few polls later, as YouTube's player may turn captions on by itself.
+func (s *shell) settleVideo() {
+	vp := &s.videos.player
+	if vp.settledFor != vp.current.ID {
+		vp.settledFor, vp.settled = vp.current.ID, 0
+	}
+	if vp.state.Duration <= 0 || vp.settled > 6 {
+		return
+	}
+	vp.settled++
+	w := s.set.Watching
+	switch vp.settled {
+	case 1:
+		s.videoCommand("volume", w.VideoVolume)
+		s.videoCommand("mute", w.VideoMuted)
+		s.videoCommand("rate", w.VideoRate)
+		vp.state.Volume, vp.state.Muted, vp.state.Rate = w.VideoVolume, w.VideoMuted, w.VideoRate
+		// The video goes on from where it was left, as tracks do.
+		if at := s.svc.Videos.Position(vp.current.ID); at > videoResumeAfter && at < vp.state.Duration-videoResumeBefore {
+			s.videoCommand("seek", at)
+			vp.state.Time = at
+		}
+		fallthrough
+	case 3, 6:
+		if vp.state.Captions != w.VideoCaptions {
+			s.videoCommand("captions", w.VideoCaptions)
+			vp.state.Captions = w.VideoCaptions
+		}
+	}
+}
+
 // videoPlayPause plays or pauses the video.
 func (s *shell) videoPlayPause() {
 	vp := &s.videos.player
@@ -316,7 +392,7 @@ func (s *shell) videoPlayPause() {
 // at the end of the list, repeat all goes back to its start.
 func (s *shell) videoNext(auto bool) {
 	vp := &s.videos.player
-	if auto && vp.repeat == videoRepeatOne {
+	if auto && s.set.VideoRepeat == videoRepeatOne {
 		vp.endedOf = ""
 		s.videoCommand("seek", 0)
 		s.videoCommand("play", nil)
@@ -326,13 +402,13 @@ func (s *shell) videoNext(auto bool) {
 	next := -1
 	switch {
 	case len(vp.list) == 0:
-	case vp.shuffle && len(vp.list) > 1:
+	case s.set.VideoShuffle && len(vp.list) > 1:
 		for next = i; next == i; {
 			next = rand.IntN(len(vp.list))
 		}
 	case i+1 < len(vp.list):
 		next = i + 1
-	case vp.repeat == videoRepeatAll:
+	case s.set.VideoRepeat == videoRepeatAll:
 		next = 0
 	}
 	if next < 0 {
@@ -396,8 +472,8 @@ func (s *shell) placeVideo(c *ui.Context, key string, w, h float32) {
 	})
 }
 
-// watchPage plays the video id as large as the pane lets it, with what it
-// tells of the video under it.
+// watchPage plays the video id as large as the pane lets it, with up
+// next under it while the side panel is closed.
 func (s *shell) watchPage(c *ui.Context, id string) {
 	k := &s.lk
 	vs := &s.videos
@@ -409,34 +485,19 @@ func (s *shell) watchPage(c *ui.Context, id string) {
 		}
 		s.playVideo(v)
 	}
-	v := vp.current
 	s.pageScroll(c, func() {
-		// The video fills the middle of the window: its width, and its
-		// height but for the title under it. YouTube's player keeps the
-		// picture's shape, with black around it.
+		// The video fills the middle of the window. YouTube's player shows
+		// its title and channel, and keeps the picture's shape, with
+		// black around it.
 		_, winH := c.Size()
 		w := s.paneWidth(c) - 2*k.gutter
-		h := float32(int(max(240, winH-k.barRoom()-120)))
-		ui.Box(c).Margin(16, 0, 16).Children(func() {
+		h := float32(int(max(240, winH-k.barRoom()-48)))
+		ui.Box(c).Margin(16, 0, 32).Children(func() {
 			if vp.filling() {
 				ui.Box(c).Size(w, h).Radius(k.radiusSm).Background(ui.RGBA(0, 0, 0, 1))
 				return
 			}
 			s.placeVideo(c, "watch-frame", w, h)
-		})
-		ui.Column(c).Gap(6).MaxWidth(w).Margin(0, 0, 24).Children(func() {
-			if v.Title != "" {
-				ui.Text(c, v.Title).FontSize(k.subtitleSize()).FontWeight(k.leadWeight())
-			}
-			if line := videoFacts(youtube.Video{Views: v.Views, Published: v.Published}); v.Channel != "" || line != "" {
-				parts := v.Channel
-				if line != "" && parts != "" {
-					parts += " · " + line
-				} else if line != "" {
-					parts = line
-				}
-				ui.Text(c, parts).FontSize(k.smallSize()).TextColor(k.muted)
-			}
 		})
 		if s.panel == "" {
 			var next []youtube.Video
@@ -523,25 +584,40 @@ func (s *shell) videoMini(c *ui.Context, key string, w float32) {
 	})
 }
 
-// showsMini reports whether the video that plays shows small: on the
-// Video side, on any page but its own.
+// showsMini reports whether the video that plays shows small: on any
+// page but its own, and Music's home, which shows it in a tile.
 func (s *shell) showsMini() bool {
 	vp := &s.videos.player
 	p := s.router.Path()
-	return s.mode.video && vp.current.ID != "" && !vp.filling() && p != watchPath(vp.current.ID)
+	if vp.current.ID == "" || vp.filling() {
+		return false
+	}
+	if s.mode.video {
+		return p != watchPath(vp.current.ID)
+	}
+	return p != "/" || s.home.editing
 }
 
-// floatingMini shows the video that plays in the corner of the page, when
-// the side panel, which shows it otherwise, is closed.
+// floatingMini shows the video that plays in the corner of the page: on
+// the Video side when the side panel, which shows it otherwise, is
+// closed, and on the Music side, whose side panel is the music's.
 func (s *shell) floatingMini(c *ui.Context) {
-	if !s.showsMini() || s.panel != "" {
+	if !s.showsMini() || s.mode.video && s.panel == "queue" {
 		return
 	}
 	k := &s.lk
-	ui.Box(c).Absolute().Right(20).Bottom(16).Padding(10).Radius(k.radiusSm).Background(k.surface2).
-		Shadow(0, 12, 32, -8, ui.RGBA(0, 0, 0, 0.55)).Children(func() {
-		s.videoMini(c, "mini-float", 320)
-	})
+	// On the Music side it goes at the top right, beside the page's
+	// title; on the Video side, at the bottom right.
+	box := ui.Box(c).Absolute().Right(20).Padding(10).Radius(k.radiusSm).Background(k.surface2).
+		Shadow(0, 12, 32, -8, ui.RGBA(0, 0, 0, 0.55))
+	w := float32(320)
+	if s.mode.video {
+		box.Bottom(16)
+	} else {
+		box.Top(8)
+		w = 280
+	}
+	box.Children(func() { s.videoMini(c, "mini-float", w) })
 }
 
 // videoQueuePanel is the Up next panel of the Video side: the video that
@@ -635,8 +711,9 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 		})
 		ui.Column(c).Grow(1.6).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
 			ui.Row(c).Gap(12).Children(func() {
-				if s.iconButton(c, "v-shuffle", "shuffle", "Shuffle", vp.shuffle, 18).Clicked() {
-					vp.shuffle = !vp.shuffle
+				if s.iconButton(c, "v-shuffle", "shuffle", "Shuffle", s.set.VideoShuffle, 18).Clicked() {
+					s.set.VideoShuffle = !s.set.VideoShuffle
+					s.save()
 				}
 				if s.roundButton(c, "v-previous", "previous", "Previous", false, !has).Clicked() {
 					s.videoPrevious()
@@ -652,14 +729,15 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 					s.videoNext(false)
 				}
 				rep, label := "repeat", "Repeat: off"
-				switch vp.repeat {
+				switch s.set.VideoRepeat {
 				case videoRepeatAll:
 					label = "Repeat: all"
 				case videoRepeatOne:
 					rep, label = "repeatOne", "Repeat: one"
 				}
-				if s.iconButton(c, "v-repeat", rep, label, vp.repeat != videoRepeatOff, 18).Clicked() {
-					vp.repeat = (vp.repeat + 1) % 3
+				if s.iconButton(c, "v-repeat", rep, label, s.set.VideoRepeat != videoRepeatOff, 18).Clicked() {
+					s.set.VideoRepeat = (s.set.VideoRepeat + 1) % 3
+					s.save()
 				}
 			})
 			if !vp.seeking {
@@ -682,18 +760,20 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 	})
 }
 
-// videoSpeeds are the speeds YouTube's player plays at.
-var videoSpeeds = []float64{0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2}
-
 // videoSide is the buttons at the side of the Video side's player bar, as
 // the music's: captions in place of lyrics, up next, casting, the speed,
 // the device, the volume, and Full App in place of the mini player.
 func (s *shell) videoSide(c *ui.Context, has bool) {
 	vp := &s.videos.player
 	st := vp.state
-	if s.iconButton(c, "v-captions", "lyrics", "Captions", st.Captions, 18).Disabled(!has).Clicked() {
-		s.videoCommand("captions", !st.Captions)
-		vp.state.Captions = !st.Captions
+	// The button shows the user's choice: YouTube's player tells the
+	// captions' track for a while after they're turned off.
+	on := s.set.VideoCaptions
+	if s.iconButton(c, "v-captions", "lyrics", "Captions", on, 18).Disabled(!has).Clicked() {
+		s.videoCommand("captions", !on)
+		vp.state.Captions = !on
+		s.set.VideoCaptions = !on
+		s.save()
 	}
 	if s.iconButton(c, "v-queue", "queue", "Up next", s.panel == "queue", 18).Clicked() {
 		s.togglePanel("queue")
@@ -701,10 +781,12 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 	s.iconButton(c, "v-cast", "cast", "Casting videos isn't available yet", false, 18).Disabled(true)
 	speed := s.iconButton(c, "v-speed", "speed", "Speed: "+videoSpeedLabel(st.Rate), st.Rate != 0 && st.Rate != 1, 18).Disabled(!has)
 	speed.PopoverMenu(func(m *ui.Menu) {
-		for _, r := range videoSpeeds {
+		for _, r := range settings.VideoRates {
 			if m.Item(videoSpeedLabel(r)).Checked(r == st.Rate || st.Rate == 0 && r == 1).Chosen() {
 				s.videoCommand("rate", r)
 				vp.state.Rate = r
+				s.set.VideoRate = r
+				s.save()
 			}
 		}
 	})
@@ -717,6 +799,8 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		if s.iconButton(c, "v-mute", name, label, false, 18).Disabled(!has).Clicked() {
 			s.videoCommand("mute", !st.Muted)
 			vp.state.Muted = !st.Muted
+			s.set.VideoMuted = !st.Muted
+			s.save()
 		}
 		vp.volume = st.Volume / 100
 		if st.Muted {
@@ -729,6 +813,8 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 			v := float64(int(vp.volume*100 + 0.5))
 			s.videoCommand("volume", v)
 			vp.state.Volume, vp.state.Muted = v, false
+			s.set.VideoVolume, s.set.VideoMuted = v, false
+			s.save()
 		}
 	})
 	if s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has).Clicked() {
@@ -749,15 +835,32 @@ func videoSpeedLabel(r float64) string {
 func (s *shell) followWatch() {
 	vp := &s.videos.player
 	defer s.followFullScreen()
-	if vp.web == nil {
-		return
-	}
-	if !s.mode.video {
+	// The video goes on as the Music side shows, until music starts to
+	// play: a video started while music plays pauses it (playVideo).
+	playing := s.st.Playing
+	started := playing && !vp.musicPlayed
+	vp.musicPlayed = playing
+	if started && vp.current.ID != "" {
 		s.stopWatching()
+	}
+}
+
+// homeVideo is the tile of Music's home that shows the video that plays,
+// beside Jump back in, two columns wide and two rows high.
+func (s *shell) homeVideo(c *ui.Context, columns int) {
+	vp := &s.videos.player
+	if vp.current.ID == "" || vp.filling() {
 		return
 	}
-	if s.st.Playing && vp.state.Playing {
-		s.videoCommand("pause", nil)
-		vp.state.Playing = false
+	k := &s.lk
+	gap := k.gap / 2
+	grid := min(s.paneWidth(c)-2*k.gutter, 1040)
+	w := grid
+	if columns == 4 {
+		w = (grid-3*gap)/2 + gap
 	}
+	w = float32(int(max(w, 200)))
+	ui.Box(c.Key("tile-video")).ColumnSpan(min(2, columns)).RowSpan(2).Radius(k.radius).Clip().Children(func() {
+		s.videoMini(c, "home-video", w)
+	})
 }

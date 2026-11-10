@@ -36,6 +36,7 @@ type Settings struct {
 	Tools
 	Keys
 	Addons
+	Watching
 }
 
 // Default returns the settings of a new install.
@@ -52,6 +53,7 @@ func Default() Settings {
 	s.Desktop = defaultDesktop()
 	s.Keys = defaultKeys()
 	s.Addons = defaultAddons()
+	s.Watching = defaultWatching()
 	return s
 }
 
@@ -110,5 +112,6 @@ func (s Settings) Clean() Settings {
 	s.Tools = s.Tools.clean()
 	s.Keys = s.Keys.clean()
 	s.Addons = s.Addons.clean()
+	s.Watching = s.Watching.clean()
 	return s
 }

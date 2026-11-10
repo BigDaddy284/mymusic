@@ -56,6 +56,9 @@ func (a *App) flush() {
 		p.Flush()
 	}
 	a.downloads.Flush()
+	if a.videoStats != nil {
+		a.videoStats.flush()
+	}
 	if err := a.positions.Flush(); err != nil {
 		log.Printf("mytube: keeping where episodes were left: %v", err)
 	}

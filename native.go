@@ -183,7 +183,9 @@ type shell struct {
 	home homeArrange
 	// The pages' own state. local are the home page's own shelves, of the
 	// library at localVersion once localBuilt.
-	homeFilter   int
+	homeFilter int
+	// afterPivots is what a page shows after its header's pivots.
+	afterPivots  func()
 	local        []media.Shelf
 	localVersion uint64
 	localBuilt   bool

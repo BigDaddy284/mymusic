@@ -57,9 +57,6 @@ func (s *shell) toggleMode() {
 			to = "/videos"
 		}
 	}
-	if !m.video {
-		s.stopWatching()
-	}
 	s.navigate(to)
 }
 
@@ -87,9 +84,6 @@ func (s *shell) followMode(path string) {
 	if video := isVideoPath(path); video != s.mode.video {
 		s.mode.video = video
 		s.mode.turn += 180
-		if !video {
-			s.stopWatching()
-		}
 	}
 }
 
