@@ -34,7 +34,7 @@ func (s *shell) homePage(c *ui.Context) {
 		}
 		// Edit home goes beside the pivots.
 		s.afterPivots = func() {
-			if s.button(c, "home-edit", "edit home", false).Clicked() {
+			if s.pivotButton(c, "home-edit", "Edit home") {
 				s.home.editing = true
 			}
 		}

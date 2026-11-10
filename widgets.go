@@ -429,34 +429,66 @@ func (s *shell) plainHeader(c *ui.Context, title string, pivots []string, counts
 // in the fill of what is chosen; counts[i] counts what one shows, unless
 // it's below 0.
 func (s *shell) chips(c *ui.Context, pivots []string, counts []int, selected *int) {
-	k := &s.lk
 	ui.Row(c).Gap(8).Wrap().Children(func() {
 		for i, p := range pivots {
-			b := s.buttonBase(c.Key("pivot-" + p)).Height(32).PaddingX(16).Gap(6).Radius(k.round(32)).Label(p).Cursor(ui.CursorPointer)
-			fill, ink := k.surface2, k.text
-			switch {
-			case i == *selected:
-				fill, ink = k.selected, k.selectedText
-			case b.Pressed():
-				fill = k.surface3
-			case b.Hovered():
-				fill = k.surface2.Mix(k.text, 0.08)
+			n := -1
+			if i < len(counts) {
+				n = counts[i]
 			}
-			b.Background(fill)
-			if b.Clicked() {
+			if s.chip(c, "pivot-"+p, p, i == *selected, n) {
 				*selected = i
 			}
-			s.pressMotion(b, 0.95)
-			b.Children(func() {
-				t := ui.Text(c, k.sentence(p)).FontSize(k.smallSize()).TextColor(ink).SingleLine()
-				k.labelWeight(t)
-				if i < len(counts) && counts[i] >= 0 {
-					ui.Text(c, count(counts[i])).FontSize(k.captionSize()).TextColor(ink.Alpha(0.8)).FontFeatures("tnum")
-				}
-			})
 		}
 		s.pivotsAfter()
 	})
+}
+
+// chip is a chip of a page's header, chosen or not, with a count unless
+// it's below 0: it tells whether it was clicked.
+func (s *shell) chip(c *ui.Context, key, label string, chosen bool, n int) bool {
+	k := &s.lk
+	b := s.buttonBase(c.Key(key)).Height(32).PaddingX(16).Gap(6).Radius(k.round(32)).Label(label).Cursor(ui.CursorPointer)
+	fill, ink := k.surface2, k.text
+	switch {
+	case chosen:
+		fill, ink = k.selected, k.selectedText
+	case b.Pressed():
+		fill = k.surface3
+	case b.Hovered():
+		fill = k.surface2.Mix(k.text, 0.08)
+	}
+	b.Background(fill)
+	clicked := b.Clicked()
+	s.pressMotion(b, 0.95)
+	b.Children(func() {
+		t := ui.Text(c, k.sentence(label)).FontSize(k.smallSize()).TextColor(ink).SingleLine()
+		k.labelWeight(t)
+		if n >= 0 {
+			ui.Text(c, count(n)).FontSize(k.captionSize()).TextColor(ink.Alpha(0.8)).FontFeatures("tnum")
+		}
+	})
+	return clicked
+}
+
+// pivotButton is a button beside a header's pivots, as they look: a
+// chip, or, in the light headings, a word.
+func (s *shell) pivotButton(c *ui.Context, key, label string) bool {
+	k := &s.lk
+	if k.headings != headingsLight {
+		return s.chip(c, key, label, false, -1)
+	}
+	word := k.words(label)
+	b := s.buttonBase(c.Key(key)).Label(word).Cursor(ui.CursorPointer)
+	ink := k.text.Alpha(0.38)
+	if b.Hovered() {
+		ink = k.text.Alpha(0.7)
+	}
+	clicked := b.Clicked()
+	b.Children(func() {
+		ui.Text(c, word).FontSize(k.pivotSize()).FontWeight(300).Font(k.display).
+			LetterSpacing(-0.02 * k.pivotSize()).TextColor(ink).SingleLine()
+	})
+	return clicked
 }
 
 // pivotsAfter builds what a page asked to show after its header's pivots,
