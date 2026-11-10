@@ -200,7 +200,7 @@ const fs = !!document.fullscreenElement;
 if (p) {
   const st = p.getPlayerState();
   let caps = false;
-  try { caps = !!(p.getOption('captions', 'track') || {}).languageCode; } catch (e) {}
+  try { caps = (p.getOptions() || []).indexOf('captions') >= 0 && !!(p.getOption('captions', 'track') || {}).languageCode; } catch (e) {}
   return {t: p.getCurrentTime() || 0, d: p.getDuration() || 0, playing: st === 1 || st === 3, ended: st === 0,
     rate: p.getPlaybackRate() || 1, volume: p.getVolume(), muted: p.isMuted(), captions: caps, esc, fs};
 }
@@ -766,10 +766,13 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 func (s *shell) videoSide(c *ui.Context, has bool) {
 	vp := &s.videos.player
 	st := vp.state
-	if s.iconButton(c, "v-captions", "lyrics", "Captions", st.Captions, 18).Disabled(!has).Clicked() {
-		s.videoCommand("captions", !st.Captions)
-		vp.state.Captions = !st.Captions
-		s.set.VideoCaptions = !st.Captions
+	// The button shows the user's choice: YouTube's player tells the
+	// captions' track for a while after they're turned off.
+	on := s.set.VideoCaptions
+	if s.iconButton(c, "v-captions", "lyrics", "Captions", on, 18).Disabled(!has).Clicked() {
+		s.videoCommand("captions", !on)
+		vp.state.Captions = !on
+		s.set.VideoCaptions = !on
 		s.save()
 	}
 	if s.iconButton(c, "v-queue", "queue", "Up next", s.panel == "queue", 18).Clicked() {
