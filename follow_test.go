@@ -249,17 +249,10 @@ func TestNewReleasesShelf(t *testing.T) {
 	if !showsText(tt.Texts(), "2026 · Harbour Lights") {
 		t.Errorf("the year Pier at Night came out: %q", tt.Texts())
 	}
-	s.homeFilter = slices.IndexFunc(homeFilters, func(f struct {
-		label  string
-		source media.Source
-	}) bool {
-		return f.source == media.SourceYouTube
-	})
 	tt.Frame()
 	if !tt.HasText("Low Tide") || !tt.HasText("Pier at Night") {
-		t.Errorf("Home › YouTube Music shows %q", tt.Texts())
+		t.Errorf("Home shows %q", tt.Texts())
 	}
-	s.homeFilter = 0
 	// This run's look found one.
 	s.loads["releases"] = &loaded[[]media.Release]{done: true, value: releases[1:]}
 	show(s, tt, "/library/artists")

@@ -83,6 +83,9 @@ func homeArrangement(layout []settings.HomeShelf, groups []*homeGroup) (full []s
 // homeSourceLabel names where the shelves of source come from, as Home's
 // pivots do: "Yours" for the user's own.
 func homeSourceLabel(source media.Source) string {
+	if source == media.SourceYouTube {
+		return "YouTube Music"
+	}
 	for _, f := range homeFilters {
 		if f.source == source {
 			return f.label
