@@ -55,7 +55,7 @@ func (s *shell) popOutVideo() {
 			}
 			ui.Row(c).Height(strip).Clip().Height(popStrip).Shrink(0).PaddingX(8).Gap(8).AlignItems(ui.Center).Background(ui.RGBA(24, 24, 24, 1)).Children(func() {
 				ui.Text(c, vp.current.Title).FontSize(12).TextColor(ui.RGBA(255, 255, 255, 0.75)).SingleLine().Grow(1).MinWidth(0)
-				dock := ui.ButtonBase(c.Key("pop-dock")).Height(22).PaddingX(10).Radius(4).Label("Dock the video back in MyTube").
+				dock := s.buttonBase(c.Key("pop-dock")).Height(22).PaddingX(10).Radius(4).Label("Dock the video back in MyTube").
 					Cursor(ui.CursorPointer).Background(ui.RGBA(255, 255, 255, 0.14))
 				if dock.Hovered() {
 					dock.Background(ui.RGBA(255, 255, 255, 0.24))
