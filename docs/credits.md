@@ -98,9 +98,6 @@ of its own.
 - **[Material Color Utilities](https://github.com/material-foundation/material-color-utilities)**,
   by Google, whose HCT colour science the Material themes' colours are a
   port of.
-- **[pywal](https://github.com/dylanaraps/pywal)** and
-  **[matugen](https://github.com/InioX/matugen)**, whose colour files
-  MyTube follows.
 
 ## Standards MyTube is written from
 

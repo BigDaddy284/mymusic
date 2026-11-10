@@ -18,7 +18,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/addons"
 	"github.com/bigdaddy284/mymusic/internal/app"
-	"github.com/bigdaddy284/mymusic/internal/colorfile"
 	"github.com/bigdaddy284/mymusic/internal/downloads"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
@@ -93,14 +92,9 @@ type shell struct {
 	router *ui.Router
 	// set is the settings, as the window's controls change them, and base
 	// what refresh read last, which save tells the changes from.
-	set, base settings.Settings
-	inv       addons.Inventory
-	lk        look
-	// colorFile is what the app read of the colour file the settings
-	// name, and oneMode is set while the look wears a file with one set of
-	// colours, which decides light or dark.
-	colorFile    app.ColorFileStatus
-	oneMode      bool
+	set, base    settings.Settings
+	inv          addons.Inventory
+	lk           look
 	art          *artworks
 	loads        map[string]any
 	notes        []player.Notice
@@ -472,7 +466,6 @@ func (s *shell) refresh() {
 	s.set = s.svc.Preferences.Get()
 	// A copy of its own, as the controls change s.set's maps and slices.
 	s.base = s.set.Clean()
-	s.colorFile = s.svc.Preferences.ColorFile()
 	s.file = s.svc.Preferences.File()
 	if !first {
 		s.followSettings(old)
@@ -493,39 +486,21 @@ func (s *shell) refresh() {
 	s.restyle()
 }
 
-// restyle makes the look again, of the settings, the colour file, the
-// computer's appearance and the artwork playing. The windows' own parts,
-// as the title bar and its buttons, take the theme's light or dark: the
-// computer's while the theme follows it, which it reads then. A colour
-// file with one set of colours, as pywal's, decides light or dark instead,
-// and while the theme follows the computer, the theme of the file's mode
-// shows. The appearance is set straight to the file's mode then, never to
-// the computer's first, which would make the title bar flicker.
+// restyle makes the look again, of the settings, the computer's
+// appearance and the artwork playing. The windows' own parts, as the title
+// bar and its buttons, take the theme's light or dark: the computer's
+// while the theme follows it, which it reads then.
 func (s *shell) restyle() {
-	var file colorfile.Colors
-	if s.set.ColorSource != settings.ColorsTheme {
-		file = s.colorFile.Colors
+	if s.set.FollowSystem {
+		setAppearance(mygo.ThemeSystem)
 	}
-	dark, one := fileMode(file)
-	if s.oneMode = one; one {
-		s.lk = newLook(s.set, s.inv.Themes, dark, s.artColor, file)
-		if s.lk.dark {
-			setAppearance(mygo.ThemeDark)
-		} else {
-			setAppearance(mygo.ThemeLight)
-		}
-	} else {
-		if s.set.FollowSystem {
-			setAppearance(mygo.ThemeSystem)
-		}
-		s.lk = newLook(s.set, s.inv.Themes, isDark(), s.artColor, file)
-		switch {
-		case s.set.FollowSystem:
-		case s.lk.dark:
-			setAppearance(mygo.ThemeDark)
-		default:
-			setAppearance(mygo.ThemeLight)
-		}
+	s.lk = newLook(s.set, s.inv.Themes, isDark(), s.artColor)
+	switch {
+	case s.set.FollowSystem:
+	case s.lk.dark:
+		setAppearance(mygo.ThemeDark)
+	default:
+		setAppearance(mygo.ThemeLight)
 	}
 	s.art.phosphor = s.lk.fx.phosphor
 }

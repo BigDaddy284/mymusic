@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/app"
-	"github.com/bigdaddy284/mymusic/internal/colorfile"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/tools"
@@ -119,7 +118,7 @@ func TestSettingsFileApplied(t *testing.T) {
 		}
 	}
 	// The look follows, as when the theme is chosen in the settings.
-	if aurora := newLook(s.set, s.inv.Themes, isDark(), "", colorfile.Colors{}); s.set.Theme != "aurora" || s.lk.bg != aurora.bg {
+	if aurora := newLook(s.set, s.inv.Themes, isDark(), ""); s.set.Theme != "aurora" || s.lk.bg != aurora.bg {
 		t.Errorf("theme %q, the look's ground %v, want %v", s.set.Theme, s.lk.bg, aurora.bg)
 	}
 }

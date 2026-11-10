@@ -26,8 +26,7 @@ Settings › Appearance, and works with every
 ## Reload add-ons
 
 **Reload add-ons**, in the command palette, finds the themes in your
-themes folder again, and reads your
-[colour file](look-and-feel.md#colours-from-a-file) again. Run it after
+themes folder again. Run it after
 you put a theme in the folder yourself, or change one.
 
 ## Make your own

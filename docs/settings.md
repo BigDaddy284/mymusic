@@ -24,7 +24,7 @@ How MyTube looks; [Look and feel](look-and-feel.md) tells all of it.
 | [Layout](look-and-feel.md#layouts) | Blend, Expressive, Crate or Tiles. |
 | [Theme](look-and-feel.md#themes) | **Follow the computer**, with **In light mode** and **In dark mode**; a card for each theme, and **open themes folder**. Themes that didn't load are listed with the reason. |
 | [*Theme* options](look-and-feel.md#theme-options) | The options of a built-in theme that has some, as Aurora's drifting lights and glass blur. |
-| Colour and type | **[Colours from a file](look-and-feel.md#colours-from-a-file)** (pywal, matugen or a file of your own) and its **Colour file**, **[Follow the artwork](look-and-feel.md#the-accent-and-the-artwork)**, **Accent colour**, **[Zoom](look-and-feel.md#density-text-size-and-zoom)**, **Text size**, **Density**, **Icons only in the sidebar** and **Wavy progress bar**. |
+| Colour and type | **[Follow the artwork](look-and-feel.md#the-accent-and-the-artwork)**, **Accent colour**, **[Zoom](look-and-feel.md#density-text-size-and-zoom)**, **Text size**, **Density**, **Icons only in the sidebar** and **Wavy progress bar**. |
 
 ### Playback
 

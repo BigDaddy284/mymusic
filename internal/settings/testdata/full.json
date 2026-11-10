@@ -10,8 +10,6 @@
   },
   "accent": "#ff8800",
   "dynamicAccent": true,
-  "colorSource": "file",
-  "colorFile": "~/colors.json",
   "density": "compact",
   "layout": "crate",
   "fontScale": 1.1,

@@ -16,7 +16,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/app"
 	"github.com/bigdaddy284/mymusic/internal/diag"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // captureFromEnv saves screenshots of the window, for development.
@@ -31,7 +30,6 @@ import (
 // act:refresh refreshes the
 // page, act:panel:<queue|lyrics|none> shows a side panel,
 // act:scroll:<y|end> scrolls the page, act:theme:<id> wears a theme,
-// act:colors:<off|pywal|matugen|path> takes the colours from a file,
 // act:mini opens the mini player, which saves itself,
 // act:library:<add|remove>:<search> saves the first YouTube Music song a
 // search finds to the user's library there, or takes it out, as its menu
@@ -183,11 +181,6 @@ func (s *shell) captureFromEnv() {
 					s.set.Theme, s.set.FollowSystem = arg, false
 					s.save()
 				})
-			case "colors":
-				s.win.Update(func() {
-					colorsStep(&s.set, arg)
-					s.save()
-				})
 			case "shot":
 				time.Sleep(wait)
 				save(arg)
@@ -208,21 +201,6 @@ func (s *shell) captureFromEnv() {
 			mygo.App.Quit()
 		}
 	}()
-}
-
-// colorsStep takes the colours from where act:colors:<arg> says: off,
-// pywal, matugen, or the path of a file.
-func colorsStep(set *settings.Settings, arg string) {
-	switch arg {
-	case "off", "":
-		set.ColorSource = settings.ColorsTheme
-	case "pywal":
-		set.ColorSource = settings.ColorsPywal
-	case "matugen":
-		set.ColorSource = settings.ColorsMatugen
-	default:
-		set.ColorSource, set.ColorFile = settings.ColorsFile, arg
-	}
 }
 
 // captureWait is how long a page gets before its screenshot.

@@ -46,7 +46,6 @@ an installed copy's data.
 - `bin/`: MyTube's own yt-dlp.
 - `youtube-session.bin`: your YouTube Music session, encrypted with a key
   that the credential store keeps.
-- `matugen.json`, when you follow the colours that matugen writes there.
 
 ### The cache folder
 

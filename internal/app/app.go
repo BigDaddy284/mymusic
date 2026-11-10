@@ -130,8 +130,6 @@ type App struct {
 	artwork      *artwork.Client
 	artStore     *artwork.Store
 	colors       *memo[string]
-	// colorFile follows the colour file the settings name.
-	colorFile colorFile
 	// episodeDetails keeps the details of the episodes the player showed.
 	episodeDetails *memo[media.EpisodeDetails]
 	// releases keeps what the artists the user follows put out lately.
@@ -311,7 +309,6 @@ func (a *App) apply(s settings.Settings) {
 	if a.youtube.SignedIn() && a.youtube.Channel() != s.YouTubeChannel {
 		a.youtube.SetChannel(s.YouTubeChannel)
 	}
-	a.followColorFile(s)
 	a.retitle()
 }
 

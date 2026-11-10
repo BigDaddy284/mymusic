@@ -95,9 +95,8 @@ what each of these gets.
 
 - **Themes** are a `theme.json` file of colours, fonts and corners.
   MyTube draws every theme in the layout you choose in Settings ›
-  Appearance: Blend (the default), Expressive, Crate or Tiles. It can
-  also take its colours from a file that pywal or matugen write, and
-  follows the file as it changes. [Themes](themes.md) lists every token.
+  Appearance: Blend (the default), Expressive, Crate or Tiles.
+  [Themes](themes.md) lists every token.
   MyTube loads the themes it ships with and those you put in your themes
   folder; it doesn't download any.
 

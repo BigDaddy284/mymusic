@@ -2,7 +2,7 @@
 <!-- docs: group=using order=50 -->
 
 MyTube's look is a layout and a theme: four layouts, fourteen built-in
-themes, light and dark, and colours from the artwork or from pywal and matugen.
+themes, light and dark, and and colours from the artwork.
 
 Everything on this page is in [Settings › Appearance](settings.md#appearance).
 The layout sets the shapes, the density, the player bar, the headings and
@@ -117,34 +117,6 @@ with it, and are made for the Expressive layout, though they work in any.
 
 To keep their colours from changing with each track, turn off Follow the
 artwork, and choose an Accent colour for them to start from.
-
-## Colours from a file
-
-MyTube can wear the colours that [pywal](https://github.com/dylanaraps/pywal)
-or [matugen](https://github.com/InioX/matugen) make of your wallpaper, or the
-colours of a file of your own, and change colour as the file changes, with
-nothing to reload. In Settings › Appearance › Colour and type, set
-**Colours from a file** to pywal, matugen, or "A file of your own".
-
-- The **Colour file** row under it shows the file MyTube reads, and when
-  it last read it, or why it can't. "how to set it up" opens the steps;
-  with matugen, "copy the template" copies MyTube's matugen template; with
-  a file of your own, type its path or choose it.
-- The theme keeps its type, corners and effects: Mochi's round face or
-  Terminal's scanlines can wear your wallpaper's colours. The theme cards
-  keep each theme's own colours.
-- Colours that wouldn't read are changed, keeping their hue, so text stays
-  readable on any wallpaper.
-- A file with one set of colours, as pywal's, decides whether MyTube is
-  light or dark, title bar included.
-- While Follow the artwork is on, the cover still sets the accent. Turn it
-  off to keep the file's.
-
-![Settings › Appearance › Colour and type with Colours from a file set to pywal: the window in the file's dark blue ground with an orange accent, the Colour file row, its path covered here, "Read at 01:14, and followed as it changes." and How to set it up, then Follow the artwork, off, and an orange Accent colour](shots/colours-file.webp)
-
-[Themes: Colours from a file](themes.md#colours-from-a-file) has the
-setup for pywal and matugen, the files MyTube reads, and how each colour
-maps.
 
 ## Density, text size and zoom
 

@@ -307,6 +307,7 @@ var retiredKeys = []string{
 	"enabledPlugins", "lyricsRomanize",
 	"discordPresence", "showOnDiscord", "discordAppId", "discordFirstLine", "discordSecondLine",
 	"discordCover", "discordServiceBadge", "discordTimeLeft", "discordListenButton", "discordKeepWhilePaused",
+	"colorSource", "colorFile",
 }
 
 // retired tells whether key is one of retiredKeys.

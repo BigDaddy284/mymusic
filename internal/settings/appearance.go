@@ -49,25 +49,6 @@ const (
 // Layouts are the layout designs, in the order the settings list them.
 var Layouts = []Layout{LayoutStudio, LayoutBlend, LayoutExpressive, LayoutCrate, LayoutTiles}
 
-// ColorSource chooses where the colours come from: the theme, or a file
-// that pywal or matugen make of the wallpaper, or one of the user's.
-type ColorSource string
-
-const (
-	// ColorsTheme wears the theme's own colours.
-	ColorsTheme ColorSource = ""
-	// ColorsPywal reads pywal's colors.json, in pywal's cache folder.
-	ColorsPywal ColorSource = "pywal"
-	// ColorsMatugen reads matugen.json in the data folder, which
-	// MyTube's matugen template writes.
-	ColorsMatugen ColorSource = "matugen"
-	// ColorsFile reads the file of Settings.ColorFile.
-	ColorsFile ColorSource = "file"
-)
-
-// maxColorFile bounds the length of Settings.ColorFile, in bytes.
-const maxColorFile = 4096
-
 // colorRe matches a colour of the accent, as "#ff8800" or "#f80".
 var colorRe = regexp.MustCompile(`^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$`)
 
@@ -93,12 +74,6 @@ type Appearance struct {
 	Accent string `json:"accent"`
 	// DynamicAccent takes the accent color from the artwork playing.
 	DynamicAccent bool `json:"dynamicAccent"`
-	// ColorSource takes the colours from a file, over the theme's, which
-	// keeps its type, corners and effects.
-	ColorSource ColorSource `json:"colorSource"`
-	// ColorFile is the file of ColorsFile: a full path, or one that starts
-	// with ~.
-	ColorFile string `json:"colorFile"`
 	// Density is how much room the interface gives each element.
 	Density Density `json:"density"`
 	// Layout is the layout design; settings from before it have Studio's.
@@ -169,15 +144,6 @@ func (a Appearance) clean(d Appearance) Appearance {
 	a.ThemeOptions = options
 	if a.Accent != "" && !colorRe.MatchString(a.Accent) {
 		a.Accent = ""
-	}
-	switch a.ColorSource {
-	case ColorsTheme, ColorsPywal, ColorsMatugen, ColorsFile:
-	default:
-		a.ColorSource = ColorsTheme
-	}
-	a.ColorFile = CleanPath(a.ColorFile)
-	if len(a.ColorFile) > maxColorFile {
-		a.ColorFile = ""
 	}
 	if a.Panel != "lyrics" && a.Panel != "none" {
 		a.Panel = d.Panel
