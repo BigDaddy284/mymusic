@@ -397,6 +397,10 @@ func (s *shell) start() {
 		s.win.OnMinimize(func() { s.update(s.idleVideo) }),
 		// Music files dropped on the window play.
 		s.win.OnFileDrop(s.dropFiles),
+		// Escape is the app's in Full App only while the window is in
+		// front (fullscreen.go).
+		s.win.OnFocus(func() { s.update(s.followFocus(true)) }),
+		s.win.OnBlur(func() { s.update(s.followFocus(false)) }),
 		s.closeVideo,
 	)
 }

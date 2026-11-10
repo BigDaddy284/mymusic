@@ -40,6 +40,9 @@ type videoState struct {
 	Captions bool    `json:"captions"`
 	// Esc is set once Escape was pressed in the page.
 	Esc bool `json:"esc"`
+	// FS is set while the player's own full screen button has the page
+	// fill the screen.
+	FS bool `json:"fs"`
 }
 
 // Repeat modes of the videos.
@@ -69,8 +72,16 @@ type videoPlayer struct {
 	// shuffle and repeat order up next.
 	shuffle bool
 	repeat  int
-	// fullApp fills the window with the video.
-	fullApp bool
+	// fullApp fills the window with the video; fullScreen, the screen,
+	// as the player's own button does (fullscreen.go).
+	fullApp    bool
+	fullScreen bool
+	// ownsScreen is set while the window is full screen for the video,
+	// takesEscape while Escape is the app's, and blurred while the
+	// window isn't in front.
+	ownsScreen  bool
+	takesEscape bool
+	blurred     bool
 	// seeking and seekTo follow the seek bar while it's dragged; volume
 	// follows the volume's slider.
 	seeking bool
@@ -168,7 +179,8 @@ func (s *shell) stopWatching() {
 	if web := vp.web; web != nil {
 		go web.Destroy()
 	}
-	vp.web, vp.loaded, vp.current, vp.state, vp.fullApp = nil, "", youtube.Video{}, videoState{}, false
+	vp.web, vp.loaded, vp.current, vp.state, vp.fullApp, vp.fullScreen = nil, "", youtube.Video{}, videoState{}, false, false
+	s.followFullScreen()
 }
 
 // videoStateJS asks the player for its state, the embedded one's or, on
@@ -177,19 +189,20 @@ const videoStateJS = `
 const p = window.mtPlayer && window.mtPlayer.getPlayerState ? window.mtPlayer : null;
 const esc = !!window.mtEsc;
 window.mtEsc = false;
+const fs = !!document.fullscreenElement;
 if (p) {
   const st = p.getPlayerState();
   let caps = false;
   try { caps = !!(p.getOption('captions', 'track') || {}).languageCode; } catch (e) {}
   return {t: p.getCurrentTime() || 0, d: p.getDuration() || 0, playing: st === 1 || st === 3, ended: st === 0,
-    rate: p.getPlaybackRate() || 1, volume: p.getVolume(), muted: p.isMuted(), captions: caps, esc};
+    rate: p.getPlaybackRate() || 1, volume: p.getVolume(), muted: p.isMuted(), captions: caps, esc, fs};
 }
 const v = document.querySelector('video');
-if (!v) return {t: 0, d: 0, playing: false, ended: false, rate: 1, volume: 100, muted: false, captions: false, esc};
+if (!v) return {t: 0, d: 0, playing: false, ended: false, rate: 1, volume: 100, muted: false, captions: false, esc, fs};
 const cc = document.querySelector('.ytp-subtitles-button');
 return {t: v.currentTime || 0, d: isFinite(v.duration) ? v.duration : 0, playing: !v.paused && !v.ended, ended: v.ended,
   rate: v.playbackRate || 1, volume: Math.round(v.volume * 100), muted: v.muted,
-  captions: !!cc && cc.getAttribute('aria-pressed') === 'true', esc};
+  captions: !!cc && cc.getAttribute('aria-pressed') === 'true', esc, fs};
 `
 
 // pollVideo asks the player in web for its state until stop closes.
@@ -216,8 +229,9 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 			}
 			vp.state = st
 			if st.Esc {
-				vp.fullApp = false
+				s.leaveFullApp()
 			}
+			s.followFullScreen()
 			if st.Ended && vp.endedOf != vp.current.ID {
 				vp.endedOf = vp.current.ID
 				s.videoNext(true)
@@ -245,6 +259,10 @@ func (s *shell) videoCommand(cmd string, arg any) {
 // argument, in JSON.
 const videoCommandJS = `
 const cmd = %s, arg = %s;
+if (cmd === 'exitFullScreen') {
+  if (document.fullscreenElement) document.exitFullscreen();
+  return true;
+}
 const p = window.mtPlayer && window.mtPlayer.getPlayerState ? window.mtPlayer : null;
 if (p) {
   switch (cmd) {
@@ -393,18 +411,20 @@ func (s *shell) watchPage(c *ui.Context, id string) {
 	}
 	v := vp.current
 	s.pageScroll(c, func() {
+		// The video fills the middle of the window: its width, and its
+		// height but for the title under it. YouTube's player keeps the
+		// picture's shape, with black around it.
 		_, winH := c.Size()
-		pane := s.paneWidth(c) - 2*k.gutter
-		w := min(pane, max(320, (winH-k.barRoom()-200)*16/9), 1600)
-		h := float32(int(w*9/16 + 0.5))
+		w := s.paneWidth(c) - 2*k.gutter
+		h := float32(int(max(240, winH-k.barRoom()-120)))
 		ui.Box(c).Margin(16, 0, 16).Children(func() {
-			if vp.fullApp {
+			if vp.filling() {
 				ui.Box(c).Size(w, h).Radius(k.radiusSm).Background(ui.RGBA(0, 0, 0, 1))
 				return
 			}
 			s.placeVideo(c, "watch-frame", w, h)
 		})
-		ui.Column(c).Gap(6).MaxWidth(w).Margin(0, 0, 16).Children(func() {
+		ui.Column(c).Gap(6).MaxWidth(w).Margin(0, 0, 24).Children(func() {
 			if v.Title != "" {
 				ui.Text(c, v.Title).FontSize(k.subtitleSize()).FontWeight(k.leadWeight())
 			}
@@ -416,17 +436,6 @@ func (s *shell) watchPage(c *ui.Context, id string) {
 					parts = line
 				}
 				ui.Text(c, parts).FontSize(k.smallSize()).TextColor(k.muted)
-			}
-		})
-		ui.Row(c).Gap(12).Wrap().Margin(0, 0, 40).Children(func() {
-			if s.button(c, "watch-full-app", "full app", true).Tooltip("Fill the app window with the video").Clicked() {
-				vp.fullApp = true
-			}
-			if s.button(c, "watch-on-youtube", "open on YouTube", false).Clicked() {
-				go s.svc.System.OpenExternal(youtubeWatchURL(id))
-			}
-			if s.button(c, "watch-random", "random", false).Disabled(vs.rolling).Clicked() {
-				s.randomVideoSearch()
 			}
 		})
 		if s.panel == "" {
@@ -449,15 +458,23 @@ func (s *shell) watchPage(c *ui.Context, id string) {
 // built the window.
 func (s *shell) fullAppView(c *ui.Context) bool {
 	vp := &s.videos.player
-	if !vp.fullApp || !s.mode.video || vp.current.ID == "" {
+	if !vp.filling() || !s.mode.video || vp.current.ID == "" {
 		vp.fullApp = false
 		return false
 	}
 	k := &s.lk
-	exit := func() { vp.fullApp = false }
+	exit := s.leaveFullApp
 	root := ui.Column(c).Fill().Background(ui.RGBA(0, 0, 0, 1)).TextColor(ui.RGBA(255, 255, 255, 1)).Font(k.body)
 	root.OnShortcut(0, ui.KeyEscape, exit)
 	root.Children(func() {
+		if vp.videoFullScreen() {
+			// Full screen, the player's own: the video alone.
+			if vp.web != nil {
+				w, h := c.Size()
+				ui.WebView(c.Key("full-app-web"), vp.web).Size(w, h).Label("Video: " + vp.current.Title)
+			}
+			return
+		}
 		bar := c.TitleBar()
 		strip := ui.Row(c).Height(max(bar.Height, 32)).Shrink(0).Padding(0, bar.Right+12, 0, bar.Left+12).Gap(12)
 		if bar.Height > 0 {
@@ -511,7 +528,7 @@ func (s *shell) videoMini(c *ui.Context, key string, w float32) {
 func (s *shell) showsMini() bool {
 	vp := &s.videos.player
 	p := s.router.Path()
-	return s.mode.video && vp.current.ID != "" && !vp.fullApp && p != watchPath(vp.current.ID)
+	return s.mode.video && vp.current.ID != "" && !vp.filling() && p != watchPath(vp.current.ID)
 }
 
 // floatingMini shows the video that plays in the corner of the page, when
@@ -731,6 +748,7 @@ func videoSpeedLabel(r float64) string {
 // video as the music plays.
 func (s *shell) followWatch() {
 	vp := &s.videos.player
+	defer s.followFullScreen()
 	if vp.web == nil {
 		return
 	}
