@@ -153,6 +153,9 @@ type App struct {
 	// watchtime reports the listening to YouTube Music's episodes to the
 	// history there.
 	watchtime watchtime
+	// videoWatch reports the watching of the Video side's videos to the
+	// history of the account on YouTube (videowatch.go).
+	videoWatch watchtime
 	// native is MyTube's own audio engine, made at its first use.
 	native     *audio.Engine
 	nativeOnce sync.Once

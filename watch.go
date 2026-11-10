@@ -214,6 +214,8 @@ func (s *shell) stopWatching() {
 		go web.Destroy()
 	}
 	vp.web, vp.loaded, vp.current, vp.state, vp.fullApp, vp.fullScreen = nil, "", youtube.Video{}, videoState{}, false, false
+	// The watching's last report goes.
+	s.svc.Videos.ReportWatching("", 0, false, 1, false)
 	s.followFullScreen()
 }
 
@@ -273,6 +275,11 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 			s.followVideoCast(&st)
 			s.videoStarts(st)
 			vp.state = st
+			// YouTube learns of the watching from the app: the embedded
+			// player plays signed out. A cast's device tells it itself.
+			if vp.casting == nil {
+				s.svc.Videos.ReportWatching(vp.current.ID, st.Time, st.Playing, st.Rate, st.Duration <= 0)
+			}
 			s.settleVideo()
 			s.keepVideoPlace()
 			if st.Esc {

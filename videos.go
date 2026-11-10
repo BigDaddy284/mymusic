@@ -116,7 +116,13 @@ func (s *shell) videosHome(c *ui.Context) {
 			s.videosSignedOut(c)
 			return
 		}
+		was := vs.homeChip
 		s.videoHeader(c, "Home", videoHomeChips, &vs.homeChip)
+		// Continue watching asks again each time it's chosen: what was
+		// just watched here joins the history YouTube tells.
+		if vs.homeChip == 2 && was != 2 {
+			s.refetch("videos:history")
+		}
 		switch vs.homeChip {
 		case 1:
 			s.videoFeed(c, "videos:subscriptions", false, "No new videos from your subscriptions.", s.svc.Videos.Subscriptions)
