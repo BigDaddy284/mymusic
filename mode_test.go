@@ -217,3 +217,24 @@ func TestWatchedShare(t *testing.T) {
 		t.Errorf("a video never watched fills %v", got)
 	}
 }
+
+// TestRandomSkipsShownVideos leaves out of a random search the videos an
+// earlier random search showed.
+func TestRandomSkipsShownVideos(t *testing.T) {
+	s := newTestShell(t)
+	s.loads["videos:search:Frogs"] = &loaded[youtube.VideoPage]{done: true, value: youtube.VideoPage{Videos: []youtube.Video{
+		{ID: "popular0001", Title: "A popular video"}, {ID: "frogs000001", Title: "Frogs singing"},
+	}}}
+	s.loads["videos:search:Toads"] = &loaded[youtube.VideoPage]{done: true, value: youtube.VideoPage{Videos: []youtube.Video{
+		{ID: "popular0001", Title: "A popular video"}, {ID: "toads000001", Title: "Toads singing"},
+	}}}
+	tt := testerOf(t, s, 1280, 820)
+	show(s, tt, videoSearchPath("Frogs")+"&random=wikipedia")
+	if !showsText(tt.Texts(), "A popular video") {
+		t.Fatalf("the first search doesn't show its videos: %q", tt.Texts())
+	}
+	show(s, tt, videoSearchPath("Toads")+"&random=wikipedia")
+	if showsText(tt.Texts(), "A popular video") || !showsText(tt.Texts(), "Toads singing") {
+		t.Errorf("the second search shows %q", tt.Texts())
+	}
+}

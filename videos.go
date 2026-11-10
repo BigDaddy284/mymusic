@@ -52,6 +52,9 @@ type videosState struct {
 	moreBusy  map[string]bool
 	// rolling is set while Random asks Wikipedia for a topic.
 	rolling bool
+	// randomShown are the videos random searches showed, by video: the
+	// search that showed it first, the one that may show it again.
+	randomShown map[string]string
 	// ratings are the account's ratings of videos the user set here, by
 	// video: "like", "dislike", or "" (videorating.go).
 	ratings map[string]string
@@ -199,6 +202,9 @@ func (s *shell) videoSearchPage(c *ui.Context, q, random string) {
 		}
 		key := "videos:search:" + q
 		res := fetch(s, key, func(ctx context.Context) (youtube.VideoPage, error) { return s.svc.Videos.Search(ctx, q) })
+		if random != "" && res.done && res.err == nil {
+			res = s.freshRandomVideos(q, res)
+		}
 		if res.done && res.err == nil && len(res.value.Videos) == 0 && random == "wikipedia" {
 			// An obscure title finds nothing: a word of the list will.
 			word := randomWord()
@@ -208,6 +214,32 @@ func (s *shell) videoSearchPage(c *ui.Context, q, random string) {
 		}
 		s.videoFeedOf(c, key, true, "No videos match.", res)
 	})
+}
+
+// freshRandomVideos leaves out of the videos a random search for q found
+// those an earlier random search showed, as YouTube answers many an
+// obscure search with the same popular videos.
+func (s *shell) freshRandomVideos(q string, res *loaded[youtube.VideoPage]) *loaded[youtube.VideoPage] {
+	vs := &s.videos
+	if vs.randomShown == nil {
+		vs.randomShown = map[string]string{}
+	}
+	page := res.value
+	fresh := make([]youtube.Video, 0, len(page.Videos))
+	for _, v := range page.Videos {
+		if first, ok := vs.randomShown[v.ID]; ok && first != q {
+			continue
+		}
+		vs.randomShown[v.ID] = q
+		fresh = append(fresh, v)
+	}
+	if len(fresh) == len(page.Videos) {
+		return res
+	}
+	page.Videos = fresh
+	out := *res
+	out.value = page
+	return &out
 }
 
 // randomWord returns a word of the app's own list, replaced in tests.

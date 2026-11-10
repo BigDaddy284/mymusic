@@ -34,3 +34,42 @@ func TestRandomWord(t *testing.T) {
 		t.Error("the random word is empty")
 	}
 }
+
+// TestRandomWordsDontRepeat goes through every pairing of the built-in
+// words once before any comes again.
+func TestRandomWordsDontRepeat(t *testing.T) {
+	randomPicks.words = nil
+	n := len(randomWords) * len(randomFilms)
+	seen := map[string]bool{}
+	for range n {
+		w := RandomWord()
+		if seen[w] {
+			t.Fatalf("%q came again after %d", w, len(seen))
+		}
+		seen[w] = true
+	}
+}
+
+// TestRandomTitlesDontRepeat searches each random article's title once,
+// though Wikipedia answers it again.
+func TestRandomTitlesDontRepeat(t *testing.T) {
+	calls := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		w.Write([]byte(`{"query":{"random":[{"title":"Frogs"},{"title":"Toads"},{"title":"frogs"}]}}`))
+	}))
+	defer srv.Close()
+	was := wikipediaAPI
+	wikipediaAPI = srv.URL
+	t.Cleanup(func() { wikipediaAPI = was })
+	var v Videos
+	a, _ := v.RandomTopic(context.Background())
+	b, _ := v.RandomTopic(context.Background())
+	c, wiki := v.RandomTopic(context.Background())
+	if a != "Frogs" || b != "Toads" || wiki {
+		t.Errorf("Random searched %q, %q, then %q (from Wikipedia: %v)", a, b, c, wiki)
+	}
+	if calls > 4 {
+		t.Errorf("asked Wikipedia %d times", calls)
+	}
+}

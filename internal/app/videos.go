@@ -10,9 +10,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand/v2"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -96,18 +96,6 @@ func (v *Videos) Playlists(ctx context.Context) ([]youtube.VideoPlaylist, error)
 	return out, nil
 }
 
-// RandomTopic returns something random to search for: the title of a
-// random article of English Wikipedia, or, when Wikipedia doesn't answer,
-// a word of a list of the app's own. fromWikipedia tells which.
-func (v *Videos) RandomTopic(ctx context.Context) (topic string, fromWikipedia bool) {
-	ctx, cancel := context.WithTimeout(ctx, 6*time.Second)
-	defer cancel()
-	if title, err := randomArticle(ctx, wikipediaAPI); err == nil {
-		return title, true
-	}
-	return RandomWord(), false
-}
-
 // wikipediaAPI is the API of English Wikipedia, replaced in tests.
 var wikipediaAPI = "https://en.wikipedia.org/w/api.php"
 
@@ -116,26 +104,36 @@ var wikipediaClient = &http.Client{Transport: netproxy.Transport(), Timeout: 10 
 // randomArticle asks Wikipedia's API at api for the title of a random
 // article: one of its main namespace, which holds the articles alone.
 func randomArticle(ctx context.Context, api string) (string, error) {
+	titles, err := randomArticles(ctx, api, 1)
+	if err != nil {
+		return "", err
+	}
+	return titles[0], nil
+}
+
+// randomArticles asks Wikipedia's API at api for the titles of n random
+// articles, at most 500.
+func randomArticles(ctx context.Context, api string, n int) ([]string, error) {
 	q := url.Values{
 		"action":      {"query"},
 		"list":        {"random"},
 		"rnnamespace": {"0"},
-		"rnlimit":     {"1"},
+		"rnlimit":     {strconv.Itoa(n)},
 		"format":      {"json"},
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, api+"?"+q.Encode(), nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	// Wikipedia asks apps to name themselves.
 	req.Header.Set("User-Agent", "MyTubeApp/1.0 (Windows desktop app; random video search)")
 	res, err := wikipediaClient.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("wikipedia: HTTP %d", res.StatusCode)
+		return nil, fmt.Errorf("wikipedia: HTTP %d", res.StatusCode)
 	}
 	var body struct {
 		Query struct {
@@ -145,16 +143,19 @@ func randomArticle(ctx context.Context, api string) (string, error) {
 		} `json:"query"`
 	}
 	if err := json.NewDecoder(res.Body).Decode(&body); err != nil {
-		return "", fmt.Errorf("wikipedia: %w", err)
+		return nil, fmt.Errorf("wikipedia: %w", err)
 	}
-	if len(body.Query.Random) == 0 || strings.TrimSpace(body.Query.Random[0].Title) == "" {
-		return "", errors.New("wikipedia: no random article")
+	var titles []string
+	for _, r := range body.Query.Random {
+		if t := strings.TrimSpace(r.Title); t != "" {
+			titles = append(titles, t)
+		}
 	}
-	return strings.TrimSpace(body.Query.Random[0].Title), nil
+	if len(titles) == 0 {
+		return nil, errors.New("wikipedia: no random article")
+	}
+	return titles, nil
 }
-
-// RandomWord returns a word of the built-in list.
-func RandomWord() string { return randomWords[rand.IntN(len(randomWords))] }
 
 // randomWords are what the Random button searches for when Wikipedia
 // doesn't answer: words that find plenty of videos.
