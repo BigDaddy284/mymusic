@@ -508,8 +508,8 @@ func (s *shell) alert(c *ui.Context, title, message string, actions func()) ui.E
 	})
 }
 
-// sourceMark tells where a track comes from by a shape: a disc for
-// Spotify, a square for YouTube Music, a ring and its hole for the music
+// sourceMark tells where a track comes from by a shape: a square for
+// YouTube Music, a ring and its hole for the music
 // on this computer, two rings for MyTube's own mixes.
 func (s *shell) sourceMark(c *ui.Context, source media.Source, on bool) {
 	k := &s.lk
@@ -519,15 +519,11 @@ func (s *shell) sourceMark(c *ui.Context, source media.Source, on bool) {
 		ink = k.selectedSub
 	case on:
 		ink = k.accentText
-	case source == media.SourceSpotify:
-		ink = k.spotify
 	case source == media.SourceYouTube:
 		ink = k.youtube
 	}
 	ui.Box(c).Size(10, 10).Shrink(0).Label(sourceName(source)).Draw(func(p *ui.Painter, r ui.Rect) {
 		switch source {
-		case media.SourceSpotify:
-			p.Fill(ui.Rect{X: r.X + 0.8, Y: r.Y + 0.8, W: 8.4, H: 8.4}, ink, 4.2)
 		case media.SourceYouTube:
 			p.Fill(ui.Rect{X: r.X + 1, Y: r.Y + 1, W: 8, H: 8}, ink, 0)
 		case media.SourceFile:

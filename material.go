@@ -85,7 +85,7 @@ func makeMaterial(seed hct.ARGB, dark bool) *materialColors {
 			"text": c(s.OnSurface), "text-muted": c(s.OnSurfaceVariant),
 			"accent": c(s.Primary), "accent-text": c(s.OnPrimary),
 			"danger": c(s.Error), "success": fixed(145, 48),
-			"youtube": fixed(27, 80), "spotify": fixed(142, 60),
+			"youtube": fixed(27, 80),
 			// The tiles: the primary's and the tertiary's containers, and
 			// both a step stronger. A light seed's containers lack chroma:
 			// the secondary's would match the primary's.

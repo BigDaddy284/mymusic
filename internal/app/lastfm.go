@@ -32,7 +32,7 @@ type lastfmCredentials struct {
 	Session lastfm.Session `json:"session"`
 }
 
-// lastfmStore keeps the credentials like the Spotify token: in the
+// lastfmStore keeps the credentials in the
 // system's credential store, sealed for the Windows user where the
 // Credential Manager isn't available, or in a file readable by the user
 // alone where there is no store.

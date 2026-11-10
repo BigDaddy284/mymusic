@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/audio"
-	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
 // castStream is a fake cast device as the player's output: the fake stream,
@@ -217,26 +216,5 @@ func TestOutputNoCrossfade(t *testing.T) {
 	h.wait("b playing", playing("b"))
 	if got := cast.lastLoad(); got != "load url:yt:b 0s true" {
 		t.Errorf("b loaded with %q", got)
-	}
-}
-
-// TestOutputLeavesSpotifyDevices leaves a Spotify track that plays on a
-// Spotify device there: no output has a stream of it to move.
-func TestOutputLeavesSpotifyDevices(t *testing.T) {
-	h := newHarness(t, Saved{}, func(f *fakeServices) {
-		f.prepare = func(t media.Track) (Source, error) { return Source{Mode: ModeConnect, Track: t}, nil }
-	})
-	sp := track("s")
-	sp.ID, sp.Source = "sp:s", media.SourceSpotify
-	h.p.PlayTracks([]media.Track{sp}, 0)
-	h.wait("on the device", func(p *Player) bool { return p.connect.active() })
-	cast := newCastStream(h)
-	h.p.SetOutput(Output{Stream: cast, Volume: 0.4})
-	h.wait("moved", func(p *Player) bool { return p.s.Remote })
-	if cast.count("load") != 0 {
-		t.Error("a Spotify device's track loaded on the cast device")
-	}
-	if !h.p.State().Playing {
-		t.Error("the Spotify device's track stopped")
 	}
 }

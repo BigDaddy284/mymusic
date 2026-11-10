@@ -8,6 +8,6 @@
 
 **First launch on Windows.** The installer is not signed yet: if SmartScreen warns, choose More info › Run anyway.
 
-**Playing music.** YouTube Music plays without anything else, apart from a few tracks, such as those made for children, which need yt-dlp: MyTube installs it for you from Settings › Playback. Spotify needs an app of your own, which the [setup guide](https://github.com/{repo}/blob/{tag}/docs/spotify.md) walks through. The [README](https://github.com/{repo}/blob/{tag}/README.md#install) lists what Windows needs.
+**Playing music.** YouTube Music plays without anything else, apart from a few tracks, such as those made for children, which need yt-dlp: MyTube installs it for you from Settings › Playback. The [README](https://github.com/{repo}/blob/{tag}/README.md#install) lists what Windows needs.
 
 Verify downloads with `SHA256SUMS`.

@@ -87,8 +87,6 @@ func artworkURL(images []media.Image, size int) string {
 // sourceName names a service.
 func sourceName(s media.Source) string {
 	switch s {
-	case media.SourceSpotify:
-		return "Spotify"
 	case media.SourceYouTube:
 		return "YouTube Music"
 	case media.SourceFile:

@@ -6,7 +6,7 @@ import (
 )
 
 func TestIDRoundTrip(t *testing.T) {
-	for _, source := range []Source{SourceYouTube, SourceSpotify, SourceLocal} {
+	for _, source := range []Source{SourceYouTube, SourceLocal, SourceFile} {
 		id := ID(source, "abc:def")
 		got, native, err := ParseID(id)
 		if err != nil {
@@ -19,7 +19,7 @@ func TestIDRoundTrip(t *testing.T) {
 }
 
 func TestParseIDRejectsUnknown(t *testing.T) {
-	for _, id := range []string{"", "yt:", "zz:abc", "abc"} {
+	for _, id := range []string{"", "yt:", "zz:abc", "sp:abc", "abc"} {
 		if _, _, err := ParseID(id); !errors.Is(err, ErrBadID) {
 			t.Errorf("ParseID(%q) error = %v, want ErrBadID", id, err)
 		}

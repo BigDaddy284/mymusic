@@ -32,7 +32,7 @@ const (
 var ColorKeys = []string{
 	"bg", "surface", "surface-2", "surface-3", "border",
 	"text", "text-muted", "accent", "accent-text",
-	"danger", "success", "youtube", "spotify",
+	"danger", "success", "youtube",
 	"tile-1", "tile-2", "tile-3", "tile-4", "tile-text",
 }
 
@@ -41,6 +41,10 @@ var ColorKeys = []string{
 // the accent, and "hover" and "pressed", the solid fills of what the
 // pointer is over or presses, in place of the text's tints.
 var OptionalColorKeys = []string{"accent-2", "hover", "pressed"}
+
+// legacyColorKeys are the colors the themes of MyTube 0.x set, which
+// MyTube takes, and ignores: "spotify", of Spotify's marks.
+var legacyColorKeys = []string{"spotify"}
 
 // OptionType is the kind of control a theme option shows.
 type OptionType string
@@ -171,6 +175,7 @@ func (t Theme) Validate() error {
 	}
 	for key, v := range t.Colors {
 		switch {
+		case slices.Contains(legacyColorKeys, key):
 		case slices.Contains(OptionalColorKeys, key):
 			if !ValidColor(v) {
 				errs = append(errs, fmt.Errorf("colors.%s must be a color", key))

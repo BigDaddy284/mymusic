@@ -17,7 +17,7 @@ func TestSpeedSettings(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 3200)
 	show(s, tt, "/settings/playback")
-	for _, want := range []string{"speed", "Songs", "Their own speed.", "Speed changes what MyTube plays itself: YouTube Music, and Spotify tracks played from it.", "So do live streams, which play as they're broadcast."} {
+	for _, want := range []string{"speed", "Songs", "Their own speed.", "Speed changes what MyTube plays: YouTube Music and the music on this computer.", "Live streams keep their own speed, as they play as they're broadcast."} {
 		if !tt.HasText(want) {
 			t.Errorf("the settings don't say %q", want)
 		}
@@ -168,17 +168,6 @@ func TestSpeedLabel(t *testing.T) {
 	}
 }
 
-// TestSpeedToastOnDevice tells that a Spotify device plays its track at
-// its own speed.
-func TestSpeedToastOnDevice(t *testing.T) {
-	s := newTestShell(t)
-	s.st.Source = &player.Source{Mode: player.ModeConnect}
-	s.changeSpeed(1.5)
-	if n := s.notes[len(s.notes)-1]; n.Message != "Songs play at 1.5× - Spotify plays this one at its own speed" {
-		t.Errorf("told %q", n.Message)
-	}
-}
-
 // TestSpeedToastLive tells that a live stream plays at its own speed, as
 // the settings say, which a search for live streams finds.
 func TestSpeedToastLive(t *testing.T) {
@@ -191,7 +180,7 @@ func TestSpeedToastLive(t *testing.T) {
 	}
 	tt := testerOf(t, s, 1280, 3200)
 	show(s, tt, settingsPath("playback", "live streams"))
-	showsOnly(t, tt, "searching live streams", []string{"speed", "So do live streams, which play as they're broadcast."}, []string{"Crossfade"})
+	showsOnly(t, tt, "searching live streams", []string{"speed", "Live streams keep their own speed, as they play as they're broadcast."}, []string{"Crossfade"})
 }
 
 // TestLyricsLead lights the lyrics up as far ahead as the track moves on

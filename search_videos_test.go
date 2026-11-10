@@ -46,16 +46,3 @@ func TestSearchShowsVideos(t *testing.T) {
 		t.Error("the Videos pivot shows a song")
 	}
 }
-
-// TestSearchVideosOfSpotify says that only YouTube Music has videos when
-// the search is Spotify's alone.
-func TestSearchVideosOfSpotify(t *testing.T) {
-	s := searchVideosShell(t)
-	s.searchPivot = slices.Index(searchPivots, "videos")
-	s.searchScope = 1
-	tt := testerOf(t, s, 1280, 1800)
-	show(s, tt, searchPath("boiler room"))
-	if !showsText(tt.Texts(), "Only YouTube Music has videos.") {
-		t.Errorf("the Videos pivot of Spotify says %q", tt.Texts())
-	}
-}

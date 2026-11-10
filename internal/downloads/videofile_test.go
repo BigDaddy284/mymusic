@@ -7,15 +7,14 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// TestVideoFile tells the file of a video downloaded, for a track of
-// Spotify too, which plays its recording's.
+// TestVideoFile tells the file of a video downloaded.
 func TestVideoFile(t *testing.T) {
 	dir := t.TempDir()
 	video := yt("fffffffffff", "Teardrop")
-	m := open(t, dir, Options{Fetcher: &fetcher{}, Matcher: &matcher{matches: map[string]media.Track{"sp:tear": video}}})
+	m := open(t, dir, Options{Fetcher: &fetcher{}})
 	m.Start()
-	m.Add([]media.Track{sp("tear", "Teardrop")}, "best")
-	until(t, "the download", func() bool { return kind(m, "sp:tear") == Done })
+	m.Add([]media.Track{video}, "best")
+	until(t, "the download", func() bool { return kind(m, video.ID) == Done })
 	if p, ok := m.Snapshot().VideoFile("fffffffffff"); !ok || p != filepath.Join(dir, "audio", "fffffffffff.webm") {
 		t.Errorf("the file %q, %v", p, ok)
 	}

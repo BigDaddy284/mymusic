@@ -17,9 +17,8 @@ func init() { addSettings("playback", 30, (*shell).speedSettings) }
 func (s *shell) speedSettings(c *ui.Context) {
 	s.group(c, "Speed", func() {
 		s.settingsOf(c, speedRows)
-		// Spotify's players have no speed to set, and a live stream has
-		// nothing ahead of its live edge to play faster.
-		s.hint(c, "Speed changes what MyTube plays itself: YouTube Music, and Spotify tracks played from it. Tracks and episodes Spotify plays, in MyTube or on Spotify Connect, keep their own speed. So do live streams, which play as they're broadcast. The speed button by the player changes it too, for the kind of track that plays.")
+		// A live stream has nothing ahead of its live edge to play faster.
+		s.hint(c, "Speed changes what MyTube plays: YouTube Music and the music on this computer. Live streams keep their own speed, as they play as they're broadcast. The speed button by the player changes it too, for the kind of track that plays.")
 	})
 }
 

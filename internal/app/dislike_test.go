@@ -9,14 +9,12 @@ import (
 	"slices"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
@@ -47,8 +45,8 @@ func (a *requestLog) take() []string {
 }
 
 // dislikeApp is an app with a library and settings in a folder of their
-// own, whose YouTube Music and Spotify are yt and sp, signed in.
-func dislikeApp(t *testing.T, yt, sp http.HandlerFunc) *App {
+// own, whose YouTube Music is yt, signed in.
+func dislikeApp(t *testing.T, yt http.HandlerFunc) *App {
 	t.Helper()
 	dir := t.TempDir()
 	lib, err := library.Open(filepath.Join(dir, "library.json"))
@@ -59,36 +57,28 @@ func dislikeApp(t *testing.T, yt, sp http.HandlerFunc) *App {
 	if err != nil {
 		t.Fatal(err)
 	}
-	a := &App{library: lib, settings: st, youtube: youtube.New(), spotify: spotify.NewClient(spotify.NewAuth("client"))}
-	a.matcher = match.New(a.youtube, nil)
+	a := &App{library: lib, settings: st, youtube: youtube.New()}
+	a.matcher = match.New(a.youtube)
 	ytSrv := httptest.NewServer(yt)
 	t.Cleanup(ytSrv.Close)
 	a.youtube.BaseURL = ytSrv.URL
 	a.youtube.SetCookies(testCookies)
-	spSrv := httptest.NewServer(sp)
-	t.Cleanup(spSrv.Close)
-	a.spotify.BaseURL = spSrv.URL
-	a.spotify.SetToken(spotify.Token{AccessToken: "ACCESS", Expiry: time.Now().Add(time.Hour)})
 	return a
 }
 
 // TestSetDisliked keeps dislikes in the library, and sends those of
-// YouTube Music tracks there, signed in. A dislike that takes the like of
-// a Spotify track back takes it out of the user's Spotify library.
+// YouTube Music tracks there, signed in.
 func TestSetDisliked(t *testing.T) {
-	var yt, sp requestLog
+	var yt requestLog
 	a := dislikeApp(t, func(w http.ResponseWriter, r *http.Request) {
 		yt.note(r)
 		w.Write([]byte(`{"responseContext":{}}`))
-	}, func(w http.ResponseWriter, r *http.Request) {
-		sp.note(r)
-		w.WriteHeader(http.StatusOK)
 	})
 	c := &Collection{a}
 	ctx := context.Background()
 	song := media.Track{ID: "yt:vid", Source: media.SourceYouTube, Title: "Song"}
-	sptrack := media.Track{ID: "sp:abc", Source: media.SourceSpotify, Title: "Track"}
-	other := media.Track{ID: "sp:def", Source: media.SourceSpotify, Title: "Other"}
+	file := media.Track{ID: "file:abc", Source: media.SourceFile, Title: "Track"}
+	other := media.Track{ID: "file:def", Source: media.SourceFile, Title: "Other"}
 
 	if err := c.SetLiked(ctx, song, true); err != nil {
 		t.Fatal(err)
@@ -112,23 +102,20 @@ func TestSetDisliked(t *testing.T) {
 		t.Error("taking the dislike back left it disliked, or liked it")
 	}
 
-	// Spotify takes no dislikes, but loses the like a dislike took back.
-	if err := c.SetLiked(ctx, sptrack, true); err != nil {
+	// The music on this computer stays in MyTube.
+	if err := c.SetLiked(ctx, file, true); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.SetDisliked(ctx, sptrack, true); err != nil {
+	if err := c.SetDisliked(ctx, file, true); err != nil {
 		t.Fatal(err)
 	}
 	if err := c.SetDisliked(ctx, other, true); err != nil {
 		t.Fatal(err)
 	}
-	if got := sp.take(); !slices.Equal(got, []string{"PUT /me/library?spotify:track:abc", "DELETE /me/library?spotify:track:abc"}) {
-		t.Errorf("Spotify was asked %q", got)
-	}
 	if got := yt.take(); len(got) != 0 {
-		t.Errorf("disliking Spotify tracks asked YouTube Music %q", got)
+		t.Errorf("disliking files asked YouTube Music %q", got)
 	}
-	if d := c.Disliked(); len(d) != 2 || d[0].ID != "sp:def" {
+	if d := c.Disliked(); len(d) != 2 || d[0].ID != "file:def" {
 		t.Errorf("disliked %+v", d)
 	}
 
@@ -136,7 +123,7 @@ func TestSetDisliked(t *testing.T) {
 	if err := c.SetLiked(ctx, other, true); err != nil {
 		t.Fatal(err)
 	}
-	if a.IsDisliked("sp:def") || !a.IsLiked("sp:def") {
+	if a.IsDisliked("file:def") || !a.IsLiked("file:def") {
 		t.Error("liking a disliked track left it disliked")
 	}
 
@@ -166,7 +153,7 @@ func TestWithoutDisliked(t *testing.T) {
 	if got := withoutDisliked(radio, nil); len(got) != len(radio) {
 		t.Errorf("without dislikes, kept %d of %d", len(got), len(radio))
 	}
-	got := withoutDisliked(radio, []media.Track{song("sp:x", "Blue", "ANN"), song("yt:5", "Green", "Di")})
+	got := withoutDisliked(radio, []media.Track{song("file:x", "Blue", "ANN"), song("yt:5", "Green", "Di")})
 	var ids []string
 	for _, tr := range got {
 		ids = append(ids, tr.ID)
@@ -183,8 +170,7 @@ func TestRadioWithoutDisliked(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	a := dislikeApp(t, func(w http.ResponseWriter, r *http.Request) { w.Write(answer) },
-		func(w http.ResponseWriter, r *http.Request) {})
+	a := dislikeApp(t, func(w http.ResponseWriter, r *http.Request) { w.Write(answer) })
 	c := &Catalog{a}
 	ctx := context.Background()
 	seed := media.Track{ID: "yt:seed", Source: media.SourceYouTube, Title: "Seed"}
@@ -252,7 +238,7 @@ func TestReloadSettingsFollowsSkipDisliked(t *testing.T) {
 		t.Fatal(err)
 	}
 	stream := &quietStream{}
-	p := player.New(offlineServices{playerServices{a}}, stream, connectDevice{a}, player.Saved{})
+	p := player.New(offlineServices{playerServices{a}}, stream, player.Saved{})
 	stream.p.Store(p)
 	a.goPlayer.Store(p)
 	t.Cleanup(p.Close)

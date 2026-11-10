@@ -50,7 +50,7 @@ type Desktop struct {
 	// service has it online.
 	DiscordCover bool `json:"discordCover"`
 	// DiscordServiceBadge shows a badge of the track's service, YouTube
-	// Music, Spotify or this computer, at the cover's corner. It is off
+	// Music or this computer, at the cover's corner. It is off
 	// at first.
 	DiscordServiceBadge bool `json:"discordServiceBadge"`
 	// DiscordTimeLeft shows the time played and the time left in the

@@ -65,7 +65,7 @@ func TestFlush(t *testing.T) {
 		t.Fatal(err)
 	}
 	stream := &quietStream{}
-	p := player.New(offlineServices{playerServices{a}}, stream, connectDevice{a}, player.Saved{})
+	p := player.New(offlineServices{playerServices{a}}, stream, player.Saved{})
 	stream.p.Store(p)
 	a.goPlayer.Store(p)
 	t.Cleanup(p.Close)

@@ -16,36 +16,31 @@ import (
 
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
-
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // TestSettingsViewed shows every section of the settings, and searched, in
-// both of the ways the themes go, and in each way Spotify plays: showing
-// them changes nothing.
+// both of the ways the themes go: showing them changes nothing.
 func TestSettingsViewed(t *testing.T) {
 	s := newTestShell(t)
 	tt := tester(t, s)
 	for _, follow := range []bool{false, true} {
-		for _, mode := range []settings.SpotifyPlayback{settings.SpotifyPlaybackHere, settings.SpotifyPlaybackConnect, settings.SpotifyPlaybackMatch} {
-			st := s.svc.Preferences.Get()
-			st.FollowSystem, st.SpotifyPlayback, st.Accent = follow, mode, "#123456"
-			if _, err := s.svc.Preferences.Set(st); err != nil {
-				t.Fatal(err)
+		st := s.svc.Preferences.Get()
+		st.FollowSystem, st.Accent = follow, "#123456"
+		if _, err := s.svc.Preferences.Set(st); err != nil {
+			t.Fatal(err)
+		}
+		s.refresh()
+		before, _ := json.Marshal(s.svc.Preferences.Get())
+		for _, tab := range settingsTabs {
+			for _, q := range []string{"", "a"} {
+				s.navigate(settingsPath(tab, q))
+				s.drain()
+				tt.Frame()
+				tt.Advance(time.Second)
 			}
-			s.refresh()
-			before, _ := json.Marshal(s.svc.Preferences.Get())
-			for _, tab := range settingsTabs {
-				for _, q := range []string{"", "a"} {
-					s.navigate(settingsPath(tab, q))
-					s.drain()
-					tt.Frame()
-					tt.Advance(time.Second)
-				}
-			}
-			if after, _ := json.Marshal(s.svc.Preferences.Get()); string(after) != string(before) {
-				t.Errorf("showing the settings changed them, following the computer %v, Spotify %s:\n%s\n%s", follow, mode, before, after)
-			}
+		}
+		if after, _ := json.Marshal(s.svc.Preferences.Get()); string(after) != string(before) {
+			t.Errorf("showing the settings changed them, following the computer %v:\n%s\n%s", follow, before, after)
 		}
 	}
 }
@@ -373,30 +368,14 @@ func TestAppearance(t *testing.T) {
 }
 
 // TestEvenLoudness turns Even loudness off, and tells how it differs from
-// Volume levelling, and that Spotify's own tracks keep their loudness.
+// Volume levelling.
 func TestEvenLoudness(t *testing.T) {
 	const line = "Turns loud tracks down to one level, from YouTube's measure of each, so none jumps out. Quiet recordings keep their level."
-	const spotify = " Spotify plays its own tracks at its own loudness."
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 3200)
-	for _, c := range []struct {
-		mode settings.SpotifyPlayback
-		says string
-	}{
-		{settings.SpotifyPlaybackMatch, line},
-		{settings.SpotifyPlaybackConnect, line + spotify},
-	} {
-		mode, says := c.mode, c.says
-		st := s.svc.Preferences.Get()
-		st.SpotifyPlayback = mode
-		if _, err := s.svc.Preferences.Set(st); err != nil {
-			t.Fatal(err)
-		}
-		s.refresh()
-		show(s, tt, "/settings/playback")
-		if !tt.HasText(says) || says == line && tt.HasText(spotify[1:]) {
-			t.Errorf("with Spotify %s, the row doesn't say %q: %q", mode, says, tt.Texts())
-		}
+	show(s, tt, "/settings/playback")
+	if !tt.HasText(line) {
+		t.Errorf("the row doesn't say %q: %q", line, tt.Texts())
 	}
 	if !tt.HasText("Squeezes loud and quiet moments closer together as they play, and lifts quiet recordings.") {
 		t.Error("Volume levelling doesn't say how it differs")
@@ -407,7 +386,7 @@ func TestEvenLoudness(t *testing.T) {
 	// The row's title shows "Even loudness" too: the switch is to its
 	// right, beside the title or halfway down the row.
 	title, _ := tt.Find("Even loudness")
-	desc, _ := tt.Find(line + spotify)
+	desc, _ := tt.Find(line)
 	for x := title.X + title.W; x < 1280 && s.svc.Preferences.Get().Loudness; x += 6 {
 		for _, y := range []float32{title.Y + title.H/2, (title.Y + desc.Y + desc.H) / 2} {
 			if s.svc.Preferences.Get().Loudness {

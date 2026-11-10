@@ -47,7 +47,7 @@ func (s *shell) computerLibrary(c *ui.Context) {
 	tracks := lf.Tracks()
 	if len(tracks) == 0 {
 		title, text := "Nothing on this computer yet",
-			"Add a folder of music, or open files: they play from your computer, beside Spotify and YouTube Music, in your queue and your mixes. Nothing of them is uploaded."
+			"Add a folder of music, or open files: they play from your computer, beside YouTube Music, in your queue and your mixes. Nothing of them is uploaded."
 		switch {
 		case st.Scanning:
 			title, text = "Looking through your music", scanLine(st)

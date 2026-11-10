@@ -71,24 +71,19 @@ func TestHomeYoursAlone(t *testing.T) {
 	}
 }
 
-// TestHomeServiceFails shows the shelves of the service that answered, and
-// why the other's didn't, which try again asks for alone.
+// TestHomeServiceFails shows why YouTube Music's shelves didn't come,
+// which try again asks for again.
 func TestHomeServiceFails(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 1600)
-	youtube := &loaded[[]media.Shelf]{done: true, value: shelves(1, 3)}
-	s.loads["home:spotify"] = &loaded[[]media.Shelf]{done: true, err: errors.New("spotify: the service is down")}
-	s.loads["home:youtube"] = youtube
+	s.loads["home:youtube"] = &loaded[[]media.Shelf]{done: true, err: errors.New("youtube: the service is down")}
 	show(s, tt, "/")
-	if !tt.HasText("spotify: the service is down") || !shelfShows(tt, "Shelf 0") {
-		t.Fatalf("Home with Spotify down: %q", tt.Texts())
+	if !tt.HasText("youtube: the service is down") {
+		t.Fatalf("Home with YouTube Music down: %q", tt.Texts())
 	}
 	click(t, s, tt, "try again")
-	if l, ok := s.loads["home:spotify"].(*loaded[[]media.Shelf]); !ok || l.err != nil && l.done {
-		t.Errorf("try again didn't ask Spotify again: %+v", s.loads["home:spotify"])
-	}
-	if s.loads["home:youtube"] != youtube {
-		t.Error("try again asked YouTube Music again too")
+	if l, ok := s.loads["home:youtube"].(*loaded[[]media.Shelf]); !ok || l.asks < 1 {
+		t.Errorf("try again didn't ask YouTube Music again: %+v", s.loads["home:youtube"])
 	}
 }
 

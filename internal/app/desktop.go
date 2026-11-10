@@ -39,12 +39,6 @@ func (a *App) Start() {
 	// process before it returns.
 	mygo.App.OnWillQuit(func(*mygo.QuitEvent) { a.flush() })
 	mygo.App.OnQuit(a.flush)
-	// The listener stops hearing Spotify as MyTube quits.
-	mygo.App.OnWillQuit(func(*mygo.QuitEvent) {
-		if l := a.listen.Load(); l != nil {
-			l.close()
-		}
-	})
 	if !mygo.App.IsPackaged() {
 		if err := mygo.App.RegisterURLScheme(URLScheme); err != nil {
 			log.Printf("mytube: registering %s links: %v", URLScheme, err)
@@ -75,6 +69,7 @@ func (a *App) Start() {
 	a.downloads.Start()
 	a.startLocalFiles()
 	go a.keepYTDLPCurrent()
+	go forgetSpotify(a.opts.DataDir)
 }
 
 // keepYTDLPCurrent updates the yt-dlp MyTube installed a minute after
@@ -130,9 +125,6 @@ func (a *App) openMain(hidden bool) *mygo.Window {
 		if mini != nil {
 			mini.Close()
 		}
-		// Spotify's hidden page goes with the main window: open, it would
-		// keep MyTube running, and playing, with no window to show it.
-		a.here.close()
 	})
 	a.mu.Lock()
 	a.main = win

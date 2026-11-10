@@ -15,7 +15,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/online"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
@@ -53,13 +52,7 @@ func newNetTest(t *testing.T) *netTest {
 		return fmt.Appendf(nil, `{"url": "https://example.com/audio?expire=%d", "ext": "webm", "acodec": "opus", "filesize": 1000}`,
 			time.Now().Add(6*time.Hour).Unix()), nil
 	}
-	matches, err := store.Open(filepath.Join(n.dir, "matches.json"), map[string]media.Track{
-		"sp:known": {ID: "yt:aaaaaaaaaaa", Source: media.SourceYouTube, Title: "Known"},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	a := &App{resolver: r, cache: stream.NewCache(filepath.Join(n.dir, "audio"), 1<<30), matcher: match.New(nil, matches), settings: testSettings(t)}
+	a := &App{resolver: r, cache: stream.NewCache(filepath.Join(n.dir, "audio"), 1<<30), matcher: match.New(nil), settings: testSettings(t)}
 	a.online = online.New(func(context.Context) error {
 		if n.net.Load() {
 			return nil
@@ -80,23 +73,23 @@ func TestPrepareStreamOffline(t *testing.T) {
 	// Found while the network answered.
 	n.ytdlp.Store(true)
 	n.net.Store(true)
-	if _, err := n.p.PrepareStream(ctx, ytTrack("bbbbbbbbbbb")); err != nil {
+	if _, err := n.p.Prepare(ctx, ytTrack("bbbbbbbbbbb")); err != nil {
 		t.Fatal(err)
 	}
 	n.ytdlp.Store(false)
 	n.net.Store(false)
-	_, err := n.p.PrepareStream(ctx, ytTrack("w3XzgjlKFjc"))
+	_, err := n.p.Prepare(ctx, ytTrack("w3XzgjlKFjc"))
 	if !errors.Is(err, player.ErrOffline) || !strings.Contains(err.Error(), "Unable to download API page") {
 		t.Errorf("without the network: %v", err)
 	}
 	// Known offline now, yt-dlp doesn't run.
 	runs := n.runs.Load()
-	if _, err := n.p.PrepareStream(ctx, ytTrack("ccccccccccc")); !errors.Is(err, player.ErrOffline) || n.runs.Load() != runs {
+	if _, err := n.p.Prepare(ctx, ytTrack("ccccccccccc")); !errors.Is(err, player.ErrOffline) || n.runs.Load() != runs {
 		t.Errorf("offline: %v, yt-dlp ran %d times more", err, n.runs.Load()-runs)
 	}
 	// What plays without the network still does: a track found before, and
 	// one the offline cache holds.
-	if src, err := n.p.PrepareStream(ctx, ytTrack("bbbbbbbbbbb")); err != nil || src.Cached {
+	if src, err := n.p.Prepare(ctx, ytTrack("bbbbbbbbbbb")); err != nil || src.Cached {
 		t.Errorf("found before: %+v, %v", src, err)
 	}
 	if err := os.MkdirAll(filepath.Join(n.dir, "audio"), 0o755); err != nil {
@@ -105,19 +98,11 @@ func TestPrepareStreamOffline(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(n.dir, "audio", "ddddddddddd.webm"), []byte("audio"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if src, err := n.p.PrepareStream(ctx, ytTrack("ddddddddddd")); err != nil || !src.Cached {
+	if src, err := n.p.Prepare(ctx, ytTrack("ddddddddddd")); err != nil || !src.Cached {
 		t.Errorf("cached: %+v, %v", src, err)
 	}
 	if n.runs.Load() != runs {
 		t.Errorf("yt-dlp ran %d times more", n.runs.Load()-runs)
-	}
-	// A Spotify track whose recording is known, and cached.
-	if err := os.WriteFile(filepath.Join(n.dir, "audio", "aaaaaaaaaaa.webm"), []byte("audio"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	sp := media.Track{ID: "sp:known", Source: media.SourceSpotify, Title: "Known"}
-	if src, err := n.p.PrepareStream(ctx, sp); err != nil || !src.Cached || src.Track.ID != "yt:aaaaaaaaaaa" {
-		t.Errorf("a known Spotify track: %+v, %v", src, err)
 	}
 }
 
@@ -125,7 +110,7 @@ func TestPrepareStreamOnline(t *testing.T) {
 	n := newNetTest(t)
 	n.net.Store(true)
 	// The network answers: yt-dlp's error is yt-dlp's own.
-	_, err := n.p.PrepareStream(context.Background(), ytTrack("w3XzgjlKFjc"))
+	_, err := n.p.Prepare(context.Background(), ytTrack("w3XzgjlKFjc"))
 	if err == nil || errors.Is(err, player.ErrOffline) {
 		t.Errorf("with the network: %v", err)
 	}
@@ -138,7 +123,7 @@ func TestPrepareStreamChecksBesideYTDLP(t *testing.T) {
 	n := newNetTest(t)
 	n.hang.Store(true)
 	started := time.Now()
-	_, err := n.p.PrepareStream(context.Background(), ytTrack("w3XzgjlKFjc"))
+	_, err := n.p.Prepare(context.Background(), ytTrack("w3XzgjlKFjc"))
 	if !errors.Is(err, player.ErrOffline) {
 		t.Errorf("yt-dlp still running without the network: %v", err)
 	}

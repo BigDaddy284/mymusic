@@ -80,8 +80,8 @@ type songClock struct {
 }
 
 // glide is how far past the time the player last told the song's time
-// moves on: the player tells it every 250 ms, and a Spotify device's every
-// second. Past that, the track stalled.
+// moves on: the player tells it every 250 ms. Past that, the track
+// stalled.
 const glide = 1500 * time.Millisecond
 
 // follow takes in what the player does, as the view built at now sees

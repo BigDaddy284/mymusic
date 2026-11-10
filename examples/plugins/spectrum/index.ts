@@ -1,7 +1,5 @@
 // Spectrum: a radial spectrum of what plays, as a widget of the now playing
-// page. It reads MyTube's analyser, so it moves for what MyTube hears:
-// tracks that play in MyTube, and on Windows Spotify in the Spotify app on
-// this computer, not on other devices.
+// page. It reads MyTube's analyser, so it moves for what MyTube plays.
 
 import type { MyTubeAPI } from "../../../sdk";
 

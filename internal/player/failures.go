@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // The tracks that couldn't play (#351): the player keeps what it tried of
@@ -26,8 +25,7 @@ type Failure struct {
 	// At is when it failed.
 	At time.Time
 	// Track is the track that couldn't play, and Recording the one that
-	// was to play in its place, when another: a Spotify track's recording
-	// on YouTube Music, once it was found. Its ID is "" otherwise.
+	// was to play in its place, when another. Its ID is "" otherwise.
 	Track, Recording media.Track
 	// Steps are what the player tried, in turn: the last one failed it.
 	Steps []Step
@@ -38,8 +36,7 @@ type Failure struct {
 
 // A Step is a way the player tried to play a track, and why it failed.
 type Step struct {
-	// What names the way, as "the stream", "yt-dlp", "the file" or
-	// "Spotify Connect".
+	// What names the way, as "the stream", "yt-dlp" or "the file".
 	What string
 	// Why is what went wrong, in the words of its error.
 	Why string
@@ -170,29 +167,14 @@ func (p *Player) way(cur Item) string {
 	switch {
 	case cur.Track.Source == media.SourceFile:
 		return "the file"
-	case src == nil && cur.Track.Source == media.SourceSpotify:
-		return "finding it on YouTube Music"
 	case src == nil:
 		return "finding its stream"
-	case src.Mode == ModeConnect:
-		return "Spotify Connect"
-	case src.Mode == ModeSpotify:
-		return "Spotify in MyTube"
 	case src.Live:
 		return "the live stream"
 	case p.playsOffline():
 		return "the download, or the offline cache"
 	}
 	return "the stream"
-}
-
-// spotifyWay names the way the settings play Spotify tracks, which failed
-// as the player fell back to YouTube Music.
-func (p *Player) spotifyWay() string {
-	if p.spotifyMode == settings.SpotifyPlaybackConnect {
-		return "Spotify Connect"
-	}
-	return "Spotify in MyTube"
 }
 
 // again names a way tried once more, after n tries that failed.

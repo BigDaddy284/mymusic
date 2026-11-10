@@ -32,9 +32,6 @@ type privacy struct {
 // home folder home.
 func privacyOf(st app.AccountsStatus, home string) privacy {
 	pr := privacy{home: home}
-	if p := st.Spotify.Profile; p != nil {
-		pr.names = append(pr.names, p.Name, p.ID)
-	}
 	if a := st.YouTube.Account; a != nil {
 		pr.names = append(pr.names, a.Name, a.Handle, strings.TrimPrefix(a.Handle, "@"))
 	}

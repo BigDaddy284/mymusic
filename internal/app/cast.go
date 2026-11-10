@@ -3,7 +3,7 @@ package app
 // Casting: the cast devices on the network, which MyTube looks for by
 // mDNS (internal/cast), and the player's streams played on one of them in
 // the engine's place (castOut), which fetches their audio from MyTube
-// (castServer). Spotify tracks that play on a Spotify device stay there.
+// (castServer).
 
 import (
 	"context"

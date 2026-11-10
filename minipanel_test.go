@@ -16,7 +16,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/lyrics"
 )
 
@@ -428,27 +427,6 @@ func TestMiniOutputPanel(t *testing.T) {
 	showsAll(t, tt, "the cast devices", "Living Room TV", "Chromecast")
 }
 
-// TestMiniConnectPanel lists the Spotify Connect devices in the output
-// panel while Spotify tracks play on Spotify Connect.
-func TestMiniConnectPanel(t *testing.T) {
-	s := miniShell(t, nil)
-	st := s.svc.Preferences.Get()
-	st.SpotifyPlayback = settings.SpotifyPlaybackConnect
-	if _, err := s.svc.Preferences.Set(st); err != nil {
-		t.Fatal(err)
-	}
-	s.refresh()
-	tt, f := miniAt(t, s, 100, 100, 420, 132)
-	click(t, s, tt, "Output device")
-	// What Spotify answers, without asking it.
-	s.loads["devices"] = &loaded[[]spotify.Device]{done: true, value: []spotify.Device{{ID: "phone", Name: "Phone", Active: true}}}
-	f.settle(t, s)
-	showsAll(t, tt, "Spotify Connect's devices", "The active device", "Phone", "active")
-	if a, ok := tt.AccessByRole(ui.RoleRadio, "The active device"); !ok || !a.Checked {
-		t.Errorf("the active device isn't the choice: %+v (%v)", a, ok)
-	}
-}
-
 // TestMiniErrorPanel tells of a track that couldn't play since the mini
 // player opened, with a button whose panel shows why, with Copy; closed,
 // the button goes until another fails.
@@ -507,8 +485,7 @@ func TestMiniPages(t *testing.T) {
 // its menu, in the mini player, whose window the panel grew; Escape closes
 // the dialog before the panel.
 func TestMiniTrackInfo(t *testing.T) {
-	withTrackInfo(t, app.TrackInfo{Plays: app.PlaysEngine,
-		Stream: &app.TrackStream{Codec: "Opus", Container: "WebM", Bitrate: 139.3, Size: 3_400_000, Duration: 207 * time.Second}})
+	withTrackInfo(t, app.TrackInfo{Stream: &app.TrackStream{Codec: "Opus", Container: "WebM", Bitrate: 139.3, Size: 3_400_000, Duration: 207 * time.Second}})
 	s := miniShell(t, nil)
 	tt, f := miniAt(t, s, 100, 100, 420, 132)
 	click(t, s, tt, "Queue")

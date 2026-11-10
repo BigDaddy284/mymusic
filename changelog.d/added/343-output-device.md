@@ -5,6 +5,5 @@
   default, as before, follows the device your system plays on. A device
   that goes away, as headphones you unplug, gives way to the system's
   default with a note, and MyTube goes back to it once it's back. 5.1
-  surround, the visualizer and Even loudness work on any device. Spotify
-  tracks that Spotify plays itself, in MyTube or on Spotify Connect,
-  play where Spotify plays them, and a cast on the cast device (#343).
+  surround, the visualizer and Even loudness work on any device, and a
+  cast plays on the cast device (#343).

@@ -5,8 +5,6 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
@@ -42,22 +40,10 @@ func (s *shell) setSpeed(v float64) {
 }
 
 // speedLocked tells why the speed of what plays can't change, or "" when
-// it can: Spotify's players, in MyTube or on Spotify Connect, play its
-// tracks and episodes at their own speed, as a live stream plays as it's
-// broadcast. A Spotify track not on its device yet, as it loads, goes
-// there, unless Spotify tracks play from YouTube Music.
+// it can: a live stream plays as it's broadcast.
 func (s *shell) speedLocked() string {
-	const spotify = "Spotify plays this one at its own speed"
-	src := s.st.Source
-	switch {
-	case src != nil && src.Mode != player.ModeStream:
-		return spotify
-	case s.st.Live:
+	if s.st.Live {
 		return "this live stream plays at its own speed"
-	case src == nil && s.set.SpotifyPlayback != settings.SpotifyPlaybackMatch:
-		if cur, ok := s.st.Current(); ok && cur.Track.Source == media.SourceSpotify {
-			return spotify
-		}
 	}
 	return ""
 }

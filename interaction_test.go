@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strings"
 	"sync"
@@ -28,7 +29,7 @@ func tester(t *testing.T, s *shell) *ui.Tester { return testerOf(t, s, 1280, 820
 // testerOf is a window of the shell of a size.
 func testerOf(t testing.TB, s *shell, w, h int) *ui.Tester {
 	t.Helper()
-	for _, key := range []string{"home:spotify", "home:youtube", "explore", "charts"} {
+	for _, key := range []string{"home:youtube", "explore", "charts"} {
 		s.loads[key] = &loaded[[]media.Shelf]{done: true}
 	}
 	// About asks GitHub for the newest release, unless the test tells it.
@@ -1094,7 +1095,7 @@ func TestCopyLink(t *testing.T) {
 	tr.URL = "https://music.youtube.com/watch?v=midnight"
 	album := media.Album{ID: "al-x", Title: "Hurry Up, We're Dreaming", Source: media.SourceYouTube,
 		URL: "https://music.youtube.com/browse/MPREb_hurry", Tracks: []media.Track{tr}}
-	artist := media.Artist{ID: "ar-x", Name: "M83", Source: media.SourceSpotify, URL: "https://open.spotify.com/artist/m83"}
+	artist := media.Artist{ID: "ar-x", Name: "M83", Source: media.SourceYouTube, URL: "https://music.youtube.com/channel/UCm83"}
 	list := media.Playlist{ID: "pl-x", Title: "Shoegaze", Source: media.SourceYouTube,
 		URL: "https://music.youtube.com/playlist?list=PLshoegaze"}
 	s.loads["album:al-x"] = &loaded[media.Album]{done: true, value: album}
@@ -1375,17 +1376,11 @@ func TestSearchBox(t *testing.T) {
 	}
 }
 
-// TestSettingsKeep shows the settings without changing them: Spotify
-// tracks played inside MyTube, which the native interface's choices
-// don't name, stay so.
+// TestSettingsKeep shows the settings without changing them.
 func TestSettingsKeep(t *testing.T) {
 	s := newTestShell(t)
-	st := s.svc.Preferences.Get()
-	st.SpotifyPlayback = settings.SpotifyPlaybackHere
-	if _, err := s.svc.Preferences.Set(st); err != nil {
-		t.Fatal(err)
-	}
 	s.refresh()
+	before := s.svc.Preferences.Get()
 	tt := tester(t, s)
 	for _, path := range []string{"/settings/playback", "/settings/appearance", "/settings/desktop", "/settings/about"} {
 		s.navigate(path)
@@ -1393,13 +1388,8 @@ func TestSettingsKeep(t *testing.T) {
 		tt.Frame()
 		tt.Advance(time.Second)
 	}
-	if got := s.svc.Preferences.Get().SpotifyPlayback; got != settings.SpotifyPlaybackHere {
-		t.Errorf("showing the settings made Spotify playback %q", got)
-	}
-	click(t, s, tt, "playback")
-	click(t, s, tt, "in mytube, from youtube music")
-	if got := s.svc.Preferences.Get().SpotifyPlayback; got != settings.SpotifyPlaybackMatch {
-		t.Errorf("choosing YouTube Music made Spotify playback %q", got)
+	if got := s.svc.Preferences.Get(); !reflect.DeepEqual(got, before) {
+		t.Errorf("showing the settings changed them:\n got %+v\nwant %+v", got, before)
 	}
 }
 

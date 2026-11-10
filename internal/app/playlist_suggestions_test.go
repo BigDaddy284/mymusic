@@ -23,7 +23,7 @@ func TestPlaylistSuggestions(t *testing.T) {
 	a := dislikeApp(t, func(w http.ResponseWriter, r *http.Request) {
 		asked = append(asked, r.URL.Path)
 		w.Write(recorded(t, "playlist-suggestions"))
-	}, nil)
+	})
 	if _, err := a.library.SetDisliked(media.Track{ID: "yt:sugVideo002", Source: media.SourceYouTube, Title: "Paper Kites"}, true); err != nil {
 		t.Fatal(err)
 	}

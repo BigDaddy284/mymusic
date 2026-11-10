@@ -1,69 +1,39 @@
 package app
 
-// Podcasts: shows and their episodes, on YouTube Music and Spotify, the
-// shows the user follows, and where they left the episodes.
+// Podcasts: shows and their episodes, on YouTube Music, the shows the
+// user follows, and where they left the episodes.
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
-// errSpotifyEpisode is why a Spotify episode doesn't play from YouTube
-// Music: no recording of it is there.
-var errSpotifyEpisode = errors.New("Spotify's podcasts play only from Spotify: choose In MyTube, from Spotify or On Spotify Connect in Settings › Playback")
-
-// errSpotifyShows is why Spotify's podcasts don't show signed out.
-var errSpotifyShows = errors.New("sign in to Spotify in Settings › Accounts to open its podcasts")
-
-// PodcastSearch holds the podcasts and episodes each service found.
+// PodcastSearch holds the podcasts and episodes YouTube Music found.
 type PodcastSearch struct {
 	YouTube media.PodcastResults `json:"youtube"`
-	Spotify media.PodcastResults `json:"spotify"`
-	// SpotifySignedIn tells whether Spotify was searched.
-	SpotifySignedIn bool `json:"spotifySignedIn"`
 	// Errors are the services' errors, for those that failed.
 	Errors []string `json:"errors"`
 }
 
-// SearchPodcasts searches YouTube Music's podcasts and episodes, and
-// Spotify's when the user signed in.
+// SearchPodcasts searches YouTube Music's podcasts and episodes.
 func (c *Catalog) SearchPodcasts(ctx context.Context, query string) (PodcastSearch, error) {
 	query = strings.TrimSpace(query)
-	res := PodcastSearch{YouTube: media.EmptyPodcastResults(), Spotify: media.EmptyPodcastResults(),
-		SpotifySignedIn: c.a.spotify.SignedIn(), Errors: []string{}}
+	res := PodcastSearch{YouTube: media.EmptyPodcastResults(), Errors: []string{}}
 	if query == "" {
 		return res, nil
 	}
-	var (
-		wg           sync.WaitGroup
-		ytErr, spErr error
-	)
-	wg.Go(func() { res.YouTube, ytErr = c.a.youtube.SearchPodcasts(ctx, query) })
-	if res.SpotifySignedIn {
-		wg.Go(func() { res.Spotify, spErr = c.a.spotify.SearchPodcasts(ctx, query) })
+	found, err := c.a.youtube.SearchPodcasts(ctx, query)
+	if err != nil {
+		res.Errors = append(res.Errors, err.Error())
+		return res, err
 	}
-	wg.Wait()
-	if ytErr != nil {
-		res.YouTube = media.EmptyPodcastResults()
-		res.Errors = append(res.Errors, ytErr.Error())
-	}
-	if spErr != nil {
-		res.Spotify = media.EmptyPodcastResults()
-		res.Errors = append(res.Errors, spErr.Error())
-	}
-	if ytErr != nil && (spErr != nil || !res.SpotifySignedIn) {
-		return res, ytErr
-	}
+	res.YouTube = found
 	return res, nil
 }
 
@@ -77,15 +47,6 @@ func (c *Catalog) Podcast(ctx context.Context, id string) (media.Podcast, error)
 	switch source {
 	case media.SourceYouTube:
 		return c.a.youtube.Podcast(ctx, native)
-	case media.SourceSpotify:
-		if !c.a.spotify.SignedIn() {
-			return media.Podcast{}, errSpotifyShows
-		}
-		p, err := c.a.spotify.Show(ctx, native)
-		if err == nil {
-			p.Saved = c.a.spotifyHas(ctx, spotify.URI("show", native))
-		}
-		return p, err
 	}
 	return media.Podcast{}, fmt.Errorf("no podcast %s", id)
 }
@@ -100,16 +61,8 @@ func (c *Catalog) MoreEpisodes(ctx context.Context, show media.Ref, more string)
 	switch source {
 	case media.SourceYouTube:
 		return c.a.youtube.PodcastEpisodes(ctx, show, more)
-	case media.SourceSpotify:
-		return c.a.spotify.ShowEpisodes(ctx, show, more)
 	}
 	return media.EpisodePage{}, fmt.Errorf("no podcast %s", show.ID)
-}
-
-// SpotifyEpisodesPlay reports whether Spotify's episodes play, as the
-// settings play Spotify: from Spotify, not from YouTube Music.
-func (c *Catalog) SpotifyEpisodesPlay() bool {
-	return c.a.settings.Get().SpotifyPlayback != settings.SpotifyPlaybackMatch
 }
 
 // Podcasts returns the podcasts the user follows in MyTube, the last
@@ -128,13 +81,9 @@ func (c *Collection) SetPodcastFollowed(ctx context.Context, p media.Podcast, on
 	if err := c.a.library.SetFollowed(p, on); err != nil {
 		return err
 	}
-	_, native, _ := media.ParseID(p.ID)
 	var err error
-	switch {
-	case p.Source == media.SourceYouTube && c.a.youtube.SignedIn() && p.PlaylistID != "":
+	if p.Source == media.SourceYouTube && c.a.youtube.SignedIn() && p.PlaylistID != "" {
 		err = c.a.youtube.SetSaved(ctx, p.PlaylistID, on)
-	case p.Source == media.SourceSpotify && c.a.spotify.SignedIn():
-		err = c.a.spotifySave(ctx, spotify.URI("show", native), on)
 	}
 	switch {
 	case err != nil && !on && !here:
@@ -148,11 +97,6 @@ func (c *Collection) SetPodcastFollowed(ctx context.Context, p media.Podcast, on
 // YouTubePodcasts returns the podcasts the user saved on YouTube Music.
 func (c *Collection) YouTubePodcasts(ctx context.Context) ([]media.Podcast, error) {
 	return c.a.youtube.LibraryPodcasts(ctx)
-}
-
-// SpotifyPodcasts returns the shows the user saved on Spotify.
-func (c *Collection) SpotifyPodcasts(ctx context.Context) ([]media.Podcast, error) {
-	return c.a.spotify.SavedShows(ctx)
 }
 
 // Position returns where the user left an episode.

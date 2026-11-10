@@ -125,7 +125,7 @@ docs: explain the plugin storage
 
 Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`,
 `chore`. Scopes name the part changed: `app`, `player`, `ui`, `theme`,
-`themes`, `plugins`, `youtube`, `spotify`, `stream`, `match`, `lyrics`,
+`themes`, `plugins`, `youtube`, `stream`, `match`, `lyrics`,
 `library`, `addons`, `examples`, `sdk`, `tools`.
 
 A change people will notice also gets an entry in the changelog: a file in

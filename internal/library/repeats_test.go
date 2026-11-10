@@ -11,7 +11,7 @@ import (
 // it held; adding them again puts them in a second time.
 func TestAddNewToPlaylist(t *testing.T) {
 	l := open(t)
-	a, b, c := tr("yt:a", media.SourceYouTube, "A"), tr("sp:b", media.SourceSpotify, "B"), tr("yt:c", media.SourceYouTube, "C")
+	a, b, c := tr("yt:a", media.SourceYouTube, "A"), tr("file:b", media.SourceFile, "B"), tr("yt:c", media.SourceYouTube, "C")
 	p, err := l.CreatePlaylist("Road trip", "", []media.Track{a})
 	if err != nil {
 		t.Fatal(err)
@@ -27,10 +27,10 @@ func TestAddNewToPlaylist(t *testing.T) {
 	}
 
 	held, err := l.AddNewToPlaylist(id, []media.Track{b, a, c, b})
-	if err != nil || len(held) != 2 || held[0].ID != "yt:a" || held[1].ID != "sp:b" {
+	if err != nil || len(held) != 2 || held[0].ID != "yt:a" || held[1].ID != "file:b" {
 		t.Fatalf("held %+v, %v", held, err)
 	}
-	if got := ids(); len(got) != 3 || got[1] != "sp:b" || got[2] != "yt:c" {
+	if got := ids(); len(got) != 3 || got[1] != "file:b" || got[2] != "yt:c" {
 		t.Fatalf("the mix holds %q", got)
 	}
 

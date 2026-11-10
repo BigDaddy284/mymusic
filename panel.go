@@ -476,15 +476,6 @@ func (s *shell) trackMenuAt(m *ui.Menu, t media.Track, queued int) {
 		}
 		s.copyLinkItem(m, u)
 	}
-	if t.Source == media.SourceSpotify && !t.IsEpisode() {
-		if m.Item("Find another YouTube Music match").Chosen() {
-			if err := s.svc.Player.ForgetMatch(t.ID); err != nil {
-				s.notes = append(s.notes, noticeOf(err))
-			} else {
-				s.notes = append(s.notes, notice("The next play looks for its recording again"))
-			}
-		}
-	}
 	// What plugins add to the menu of every track.
 	if actions := s.plugins.TrackActions(); len(actions) > 0 {
 		m.Separator()
@@ -509,7 +500,7 @@ func (s *shell) copyLinkItem(m *ui.Menu, rawURL string) {
 // startRadio plays track, then tracks like it.
 func (s *shell) startRadio(t media.Track) {
 	if t.Source == media.SourceFile {
-		s.notes = append(s.notes, notice("Radios start from tracks of Spotify and YouTube Music"))
+		s.notes = append(s.notes, notice("Radios start from tracks of YouTube Music"))
 		return
 	}
 	s.notes = append(s.notes, notice("Starting a radio of "+t.Title+"…"))

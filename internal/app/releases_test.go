@@ -15,7 +15,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/library"
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -61,7 +60,7 @@ func newReleaseApp(t *testing.T, dir string, f *fakeReleases, now *time.Time) *A
 	if err != nil {
 		t.Fatal(err)
 	}
-	a := &App{opts: Options{CacheDir: dir}, library: lib, youtube: youtube.New(), spotify: spotify.NewClient(spotify.NewAuth("client"))}
+	a := &App{opts: Options{CacheDir: dir}, library: lib, youtube: youtube.New()}
 	a.releases.read = f.read
 	a.releases.now = func() time.Time { return *now }
 	return a
@@ -103,25 +102,25 @@ func TestNewReleases(t *testing.T) {
 			release("yt:MPREold", "First Light", "2025", media.AlbumKindAlbum),
 			release("yt:MPREalbum", "Second Light", "2026", media.AlbumKindAlbum),
 		},
-		"sp:dunes": {
-			release("sp:week", "Low Tide", "2026-11-01", media.AlbumKindSingle),
-			release("sp:summer", "Heatwave", "2026-08-01", media.AlbumKindAlbum),
-			release("sp:month", "Shore", "2026-10", media.AlbumKindAlbum),
-			release("sp:soon", "Next Year", "2026-12-04", media.AlbumKindAlbum),
+		"yt:dunes": {
+			release("yt:week", "Low Tide", "2026-11-01", media.AlbumKindSingle),
+			release("yt:summer", "Heatwave", "2026-08-01", media.AlbumKindAlbum),
+			release("yt:month", "Shore", "2026-10", media.AlbumKindAlbum),
+			release("yt:soon", "Next Year", "2026-12-04", media.AlbumKindAlbum),
 		},
 	}}
 	a := newReleaseApp(t, dir, f, &now)
-	follow(t, a, "sp:dunes", "yt:UCharbour")
+	follow(t, a, "yt:dunes", "yt:UCharbour")
 	c := &Catalog{a: a}
 	got, err := c.NewReleases(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := []string{"sp:week", "sp:month", "yt:MPREsingle", "yt:MPREalbum"}
+	want := []string{"yt:week", "yt:month", "yt:MPREsingle", "yt:MPREalbum"}
 	if !slices.Equal(releaseIDs(got), want) {
 		t.Errorf("new releases %q, want %q", releaseIDs(got), want)
 	}
-	if got[0].Of.ID != "sp:dunes" || got[0].Of.Name != "Artist sp:dunes" || got[2].Of.ID != "yt:UCharbour" {
+	if got[0].Of.ID != "yt:dunes" || got[0].Of.Name != "Artist yt:dunes" || got[2].Of.ID != "yt:UCharbour" {
 		t.Errorf("their artists: %+v, %+v", got[0].Of, got[2].Of)
 	}
 	if n := f.asked(); n != 2 {
@@ -180,10 +179,10 @@ func TestNewReleasesBounded(t *testing.T) {
 		f.of[id] = []media.Release{}
 	}
 	for _, d := range []string{"2026-11-06", "2026-11-05", "2026-11-04", "2026-11-03", "2026-11-02"} {
-		f.of[ids[0]] = append(f.of[ids[0]], release("sp:"+d, d, d, media.AlbumKindSingle))
+		f.of[ids[0]] = append(f.of[ids[0]], release("yt:"+d, d, d, media.AlbumKindSingle))
 	}
 	// Two artists of one album.
-	f.of[ids[1]] = []media.Release{release("sp:2026-11-06", "2026-11-06", "2026-11-06", media.AlbumKindSingle)}
+	f.of[ids[1]] = []media.Release{release("yt:2026-11-06", "2026-11-06", "2026-11-06", media.AlbumKindSingle)}
 	a := newReleaseApp(t, t.TempDir(), f, &now)
 	var busy, most int
 	var mu sync.Mutex
@@ -211,7 +210,7 @@ func TestNewReleasesBounded(t *testing.T) {
 	if n := f.asked(); n != 5 {
 		t.Errorf("the second look asked %d times", n)
 	}
-	if want := []string{"sp:2026-11-06", "sp:2026-11-05", "sp:2026-11-04", "sp:2026-11-03"}; !slices.Equal(releaseIDs(got), want) {
+	if want := []string{"yt:2026-11-06", "yt:2026-11-05", "yt:2026-11-04", "yt:2026-11-03"}; !slices.Equal(releaseIDs(got), want) {
 		t.Errorf("new releases %q, want %q", releaseIDs(got), want)
 	}
 }
@@ -252,53 +251,8 @@ func TestNewReleasesUnfollowed(t *testing.T) {
 	}
 }
 
-// TestFollowedArtists gathers the artists followed in MyTube, then on
-// Spotify, each once, and keeps the releases of the artists of a service
-// whose list doesn't read.
-func TestFollowedArtists(t *testing.T) {
-	var down bool
-	sp := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if down || r.URL.Path != "/me/following" {
-			w.WriteHeader(http.StatusServiceUnavailable)
-			return
-		}
-		w.Write([]byte(`{"artists": {"items": [{"id": "dunes", "name": "Dunes"}, {"id": "tide", "name": "Tide"}], "cursors": {}}}`))
-	}))
-	defer sp.Close()
-	now := releaseDay
-	f := &fakeReleases{asks: map[string]int{}, of: map[string][]media.Release{
-		"sp:dunes": {release("sp:week", "Low Tide", "2026-11-01", media.AlbumKindSingle)},
-		"sp:tide":  {},
-		"yt:UCa":   {},
-	}}
-	a := newReleaseApp(t, t.TempDir(), f, &now)
-	a.spotify.BaseURL = sp.URL
-	a.spotify.SetToken(spotify.Token{AccessToken: "ACCESS", Expiry: time.Now().Add(time.Hour)})
-	follow(t, a, "sp:tide", "yt:UCa")
-	followed, lost := a.followedArtists(context.Background())
-	var ids []string
-	for _, ar := range followed {
-		ids = append(ids, ar.ID)
-	}
-	if !slices.Equal(ids, []string{"yt:UCa", "sp:tide", "sp:dunes"}) || len(lost) != 0 {
-		t.Errorf("followed %q, lost %v", ids, lost)
-	}
-	c := &Catalog{a: a}
-	if got, _ := c.NewReleases(context.Background()); !slices.Equal(releaseIDs(got), []string{"sp:week"}) {
-		t.Errorf("new releases %q", releaseIDs(got))
-	}
-	down = true
-	if followed, lost := a.followedArtists(context.Background()); len(followed) != 2 || !lost[media.SourceSpotify] {
-		t.Errorf("Spotify down: followed %+v, lost %v", followed, lost)
-	}
-	if got, _ := c.NewReleases(context.Background()); !slices.Equal(releaseIDs(got), []string{"sp:week"}) {
-		t.Errorf("Spotify down, it forgot Dunes': %q", releaseIDs(got))
-	}
-}
-
 // TestArtistReleasesOfYouTube reads an artist's albums and singles off
-// their YouTube Music page, each with its year, and nothing of Spotify
-// signed out.
+// their YouTube Music page, each with its year.
 func TestArtistReleasesOfYouTube(t *testing.T) {
 	page, err := os.ReadFile(filepath.Join("..", "youtube", "testdata", "artist.json"))
 	if err != nil {
@@ -306,7 +260,7 @@ func TestArtistReleasesOfYouTube(t *testing.T) {
 	}
 	yt := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.Write(page) }))
 	defer yt.Close()
-	a := &App{youtube: youtube.New(), spotify: spotify.NewClient(spotify.NewAuth("client"))}
+	a := &App{youtube: youtube.New()}
 	a.youtube.BaseURL = yt.URL
 	got, err := a.artistReleases(context.Background(), "yt:UCbM50mQtG58vhLZonicYUrQ")
 	if err != nil || len(got) < 2 {
@@ -319,8 +273,5 @@ func TestArtistReleasesOfYouTube(t *testing.T) {
 		if r.Released == "" || r.Released != r.Album.Year {
 			t.Errorf("%s came out %q", r.Album.Title, r.Released)
 		}
-	}
-	if _, err := a.artistReleases(context.Background(), "sp:dunes"); !errors.Is(err, errNotSignedIn) {
-		t.Errorf("Spotify signed out: %v", err)
 	}
 }

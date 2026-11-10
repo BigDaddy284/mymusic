@@ -97,16 +97,10 @@ func (s *shell) chooseOutput(d settings.OutputDevice) {
 }
 
 // outputAside tells why what plays now doesn't play on the output device,
-// "" when it does: a cast device, or Spotify's own player, plays it.
+// "" when it does: a cast device plays it.
 func (s *shell) outputAside() string {
 	if d, on := s.svc.Player.CastingTo(); on {
 		return "Playing on " + d.Name + ": the device is this computer's"
-	}
-	if src := s.st.Source; src != nil && src.Mode != player.ModeStream {
-		if src.Mode == player.ModeConnect {
-			return "Spotify Connect plays this track on its own device"
-		}
-		return "Spotify plays this track on the system's default device"
 	}
 	return ""
 }

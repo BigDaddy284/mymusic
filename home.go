@@ -1,11 +1,8 @@
 package main
 
 import (
-	"context"
-
 	"github.com/egoist/mygo/ui"
 
-	"github.com/bigdaddy284/mymusic/internal/app"
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
@@ -13,7 +10,7 @@ import (
 var homeFilters = []struct {
 	label  string
 	source media.Source
-}{{"Everything", ""}, {"Yours", media.SourceLocal}, {"Spotify", media.SourceSpotify}, {"YouTube Music", media.SourceYouTube}}
+}{{"Everything", ""}, {"Yours", media.SourceLocal}, {"YouTube Music", media.SourceYouTube}}
 
 // networkOnline tells whether the network answers, as last checked; tests
 // answer for it.
@@ -36,7 +33,6 @@ func (s *shell) homePage(c *ui.Context) {
 		}
 		s.pageHeader(c, "Home", labels, &s.homeFilter)
 		s.toolProblems(c)
-		accounts := fetch(s, "accounts", func(ctx context.Context) (app.AccountsStatus, error) { return s.svc.Accounts.Status(ctx), nil })
 
 		// The track played last, as the library has it now.
 		var last *media.Track
@@ -64,14 +60,7 @@ func (s *shell) homePage(c *ui.Context) {
 					s.navigate("/search")
 				}
 			}
-			offer := accounts.done && !accounts.value.Spotify.SignedIn
 			span := tileWide
-			if offer {
-				span = tileSmall
-				if s.flatTile(c, "tile-spotify", 3, tileTall, columns, "Add Spotify", k.words("Sign in to search and play your Spotify library here"), "Add Spotify", icon("plus"), nil) {
-					s.navigate("/settings/accounts")
-				}
-			}
 			if s.flatTile(c, "tile-liked", 1, span, columns, "Liked songs", plural(len(s.svc.Collection.Liked()), "track"), "Liked songs", solidIcons["heart"], nil) {
 				s.navigate("/library/liked")
 			}
@@ -118,8 +107,6 @@ func (s *shell) homePage(c *ui.Context) {
 		}
 		if shown == 0 && !failed {
 			switch source {
-			case media.SourceSpotify:
-				s.emptyLine(c, "Sign in to Spotify in Settings › Accounts to see your playlists and recent tracks here.")
 			case media.SourceLocal:
 				s.emptyLine(c, "Play some tracks and make a mix: what you collect shows here.")
 			default:

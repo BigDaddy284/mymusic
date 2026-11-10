@@ -5,11 +5,9 @@ import (
 	"errors"
 	"path/filepath"
 	"sync"
-	"sync/atomic"
 	"testing"
 	"time"
 
-	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/store"
@@ -317,35 +315,6 @@ func TestLabelCacheGivesUp(t *testing.T) {
 	close(f.release)
 	if l := c.Get(context.Background(), "labeledAI01", true); l != player.LabelAI || f.count("labeledAI01") != 1 {
 		t.Errorf("then %v, asked %d times", l, f.count("labeledAI01"))
-	}
-}
-
-// TestLabelOfRecording checks a Spotify track by its recording on YouTube
-// Music, and knows nothing of one whose recording wasn't found yet.
-func TestLabelOfRecording(t *testing.T) {
-	dir := t.TempDir()
-	matches, err := store.Open(filepath.Join(dir, "matches.json"), map[string]media.Track{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	matches.Set(map[string]media.Track{"spotify:1": {ID: "yt:labeledAI01", Source: media.SourceYouTube}})
-	f := newFakeLabels("labeledAI01")
-	var searched atomic.Int32
-	a := &App{matcher: match.New(searcher(func() { searched.Add(1) }), matches)}
-	a.labels = openLabels(t, filepath.Join(dir, "ai-labels.json"), f, &clock{t: time.Unix(1_800_000_000, 0)})
-	s := playerServices{a}
-	ctx := context.Background()
-	if l := s.KnownLabel(media.Track{ID: "spotify:1", Source: media.SourceSpotify}); l != player.LabelUnknown {
-		t.Errorf("known before it was asked: %v", l)
-	}
-	if l := s.Label(ctx, media.Track{ID: "spotify:1", Source: media.SourceSpotify}, true); l != player.LabelAI {
-		t.Errorf("Label = %v", l)
-	}
-	if l := s.KnownLabel(media.Track{ID: "yt:labeledAI01", Source: media.SourceYouTube}); l != player.LabelAI {
-		t.Errorf("its recording: %v", l)
-	}
-	if l := s.KnownLabel(media.Track{ID: "spotify:2", Source: media.SourceSpotify}); l != player.LabelUnknown || searched.Load() != 0 {
-		t.Errorf("a track not matched: %v, %d searches", l, searched.Load())
 	}
 }
 

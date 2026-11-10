@@ -5,13 +5,10 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
 	"sync/atomic"
 	"testing"
 
-	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 	"github.com/bigdaddy284/mymusic/lyrics"
 )
@@ -190,8 +187,7 @@ func (noSearch) Search(context.Context, string, youtube.Filter) ([]media.Item, e
 }
 
 // TestLyricsByVideo asks Unison for a YouTube Music track by its video ID,
-// for a Spotify track by its match's once there is one, and else by the
-// track's title, first artist, album and length.
+// and for another by its title, first artist, album and length.
 func TestLyricsByVideo(t *testing.T) {
 	ls := newLyricsSources(t)
 	ls.c.Lyrics(context.Background(), aSong)
@@ -199,20 +195,10 @@ func TestLyricsByVideo(t *testing.T) {
 		t.Errorf("a YouTube Music track: query %q", got)
 	}
 
-	known, err := store.Open(filepath.Join(t.TempDir(), "matches.json"), map[string]media.Track{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	ls.c.a.matcher = match.New(noSearch{}, known)
-	ls.c.Lyrics(context.Background(), media.Track{ID: "spotify:1", Source: media.SourceSpotify, Title: "Song",
+	ls.c.Lyrics(context.Background(), media.Track{ID: "file:1", Source: media.SourceFile, Title: "Song",
 		Artists: []media.Ref{{Name: "Artist"}, {Name: "Guest"}}, Album: &media.Ref{Name: "Album"}, DurationMs: 200400})
 	if got := ls.unisonQuery.Load(); got != "album=Album&artist=Artist&duration=200&song=Song" {
-		t.Errorf("a Spotify track never matched: query %q", got)
-	}
-	known.Set(map[string]media.Track{"spotify:2": {ID: "yt:lmnopqrstuv", Source: media.SourceYouTube}})
-	ls.c.Lyrics(context.Background(), media.Track{ID: "spotify:2", Source: media.SourceSpotify, Title: "Song", Artists: []media.Ref{{Name: "Artist"}}})
-	if got := ls.unisonQuery.Load(); got != "v=lmnopqrstuv" {
-		t.Errorf("a Spotify track matched: query %q", got)
+		t.Errorf("a file: query %q", got)
 	}
 }
 

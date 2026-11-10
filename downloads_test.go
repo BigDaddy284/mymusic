@@ -156,13 +156,6 @@ func TestDownloadMenu(t *testing.T) {
 	if k := s.kept.State("yt:aaaaaaaaaaa").Kind; k != downloads.None {
 		t.Errorf("canceled, the track is %v", k)
 	}
-	// A Spotify track downloads as its recording on YouTube Music, as the
-	// toast says.
-	s.download([]media.Track{testTracks[1]})
-	tt.Frame()
-	if !tt.HasText("Downloading Teardrop: its recording on YouTube Music") {
-		t.Errorf("the window shows %q", tt.Texts())
-	}
 }
 
 // TestCollectionDownloadButton downloads an album from its head, asking
@@ -422,7 +415,7 @@ func TestHomeOfflineDownloads(t *testing.T) {
 	t.Cleanup(func() { networkOnline = was })
 	s, _ := newKeptShell(t, keptTracks...)
 	tt := testerOf(t, s, 1280, 1600)
-	for _, key := range []string{"home:spotify", "home:youtube"} {
+	for _, key := range []string{"home:youtube"} {
 		s.loads[key] = &loaded[[]media.Shelf]{done: true, err: errors.New("no network")}
 	}
 	// A button reads as two texts, its label and its own.

@@ -12,7 +12,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/app"
 	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/tools"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
@@ -95,7 +94,7 @@ func TestSettingsFindMatches(t *testing.T) {
 		q         string
 		want, not []string
 	}{
-		{"equalizer", []string{"Equalizer", "Preset", "pre dB", "Spotify notes"}, []string{"Crossfade"}},
+		{"equalizer", []string{"Equalizer", "Preset", "pre dB"}, []string{"Crossfade"}},
 		{"bass", []string{"Preset"}, []string{"Crossfade", "pre dB"}},
 		{"preamp", []string{"Equalizer", "pre dB"}, []string{"Preset", "Crossfade"}},
 		{palette, []string{"Command palette"}, []string{"Like what plays"}},
@@ -259,25 +258,21 @@ func TestSettingsFindNothingElse(t *testing.T) {
 		{"signed out", func(s *shell) {}},
 		{"refused", func(s *shell) {
 			s.loads["accounts"] = &loaded[app.AccountsStatus]{done: true, value: app.AccountsStatus{
-				Spotify: app.SpotifyAccount{SignedIn: true, Error: "refused"},
 				YouTube: app.YouTubeAccount{SignedIn: true, Error: "expired"},
 				Lastfm:  app.LastfmAccount{Connected: true, Expired: true, Name: "someone"},
 			}}
 		}},
 		{"signed in", func(s *shell) {
 			s.loads["accounts"] = &loaded[app.AccountsStatus]{done: true, value: app.AccountsStatus{
-				Spotify: app.SpotifyAccount{SignedIn: true},
 				YouTube: app.YouTubeAccount{SignedIn: true},
 				Lastfm:  app.LastfmAccount{Connected: true, Name: "someone"},
 			}}
 			s.loads["channels"] = &loaded[[]youtube.AccountChannel]{done: true, value: []youtube.AccountChannel{
 				{Name: "Me", Current: true}, {Name: "My band", PageID: "b"},
 			}}
-			s.set.SpotifyPlayback = settings.SpotifyPlaybackHere
 		}},
-		{"on spotify connect", func(s *shell) {
-			s.set.SpotifyPlayback, s.set.FollowSystem, s.set.DiscordPresence = settings.SpotifyPlaybackConnect, true, true
-			s.loads["devices"] = &loaded[[]spotify.Device]{done: true}
+		{"following the system", func(s *shell) {
+			s.set.FollowSystem, s.set.DiscordPresence = true, true
 			s.licenseOpen = 0
 		}},
 		{"looking for the tools", func(s *shell) { s.loads["tools"] = &loaded[tools.Status]{} }},
@@ -340,26 +335,18 @@ func TestSettingsFindForms(t *testing.T) {
 	s := newTestShell(t)
 	tt := testerOf(t, s, 1280, 6000)
 	show(s, tt, settingsPath("", "sign in"))
-	showsOnly(t, tt, "searching sign in", []string{"Client ID", "sign in to spotify", "sign in to youtube music"}, nil)
+	showsOnly(t, tt, "searching sign in", []string{"sign in to youtube music"}, nil)
 	show(s, tt, settingsPath("", "connect"))
 	showsOnly(t, tt, "searching connect", []string{"API key", "Shared secret", "connect to last.fm"}, nil)
 
 	// Signed in, the rows of the accounts are found by their buttons.
 	s.loads["accounts"] = &loaded[app.AccountsStatus]{done: true, value: app.AccountsStatus{
-		Spotify: app.SpotifyAccount{SignedIn: true}, YouTube: app.YouTubeAccount{SignedIn: true},
-		Lastfm: app.LastfmAccount{Connected: true, Name: "someone"},
+		YouTube: app.YouTubeAccount{SignedIn: true},
+		Lastfm:  app.LastfmAccount{Connected: true, Name: "someone"},
 	}}
 	s.loads["channels"] = &loaded[[]youtube.AccountChannel]{done: true}
 	show(s, tt, settingsPath("", "sign out"))
-	showsOnly(t, tt, "signed in, searching sign out", []string{"Search, your library and playback of Spotify.", "Your home feed, your library, and likes that reach YouTube Music.", "disconnect"}, []string{"Client ID"})
-	s.loads["accounts"] = &loaded[app.AccountsStatus]{done: true}
-
-	// The button reads the Client ID's draft, which its row made.
-	s.drafts["client-id"] = &draft{text: "0123456789abcdef0123456789abcdef"}
-	show(s, tt, settingsPath("", "redirect uri"))
-	if !tt.HasText("Client ID") || !tt.HasText("sign in to spotify") {
-		t.Errorf("searching redirect uri shows %q", tt.Texts())
-	}
+	showsOnly(t, tt, "signed in, searching sign out", []string{"Your home feed, your library, and likes that reach YouTube Music.", "disconnect"}, nil)
 }
 
 // TestSettingsFindSpellings finds the settings spelled either way, at every

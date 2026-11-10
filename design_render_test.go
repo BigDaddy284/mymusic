@@ -159,7 +159,7 @@ func renderDesign(t *testing.T, dir string, layout settings.Layout, theme string
 			}
 			return out
 		}()}}
-	s.loads["lyrics:spotify:2"] = &loaded[lyrics.Lyrics]{done: true, value: lyrics.Lyrics{Synced: true, Source: "LRCLIB", Lines: []lyrics.Line{
+	s.loads["lyrics:file:2"] = &loaded[lyrics.Lyrics]{done: true, value: lyrics.Lyrics{Synced: true, Source: "LRCLIB", Lines: []lyrics.Line{
 		{TimeMs: 0, Text: "Stones remember every tide"}, {TimeMs: 4000, Text: "Sand keeps the shape of it"},
 		{TimeMs: 9000, Text: "Quiet as the harbour light"}, {TimeMs: 14000, Text: "Slow wind over the pier"}}}}
 	for i, tr := range tracks {
@@ -173,9 +173,8 @@ func renderDesign(t *testing.T, dir string, layout settings.Layout, theme string
 		}
 	}
 	s.loads["search:midnight"] = &loaded[app.SearchResponse]{done: true, value: app.SearchResponse{
-		YouTube: media.SearchResults{Tracks: tracks[:3], Albums: []media.Album{album, *albums[0].Album, *albums[1].Album},
-			Artists: []media.Artist{{ID: "ar-m83", Name: "M83", Source: media.SourceYouTube, Artwork: art(3)}}},
-		Spotify: media.SearchResults{Tracks: tracks[3:]}, SpotifySignedIn: true}}
+		YouTube: media.SearchResults{Tracks: tracks, Albums: []media.Album{album, *albums[0].Album, *albums[1].Album},
+			Artists: []media.Artist{{ID: "ar-m83", Name: "M83", Source: media.SourceYouTube, Artwork: art(3)}}}}}
 	s.loads["moods"] = &loaded[[]youtube.MoodGroup]{done: true, value: []youtube.MoodGroup{
 		{Title: "Moods & moments", Moods: []youtube.Mood{{Title: "Chill", Params: "a"}, {Title: "Commute", Params: "b"}, {Title: "Energy boosters", Params: "c"}, {Title: "Feel good", Params: "d"}, {Title: "Focus", Params: "e"}, {Title: "Party", Params: "f"}}},
 		{Title: "Genres", Moods: []youtube.Mood{{Title: "Ambient", Params: "g"}, {Title: "Electronic", Params: "h"}, {Title: "Hip-hop", Params: "i"}}},

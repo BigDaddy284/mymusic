@@ -229,10 +229,10 @@ func TestNewReleasesShelf(t *testing.T) {
 	if err := s.svc.Collection.SetArtistFollowed(testArtist, true); err != nil {
 		t.Fatal(err)
 	}
-	dunes := media.Ref{ID: "sp:dunes", Name: "Dunes"}
+	dunes := media.Ref{ID: "yt:dunes", Name: "Dunes"}
 	harbour := media.Ref{ID: testArtist.ID, Name: testArtist.Name}
 	releases := []media.Release{
-		{Album: media.Album{ID: "sp:week", Source: media.SourceSpotify, Title: "Low Tide", Kind: media.AlbumKindSingle, Artists: []media.Ref{dunes}},
+		{Album: media.Album{ID: "yt:week", Source: media.SourceYouTube, Title: "Low Tide", Kind: media.AlbumKindSingle, Artists: []media.Ref{dunes}},
 			Released: "2026-11-01", Of: dunes},
 		{Album: media.Album{ID: "yt:MPREpier", Source: media.SourceYouTube, Title: "Pier at Night", Kind: media.AlbumKindAlbum, Artists: []media.Ref{harbour}},
 			Released: "2026", Of: harbour},
@@ -256,7 +256,7 @@ func TestNewReleasesShelf(t *testing.T) {
 		return f.source == media.SourceYouTube
 	})
 	tt.Frame()
-	if tt.HasText("Low Tide") || !tt.HasText("Pier at Night") {
+	if !tt.HasText("Low Tide") || !tt.HasText("Pier at Night") {
 		t.Errorf("Home › YouTube Music shows %q", tt.Texts())
 	}
 	s.homeFilter = 0

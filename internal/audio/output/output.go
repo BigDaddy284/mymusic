@@ -25,7 +25,3 @@ const Rate = 48000
 // bufferDuration is how much a Stream renders ahead of the device: the most
 // the audio waits before it plays.
 const bufferDuration = 40 * time.Millisecond
-
-// periodFrames is how many frames a Stream renders at a time where the
-// output itself doesn't say: 10 ms.
-const periodFrames = Rate / 100

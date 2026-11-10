@@ -236,10 +236,6 @@ func (s *shell) fetchShelfChoices() {
 		s.youtubePlaylists()
 		fetch(s, "youtube:artists", col.YouTubeArtists)
 	}
-	if accounts.Spotify.SignedIn {
-		fetch(s, "spotify:playlists", col.SpotifyPlaylists)
-		fetch(s, "spotify:artists", col.SpotifyArtists)
-	}
 }
 
 // addShelfMenu is the menu of Add a shelf: one of the user's mixes, a
@@ -291,9 +287,6 @@ func (s *shell) addShelfMenu(m *ui.Menu, full []settings.HomeShelf) {
 	if accounts.YouTube.SignedIn {
 		playlists("A YouTube Music playlist", s.youtubePlaylists())
 	}
-	if accounts.Spotify.SignedIn {
-		playlists("A Spotify playlist", fetch(s, "spotify:playlists", s.svc.Collection.SpotifyPlaylists))
-	}
 	m.Submenu("An artist's new releases", func(m *ui.Menu) {
 		artists := s.followedEverywhere()
 		if len(artists) == 0 {
@@ -317,7 +310,7 @@ func (s *shell) followedEverywhere() []media.Artist {
 	for _, a := range artists {
 		seen[a.ID] = true
 	}
-	for _, key := range []string{"youtube:artists", "spotify:artists"} {
+	for _, key := range []string{"youtube:artists"} {
 		if l, ok := s.loads[key].(*loaded[[]media.Artist]); ok && l.done && l.err == nil && s.signedIn(keySource(key)) {
 			for _, a := range l.value {
 				if !seen[a.ID] {

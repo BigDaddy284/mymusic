@@ -9,11 +9,8 @@ import (
 	"strings"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/egoist/mygo"
-
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
 // errNoStore is the credential store's error where there is none.
@@ -350,17 +347,8 @@ func TestSecretClear(t *testing.T) {
 	}
 }
 
-// TestJSONSecret keeps the Spotify token and the Last.fm connection as
-// JSON.
+// TestJSONSecret keeps the Last.fm connection as JSON.
 func TestJSONSecret(t *testing.T) {
-	tokens := tokenStore{testSecret(t, newKeeper(), nil)}
-	token := spotify.Token{AccessToken: "a", RefreshToken: "r", Expiry: time.Unix(1700000000, 0).UTC()}
-	if err := tokens.Save(token); err != nil {
-		t.Fatal(err)
-	}
-	if got, err := tokens.Load(); err != nil || got.AccessToken != "a" || got.RefreshToken != "r" || !got.Expiry.Equal(token.Expiry) {
-		t.Errorf("loaded %+v, %v", got, err)
-	}
 	lastfm := lastfmStore{testSecret(t, unavailableKeeper(), fakeSealer{})}
 	c := lastfmCredentials{APIKey: "a", Secret: "b"}
 	c.Session.Name, c.Session.Key = "test", "c"

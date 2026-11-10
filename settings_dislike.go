@@ -32,4 +32,4 @@ func (s *shell) skipDislikedRow(c *ui.Context) {
 
 // dislikesNote is what the note under Skip songs you dislike says of where
 // dislikes go.
-const dislikesNote = "Signed in to YouTube Music, your dislikes of its songs go there too. Spotify takes no dislikes from apps: those of its tracks stay in MyTube."
+const dislikesNote = "Signed in to YouTube Music, your dislikes of its songs go there too."

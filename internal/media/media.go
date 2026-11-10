@@ -2,8 +2,8 @@
 // tracks, albums, artists and playlists, whichever service they come from.
 //
 // Every item has an ID made of a source prefix and the service's own ID,
-// such as "yt:w3XzgjlKFjc" or "sp:4uLU6hMCjMI75M1A2tKUQC", so items of
-// different services can sit side by side in one queue or playlist.
+// such as "yt:w3XzgjlKFjc" or "file:L3NvbmcubXAz", so items of different
+// sources can sit side by side in one queue or playlist.
 package media
 
 import (
@@ -17,8 +17,6 @@ type Source string
 const (
 	// SourceYouTube is YouTube Music.
 	SourceYouTube Source = "youtube"
-	// SourceSpotify is Spotify.
-	SourceSpotify Source = "spotify"
 	// SourceLocal is MyTube itself: playlists made in the app.
 	SourceLocal Source = "local"
 	// SourceFile is the music kept on the user's computer, which MyTube
@@ -29,7 +27,6 @@ const (
 // prefixes maps sources to the prefix of their IDs.
 var prefixes = map[Source]string{
 	SourceYouTube: "yt",
-	SourceSpotify: "sp",
 	SourceLocal:   "mx",
 	SourceFile:    "file",
 }
@@ -87,8 +84,8 @@ type Track struct {
 	// empty for tracks kept before MyTube read it.
 	VideoType string `json:"videoType,omitempty"`
 	// Plays is how many times the track played, as its service counts
-	// them: a song's plays on YouTube Music, a video's views. 0 is unknown,
-	// as for Spotify, which gives apps no such count.
+	// them: a song's plays on YouTube Music, a video's views. 0 is
+	// unknown.
 	Plays int64 `json:"plays,omitempty"`
 	// URL opens the track on the service's website.
 	URL string `json:"url,omitempty"`
@@ -245,7 +242,7 @@ type Shelf struct {
 	// Key names the shelf among its service's, in words that stay the
 	// same in every language and from day to day, as its title doesn't:
 	// on YouTube Music, the page its title or its More button opens, and
-	// the kind of shelf on Spotify and in MyTube. It is "" where the
+	// the kind of shelf in MyTube. It is "" where the
 	// service names it by its title alone.
 	Key string `json:"key,omitempty"`
 }

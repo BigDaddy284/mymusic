@@ -42,18 +42,13 @@ func (c Curve) Gain(p float64) float64 {
 	return (math.Pow(1000, p) - 1) / 999
 }
 
-// Share is the share of a Spotify Connect device's volume the position p
-// is sent as on c: the square root of its gain, for a device that plays a
-// share at its square, as MyTube once did, plays it as loud as MyTube
-// plays p.
-func (c Curve) Share(p float64) float64 { return math.Sqrt(c.Gain(p)) }
-
 // Gain is the gain the position p plays at on Natural, from 0 to 1.
 func Gain(p float64) float64 { return Natural.Gain(p) }
 
 // Saved is the position p as settings.json keeps it, whatever the curve:
-// its share on Natural.
-func Saved(p float64) float64 { return Natural.Share(p) }
+// the square root of its gain on Natural, as MyTube once played a share
+// at its square.
+func Saved(p float64) float64 { return math.Sqrt(Natural.Gain(p)) }
 
 // Of is the position of a volume settings.json keeps as v.
 func Of(v float64) float64 {

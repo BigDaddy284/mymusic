@@ -38,7 +38,7 @@ func newQuietApp(t *testing.T, set func(o *Options)) *App {
 	}
 	stream := &quietStream{}
 	svc := endingServices{offlineServices{playerServices{a}}, &plays{}}
-	p := player.New(svc, stream, connectDevice{a}, player.Saved{})
+	p := player.New(svc, stream, player.Saved{})
 	stream.p.Store(p)
 	a.goPlayer.Store(p)
 	// The player writes the queue beside its goroutine, which Close doesn't

@@ -42,7 +42,7 @@ func TestSaved(t *testing.T) {
 		}
 	}
 	if v := Saved(0.5); math.Abs(v-0.18) > 0.005 {
-		t.Errorf("the middle sends Spotify Connect %.3f, want 0.18", v)
+		t.Errorf("the middle is kept as %.3f, want 0.18", v)
 	}
 }
 

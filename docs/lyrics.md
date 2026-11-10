@@ -1,7 +1,7 @@
 # Lyrics
 <!-- docs: group=using order=30 -->
 
-MyTube shows synced and word-by-word lyrics for Spotify and YouTube Music tracks, and can translate them or show them in Latin letters.
+MyTube shows synced and word-by-word lyrics for YouTube Music tracks and the music on your computer, and can translate them or show them in Latin letters.
 
 Lyrics come from Unison, LRCLIB and YouTube Music, for the track that plays, whichever service it's from. Nothing needs setting up. The lyrics themselves go to Unison, for their translation or for the romanization of Arabic, only while you turn those on.
 
@@ -31,7 +31,7 @@ MyTube asks, in order:
 2. **[LRCLIB](https://lrclib.net),** the open database of synced lyrics, by the track's title, artists, album and length: when Unison has no lyrics, can't be reached, or has only plain lyrics where LRCLIB has synced ones.
 3. **YouTube Music:** when neither has any lyrics, or both have only plain ones and YouTube Music's are longer.
 
-A Spotify track is looked up by the video ID of its [recording on YouTube Music](playing-music.md#how-spotify-tracks-play) once MyTube has matched one, and by its title, artists, album and length before. The line at the end of the lyrics names where they came from.
+A track on your computer, which has no video ID, is looked up by its title, artists, album and length. The line at the end of the lyrics names where they came from.
 
 ## Synced and plain lyrics
 

@@ -1,8 +1,8 @@
 // Command discordbadges draws the badges the Discord status can show at the
 // corner of the cover (#352): brand/discord's PNGs, which Discord reads
 // from GitHub. Each is a mark of MyTube's own on a dark ground, as the
-// app tells the services apart beside their tracks: a disc for Spotify, a
-// square for YouTube Music, a record for a file on the computer, and two
+// app tells the sources apart beside their tracks: a square for YouTube
+// Music, a record for a file on the computer, and two
 // bars for a paused track. Discord shows them round, so each mark keeps to
 // the middle.
 //
@@ -33,7 +33,6 @@ const samples = 4
 // theme's colours.
 var (
 	ground  = color.NRGBA{0x30, 0x30, 0x30, 0xff}
-	spotify = color.NRGBA{0x1e, 0xd7, 0x60, 0xff}
 	youtube = color.NRGBA{0xff, 0x40, 0x40, 0xff}
 	white   = color.NRGBA{0xff, 0xff, 0xff, 0xff}
 )
@@ -47,7 +46,6 @@ var badges = map[string]struct {
 	ink  color.NRGBA
 	mark shape
 }{
-	"spotify":       {spotify, disc(0.5, 0.5, 0.25)},
 	"youtube-music": {youtube, rect(0.29, 0.29, 0.71, 0.71)},
 	"computer": {white, func(x, y float64) bool {
 		r := math.Hypot(x-0.5, y-0.5)
@@ -56,11 +54,6 @@ var badges = map[string]struct {
 	"paused": {white, func(x, y float64) bool {
 		return rect(0.35, 0.29, 0.45, 0.71)(x, y) || rect(0.55, 0.29, 0.65, 0.71)(x, y)
 	}},
-}
-
-// disc is the disc of radius r around (cx, cy).
-func disc(cx, cy, r float64) shape {
-	return func(x, y float64) bool { return math.Hypot(x-cx, y-cy) <= r }
 }
 
 // rect is the rectangle from (x0, y0) to (x1, y1).

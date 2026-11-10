@@ -15,9 +15,7 @@ import (
 type tileSpan struct{ cols, rows int }
 
 var (
-	tileSmall = tileSpan{1, 1}
 	tileWide  = tileSpan{2, 1}
-	tileTall  = tileSpan{1, 2}
 	tileLarge = tileSpan{2, 2}
 )
 

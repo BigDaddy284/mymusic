@@ -24,7 +24,7 @@ func (s *shell) mytubeSettings(c *ui.Context) {
 		s.row(c, "Version", version, func() {})
 		s.releaseRow(c, u)
 		// Its links go under it, as they are many.
-		about := "Spotify and YouTube Music in one player, open source under the MIT license or the GNU GPL, version 3. Your data lives in " + info.DataDir + "."
+		about := "YouTube Music and the music on your computer in one player, open source under the MIT license or the GNU GPL, version 3. Your data lives in " + info.DataDir + "."
 		s.found(c, "MyTube", about+" source code, contribute, report a problem, a bug, open logs folder", func() {
 			ui.Column(c).Gap(4).Padding(14, 0).Children(func() {
 				ui.Text(c, "MyTube").FontSize(k.bodySize())

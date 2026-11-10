@@ -101,8 +101,7 @@ func (s *shell) stepSpeed(dir int) {
 }
 
 // changeSpeed sets the speed of the kind of track that plays, songs or
-// podcasts, and tells it: a Spotify device plays its track at its own, as a
-// live stream plays.
+// podcasts, and tells it: a live stream plays at its own.
 func (s *shell) changeSpeed(v float64) {
 	s.setSpeed(v)
 	speed, podcasts := s.playingSpeed()

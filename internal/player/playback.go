@@ -66,7 +66,7 @@ func (p *Player) Return(uid string, at time.Duration, playing bool) {
 // holds reports whether the player has the current entry: plays it,
 // holds it paused, loads it, or waits for the network to.
 func (p *Player) holds() bool {
-	return p.loaded || p.s.Loading || p.s.Waiting || p.connect.active()
+	return p.loaded || p.s.Loading || p.s.Waiting
 }
 
 // choose marks the entry at i as one the user chose to play, which plays
@@ -130,7 +130,6 @@ func (p *Player) halt() {
 	p.endWait()
 	p.loaded = false
 	p.stream.Unload()
-	p.connect.stop(true)
 	p.s.Loading, p.s.Buffering, p.s.Source = false, false, nil
 	p.stopAtEnd(true)
 }
@@ -189,9 +188,7 @@ func (p *Player) ToggleMute() {
 	})
 }
 
-// SettingsChanged takes in new settings: a Spotify track goes on from where
-// it was in the way of playing Spotify tracks they choose, a stream plays
-// its 5.1 surround audio or its stereo audio as they ask, the queue
+// SettingsChanged takes in new settings: a stream plays its 5.1 surround audio or its stereo audio as they ask, the queue
 // passes over the tracks the user disliked, and those YouTube labels as
 // made with AI, or no longer, as they say, and the track playing takes
 // the speed of its kind.
@@ -201,25 +198,11 @@ func (p *Player) SettingsChanged(s settings.Settings) {
 			p.surround = s.Surround
 			p.switchAudio()
 		}
-		if s.VolumeCurve != p.curve {
-			// The device that plays hears the volume again, for its gain on
-			// the new curve; the engine hears of the curve from the app.
-			p.curve = s.VolumeCurve
-			p.connect.setVolume(p.heardVolume())
-		}
-		moved := s.SpotifyPlayback != p.spotifyMode
-		if moved || s.SkipDisliked != p.skipDisliked || s.SkipAI != p.skipAI {
-			// A Spotify track that plays on a device isn't passed over for
-			// the label of its recording on YouTube Music.
-			p.spotifyMode, p.skipDisliked, p.skipAI = s.SpotifyPlayback, s.SkipDisliked, s.SkipAI
+		// The engine hears of the volume's curve from the app.
+		p.curve = s.VolumeCurve
+		if s.SkipDisliked != p.skipDisliked || s.SkipAI != p.skipAI {
+			p.skipDisliked, p.skipAI = s.SkipDisliked, s.SkipAI
 			p.reflag()
-		}
-		if moved {
-			if cur, ok := p.s.Current(); ok && cur.Track.Source == media.SourceSpotify && p.s.Source != nil {
-				// It loads again, at the speed of the settings.
-				p.playAt(p.s.Index, p.s.Position, p.s.Playing)
-				return
-			}
 		}
 		p.applySpeed(s)
 	})
@@ -266,8 +249,7 @@ func (p *Player) fallBackToStereo(why string) {
 }
 
 // speedOf is the speed the settings s play t at in MyTube's own engine:
-// a podcast's episode's, or a song's, of which a Spotify track played from
-// YouTube Music is one. A live stream plays at its own, as it is
+// a podcast's episode's, or a song's. A live stream plays at its own, as it is
 // broadcast: from near its live edge, faster would run out of what came of
 // it, and slower would fall behind until its playlist dropped what hadn't
 // played.
@@ -281,15 +263,10 @@ func speedOf(s settings.Settings, t media.Track, live bool) float64 {
 	return settings.CleanSpeed(s.SongSpeed)
 }
 
-// onDevice reports whether a Spotify device plays the current track, at
-// its own speed.
-func (p *Player) onDevice() bool { return p.s.Source != nil && p.s.Source.Mode != ModeStream }
-
-// applySpeed plays the current track at the speed s gives its kind, unless
-// a Spotify device plays it.
+// applySpeed plays the current track at the speed s gives its kind.
 func (p *Player) applySpeed(s settings.Settings) {
 	cur, ok := p.s.Current()
-	if !ok || p.onDevice() {
+	if !ok {
 		return
 	}
 	speed := speedOf(s, cur.Track, p.s.Live)
@@ -385,94 +362,13 @@ func (p *Player) playAt(i int, start time.Duration, autoplay bool) {
 			}
 			return
 		}
-		switch {
-		case src.Mode == ModeConnect:
-			p.playOnDevice(token, entry, src, start, autoplay, p.remote)
-		case src.Mode == ModeSpotify && p.here != nil:
-			p.playOnDevice(token, entry, src, start, autoplay, p.here)
-		case src.Mode == ModeSpotify:
-			p.fellBack("Spotify can't play inside MyTube on this computer")
-			p.streamInstead(token, entry, start, autoplay)
-		default:
-			p.loadStream(src, start, autoplay)
-		}
-	})
-}
-
-// playOnDevice plays a Spotify track on a Spotify device: a Spotify
-// Connect device, or MyTube's own.
-func (p *Player) playOnDevice(token int, entry Item, src Source, start time.Duration, autoplay bool, d Device) {
-	p.stopStream()
-	p.s.Live = false
-	p.connect.use(d)
-	// Spotify's players have no speed but the track's own.
-	p.s.Speed = 1
-	// The device may have gone on to it by itself, from the track before.
-	followed := p.connect.take(entry.UID)
-	if !autoplay {
-		// A device can't wait paused on a track: it starts from here on
-		// play. What it went on to by itself stops.
-		p.connect.stop(false)
-		if followed != nil {
-			p.connect.send(d.Pause)
-		}
-		p.s.Source = &src
-		p.s.Buffering = false
-		return
-	}
-	if followed != nil {
-		p.s.Source = &src
-		p.s.Buffering, p.s.Loading = false, false
-		p.failures = 0
-		p.connect.follows(entry.Track, followed)
-		return
-	}
-	p.connect.play(entry.Track, p.aheadOnDevice(), start, func(err error) {
-		if token != p.loadToken {
-			return
-		}
-		if err == nil {
-			p.s.Source = &src
-			p.s.Buffering = false
-			p.failures = 0
-			return
-		}
-		// A device that can't be reached for want of the network waits for
-		// it: YouTube Music needs it too.
-		p.checkOnline(func() { p.wait(start, autoplay) }, func() {
-			p.fellBack(err.Error())
-			p.streamInstead(token, entry, start, autoplay)
-		})
-	})
-}
-
-// streamInstead plays a Spotify track from YouTube Music, once its
-// recording there is checked, when the player skips what YouTube labels.
-func (p *Player) streamInstead(token int, entry Item, start time.Duration, autoplay bool) {
-	p.checkFallback(token, entry, func() {
-		await(p, func(ctx context.Context) (Source, error) { return p.svc.PrepareStream(ctx, entry.Track) }, func(src Source, err error) {
-			if token != p.loadToken {
-				return
-			}
-			if err != nil {
-				if errors.Is(err, ErrOffline) && p.skipOffline(p.s.Index, autoplay) {
-					return
-				}
-				if !p.offline(err, start, autoplay) {
-					p.fail(err.Error())
-				}
-				return
-			}
-			p.loadStream(src, start, autoplay)
-		})
+		p.loadStream(src, start, autoplay)
 	})
 }
 
 // loadStream plays a stream of the current entry in the engine, at the
 // speed of its kind. Its failures come back as its Error events.
 func (p *Player) loadStream(src Source, start time.Duration, autoplay bool) {
-	// A Spotify device left in the middle of its track pauses.
-	p.connect.stop(true)
 	// YouTube may have told of its 5.1 audio while it was found.
 	src = p.withTold(src)
 	p.s.Source = &src
@@ -492,30 +388,6 @@ func (p *Player) setLive(live bool) {
 	if live {
 		p.s.Duration = 0
 	}
-}
-
-func (p *Player) stopStream() {
-	p.loaded = false
-	p.unsounded = false
-	p.stream.Stop()
-}
-
-// fellBack tells why a Spotify track plays from YouTube Music instead, once
-// for each reason.
-func (p *Player) fellBack(why string) {
-	p.tried(p.spotifyWay(), why)
-	if p.warned[why] {
-		return
-	}
-	if p.warned == nil {
-		p.warned = map[string]bool{}
-	}
-	p.warned[why] = true
-	p.notify(Notice{
-		Message:  strings.TrimSuffix(why, ".") + " - playing it from YouTube Music instead",
-		Error:    true,
-		Settings: true,
-	})
 }
 
 // fail tells that a track can't play, and moves on after a moment: to the
@@ -629,7 +501,7 @@ func (p *Player) retryStream(why string) {
 		if token != p.loadToken {
 			return
 		}
-		await(p, func(ctx context.Context) (Source, error) { return p.svc.PrepareStream(ctx, entry.Track) }, func(src Source, err error) {
+		await(p, func(ctx context.Context) (Source, error) { return p.svc.Prepare(ctx, entry.Track) }, func(src Source, err error) {
 			if token != p.loadToken {
 				return
 			}
@@ -795,10 +667,6 @@ func (p *Player) play() {
 		}
 		return
 	}
-	if p.connect.active() {
-		p.connect.resume()
-		return
-	}
 	if !p.loaded || p.s.Error != "" {
 		p.playAt(p.s.Index, p.s.Position, true)
 		return
@@ -827,10 +695,6 @@ func (p *Player) pause() {
 	}
 	if p.s.Loading {
 		return // a track loading plays: only another track stops it
-	}
-	if p.connect.active() {
-		p.connect.pause()
-		return
 	}
 	p.paused = true
 	p.stream.Pause()
@@ -863,8 +727,6 @@ func (p *Player) seek(t time.Duration) {
 	p.atEnd = false
 	p.retry.from = t
 	switch {
-	case p.connect.active():
-		p.connect.seek(t)
 	case p.loaded:
 		p.stream.Seek(t)
 	default:
@@ -954,12 +816,7 @@ func (p *Player) saveVolume(v float64) {
 
 // apply gives the engines the volume.
 func (p *Player) apply() {
-	v := p.s.Volume
-	if p.s.Muted {
-		v = 0
-	}
 	p.setStreamVolume()
-	p.connect.setVolume(v)
 	p.report()
 }
 

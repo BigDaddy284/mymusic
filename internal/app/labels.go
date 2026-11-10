@@ -250,46 +250,36 @@ func (c *labelCache) save() {
 	}
 }
 
-// recording returns the video of the recording t plays from on YouTube
-// Music, finding it when ask: a Spotify track's match.
-func (a *App) recording(ctx context.Context, t media.Track, ask bool) (string, bool) {
-	yt, ok := a.matcher.Matched(t)
-	if !ok && ask {
-		var err error
-		if yt, err = a.matcher.Match(ctx, t); err != nil {
-			return "", false
-		}
-		ok = true
-	}
-	if !ok {
+// recording returns the video t plays from on YouTube Music.
+func recording(t media.Track) (string, bool) {
+	if t.Source != media.SourceYouTube {
 		return "", false
 	}
-	_, videoID, err := media.ParseID(yt.ID)
-	return videoID, err == nil && yt.Source == media.SourceYouTube
+	_, videoID, err := media.ParseID(t.ID)
+	return videoID, err == nil
 }
 
-// Label tells whether YouTube labels the recording of t on YouTube Music
-// as made with AI, as the player asks, finding the recording of a Spotify
-// track first. While the network is gone it doesn't ask: the track can't
+// Label tells whether YouTube labels t on YouTube Music as made with AI,
+// as the player asks. While the network is gone it doesn't ask: the track can't
 // play anyway, and the lookups don't count as failed.
 func (s playerServices) Label(ctx context.Context, t media.Track, soon bool) player.Label {
 	if s.a.online != nil && s.a.online.Offline() {
 		return s.a.labels.Known(s.knownVideo(t))
 	}
-	videoID, ok := s.a.recording(ctx, t, true)
+	videoID, ok := recording(t)
 	if !ok {
 		return player.LabelUnknown
 	}
 	return s.a.labels.Get(ctx, videoID, soon)
 }
 
-// KnownLabel is Label without asking YouTube, nor searching for a match.
+// KnownLabel is Label without asking YouTube.
 func (s playerServices) KnownLabel(t media.Track) player.Label {
 	return s.a.labels.Known(s.knownVideo(t))
 }
 
 func (s playerServices) knownVideo(t media.Track) string {
-	videoID, _ := s.a.recording(context.Background(), t, false)
+	videoID, _ := recording(t)
 	return videoID
 }
 

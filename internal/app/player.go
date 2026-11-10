@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"log"
-	"net/http"
 	"strings"
 	"time"
 	"unicode"
@@ -13,10 +12,7 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/stream"
-	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
 // PlaybackMode is how a track plays.
@@ -25,11 +21,6 @@ type PlaybackMode string
 const (
 	// PlaybackStream plays the track in MyTube's audio engine, from Url.
 	PlaybackStream PlaybackMode = "stream"
-	// PlaybackConnect plays the track on a Spotify Connect device.
-	PlaybackConnect PlaybackMode = "connect"
-	// PlaybackSpotify plays the track in MyTube, as a Spotify device of
-	// its own, with Spotify's Web Playback SDK.
-	PlaybackSpotify PlaybackMode = "spotify"
 )
 
 // PlaybackSource tells the player how to play a track.
@@ -40,8 +31,7 @@ type PlaybackSource struct {
 	// SurroundURL is the 5.1 surround audio of a stream, when YouTube has
 	// some, which plays in its place while the settings ask for 5.1.
 	SurroundURL string `json:"surroundUrl,omitempty"`
-	// Track is the track that plays: for a Spotify track played from
-	// YouTube Music, its recording there.
+	// Track is the track that plays.
 	Track media.Track `json:"track"`
 	// Cached is set when the audio plays from the cache, without the
 	// network.
@@ -52,78 +42,31 @@ type PlaybackSource struct {
 	Live bool `json:"live,omitempty"`
 }
 
-// Player prepares tracks for the player of the main window, controls
-// Spotify Connect devices, and relays the player's state and commands
-// between windows.
+// Player prepares tracks for the player of the main window, and relays
+// the player's state and commands between windows.
 type Player struct{ a *App }
 
-// Prepare finds how to play a track: the URL of its audio, found ahead so
-// that errors such as YouTube refusing it show before playback starts, a
-// Spotify Connect device, or Spotify in MyTube.
-//
-// While the network is known to be gone, a Spotify track that plays
-// through Spotify plays from its download, or the offline cache, instead,
-// or can't play: no Spotify device would play it.
-func (p *Player) Prepare(ctx context.Context, track media.Track) (PlaybackSource, error) {
-	if track.Source == media.SourceFile {
-		return p.a.prepareFile(track)
-	}
-	if track.Source == media.SourceSpotify {
-		mode := p.a.settings.Get().SpotifyPlayback
-		if mode == settings.SpotifyPlaybackConnect || mode == settings.SpotifyPlaybackHere {
-			if p.a.offline() {
-				if p.a.playsOffline(track) {
-					return p.PrepareStream(ctx, track)
-				}
-				return PlaybackSource{}, player.ErrOffline
-			}
-			if mode == settings.SpotifyPlaybackConnect {
-				return PlaybackSource{Mode: PlaybackConnect, Track: track}, nil
-			}
-			return PlaybackSource{Mode: PlaybackSpotify, Track: track}, nil
-		}
-	}
-	return p.PrepareStream(ctx, track)
-}
-
-// PrepareStream finds the audio of a track to play in the engine, whatever
-// the settings say of Spotify tracks: those play from their recording on
-// YouTube Music. The player falls back to it when no Spotify device can
-// play. It keeps how loud YouTube measured the track, or asks, for the
-// engine to play it at an even loudness: a live stream has no measure.
+// Prepare finds the audio of a track to play in the engine, found ahead
+// so that errors such as YouTube refusing it show before playback starts.
+// It keeps how loud YouTube measured the track, or asks, for the engine to
+// play it at an even loudness: a live stream has no measure.
 // It tells the 5.1 surround audio of the track too, when YouTube has some.
 // The downloads are told whether the video it found is live, as one
 // doesn't download.
 //
 // A track downloaded plays from its download, without the network, also
-// while it answers, in stereo: downloads hold no 5.1 audio. While the
-// network is known to be gone, a Spotify track plays from its recording
-// only when it was found before: searching for it would wait for the
-// network.
-func (p *Player) PrepareStream(ctx context.Context, track media.Track) (PlaybackSource, error) {
+// while it answers, in stereo: downloads hold no 5.1 audio.
+func (p *Player) Prepare(ctx context.Context, track media.Track) (PlaybackSource, error) {
 	if track.Source == media.SourceFile {
 		return p.a.prepareFile(track)
-	}
-	if track.Source == media.SourceSpotify && track.IsEpisode() {
-		return PlaybackSource{}, errSpotifyEpisode
 	}
 	if k, ok := p.a.downloads.Lookup(track.ID); ok {
 		p.learnLoudness(k.Video)
 		return PlaybackSource{Mode: PlaybackStream, URL: streamURL(k.Video), Track: k.Track, Cached: true}, nil
 	}
-	var yt media.Track
-	if p.a.offline() {
-		known, ok := p.a.matcher.Matched(track)
-		if !ok {
-			return PlaybackSource{}, player.ErrOffline
-		}
-		yt = known
-	} else {
-		found, err := p.a.matcher.Match(ctx, track)
-		if err != nil {
-			return PlaybackSource{}, p.a.offlineErr(ctx, err)
-		}
-		yt = found
+	yt, err := onYouTube(track)
+	if err != nil {
+		return PlaybackSource{}, err
 	}
 	_, videoID, err := media.ParseID(yt.ID)
 	if err != nil {
@@ -223,8 +166,8 @@ func (p *Player) learnLoudness(videoID string) {
 	p.a.loudness.learn(videoID)
 }
 
-// StreamFailure tells why the audio of a track, the recording PrepareStream
-// returned, failed to load: in plain words, or "" when its audio arrived,
+// StreamFailure tells why the audio of a track, the one Prepare returned,
+// failed to load: in plain words, or "" when its audio arrived,
 // and the engine could not play it.
 func (p *Player) StreamFailure(track media.Track) string {
 	_, videoID, err := media.ParseID(track.ID)
@@ -232,21 +175,6 @@ func (p *Player) StreamFailure(track media.Track) string {
 		return ""
 	}
 	return p.a.proxy.Failure(videoID)
-}
-
-// ForgetMatch drops the YouTube Music recording found for a Spotify track,
-// so that the next play searches again. A track downloaded downloads
-// again, as its new match, and the player no longer skips the track for
-// the label of the recording it drops.
-func (p *Player) ForgetMatch(trackID string) error {
-	if err := p.a.matcher.Forget(trackID); err != nil {
-		return err
-	}
-	p.a.downloads.Rematch(trackID)
-	if gp := p.a.goPlayer.Load(); gp != nil {
-		gp.ForgetLabel(trackID)
-	}
-	return nil
 }
 
 // streamURL is the address of a video's audio, which the engine opens.
@@ -447,105 +375,4 @@ func noteBody(t media.Track) string {
 		body += " - " + artists
 	}
 	return body
-}
-
-// Devices returns the user's Spotify Connect devices.
-func (p *Player) Devices(ctx context.Context) ([]spotify.Device, error) {
-	return p.a.spotify.Devices(ctx)
-}
-
-// ConnectPlay plays a Spotify track, or a podcast's episode, on the
-// Spotify Connect device of the settings, or the active one, from
-// positionMs.
-func (p *Player) ConnectPlay(ctx context.Context, track media.Track, positionMs int) error {
-	_, _, err := media.ParseID(track.ID)
-	if err != nil || track.Source != media.SourceSpotify {
-		return errors.New("only Spotify tracks play on Spotify Connect")
-	}
-	device := p.a.settings.Get().SpotifyDevice
-	err = p.a.spotify.Play(ctx, device, []string{spotify.TrackURI(track)}, positionMs)
-	var apiErr *spotify.APIError
-	if errors.As(err, &apiErr) && apiErr.Status == 404 && device == "" {
-		// No device is active: wake up the first one that takes commands.
-		devices, derr := p.a.spotify.Devices(ctx)
-		if derr != nil {
-			return err
-		}
-		for _, d := range devices {
-			if !d.Restricted {
-				return p.a.spotify.Play(ctx, d.ID, []string{spotify.TrackURI(track)}, positionMs)
-			}
-		}
-	}
-	return err
-}
-
-// playHereRetry is how long PlayHere waits before asking Spotify again.
-var playHereRetry = time.Second
-
-// PlayHere plays a Spotify track, or a podcast's episode, from positionMs
-// on the device of the Web Playback SDK, MyTube's own, by its ID, and
-// the Spotify tracks and episodes ahead after it, which the device goes
-// on to by itself: up to the first that isn't one, so that it plays none
-// but those, in their order. Spotify may not know a device that just
-// connected for a moment, so it asks again a few times.
-func (p *Player) PlayHere(ctx context.Context, deviceID string, track media.Track, positionMs int, ahead ...media.Track) error {
-	_, _, err := media.ParseID(track.ID)
-	if err != nil || track.Source != media.SourceSpotify {
-		return errors.New("only Spotify tracks play with Spotify")
-	}
-	uris := []string{spotify.TrackURI(track)}
-	for _, t := range ahead {
-		if _, _, err := media.ParseID(t.ID); err != nil || t.Source != media.SourceSpotify {
-			break
-		}
-		uris = append(uris, spotify.TrackURI(t))
-	}
-	for try := 0; ; try++ {
-		err = p.a.spotify.Play(ctx, deviceID, uris, positionMs)
-		var apiErr *spotify.APIError
-		if try == 4 || !errors.As(err, &apiErr) || apiErr.Status != http.StatusNotFound {
-			return err
-		}
-		select {
-		case <-time.After(playHereRetry):
-		case <-ctx.Done():
-			return ctx.Err()
-		}
-	}
-}
-
-// ConnectPause pauses the Spotify Connect device.
-func (p *Player) ConnectPause(ctx context.Context) error {
-	return p.a.spotify.Pause(ctx, p.a.settings.Get().SpotifyDevice)
-}
-
-// ConnectResume resumes the Spotify Connect device.
-func (p *Player) ConnectResume(ctx context.Context) error {
-	return p.a.spotify.Resume(ctx, p.a.settings.Get().SpotifyDevice)
-}
-
-// ConnectSeek moves the Spotify Connect device to positionMs.
-func (p *Player) ConnectSeek(ctx context.Context, positionMs int) error {
-	return p.a.spotify.Seek(ctx, p.a.settings.Get().SpotifyDevice, positionMs)
-}
-
-// ConnectVolume sets the volume of the Spotify Connect device to the
-// player's volume v, from 0 to 1: the percentage earlier versions sent for
-// the same loudness of MyTube's own player, on the curve of the settings,
-// so that a Spotify track on a device keeps its balance against a YouTube
-// Music one.
-func (p *Player) ConnectVolume(ctx context.Context, v float64) error {
-	s := p.a.settings.Get()
-	return p.a.spotify.SetVolume(ctx, s.SpotifyDevice, connectPercent(s.VolumeCurve, v))
-}
-
-// connectPercent is the percentage of a Spotify Connect device's volume
-// the volume v is sent as on curve c.
-func connectPercent(c volume.Curve, v float64) int { return int(c.Share(v)*100 + 0.5) }
-
-// ConnectState returns what the Spotify Connect device plays, or nil when
-// no device is active.
-func (p *Player) ConnectState(ctx context.Context) (*spotify.PlaybackState, error) {
-	return p.a.spotify.State(ctx)
 }

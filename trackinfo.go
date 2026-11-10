@@ -111,8 +111,7 @@ func (s *shell) trackInfoDialog(c *ui.Context) {
 // waitsForEngine reports whether info, of the track playing as now
 // tells, waits for the engine to open it.
 func waitsForEngine(info app.TrackInfo, now *player.Source) bool {
-	return now != nil && now.Mode == player.ModeStream && info.Plays == app.PlaysEngine &&
-		(info.Engine == nil || !info.Engine.Ready)
+	return now != nil && (info.Engine == nil || !info.Engine.Ready)
 }
 
 // showInFolderLabel names the action that shows a file in Explorer.
@@ -146,7 +145,7 @@ func (s *shell) trackInfoBody(c *ui.Context, t media.Track, l *loaded[app.TrackI
 
 // trackCopies is where a song's copies are to show, side by side, the one
 // that plays marked, once MyTube links the copies of a song (#340): on
-// Spotify, on YouTube Music, downloaded and on this computer. Until then a
+// YouTube Music, downloaded and on this computer. Until then a
 // song has none, and nothing shows here.
 func (s *shell) trackCopies(c *ui.Context, t media.Track, info app.TrackInfo) {}
 
@@ -192,22 +191,6 @@ func (s *shell) infoRows(c *ui.Context, rows []infoRow) {
 // plays of it while it plays, and how loud.
 func trackFacts(t media.Track, info app.TrackInfo) []infoRow {
 	rows := []infoRow{{"Source", sourceLine(t, info), false}}
-	if r := info.Recording; r != nil {
-		rows = append(rows, infoRow{"Plays as", r.Title + " · " + names(r.Artists) + ", on YouTube Music", false})
-	}
-	switch info.Plays {
-	case app.PlaysSpotify, app.PlaysConnect:
-		where := "In Spotify's own player, in MyTube"
-		if info.Plays == app.PlaysConnect {
-			where = "On a Spotify Connect device"
-		}
-		rows = append(rows, infoRow{"Plays", where, false},
-			infoRow{"Quality", "As your Spotify account and Spotify's settings choose: Spotify tells MyTube nothing of its audio.", false})
-		if t.DurationMs > 0 {
-			rows = append(rows, infoRow{"Length", clock(ms(t.DurationMs)), false})
-		}
-		return append(rows, infoRow{"Loudness", "Spotify plays it at its own loudness.", false})
-	}
 	f, ok := formatOf(info)
 	st := info.Stream
 	switch {
@@ -215,8 +198,6 @@ func trackFacts(t media.Track, info app.TrackInfo) []infoRow {
 		rows = append(rows, infoRow{"Format", formatName(f.Codec, f.Container), false})
 	case st != nil:
 		rows = append(rows, infoRow{"Format", formatName(st.Codec, st.Container), false})
-	case info.File == nil && t.Source == media.SourceSpotify && info.Recording == nil:
-		rows = append(rows, infoRow{"Format", "MyTube finds its recording on YouTube Music as it plays, and tells its format then.", false})
 	case info.File == nil:
 		rows = append(rows, infoRow{"Format", "MyTube finds its stream as it plays, and tells its format then.", false})
 	}

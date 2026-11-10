@@ -1,7 +1,7 @@
 # Music on this computer
 <!-- docs: group=using order=25 -->
 
-MyTube plays the music files on your computer beside Spotify and YouTube Music: in one library, one search and one queue. It plays them from their files, and uploads nothing.
+MyTube plays the music files on your computer beside YouTube Music: in one library, one search and one queue. It plays them from their files, and uploads nothing.
 
 Your own recordings, the albums you bought, a folder of live sets: add the
 folders they're in, or open the files, and they play as any track does,
@@ -127,8 +127,8 @@ a service doesn't apply to them:
 
 - No radio starts from them, Autoplay doesn't carry on after one, and no
   related tracks show under it.
-- No YouTube Music match is looked for, and they don't go to Spotify or to
-  YouTube Music playlists.
+- No YouTube Music match is looked for, and they don't go to YouTube
+  Music playlists.
 - They don't download: they're on your computer already.
 - They don't play on [cast devices](casting.md), which can't reach your
   files.

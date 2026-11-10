@@ -4,8 +4,8 @@
 MyTube has no account, server, analytics or telemetry of its own. This page tells where it keeps your data and what each feature sends where.
 
 Everything MyTube knows of you stays in folders on your computer and in
-your system's credential store, apart from what you keep on YouTube Music,
-Spotify and Last.fm themselves. For the code, read
+your system's credential store, apart from what you keep on YouTube Music
+and Last.fm themselves. For the code, read
 [the data's part of the architecture](architecture/data.md).
 
 ## Where MyTube keeps its data
@@ -30,6 +30,9 @@ an installed copy's data.
   1,000 tracks you played, which the history and the stats read, your
   last 20 searches, the shows you follow, and the artists you follow
   in MyTube.
+- `library.json.spotify`: only where an earlier MyTube kept Spotify
+  tracks: the library as it was before MyTube took them out, kept once,
+  in case you want them back. You can delete it.
 - `mix-covers/`: the covers you chose for your mixes, cut to a square.
 - `local-files.json`: the index of the [music on this computer](local-music.md):
   the path, size, time of change and tags of each music file of the
@@ -54,7 +57,6 @@ an installed copy's data.
 - `artwork/`: the covers you saw, up to 256 MB.
 - `local-art/`: a copy of the covers of the music on this computer, which
   a file holds or that is beside it, by its hash.
-- `matches.json`: the YouTube Music recordings found for Spotify tracks.
 - `loudness.json`: how loud YouTube measured the tracks you played.
 - `ai-labels.json`: the videos YouTube labels as made with AI, kept 30
   days, while you skip them.
@@ -86,15 +88,14 @@ an installed copy's data.
 
 ### Sign-ins
 
-Your Spotify sign-in, your Last.fm connection and the key of your YouTube
-Music session are in the system's credential store, which encrypts them
+Your Last.fm connection and the key of your YouTube Music session are in the system's credential store, which encrypts them
 for your account. MyTube never sees your passwords: you sign in on
-Google's, Spotify's and Last.fm's own pages.
+Google's and Last.fm's own pages.
 
 Where the credential store can't keep a secret:
 
 - As in a session without credentials, the secret is encrypted for your
-  Windows account with DPAPI, in `spotify-token.dpapi`, `lastfm.dpapi` or
+  Windows account with DPAPI, in `lastfm.dpapi` or
   `youtube-session-key.dpapi` in the data folder.
 - Once the store can keep them, MyTube moves them into it, and deletes
   the files.
@@ -105,13 +106,11 @@ Where the credential store can't keep a secret:
 |---|---|---|
 | Browsing YouTube Music: search, home, explore, pages | YouTube Music (`music.youtube.com`) | what you search and open, with a visitor ID YouTube gave; signed in, your session's cookies |
 | Your YouTube Music library, once you sign in | YouTube Music | the likes, dislikes, saves, playlists and follows you make |
-| New releases of the artists you follow | YouTube Music, and Spotify once you sign in | the artists' IDs, to read their pages or lists of albums, at most every 12 hours each |
+| New releases of the artists you follow | YouTube Music | the artists' IDs, to read their pages, at most every 12 hours each |
 | The audio of a track | YouTube's player API (`www.youtube.com`) and media servers; yt-dlp, which asks YouTube too | the video's ID, always signed out |
 | Your YouTube Music history, signed in, while "Add what you play to your YouTube Music history" is on | YouTube Music | the tracks you play, once they played a while, and how far you got in episodes |
 | Skip songs made with AI, while it's on | YouTube (`www.youtube.com`), signed out | the video's ID, once a video |
-| Covers | the image servers of YouTube, Google and Spotify | the image asked for |
-| Spotify, once you sign in | Spotify (`accounts.spotify.com`, `api.spotify.com`) | what you search and open, your library's changes, and the commands of what plays |
-| Spotify in MyTube | Spotify's player, loaded from `sdk.scdn.co` | what Spotify's own player sends |
+| Covers | the image servers of YouTube and Google | the image asked for |
 | Lyrics | Unison (`unison.boidu.dev`) | the video ID of the track that plays, or, without one, its title, artists, album and length |
 | Lyrics, when Unison has none | LRCLIB (`lrclib.net`) | the title, artists, album and length of the track that plays |
 | Lyrics of a track on this computer | Unison, then LRCLIB | its title, artists, album and length, as its tags tell, unless they name no artist; never its file |
@@ -122,7 +121,7 @@ Where the credential store can't keep a secret:
 | Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyTube while you cast |
 | Checks for updates, unless you turn them off in Settings › About | GitHub | a request for the newest release, and its download when you install it |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
-| Knowing whether the network answers | YouTube and Spotify | a request over HTTPS for an empty answer |
+| Knowing whether the network answers | YouTube | a request over HTTPS for an empty answer |
 
 - **Plugins** can send what they like: a plugin's permissions are shown
   to you, not enforced, which is why MyTube asks you to trust a plugin
@@ -141,9 +140,8 @@ Where the credential store can't keep a secret:
   itself, and sends no lyrics for them. Only Arabic's come from Unison,
   while romanize is on.
 - The audio: the offline cache, the downloads, and what the visualizer
-  hears of Spotify through Windows' process loopback, which hears only
-  Spotify's app. MyTube analyzes that
-  audio in memory, and never records or sends it.
+  hears of what MyTube plays. MyTube analyzes that audio in memory, and
+  never records or sends it.
 - The log and the crash reports, until you choose to send one.
 
 ## Clear, move or reset

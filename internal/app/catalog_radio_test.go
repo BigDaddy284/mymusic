@@ -112,7 +112,7 @@ func (m *fakeMusic) catalog(t *testing.T) *Catalog {
 	t.Cleanup(srv.Close)
 	yt := youtube.New()
 	yt.BaseURL = srv.URL
-	return &Catalog{&App{youtube: yt, matcher: match.New(yt, nil), library: lib, settings: st}}
+	return &Catalog{&App{youtube: yt, matcher: match.New(yt), library: lib, settings: st}}
 }
 
 func (m *fakeMusic) note(asked *[]string, what string) {

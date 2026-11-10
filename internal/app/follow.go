@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 )
 
 // errNotSignedIn is returned for following or saving on a service the user
@@ -73,8 +72,7 @@ func (a *App) syncYouTubeLike(ctx context.Context, track media.Track, liked bool
 }
 
 // syncYouTubeDislike dislikes a YouTube Music track on YouTube Music too,
-// or takes the dislike back, when the user signed in. A Spotify track's
-// recording isn't disliked there: the match may be wrong.
+// or takes the dislike back, when the user signed in.
 func (a *App) syncYouTubeDislike(ctx context.Context, track media.Track, disliked bool) {
 	if track.Source != media.SourceYouTube || !a.youtube.SignedIn() {
 		return
@@ -86,7 +84,7 @@ func (a *App) syncYouTubeDislike(ctx context.Context, track media.Track, dislike
 }
 
 // SetFollowing follows or unfollows an artist on its service: subscribes
-// on YouTube Music, follows on Spotify.
+// on YouTube Music.
 func (c *Collection) SetFollowing(ctx context.Context, artistID string, on bool) error {
 	source, native, err := media.ParseID(artistID)
 	if err != nil {
@@ -103,8 +101,6 @@ func (c *Collection) SetFollowing(ctx context.Context, artistID string, on bool)
 			return errNotSignedIn
 		}
 		return c.a.youtube.SetSubscribed(ctx, native, on)
-	case media.SourceSpotify:
-		return c.a.spotifySave(ctx, spotify.URI("artist", native), on)
 	}
 	return fmt.Errorf("artists of %s cannot be followed", source)
 }
@@ -129,38 +125,6 @@ func (c *Collection) SetSaved(ctx context.Context, kind, id, playlistID string, 
 			native = playlistID
 		}
 		return c.a.youtube.SetSaved(ctx, native, on)
-	case media.SourceSpotify:
-		if kind == "playlist" {
-			return c.a.spotifyFollowPlaylist(ctx, native, on)
-		}
-		return c.a.spotifySave(ctx, spotify.URI("album", native), on)
 	}
 	return fmt.Errorf("%s of %s cannot be saved", kind, source)
-}
-
-func (a *App) spotifySave(ctx context.Context, uri string, on bool) error {
-	if !a.spotify.SignedIn() {
-		return errNotSignedIn
-	}
-	if on {
-		return a.spotify.Save(ctx, uri)
-	}
-	return a.spotify.Remove(ctx, uri)
-}
-
-func (a *App) spotifyFollowPlaylist(ctx context.Context, id string, on bool) error {
-	if !a.spotify.SignedIn() {
-		return errNotSignedIn
-	}
-	return a.spotify.FollowPlaylist(ctx, id, on)
-}
-
-// spotifyHas reports whether an item, by its Spotify URI, is in the user's
-// Spotify library; false when they did not sign in or Spotify did not say.
-func (a *App) spotifyHas(ctx context.Context, uri string) bool {
-	if !a.spotify.SignedIn() {
-		return false
-	}
-	has, err := a.spotify.Contains(ctx, uri)
-	return err == nil && len(has) == 1 && has[0]
 }

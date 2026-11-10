@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // Label is what the app knows of the label YouTube gives the recording of
@@ -86,22 +85,10 @@ func (p *Player) skipsAI() bool {
 	return ok && p.skipAI
 }
 
-// streams reports whether t plays from YouTube Music, rather than on a
-// Spotify device, as the settings play Spotify tracks.
-func streams(t media.Track, spotify settings.SpotifyPlayback, here Device) bool {
-	switch t.Source {
-	case media.SourceYouTube:
-		return true
-	case media.SourceSpotify:
-		return spotify == settings.SpotifyPlaybackMatch || spotify == settings.SpotifyPlaybackHere && here == nil
-	}
-	return false
-}
-
 // checks reports whether the player checks the label of t before it
 // plays: it skips what YouTube labels, and t plays from YouTube Music.
 func (p *Player) checks(t media.Track) bool {
-	return p.skipsAI() && streams(t, p.spotifyMode, p.here)
+	return p.skipsAI() && t.Source == media.SourceYouTube
 }
 
 // knownLabel is the label the app knows of t, without asking YouTube.
@@ -204,9 +191,8 @@ func (p *Player) mark(id string) {
 	})
 }
 
-// ForgetLabel forgets that YouTube labels the track id as made with AI, as
-// when it labels the wrong recording of a Spotify track: its entries play,
-// until a check finds the label again.
+// ForgetLabel forgets that YouTube labels the track id as made with AI:
+// its entries play, until a check finds the label again.
 func (p *Player) ForgetLabel(id string) {
 	p.do(func() {
 		p.setSkips(id, func(it Item) string {
@@ -332,32 +318,4 @@ func (p *Player) checkRadio(items []Item) {
 			}
 		})
 	}
-}
-
-// checkFallback checks the label of a Spotify track the player moved to,
-// which plays from its recording on YouTube Music as no Spotify device
-// could, and then plays it, or passes over it, labeled.
-func (p *Player) checkFallback(token int, entry Item, play func()) {
-	if token != p.passing.movedTo || !p.skipsAI() || entry.Chosen || streams(entry.Track, p.spotifyMode, p.here) {
-		play() // chosen, or checked before it played
-		return
-	}
-	labels, _ := p.labels()
-	await(p, func(ctx context.Context) (Label, error) {
-		ctx, cancel := context.WithTimeout(ctx, labelWait)
-		defer cancel()
-		return labels.Label(ctx, entry.Track, true), nil
-	}, func(l Label, _ error) {
-		p.learned(entry.Track, l)
-		if token != p.loadToken {
-			return
-		}
-		if l != LabelAI {
-			play()
-			return
-		}
-		m := &move{dir: 1, ended: true, held: true}
-		p.passOver(m, entry, SkipMadeWithAI)
-		p.step(m, p.indexOf(entry.UID)+1)
-	})
 }

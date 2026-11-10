@@ -29,9 +29,6 @@ MyTube's files, the resolver and the engine hold.
   loudness tells how loud YouTube measured it. Of the track that plays in
   the engine, while the engine's active deck plays its URL, or its 5.1
   surround audio's, what the engine tells takes the place of the rest.
-  A Spotify track that Spotify's own player plays, in MyTube or on a
-  Connect device, tells only that: Spotify tells MyTube nothing of its
-  audio.
 - **The dialog** (`trackinfo.go`) fetches it as the page's answers are
   fetched, once each time it opens, and of the track that plays, again
   once a second for 10 seconds at most, until the engine opened it or

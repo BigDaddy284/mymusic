@@ -40,9 +40,6 @@
   (`MYTUBE_YT_COOKIES` adds a signed-in account, and
   `MYTUBE_YT_WRITE=1` lets it make and delete a playlist there, and
   dislike a song and take the dislike back).
-- **`internal/spotify`** signs in with PKCE on a loopback callback, refreshes
-  tokens, reads the Web API (search, albums, artists, playlists, the
-  library), and controls Spotify Connect devices.
 - **`internal/sysproxy`** picks the proxy of every request MyTube makes,
   as the `Proxy` of `http.DefaultTransport`, which the clients use or
   clone: the environment's (`HTTPS_PROXY` and the like) when it names
@@ -57,9 +54,7 @@
   and gives yt-dlp a `--proxy` where yt-dlp wouldn't find that proxy
   itself. A package that clones `http.DefaultTransport` as it
   initializes imports it, as `internal/online` does.
-- **`internal/match`** finds a Spotify track's recording on YouTube Music, by
-  title, artists and duration, for playback without a Spotify device. It
-  also finds the song of a music video, by its title and artists, which
+- **`internal/match`** finds the song of a music video, by its title and artists, which
   the video's radio starts from: YouTube Music makes the radio of a video
   out of videos.
 - **`lyrics`** finds synced lyrics on Unison and LRCLIB, reads TTML and LRC,

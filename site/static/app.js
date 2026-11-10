@@ -600,7 +600,7 @@
     drawVolume();
   }
 
-  // Two services, one queue: the columns of each service slide together
+  // Two sources, one queue: the columns of each source slide together
   // into one queue as the section scrolls by.
   const merge = $("[data-merge]");
   if (merge && !reduced.matches) {
@@ -608,7 +608,7 @@
     const stage = $("[data-merge-stage]", merge);
     const rows = $$(".merge-row", merge);
     const labels = {
-      spotify: $(".merge-label-spotify", merge),
+      file: $(".merge-label-file", merge),
       youtube: $(".merge-label-youtube", merge),
       queue: $(".merge-label-queue", merge),
     };
@@ -635,11 +635,11 @@
       const r = merge.getBoundingClientRect();
       const span = merge.offsetHeight - (innerHeight - 64);
       const q = clamp((-r.top / Math.max(span, 1) - 0.12) / 0.7);
-      const seen = { spotify: 0, youtube: 0 };
+      const seen = { file: 0, youtube: 0 };
       rows.forEach((row, k) => {
         const src = row.dataset.src;
         const i = seen[src]++;
-        const sx = src === "spotify" ? x0 : x1;
+        const sx = src === "file" ? x0 : x1;
         const ey = top + k * step;
         // On phones each row keeps its place in the queue and only moves
         // sideways, out of its service's lane, so no two rows ever cross.
@@ -652,13 +652,13 @@
         row.style.transform = `translate(${x}px, ${y}px)`;
         row.classList.toggle("is-merged", e > 0.98);
       });
-      labels.spotify.style.transform = `translate(${x0}px, ${startTop - 34}px)`;
+      labels.file.style.transform = `translate(${x0}px, ${startTop - 34}px)`;
       const yw = labels.youtube.offsetWidth;
       labels.youtube.style.transform = stacked
         ? `translate(${endW - yw}px, ${startTop - 34}px)`
         : `translate(${x1}px, ${startTop - 34}px)`;
       labels.queue.style.transform = `translate(${xEnd}px, 4px)`;
-      labels.spotify.style.opacity = labels.youtube.style.opacity = String(clamp(1 - q * 2.5));
+      labels.file.style.opacity = labels.youtube.style.opacity = String(clamp(1 - q * 2.5));
       labels.queue.style.opacity = String(clamp(q * 2.5 - 1.5));
     };
     const ask = () => {

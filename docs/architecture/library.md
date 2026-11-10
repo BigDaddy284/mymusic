@@ -50,8 +50,7 @@
   the offline cache: a folder of their audio (`audio/<video id>.webm`, or
   `.m4a` for a track YouTube has only in AAC) and covers (`art/`), with
   an `index.json` of what it holds, its paths relative to the folder, so
-  that it moves whole. A Spotify track downloads as its recording on
-  YouTube Music, and tracks of one recording share a file. Two workers
+  that it moves whole. Two workers
   download what waits, oldest first, a few seconds apart, through
   `Proxy.Download`: the stream's chunks, its URL found again when YouTube
   refuses it, connecting again from the byte it reached, into a `.part`

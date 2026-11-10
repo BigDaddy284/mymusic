@@ -316,10 +316,6 @@ func (a *App) tellStart() {
 // window or, outside, from an edit of settings.json. Then it tells the
 // windows.
 func (a *App) settingsChanged(prev, s settings.Settings, outside bool) {
-	if prev.SpotifyClientID != s.SpotifyClientID && a.spotify.SignedIn() {
-		// The token belongs to the former app.
-		a.signOutSpotify()
-	}
 	if prev.YouTubeChannel != s.YouTubeChannel {
 		// The profile is the former channel's.
 		a.mu.Lock()

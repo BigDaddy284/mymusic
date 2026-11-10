@@ -6,22 +6,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/volume"
 )
 
-// SpotifyPlayback chooses how Spotify tracks play.
-type SpotifyPlayback string
-
-const (
-	// SpotifyPlaybackMatch plays Spotify tracks through MyTube's own
-	// player, from their recording on YouTube Music.
-	SpotifyPlaybackMatch SpotifyPlayback = "match"
-	// SpotifyPlaybackConnect plays Spotify tracks on a Spotify Connect
-	// device, which needs Spotify Premium.
-	SpotifyPlaybackConnect SpotifyPlayback = "connect"
-	// SpotifyPlaybackHere plays Spotify tracks in MyTube, which Spotify's
-	// Web Playback SDK makes a Spotify Connect device of its own. It needs
-	// Spotify Premium, and no Spotify app.
-	SpotifyPlaybackHere SpotifyPlayback = "here"
-)
-
 // Quality chooses between the best audio and smaller streams.
 type Quality string
 
@@ -30,15 +14,10 @@ const (
 	QualitySaver Quality = "saver"
 )
 
-// Playback is how MyTube plays: the Spotify tracks, the sound, the speed,
+// Playback is how MyTube plays: the sound, the speed,
 // the music videos and the equalizer of Settings › Playback, and the
 // volume.
 type Playback struct {
-	// SpotifyPlayback is how Spotify tracks play.
-	SpotifyPlayback SpotifyPlayback `json:"spotifyPlayback"`
-	// SpotifyDevice is the Spotify Connect device to play on; the active
-	// one when empty.
-	SpotifyDevice string `json:"spotifyDevice"`
 	// Quality chooses between the best audio of YouTube Music and smaller
 	// streams.
 	Quality Quality `json:"quality"`
@@ -60,13 +39,11 @@ type Playback struct {
 	// Autoplay continues with similar tracks when the queue ends.
 	Autoplay bool `json:"autoplay"`
 	// SongSpeed plays songs faster or slower, at their own pitch, from
-	// MinSpeed to MaxSpeed by SpeedStep: 1 is their own speed. Only what
-	// MyTube's own player plays takes it; Spotify plays its own tracks
-	// at their own speed.
+	// MinSpeed to MaxSpeed by SpeedStep: 1 is their own speed.
 	SongSpeed float64 `json:"songSpeed"`
 	// PodcastSpeed plays podcasts' episodes faster or slower, as SongSpeed
 	// plays songs, from MinSpeed to MaxSpeed by SpeedStep: 1 is their own
-	// speed. Spotify plays its own episodes at their own speed.
+	// speed.
 	PodcastSpeed float64 `json:"podcastSpeed"`
 	// SkipDisliked passes over the tracks the user disliked as the queue
 	// moves on, and leaves them out of radios.
@@ -81,7 +58,7 @@ type Playback struct {
 	// Equalizer shapes the sound of MyTube's own player.
 	Equalizer Equalizer `json:"equalizer"`
 	// VolumeCurve is how the positions of the volume slider sound, in
-	// MyTube's own player and in Spotify's alike (#383): Natural at first.
+	// MyTube's player (#383): Natural at first.
 	VolumeCurve volume.Curve `json:"volumeCurve"`
 	// Volume is from 0 to 1.
 	Volume float64 `json:"volume"`
@@ -90,8 +67,6 @@ type Playback struct {
 // defaultPlayback is how a new install plays.
 func defaultPlayback() Playback {
 	var p Playback
-	// In MyTube: WebView2 decrypts Spotify's audio with Widevine (#295).
-	p.SpotifyPlayback = SpotifyPlaybackHere
 	p.Quality = QualityBest
 	p.Loudness = true
 	p.Autoplay = true
@@ -107,11 +82,6 @@ func defaultPlayback() Playback {
 // clean is p with every value in its range, and d's in place of values
 // that are missing or invalid.
 func (p Playback) clean(d Playback) Playback {
-	switch p.SpotifyPlayback {
-	case SpotifyPlaybackMatch, SpotifyPlaybackConnect, SpotifyPlaybackHere:
-	default:
-		p.SpotifyPlayback = d.SpotifyPlayback
-	}
 	if p.Quality != QualitySaver {
 		p.Quality = QualityBest
 	}

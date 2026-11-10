@@ -17,21 +17,8 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/localfiles"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 	"github.com/bigdaddy284/mymusic/internal/tags"
-)
-
-// TrackPlays is what plays a track.
-type TrackPlays string
-
-const (
-	// PlaysEngine plays it in MyTube's own audio engine.
-	PlaysEngine TrackPlays = "engine"
-	// PlaysSpotify plays it in Spotify's own player, in MyTube.
-	PlaysSpotify TrackPlays = "spotify"
-	// PlaysConnect plays it on a Spotify Connect device.
-	PlaysConnect TrackPlays = "connect"
 )
 
 // FileKind is what the file a track plays from is.
@@ -49,15 +36,8 @@ const (
 
 // TrackInfo is what MyTube knows of a track, and of how it plays.
 type TrackInfo struct {
-	// Plays is what plays it: Spotify's tracks play in Spotify's own
-	// player while the settings ask for it, which tells MyTube nothing
-	// of their audio, and the rest in MyTube's engine.
-	Plays TrackPlays
 	// Playing is set for the track that plays.
 	Playing bool
-	// Recording is the track of YouTube Music that plays for a Spotify
-	// track, once MyTube found it, or that its download holds.
-	Recording *media.Track
 	// File is the file its audio plays from, when one holds it: its own,
 	// its download, or the offline cache's copy.
 	File *TrackFile
@@ -138,7 +118,7 @@ var engineLoaded = func(a *App) (audio.Loaded, bool) {
 func (p *Player) TrackInfo(ctx context.Context, t media.Track, now *player.Source) (TrackInfo, error) {
 	a := p.a
 	st := a.settings.Get()
-	info := TrackInfo{Plays: PlaysEngine, Playing: now != nil, EvenLoudness: st.Loudness, Levelling: st.Normalize}
+	info := TrackInfo{Playing: now != nil, EvenLoudness: st.Loudness, Levelling: st.Normalize}
 	if t.Source == media.SourceFile {
 		path, ok := localfiles.PathOf(t.ID)
 		if !ok {
@@ -148,14 +128,7 @@ func (p *Player) TrackInfo(ctx context.Context, t media.Track, now *player.Sourc
 		info.engine(a, now)
 		return info, ctx.Err()
 	}
-	if plays, ok := spotifyPlayer(t, st, now); ok {
-		info.Plays = plays
-		return info, nil
-	}
-	rec, video := recordingOf(a, t, now)
-	if rec.ID != "" && rec.ID != t.ID {
-		info.Recording = &rec
-	}
+	video := playedVideo(a, t, now)
 	if video == "" {
 		return info, nil
 	}
@@ -189,54 +162,22 @@ func (p *Player) TrackInfo(ctx context.Context, t media.Track, now *player.Sourc
 	return info, ctx.Err()
 }
 
-// spotifyPlayer tells whether Spotify's own player plays a track, and
-// which: the track playing, as now tells, or else a track of Spotify,
-// while the settings ask for Spotify to play its tracks.
-func spotifyPlayer(t media.Track, st settings.Settings, now *player.Source) (TrackPlays, bool) {
-	if now != nil {
-		switch now.Mode {
-		case player.ModeConnect:
-			return PlaysConnect, true
-		case player.ModeSpotify:
-			return PlaysSpotify, true
-		}
-		return "", false
-	}
-	if t.Source != media.SourceSpotify {
-		return "", false
-	}
-	switch {
-	case st.SpotifyPlayback == settings.SpotifyPlaybackConnect:
-		return PlaysConnect, true
-	case st.SpotifyPlayback == settings.SpotifyPlaybackHere:
-		return PlaysSpotify, true
-	}
-	return "", false
-}
-
-// recordingOf returns the track of YouTube Music that plays for t, and
-// its video's ID, when MyTube knows it: the one that plays, as now
-// tells, else the one its download holds, else of a Spotify track, the
-// one found for it before.
-func recordingOf(a *App, t media.Track, now *player.Source) (media.Track, string) {
+// playedVideo returns the ID of the video of YouTube Music that plays for t,
+// when MyTube knows it: the one that plays, as now tells, else the one
+// its download holds, else t's own.
+func playedVideo(a *App, t media.Track, now *player.Source) string {
 	rec := t
 	switch k, ok := a.downloads.Lookup(t.ID); {
 	case now != nil && now.Track.ID != "":
 		rec = now.Track
 	case ok:
 		rec = k.Track
-	case t.Source == media.SourceSpotify:
-		found, ok := a.matcher.Matched(t)
-		if !ok {
-			return media.Track{}, ""
-		}
-		rec = found
 	}
 	source, video, err := media.ParseID(rec.ID)
 	if err != nil || source != media.SourceYouTube || !stream.ValidVideoID(video) {
-		return media.Track{}, ""
+		return ""
 	}
-	return rec, video
+	return video
 }
 
 // engine adds what the engine plays of the track playing, as now tells

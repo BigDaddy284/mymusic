@@ -1,13 +1,12 @@
 # How MyTube works
 <!-- docs: group=inside order=10 -->
 
-MyTube is a native desktop player for YouTube Music and Spotify, written in Go. Here is how its engine, streams, Spotify, services and updates fit together.
+MyTube is a native desktop player for YouTube Music and the music on your computer, written in Go. Here is how its engine, streams, services and updates fit together.
 
 This page is the big picture for people who use MyTube and want to know
 what happens behind a click. The pages after it go deeper: the
-[audio engine](audio-engine.md), [where the audio comes from](streams.md),
-[how Spotify tracks play](spotify-playback.md) and
-[your data and privacy](data-and-privacy.md). For the code itself, read
+[audio engine](audio-engine.md), [where the audio comes from](streams.md)
+and [your data and privacy](data-and-privacy.md). For the code itself, read
 [the architecture](architecture/README.md).
 
 ## One program, drawn by itself
@@ -18,10 +17,8 @@ the pages, the player bar, the queue, the lyrics, the mini player and the
 command palette. There is no browser engine inside MyTube drawing its interface,
 as there is in an Electron app, and no web page behind the windows.
 
-A web view of the system, WebView2, opens only for three things, and only while it's needed:
+A web view of the system, WebView2, opens only for two things, and only while it's needed:
 
-- **Spotify's player**, when Spotify tracks play in MyTube
-  itself. It opens at the first Spotify track that plays there.
 - **Google's sign-in page**, when you sign in to YouTube Music.
 - **The picture of music videos**, when "Show the video of music videos"
   is on in Settings › Playback. It closes a minute after the last picture.
@@ -56,11 +53,8 @@ When you play a YouTube Music track, this happens:
    the next one's stream; ten seconds in, it fetches its audio, so that
    it starts at once when its turn comes.
 
-A Spotify track plays one of three ways, which you choose in Settings ›
-Playback › Spotify tracks: in MyTube through Spotify's own player, on a
-Spotify Connect device, or from its recording on YouTube Music through
-MyTube's own engine. [How Spotify tracks play](spotify-playback.md)
-compares them.
+A file on this computer skips the first three steps: the engine reads it
+from its folder. [Music on this computer](local-music.md) tells more.
 
 ## YouTube Music
 
@@ -79,19 +73,9 @@ Audio is a separate matter: MyTube always finds streams signed out, even
 while you're signed in, as YouTube gives an account's requests fewer
 streams.
 
-## Spotify
-
-MyTube reads Spotify through the Spotify Web API: search, albums,
-artists, playlists, your library and your Spotify Connect devices. You
-sign in with a Spotify app of your own, as Spotify allows a development
-app only five users and only while its owner has Premium:
-[Spotify](spotify.md) walks you through it. The sign-in happens in your
-browser, with PKCE, and comes back to MyTube at
-`http://127.0.0.1:47823/callback` on your own computer.
-
 ## The services it talks to
 
-MyTube has no server of its own. Apart from YouTube and Spotify, it
+MyTube has no server of its own. Apart from YouTube, it
 talks to:
 
 - **Lyrics:** [Unison](https://unison.boidu.dev), an open, crowdsourced
@@ -110,8 +94,8 @@ talks to:
 - **GitHub**, for new versions of MyTube, for yt-dlp, and for the kanji
   dictionary.
 
-To tell whether the network answers, MyTube asks YouTube's and Spotify's
-addresses over HTTPS. [Your data and privacy](data-and-privacy.md) lists
+To tell whether the network answers, MyTube asks YouTube's addresses
+over HTTPS. [Your data and privacy](data-and-privacy.md) lists
 what each of these gets.
 
 ## Themes and plugins

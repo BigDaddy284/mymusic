@@ -54,7 +54,7 @@ func TestFileTokensPywal(t *testing.T) {
 	if b := toks["border"]; b.A != 41 || hex(b) != "#c5c8cc" {
 		t.Errorf("the border is %v, not the foreground at 16%%", b)
 	}
-	for _, name := range []string{"danger", "success", "youtube", "spotify"} {
+	for _, name := range []string{"danger", "success", "youtube"} {
 		if _, ok := toks[name]; ok {
 			t.Errorf("pywal's colours set %s, which stays the theme's", name)
 		}
@@ -113,7 +113,7 @@ func TestFileTokensTokens(t *testing.T) {
 		t.Errorf("the template's light set: dark %v, %v", dark, toks)
 	}
 	toks, dark = fileTokens(testColors(t, "theme.json"), "dark")
-	if dark || hex(toks["bg"]) != "#f3f7f5" || len(toks) != 18 {
+	if dark || hex(toks["bg"]) != "#f3f7f5" || len(toks) != 17 {
 		t.Errorf("a light theme.json: dark %v, %d tokens", dark, len(toks))
 	}
 }
@@ -162,7 +162,6 @@ func TestFileColorsReadable(t *testing.T) {
 			on("ink on the accent", k.accentText, k.accent, 4.5)
 			on("success", k.success, k.bg, 3)
 			on("the YouTube mark", k.youtube, k.bg, 3)
-			on("the Spotify mark", k.spotify, k.bg, 3)
 			for i, tile := range k.tiles {
 				on("ink on tile "+string(rune('1'+i)), k.tileText, tile, 4.5)
 			}

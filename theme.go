@@ -24,7 +24,7 @@ type look struct {
 
 	bg, surface, surface2, surface3, border ui.Color
 	text, muted, accent, accentText         ui.Color
-	danger, success, youtube, spotify       ui.Color
+	danger, success, youtube                ui.Color
 	tiles                                   [4]ui.Color
 	tileText                                ui.Color
 	// themeAccent is the accent of the theme, or of the colour file, which
@@ -81,7 +81,7 @@ var fallbackTheme = map[string]string{
 	"bg": "#000000", "surface": "#0b0b0b", "surface-2": "#181818", "surface-3": "#272727",
 	"border": "rgba(255, 255, 255, 0.16)", "text": "#ffffff", "text-muted": "#a3a3a3",
 	"accent": "#00bde3", "accent-text": "#000000", "danger": "#ff5a4f", "success": "#a4e600",
-	"youtube": "#ff4040", "spotify": "#1ed760", "tile-1": "#00bde3", "tile-2": "#e6007e",
+	"youtube": "#ff4040", "tile-1": "#00bde3", "tile-2": "#e6007e",
 	"tile-3": "#a4e600", "tile-4": "#ffb000", "tile-text": "#000000",
 }
 
@@ -195,7 +195,7 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	k.bg, k.surface, k.surface2, k.surface3 = col(bg), col(p.surface), col(p.surface2), col(p.surface3)
 	k.border, k.text, k.muted = col(p.border), col(text), col(p.muted)
 	k.accent, k.accentText = col(accent), col(p.accentText)
-	k.danger, k.success, k.youtube, k.spotify = col(p.danger), col(p.success), col(p.youtube), col(p.spotify)
+	k.danger, k.success, k.youtube = col(p.danger), col(p.success), col(p.youtube)
 	for i := range k.tiles {
 		k.tiles[i] = col(p.tiles[i])
 	}

@@ -54,6 +54,9 @@ func TestHomeShelvesClean(t *testing.T) {
 		{Key: "", Title: "No key"},
 		{Key: "local:recent", Title: "Twice", Hidden: true},
 		{Key: strings.Repeat("k", maxHomeKey+1)},
+		{Key: "spotify:made-for-you", Title: "Made for you"},
+		{Key: "playlist:sp:37i9dQZF1DXcBWIGoYBM5M", Title: "Today's Top Hits"},
+		{Key: "artist:sp:4tZwfgrHOc3mvqYlEYSvVi", Title: "New from Daft Punk"},
 		{Key: "local:mixes", Title: long},
 	}
 	got := h.clean().HomeShelves

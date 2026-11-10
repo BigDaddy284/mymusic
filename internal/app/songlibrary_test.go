@@ -42,7 +42,7 @@ func TestSetSongSaved(t *testing.T) {
 	})
 	col := &Collection{a: a}
 	for _, other := range []media.Track{
-		{ID: media.ID(media.SourceSpotify, "2"), Source: media.SourceSpotify, Title: "Teardrop"},
+		{ID: media.ID(media.SourceFile, "2"), Source: media.SourceFile, Title: "Teardrop"},
 		{ID: "yt:ep", Source: media.SourceYouTube, Title: "An episode", Episode: &media.Episode{}},
 	} {
 		if err := col.SetSongSaved(ctx, other, true); !errors.Is(err, errSongsOnYouTube) {

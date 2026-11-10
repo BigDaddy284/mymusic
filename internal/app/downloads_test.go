@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -15,9 +14,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/downloads"
 	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
-	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 )
 
@@ -34,25 +30,14 @@ func (f webmFetcher) Download(ctx context.Context, video string, resume func(str
 	return s, err
 }
 
-// matches matches Spotify tracks as the map says.
-type matches map[string]media.Track
-
-func (m matches) Match(_ context.Context, t media.Track) (media.Track, error) {
-	if found, ok := m[t.ID]; ok {
-		return found, nil
-	}
-	return media.Track{}, match.ErrNoMatch
-}
-
-// withDownloads gives n's app downloads of tracks, done, with the Spotify
-// tracks matched as recordings says.
-func withDownloads(t *testing.T, a *App, recordings matches, tracks ...media.Track) {
+// withDownloads gives n's app downloads of tracks, done.
+func withDownloads(t *testing.T, a *App, tracks ...media.Track) {
 	t.Helper()
 	audio, err := os.ReadFile(filepath.Join("..", "..", "webm", "testdata", "stereo-cues-front.webm"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	a.downloads = downloads.Open(filepath.Join(t.TempDir(), "downloads"), downloads.Options{Fetcher: webmFetcher{audio}, Matcher: recordings})
+	a.downloads = downloads.Open(filepath.Join(t.TempDir(), "downloads"), downloads.Options{Fetcher: webmFetcher{audio}})
 	t.Cleanup(a.downloads.Close)
 	a.downloads.Add(tracks, "best")
 	a.downloads.Start()
@@ -64,23 +49,17 @@ func withDownloads(t *testing.T, a *App, recordings matches, tracks ...media.Tra
 }
 
 // TestPrepareStreamPlaysDownload plays a track downloaded from its
-// download, without yt-dlp, and a Spotify track as its recording,
-// without a search.
+// download, without yt-dlp.
 func TestPrepareStreamPlaysDownload(t *testing.T) {
 	n := newNetTest(t)
 	n.net.Store(true)
 	a := n.p.a
-	a.matcher = match.New(nil, nil) // a search would panic
-	rec := ytTrack("eeeeeeeeeee")
-	withDownloads(t, a, matches{"sp:kept": rec}, ytTrack("fffffffffff"), media.Track{ID: "sp:kept", Source: media.SourceSpotify, Title: "Kept"})
+	a.matcher = match.New(nil) // a search would panic
+	withDownloads(t, a, ytTrack("fffffffffff"))
 	runs := n.runs.Load()
-	src, err := n.p.PrepareStream(context.Background(), ytTrack("fffffffffff"))
+	src, err := n.p.Prepare(context.Background(), ytTrack("fffffffffff"))
 	if err != nil || !src.Cached || !strings.HasSuffix(src.URL, "/yt/fffffffffff") || src.Track.ID != "yt:fffffffffff" {
 		t.Errorf("a download: %+v, %v", src, err)
-	}
-	src, err = n.p.PrepareStream(context.Background(), media.Track{ID: "sp:kept", Source: media.SourceSpotify})
-	if err != nil || !src.Cached || !strings.HasSuffix(src.URL, "/yt/eeeeeeeeeee") || src.Track.ID != rec.ID {
-		t.Errorf("a Spotify download: %+v, %v", src, err)
 	}
 	if n.runs.Load() != runs {
 		t.Errorf("yt-dlp ran %d times", n.runs.Load()-runs)
@@ -112,13 +91,13 @@ func TestPrepareStreamTellsDownloadsLive(t *testing.T) {
 		}
 		return []byte(`{"url": "https://example.com/a?itag=251", "ext": "webm", "acodec": "opus", "filesize": 100}`), nil
 	}
-	a := &App{resolver: r, cache: stream.NewCache(t.TempDir(), 1<<20), matcher: match.New(nil, nil), proxy: stream.NewProxy(r)}
+	a := &App{resolver: r, cache: stream.NewCache(t.TempDir(), 1<<20), matcher: match.New(nil), proxy: stream.NewProxy(r)}
 	a.downloads = downloads.Open(filepath.Join(t.TempDir(), "downloads"), downloads.Options{Fetcher: a.proxy})
 	t.Cleanup(a.downloads.Close)
 	p := &Player{a: a}
 	radio := ytTrack("liveRadio01")
 	for range 2 {
-		if src, err := p.PrepareStream(context.Background(), radio); err != nil || !src.Live {
+		if src, err := p.Prepare(context.Background(), radio); err != nil || !src.Live {
 			t.Fatalf("source %+v, %v", src, err)
 		}
 		if !a.downloads.Snapshot().Live(radio.ID) || a.downloads.Add([]media.Track{radio}, "best") != 0 {
@@ -127,51 +106,11 @@ func TestPrepareStreamTellsDownloadsLive(t *testing.T) {
 	}
 	live.Store(false)
 	r.Forget("liveRadio01")
-	if src, err := p.PrepareStream(context.Background(), radio); err != nil || src.Live {
+	if src, err := p.Prepare(context.Background(), radio); err != nil || src.Live {
 		t.Fatalf("source %+v, %v", src, err)
 	}
 	if a.downloads.Snapshot().Live(radio.ID) {
 		t.Error("a video no longer live is still taken for a live stream")
-	}
-}
-
-// TestPrepareOfflineSpotify plays a Spotify track downloaded from its
-// download while the network is gone, whatever the settings say of Spotify
-// tracks, and has the others wait for it rather than a Spotify device.
-func TestPrepareOfflineSpotify(t *testing.T) {
-	n := newNetTest(t)
-	a := n.p.a
-	s := settings.Default()
-	s.SpotifyPlayback = settings.SpotifyPlaybackConnect
-	f, err := store.Open(filepath.Join(n.dir, "settings.json"), s)
-	if err != nil {
-		t.Fatal(err)
-	}
-	a.settings = f
-	rec := ytTrack("ggggggggggg")
-	kept := media.Track{ID: "sp:kept", Source: media.SourceSpotify, Title: "Kept"}
-	other := media.Track{ID: "sp:other", Source: media.SourceSpotify, Title: "Other"}
-	withDownloads(t, a, matches{kept.ID: rec}, kept)
-	ctx := context.Background()
-	n.net.Store(true)
-	if src, err := n.p.Prepare(ctx, kept); err != nil || src.Mode != PlaybackConnect {
-		t.Errorf("online, a Spotify track downloaded: %+v, %v", src, err)
-	}
-	n.net.Store(false)
-	a.online.Kick()
-	a.online.Check(ctx)
-	src, err := n.p.Prepare(ctx, kept)
-	if err != nil || src.Mode != PlaybackStream || src.Track.ID != rec.ID {
-		t.Errorf("offline, a Spotify track downloaded: %+v, %v", src, err)
-	}
-	if _, err := n.p.Prepare(ctx, other); !errors.Is(err, player.ErrOffline) {
-		t.Errorf("offline, a Spotify track not downloaded: %v", err)
-	}
-	// A Spotify track whose match isn't known isn't searched for offline.
-	a.settings.Update(func(v *settings.Settings) error { v.SpotifyPlayback = settings.SpotifyPlaybackMatch; return nil })
-	a.matcher = match.New(nil, nil) // a search would panic
-	if _, err := n.p.PrepareStream(ctx, other); !errors.Is(err, player.ErrOffline) {
-		t.Errorf("offline, an unknown match: %v", err)
 	}
 }
 
@@ -180,7 +119,7 @@ func TestPrepareOfflineSpotify(t *testing.T) {
 func TestPlaysOffline(t *testing.T) {
 	n := newNetTest(t)
 	a := n.p.a
-	withDownloads(t, a, nil, ytTrack("hhhhhhhhhhh"))
+	withDownloads(t, a, ytTrack("hhhhhhhhhhh"))
 	if err := os.MkdirAll(filepath.Join(n.dir, "audio"), 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -193,9 +132,7 @@ func TestPlaysOffline(t *testing.T) {
 	}{
 		{ytTrack("hhhhhhhhhhh"), true},
 		{ytTrack("aaaaaaaaaaa"), true},
-		{media.Track{ID: "sp:known", Source: media.SourceSpotify}, true}, // matched to aaaaaaaaaaa, cached
 		{ytTrack("iiiiiiiiiii"), false},
-		{media.Track{ID: "sp:unknown", Source: media.SourceSpotify}, false},
 	} {
 		if got := a.playsOffline(c.track); got != c.plays {
 			t.Errorf("%s plays offline: %v", c.track.ID, got)

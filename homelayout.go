@@ -138,8 +138,6 @@ func addedKind(key string) bool {
 // MyTube's own for the user's shelves.
 func keySource(key string) media.Source {
 	switch prefix, rest, _ := strings.Cut(key, ":"); prefix {
-	case string(media.SourceSpotify):
-		return media.SourceSpotify
 	case string(media.SourceYouTube):
 		return media.SourceYouTube
 	case "playlist", "artist":

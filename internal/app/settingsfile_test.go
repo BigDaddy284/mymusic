@@ -14,15 +14,13 @@ import (
 	"github.com/bigdaddy284/mymusic/builtin"
 	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/settings"
-	"github.com/bigdaddy284/mymusic/internal/spotify"
 	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/volume"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
 // fileApp is an app of a folder of its own, whose settings.json holds
-// text when it isn't empty. Its Spotify token is kept in a fake credential
-// store, and a mistake in the file is told of at once.
+// text when it isn't empty, and a mistake in the file is told of at once.
 func fileApp(t *testing.T, text string) *App {
 	t.Helper()
 	dir := t.TempDir()
@@ -38,7 +36,6 @@ func fileApp(t *testing.T, text string) *App {
 		t.Fatal(err)
 	}
 	t.Cleanup(a.artStore.Close)
-	a.tokens = tokenStore{&secretStore{key: tokenSecret, keep: newKeeper()}}
 	return a
 }
 
@@ -81,14 +78,10 @@ func TestReloadSettingsApplies(t *testing.T) {
 	a := fileApp(t, `{"theme": "mix"}`)
 	n := told(t, a)
 	prefs := &Preferences{a}
-	writeSettings(t, a.settings.Path(), `{"theme": "aurora", "spotifyClientId": "abc", "crosfade": 6, "fontScale": 2}`)
+	writeSettings(t, a.settings.Path(), `{"theme": "aurora", "crosfade": 6, "fontScale": 2}`)
 	a.ReloadSettings()
-	if got := prefs.Get(); got.Theme != "aurora" || got.SpotifyClientID != "abc" {
-		t.Errorf("Get = %q, %q", got.Theme, got.SpotifyClientID)
-	}
-	// As Settings applies a change.
-	if got := a.auth.ClientID(); got != "abc" {
-		t.Errorf("the Spotify client ID is %q", got)
+	if got := prefs.Get(); got.Theme != "aurora" {
+		t.Errorf("Get = %q", got.Theme)
 	}
 	if n.Load() != 1 {
 		t.Errorf("the windows were told %d times, want once", n.Load())
@@ -273,19 +266,6 @@ func TestChangeKeepsAReload(t *testing.T) {
 	}
 }
 
-func TestReloadSettingsSignsOutOnNewClientID(t *testing.T) {
-	a := fileApp(t, `{"spotifyClientId": "former"}`)
-	a.spotify.SetToken(spotify.Token{AccessToken: "ACCESS", Expiry: time.Now().Add(time.Hour)})
-	if !a.spotify.SignedIn() {
-		t.Fatal("not signed in")
-	}
-	writeSettings(t, a.settings.Path(), `{"spotifyClientId": "another"}`)
-	a.ReloadSettings()
-	if a.spotify.SignedIn() || a.auth.ClientID() != "another" {
-		t.Errorf("signed in %v, client ID %q", a.spotify.SignedIn(), a.auth.ClientID())
-	}
-}
-
 func TestReloadSettingsForgetsTheChannelsProfile(t *testing.T) {
 	a := fileApp(t, `{"youtubeChannel": "111"}`)
 	a.youtubeMe = &youtube.Account{Name: "The former channel"}
@@ -306,7 +286,7 @@ func TestReloadSettingsFollowsVolume(t *testing.T) {
 		t.Fatal(err)
 	}
 	stream := &quietStream{}
-	p := player.New(offlineServices{playerServices{a}}, stream, connectDevice{a}, player.Saved{})
+	p := player.New(offlineServices{playerServices{a}}, stream, player.Saved{})
 	stream.p.Store(p)
 	a.goPlayer.Store(p)
 	t.Cleanup(p.Close)

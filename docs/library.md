@@ -1,7 +1,7 @@
 # Your library
 <!-- docs: group=using order=20 -->
 
-MyTube keeps your liked songs, mixes, downloads, history and stats for Spotify and YouTube Music tracks together, beside each service's own library.
+MyTube keeps your liked songs, mixes, downloads, history and stats for YouTube Music tracks and the music on your computer together, beside your YouTube Music library.
 
 What MyTube keeps itself, as your liked and disliked songs, your mixes, the artists you follow without an account and your history, is in `library.json` in your [data folder](data-and-privacy.md#the-data-folder), and works with no account. What you keep on a service, as its playlists and saved albums, shows once you [sign in](accounts.md) to it, and the changes you make in MyTube reach it.
 
@@ -17,19 +17,19 @@ Library, in the sidebar or with Alt+2, has these pivots, each with how many it h
 - **On this computer:** the music files of the folders you add, which play from your computer: see [Music on this computer](local-music.md).
 - **History:** what you played.
 - **Disliked:** the songs you disliked, once there are any.
-- **Spotify** and **YouTube Music:** your library on each service you signed in to.
+- **YouTube Music:** your library there, once you signed in.
 
 ## Liked songs
 
 Like a track with the heart in the player bar, on the now playing page, in the [mini player](desktop.md#the-mini-player) or on its row, with Add to liked songs in its menu, or with Ctrl+L for the track playing. The heart again, or Remove from liked songs, takes it back.
 
-- **One list for both services.** Library › Liked, Liked songs in the sidebar, Home's Liked songs tile and Alt+3 open it.
-- **Signed in, a like reaches the service too:** a Spotify track is saved to your Spotify library, and a YouTube Music track is liked on YouTube Music.
+- **One list for everything you like.** Library › Liked, Liked songs in the sidebar, Home's Liked songs tile and Alt+3 open it.
+- **Signed in, a like reaches YouTube Music too:** a YouTube Music track is liked there.
 - **Liking a song you disliked** takes the dislike back.
 - **The list** has Play, Shuffle and Download, a box that searches it and a Sort menu: the list's own order, Title, Artist, Length or Plays. What you search shows how many tracks of the list match.
 - **Plays** puts the songs you played most in MyTube first, as your [history](#history-and-recently-played) counts them, over its last 1,000 plays; songs played as often, and those not played, keep the list's order. The list follows the plays as they're counted.
 
-The songs you liked on a service before, or in its own app, are in that service's pivot of the library: Liked on Spotify, in pages that Load more adds to, and Liked on YouTube Music.
+The songs you liked on YouTube Music before, or in its own app, are in Library › YouTube Music, under Liked on YouTube Music.
 
 ## Disliked songs
 
@@ -61,18 +61,18 @@ A mix shows the cover of its first song that has one, until you choose another.
 
 Follow an artist with Follow on their page, with Follow in the page's More menu (⋯), or with Follow in the menu of their tile, a right click on it in the search, on Home or in the library. Following, or Unfollow in those menus, stops.
 
-- **Signed in to the artist's service,** you follow them there: you subscribe on YouTube Music, or follow on Spotify, as in the service's own app.
-- **Signed out,** MyTube keeps them itself, in `library.json`, as it keeps the podcasts you follow, and the toast says "following in MyTube". Signing in later doesn't follow them on the service: MyTube never writes to your account on its own. Their page still says Following, and stopping stops in MyTube, and on the service too where you follow them there.
-- **Library › Artists** has their new releases first, then Followed in MyTube, the artists MyTube keeps, then Followed on Spotify and Followed on YouTube Music, the artists you follow on each service you signed in to, past those MyTube keeps. The pivot counts the artists MyTube keeps.
+- **Signed in to YouTube Music,** you follow its artists there: you subscribe, as in its own app.
+- **Signed out,** MyTube keeps them itself, in `library.json`, as it keeps the podcasts you follow, and the toast says "following in MyTube". Signing in later doesn't follow them on YouTube Music: MyTube never writes to your account on its own. Their page still says Following, and stopping stops in MyTube, and on YouTube Music too where you follow them there.
+- **Library › Artists** has their new releases first, then Followed in MyTube, the artists MyTube keeps, then Followed on YouTube Music, the artists you follow there once you signed in, past those MyTube keeps. The pivot counts the artists MyTube keeps.
 
 ### New releases
 
-Home shows "New from artists you follow" after your own shelves, and Library › Artists shows it first, once there are any: the albums, singles and EPs of the artists you follow, in MyTube and on the services you signed in to, newest first. Home's Spotify and YouTube Music pivots keep that service's.
+Home shows "New from artists you follow" after your own shelves, and Library › Artists shows it first, once there are any: the albums, singles and EPs of the artists you follow, in MyTube and on YouTube Music once you signed in, newest first. Home's YouTube Music pivot keeps them too.
 
-- **New** is out in the last 8 weeks. Spotify tells the day a release came out, which its tile shows, as Nov 1. YouTube Music tells only the year, which its tile shows: a release of this year counts as new all year, and last year's in the first 8 weeks of the new one.
+- **New** is out in the last 8 weeks. YouTube Music tells only the year a release came out, which its tile shows: a release of this year counts as new all year, and last year's in the first 8 weeks of the new one.
 - **Newest first:** a release known by its year alone counts from the first day of its year, so this year's come after those of the last weeks. Of one day, or one year, an artist's newest come first.
 - **At most** an artist's four newest show, and 30 in all.
-- **Where they come from:** the artist's page on YouTube Music, which lists their latest albums and singles, or Spotify's list of their albums and singles, the 10 newest of each. Neither service gives apps a feed of the new releases of the artists you follow: YouTube Music's New releases are everyone's, and Spotify took its own list from apps in February 2026. Spotify's artists need you signed in to Spotify.
+- **Where they come from:** the artist's page on YouTube Music, which lists their latest albums and singles. YouTube Music gives apps no feed of the new releases of the artists you follow: its New releases are everyone's.
 - **How often:** MyTube asks for an artist's releases at most every 12 hours, and an hour after their service failed, as Home or Library › Artists shows and when you [refresh](settings.md#refresh-a-page) them: up to 30 artists in one go, 3 at a time, those never asked first, and the rest the next time. An artist whose service fails shows what was read before. What it read is kept in `releases.json` in the [cache folder](data-and-privacy.md#the-cache-folder), so that Home shows it at once at the next start, then what's new once it's read.
 
 ## YouTube Music playlists, albums and artists
@@ -80,22 +80,14 @@ Home shows "New from artists you follow" after your own shelves, and Library ›
 Signed in to YouTube Music, Library › YouTube Music has your Playlists, with a new playlist link, your Albums, the Artists you follow, the Songs in your library, and Liked on YouTube Music. A [brand channel](accounts.md#several-google-accounts-and-brand-channels) of your account, chosen in Settings › Accounts, has a library of its own.
 
 - **Save** an album or a playlist with Save on its page, which then says Saved; pressing it again takes it out of your library. **Follow** an artist with Follow on their page, which subscribes on YouTube Music.
-- **Make a playlist** with new playlist in Library › YouTube Music, with Add to YouTube Music playlist › New playlist… in a track's menu, or with Save as a YouTube Music playlist in an album's or a playlist's More menu. Spotify tracks are found on YouTube Music first.
-- **Add a track** with Add to YouTube Music playlist in its menu, then one of your playlists: it lists those you can add to. Tracks of either service go in. A song the playlist holds already YouTube Music doesn't add again: the toast says Already in, with Add anyway, which adds it a second time, as YouTube Music's own Add anyway does. Other refusals say what they are, as a playlist that may be another account's, or a sign-in YouTube Music no longer accepts.
+- **Make a playlist** with new playlist in Library › YouTube Music, with Add to YouTube Music playlist › New playlist… in a track's menu, or with Save as a YouTube Music playlist in an album's or a playlist's More menu. Files on this computer stay out.
+- **Add a track** with Add to YouTube Music playlist in its menu, then one of your playlists: it lists those you can add to. YouTube Music's tracks go in. A song the playlist holds already YouTube Music doesn't add again: the toast says Already in, with Add anyway, which adds it a second time, as YouTube Music's own Add anyway does. Other refusals say what they are, as a playlist that may be another account's, or a sign-in YouTube Music no longer accepts.
 - **Take a track out** of a playlist of yours with Remove from this playlist, in its menu on the playlist's page.
 - **Put a playlist of yours in order** as you do a mix, once its tracks are all read: it changes on YouTube Music too. When YouTube Music refuses a move, a toast says so and the playlist shows as YouTube keeps it.
 - **Delete a playlist you made** with Delete from YouTube Music…, in the More menu of its page or of its tile in Library › YouTube Music. It asks first, since the playlist goes from YouTube too and can't come back: to keep its tracks, copy it into a mix first. Mixes copied from it, and the queue, keep their tracks.
 - **A playlist you saved** has Remove from library on its tile instead, which takes it out of your library without asking: saving it again undoes it.
 - **Suggestions:** below the tracks of a playlist of yours, once they're all loaded, Suggestions has five songs YouTube Music suggests adding to it, leaving out those you dislike. Each plays alone from its cover, and Add puts it at the playlist's end at once; Refresh shows five more, and adding the last brings them too. They aren't the playlist's: Play and Shuffle leave them out. While you search the playlist's tracks, they hide.
-- **Keep a song without liking it** with Add to library in its menu: it goes to Songs in your library, as YouTube Music's own Save to library does, and stays out of your likes, which shape what YouTube Music recommends. Remove from library in its menu takes it out. Spotify keeps no such songs apart from those you like.
-
-## Spotify playlists, albums and artists
-
-Signed in to Spotify, Library › Spotify has your Playlists, your Albums, the Artists you follow, and Liked on Spotify.
-
-- **Save** an album or a playlist, and **follow** an artist, from their pages, as for YouTube Music: it happens on Spotify.
-- **Spotify playlists** don't change from MyTube. To add to one, copy it into a mix.
-- Spotify shows an app in development mode, as your Spotify app is, the tracks of the playlists you own or collaborate on, not of playlists others made: MyTube tells you when a playlist is one of those. [Spotify](spotify.md#what-spotify-allows-apps) lists the other limits.
+- **Keep a song without liking it** with Add to library in its menu: it goes to Songs in your library, as YouTube Music's own Save to library does, and stays out of your likes, which shape what YouTube Music recommends. Remove from library in its menu takes it out.
 
 ## Long playlists
 
@@ -124,9 +116,9 @@ A track counts as played once it played for 30 seconds, or half of a shorter one
 
 The Stats page, in the sidebar, shows what you listened to, This week, This month or All time:
 
-- how many tracks you played and for how long, and how many of them came from Spotify and how many from YouTube Music;
+- how many tracks you played and for how long, and how many of them came from YouTube Music and how many from this computer;
 - the minutes you listened each day, as a chart: the pointer on a day, or the arrow keys while the chart has the focus, show its minutes and plays, and a table of the days follows it, the newest first;
-- The mix, two rings of each service's share;
+- The mix, two rings of the shares of YouTube Music and this computer;
 - your top artists, as circles, and your top tracks.
 
 Tracks count as in the history. Podcast episodes stay out of the stats, and clearing the history starts them over.
@@ -138,7 +130,7 @@ Download tracks, albums, playlists, mixes and your liked songs, and they play wi
 ### What you can download
 
 - **Download** in a track's menu downloads it. The download button of an album's, a playlist's or a mix's page, or of your liked songs, downloads it whole, as Download in its More menu does.
-- **YouTube Music tracks** download as they are. **Spotify tracks** download as their [recording on YouTube Music](playing-music.md#how-spotify-tracks-play).
+- **YouTube Music tracks** download as they are. Music on this computer is there already.
 - **[Live streams](playing-music.md#live-streams)** don't download: a playlist holding one downloads the rest, and once MyTube has found a stream live, its menu offers no Download. **Podcast episodes** don't download.
 - **Many at once:** over a hundred tracks, or about a gigabyte, asks first, with the size.
 

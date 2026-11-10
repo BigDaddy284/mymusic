@@ -35,9 +35,7 @@ import (
 // act:mini opens the mini player, which saves itself,
 // act:library:<add|remove>:<search> saves the first YouTube Music song a
 // search finds to the user's library there, or takes it out, as its menu
-// does, act:spotify logs
-// whether MyTube's own Spotify device could play,
-// act:title logs the window's title, which screenshots leave out,
+// does, act:title logs the window's title, which screenshots leave out,
 // act:nowplaying logs the cover the system's media controls hold,
 // act:memory logs the Go heap and the process's memory, and act:heap
 // saves a profile of the heap, as Record memory use does. Nothing
@@ -104,11 +102,6 @@ func (s *shell) captureFromEnv() {
 				}
 			case "mini":
 				s.showMini()
-			case "spotify":
-				ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-				result, err := s.a.SpotifyHereCheck(ctx)
-				cancel()
-				log.Printf("mytube: capture: MyTube's own Spotify device: %s %v", result, err)
 			case "title":
 				log.Printf("mytube: capture: the window's title is %q", s.win.Title())
 			case "nowplaying":

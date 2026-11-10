@@ -95,7 +95,7 @@ func (s *shell) searchField(c *ui.Context) {
 			cb.SetOpen(*show)
 			s.showSuggestions = nil
 		}
-		in := cb.Input.Placeholder(k.words("Search Spotify and YouTube Music")).Grow(1).MinWidth(0).Bind(&s.searchBox).
+		in := cb.Input.Placeholder(k.words("Search YouTube Music and your music")).Grow(1).MinWidth(0).Bind(&s.searchBox).
 			Label("Search").FontSize(k.bodySize())
 		if in.Changed() {
 			s.queryAt = c.Now()

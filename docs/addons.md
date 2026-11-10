@@ -45,7 +45,7 @@ not in a browser. Through the [plugin API](plugins.md#the-api), it can:
 - add **widgets** to the now playing page, under the lyrics;
 - control the **player** and the queue, and read what plays, and the
   spectrum of its sound;
-- search YouTube Music and Spotify, and read albums, artists, playlists,
+- search YouTube Music, and read albums, artists, playlists,
   radios and lyrics;
 - read and change your **liked and disliked songs** and your mixes;
 - read your **settings**, but not change them;

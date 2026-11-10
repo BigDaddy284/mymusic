@@ -1,14 +1,14 @@
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <strong>Bahasa Indonesia</strong></p>
 
 <p align="center">
-  <img src="brand/icon.png" width="112" height="112" alt="Ikon MyTube: not musik bergradasi biru ke ungu di atas ubin gelap membulat" />
+  <img src="brand/icon.png" width="112" height="112" alt="Ikon MyTube: lima bilah suara bergradasi biru ke ungu di atas ubin gelap membulat" />
 </p>
 
 <h1 align="center">MyTube</h1>
 
-<p align="center"><strong>Satu pemutar untuk YouTube Music dan Spotify.</strong></p>
+<p align="center"><strong>Satu pemutar untuk YouTube Music dan musik di komputer Anda.</strong></p>
 
-<p align="center">Klien YouTube Music dan Spotify untuk Windows. YouTube Music bisa dipakai tanpa akun. Satu pencarian, satu antrean, playlist campuran, lirik tersinkron, tema, dan plugin.</p>
+<p align="center">Pemutar YouTube Music dan musik lokal untuk Windows. YouTube Music bisa dipakai tanpa akun. Satu pencarian, satu antrean, playlist campuran, lirik tersinkron, tema, dan plugin.</p>
 
 <p align="center"><sub>Ini terjemahan dari <a href="README.md">README berbahasa Inggris</a>. Jika ada perbedaan, yang terbaru adalah versi bahasa Inggris.</sub></p>
 
@@ -36,17 +36,16 @@
 
 ## Mengapa MyTube
 
-Jika musik Anda terbagi antara YouTube Music dan Spotify, biasanya Anda
-perlu dua aplikasi, dengan dua pencarian, dua antrean, dan dua pustaka.
-MyTube menyatukan kedua layanan itu dalam satu pemutar:
+Jika musik Anda terbagi antara YouTube Music dan file di komputer Anda,
+biasanya Anda perlu dua aplikasi, dengan dua pencarian, dua antrean, dan
+dua pustaka. MyTube menyatukan keduanya dalam satu pemutar:
 
-- **Satu pencarian.** MyTube mencari di YouTube Music dan Spotify
-  sekaligus, dan menandai setiap hasil dengan layanan asalnya.
-- **Satu antrean dan satu pustaka.** Lagu Spotify bisa diputar tepat setelah
-  lagu YouTube Music, dan satu playlist bisa berisi lagu dari keduanya.
+- **Satu pencarian.** MyTube mencari di YouTube Music dan musik Anda
+  sendiri sekaligus, dan menandai setiap hasil dengan asalnya.
+- **Satu antrean dan satu pustaka.** File di komputer Anda bisa diputar
+  tepat setelah lagu YouTube Music, dan satu playlist bisa berisi keduanya.
 - **Tidak perlu akun.** YouTube Music langsung bisa diputar begitu aplikasi
   dibuka. Masuk ke akun hanya jika Anda ingin memakai pustaka Anda sendiri.
-  Spotify bersifat opsional.
 - **Program kecil.** MyTube adalah satu program Go yang menggambar
   jendelanya sendiri di GPU. Tidak ada browser di dalamnya yang harus
   diunduh atau ditampung di memori.
@@ -61,12 +60,12 @@ MyTube menyatukan kedua layanan itu dalam satu pemutar:
 
 ### Cari dan putar
 
-- **Satu pencarian untuk kedua layanan.** Hasil dari YouTube Music dan
-  Spotify tampil berdampingan, masing-masing ditandai dengan layanannya.
+- **Satu pencarian.** Hasil dari YouTube Music dan musik di komputer Anda
+  tampil berdampingan, masing-masing ditandai dengan asalnya.
   Hasil YouTube Music menunjukkan berapa kali setiap lagu diputar, sehingga
   versi aslinya mudah dibedakan dari versi cover.
-- **Satu antrean.** Campur lagu dari kedua layanan, acak dan ulangi
-  semuanya sekaligus, dan biarkan radio melanjutkan saat antrean habis.
+- **Satu antrean.** Campur lagu YouTube Music dan file Anda sendiri, acak
+  dan ulangi semuanya sekaligus, dan biarkan radio melanjutkan saat antrean habis.
 - **Explore (Jelajahi).** Rilis baru, lagu yang sedang tren, tangga lagu,
   mood dan genre, serta lagu yang terkait dengan lagu yang sedang diputar.
 - **Lirik tersinkron** yang mengikuti lagu, atau teks biasa jika Anda lebih
@@ -75,26 +74,17 @@ MyTube menyatukan kedua layanan itu dalam satu pemutar:
 
 ### Pustaka Anda
 
-- **Mix:** playlist yang berisi lagu dari semua layanan. Impor playlist dari
-  sebuah layanan ke dalam mix, lalu cari dan urutkan lagu di dalam mix mana
+- **Mix:** playlist yang berisi lagu YouTube Music dan file Anda sendiri.
+  Impor playlist YouTube Music ke dalam mix, lalu cari dan urutkan lagu di dalam mix mana
   pun.
-- **Lagu yang disukai** dari kedua layanan dalam satu daftar.
+- **Lagu yang disukai** dari YouTube Music dan komputer Anda dalam satu daftar.
 - **Riwayat dan statistik mendengarkan,** dari hari ke hari.
 - **Akun Anda.** Masuk ke YouTube Music lewat halaman milik Google sendiri
   untuk mendapatkan feed beranda, lagu yang disukai, playlist, album, dan
   artis Anda, baik sebagai akun Anda maupun salah satu channel brand milik
-  akun itu. Masuk ke Spotify untuk memakai pustaka Anda di sana. Lagu yang
-  Anda sukai, album dan playlist yang Anda simpan, serta artis yang Anda
-  ikuti juga tercatat di layanan tersebut. Lagu yang Anda putar masuk ke
+  akun itu. Lagu yang Anda sukai, album dan playlist yang Anda simpan, serta
+  artis yang Anda ikuti juga tercatat di YouTube Music. Lagu yang Anda putar masuk ke
   riwayat YouTube Music Anda, yang menjadi dasar rekomendasinya.
-
-### Tiga cara memutar Spotify
-
-- **Langsung di MyTube,** dengan kualitas Spotify, tanpa membuka aplikasi
-  Spotify (Premium).
-- **Lewat Spotify Connect:** di aplikasi Spotify, ponsel, atau speaker Anda.
-- **Dari YouTube Music:** MyTube memutar rekaman lagu Spotify tersebut yang
-  ada di YouTube Music, yang bisa diputar tanpa Premium.
 
 ### Suara
 
@@ -172,7 +162,7 @@ portabel, ekstrak di mana saja lalu buka `MyTube.exe`.
 - Installer ini belum ditandatangani, jadi SmartScreen mungkin memberi
   peringatan: pilih More info (Info selengkapnya), lalu Run anyway (Tetap
   jalankan).
-- Masuk ke YouTube Music dan memutar Spotify di MyTube memerlukan
+- Masuk ke YouTube Music memerlukan
   WebView2 Runtime, yang sudah ada di Windows 11. Di Windows 10, pasang
   dari [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
 - MyTube menemukan sendiri audio sebagian besar lagu YouTube Music. Untuk
@@ -189,11 +179,6 @@ portabel, ekstrak di mana saja lalu buka `MyTube.exe`.
   yang terbuka. Apa yang Anda ketik hanya dikirim ke Google. MyTube
   menyimpan sesi itu dalam keadaan terenkripsi, dengan kunci di Credential
   Manager (Manajer Kredensial) Windows.
-- **Spotify:** Spotify hanya mengizinkan sebuah aplikasi melayani paling
-  banyak lima pengguna, dan hanya selama pemiliknya berlangganan Premium,
-  jadi Anda masuk dengan aplikasi Spotify buatan Anda sendiri. Hanya butuh
-  dua menit: [docs/spotify.md](docs/spotify.md) memandu Anda langkah demi
-  langkah.
 - **Last.fm:** buat akun API di
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (nama apa saja, tanpa callback URL), tempelkan API key dan shared secret
@@ -228,7 +213,7 @@ bun install
 bun run dev
 ```
 
-Fitur masuk akun dan pemutaran Spotify memerlukan WebView2 Runtime, yang
+Fitur masuk ke YouTube Music memerlukan WebView2 Runtime, yang
 sudah ada di Windows 11. Di Windows 10, pasang dari
 [Microsoft](https://developer.microsoft.com/microsoft-edge/webview2/).
 
@@ -276,20 +261,19 @@ didokumentasikan di [pkg.go.dev](https://pkg.go.dev/github.com/bigdaddy284/mymus
                      mini player, the tray, media keys, deep links
 fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
-internal/player      the queue, played by the audio engine or on Spotify's devices
+internal/player      the queue, played by the audio engine or on a cast device
 internal/audio       MyTube's audio engine, and the system's audio output
 internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
-internal/spotify     the Spotify Web API, its sign-in and Spotify Connect
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
-internal/match       Spotify tracks matched to their YouTube Music recordings
+internal/match       the songs of YouTube Music's videos
 internal/library     liked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes and plugins
 builtin/themes       the themes MyTube ships with
-public/              the page of Spotify's player, on Windows
+public/              the page of the picture of music videos
 sdk/                 the types of the plugin API
 examples/            example themes and plugins
 ```
@@ -340,9 +324,6 @@ MyTube berkomunikasi dengan:
   sampul; sebagian stream lewat yt-dlp. Jika Anda masuk: pustaka Anda di
   sana, dan lagu yang Anda putar, yang masuk ke riwayat YouTube Music Anda,
   kecuali Anda mematikannya di Settings › Accounts (Pengaturan › Akun).
-- **Spotify,** setelah Anda masuk: pustaka Anda, perangkat Spotify Connect
-  Anda, dan pemutar Spotify, yang dimuat dari `sdk.scdn.co` saat Spotify
-  diputar di MyTube.
 - **LRCLIB:** judul, artis, album, dan durasi lagu yang sedang diputar,
   untuk mencari liriknya.
 - **GitHub:** pemeriksaan versi baru saat aplikasi dibuka dan setiap
@@ -370,10 +351,8 @@ Halaman riwayat di pustaka bisa menghapus daftar lagu yang pernah Anda
 putar, Settings › Playback bisa menghapus cache dan sampul, dan keluar dari
 sebuah layanan akan menghapus data login layanan tersebut.
 
-Di Windows, visualizer mendengarkan audio Spotify yang diputar di komputer
-ini, baik di MyTube maupun di aplikasi Spotify, lewat process loopback
-Windows, yang hanya mendengar aplikasi itu saja. Visualizer menganalisis
-audio itu di memori dan tidak pernah merekam atau mengirimkannya.
+Visualizer menganalisis audio yang diputar MyTube di memori dan tidak
+pernah merekam atau mengirimkannya.
 
 ## Kredit
 
@@ -445,8 +424,7 @@ libopus, di bawah [lisensi BSD-nya](opus/LICENSE.libopus), dan decoder AAC
 berasal dari SharpJaad, di bawah [lisensi MIT-nya](aac/LICENSE.sharpjaad).
 
 MyTube tidak berafiliasi dengan, tidak didukung secara resmi oleh, dan
-tidak disponsori oleh Spotify maupun Google. MyTube memutar apa yang
-disediakan layanan-layanan ini untuk penggunanya, melalui antarmuka milik
-layanan itu sendiri; gunakan MyTube sesuai dengan yang diizinkan oleh
-ketentuan layanan tersebut. Spotify dan YouTube Music adalah merek dagang
-milik pemiliknya masing-masing.
+tidak disponsori oleh Google. MyTube memutar apa yang disediakan YouTube
+Music untuk penggunanya, melalui antarmukanya sendiri; gunakan MyTube
+sesuai dengan yang diizinkan oleh ketentuan layanan tersebut. YouTube Music
+adalah merek dagang milik pemiliknya.

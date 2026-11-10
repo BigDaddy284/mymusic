@@ -1,12 +1,12 @@
 # Accounts
 <!-- docs: group=start order=20 -->
 
-Sign in to YouTube Music, Spotify and Last.fm in MyTube, all optional:
+Sign in to YouTube Music and Last.fm in MyTube, both optional:
 the sign-in window, a browser's session, brand channels, scrobbling and signing out.
 
 MyTube needs no account: YouTube Music's search, artists, albums,
 playlists and radios work signed out, as soon as you open it. Sign in for
-your own library and recommendations. All three accounts are in Settings ›
+your own library and recommendations. Both accounts are in Settings ›
 Accounts, and MyTube keeps each sign-in in your system's
 [credential store](data-and-privacy.md#sign-ins), the Credential Manager:
 one the Credential Manager can't keep goes in a file encrypted for your
@@ -96,7 +96,7 @@ the first account until you choose another there.
 | Library | [MyTube's own](library.md): liked songs, mixes, podcasts, artists, downloads and history | also [Library › YouTube Music](library.md#youtube-music-playlists-albums-and-artists): your liked songs, the songs in your library, playlists, albums and artists there, in full |
 | Likes and dislikes | kept in MyTube | kept in MyTube, and they reach YouTube Music |
 | Albums, playlists, artists | [follow artists](library.md#artists-you-follow) in MyTube, and see their new releases | save albums and playlists, and follow artists, on YouTube Music, from their pages |
-| Playlists | | make playlists on YouTube Music, add tracks of either service to them, take tracks out, and delete the ones you made |
+| Playlists | | make playlists on YouTube Music, add its tracks to them, take tracks out, and delete the ones you made |
 | Podcasts | | the shows you follow are saved on YouTube Music, and episodes [start where you left them](podcasts.md#with-youtube-music) on another device |
 | History | | what you play joins your YouTube Music history |
 
@@ -122,35 +122,6 @@ what you play in MyTube.
 YouTube ends a session when you sign out of Google everywhere or change
 your password. Settings › Accounts then says that YouTube Music refused
 the sign-in: sign out there, then sign in again.
-
-## Spotify
-
-Spotify lets an app in development mode serve up to five accounts, and
-only while the app's owner has Spotify Premium, so you sign in with a
-Spotify app of your own. It takes a few minutes, once:
-
-1. Create an app in the Spotify developer dashboard, with the Web API,
-   signed in with a Spotify account that has Premium.
-2. Add the redirect URI that Settings › Accounts › Spotify shows (its
-   **copy** link copies it).
-3. In the app's settings, under Users Management, add your name and the
-   email of the Spotify account you sign in with.
-4. Paste the app's **Client ID** in Settings › Accounts › Spotify, choose
-   **sign in to spotify**, and finish in your browser.
-
-![Settings › Accounts › Spotify, signed out: the four steps, with the redirect URI and its copy link, the Client ID box, "32 letters and digits", the sign in to spotify button, and a note on what Spotify's development mode allows](shots/accounts.webp)
-
-[Spotify](spotify.md) walks through each step, says what to do when
-Spotify refuses the sign-in, and explains the three ways Spotify tracks
-play: in MyTube itself (Premium), on Spotify
-Connect, or from their recording on YouTube Music, which needs no Premium.
-
-Signed in, MyTube searches Spotify beside YouTube Music, and shows your
-Spotify library in
-[Library › Spotify](library.md#spotify-playlists-albums-and-artists);
-likes, saved albums and playlists, followed artists and followed shows
-reach Spotify. [Dislikes](playing-music.md#dislikes-and-skipping) stay in
-MyTube, as Spotify takes none.
 
 ## Last.fm
 
@@ -182,7 +153,6 @@ Each account has its button in Settings › Accounts, which asks first:
 
 - **YouTube Music: sign out.** MyTube forgets your session; your library
   stays on YouTube Music.
-- **Spotify: sign out.** MyTube forgets your Spotify sign-in.
 - **Last.fm: disconnect.** MyTube forgets the connection; your scrobbles
   stay on Last.fm.
 

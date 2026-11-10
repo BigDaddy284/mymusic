@@ -5,7 +5,7 @@ MyTube is one Go program. [MyGo](https://github.com/egoist/mygo) draws its
 windows in Go, with its `ui` package: immediate-mode views, which the GPU
 draws, without a webview. The windows show the catalogs, the accounts and
 the library of the services of `internal/app`, and the player in Go plays
-the queue through MyTube's own audio engine, or on Spotify's devices.
+the queue through MyTube's own audio engine.
 
 ```
 ┌────────────────── the windows (the root package) ───────────────────┐
@@ -15,12 +15,12 @@ the queue through MyTube's own audio engine, or on Spotify's devices.
        │ App.Services             │ the queue              │ plugins
 ┌──────┴──────────────────┐ ┌─────┴──────────────┐ ┌───────┴──────────┐
 │ internal/app: Catalog,  │ │ internal/player    │ │ internal/plugins │
-│ Collection, Accounts,   │ │ ├ internal/audio   │ │ (sobek, a JS     │
-│ Preferences, Addons,    │ │ └ Spotify devices  │ │ engine in Go)    │
+│ Collection, Accounts,   │ │ └ internal/audio   │ │ (sobek, a JS     │
+│ Preferences, Addons,    │ │                    │ │ engine in Go)    │
 │ System; the desktop     │ └────────────────────┘ └──────────────────┘
-├─────────┬─────────┬────────┬───────┬────────┬─────────┬─────────────┤
-│ youtube │ spotify │ stream │ match │ lyrics │ library │ addons  ... │
-└─────────┴─────────┴────────┴───────┴────────┴─────────┴─────────────┘
+├─────────┬────────────┬────────┬───────┬────────┬─────────┬──────────┤
+│ youtube │ localfiles │ stream │ match │ lyrics │ library │ addons … │
+└─────────┴────────────┴────────┴───────┴────────┴─────────┴──────────┘
 ```
 
 Each part has a file of its own in this folder, named after it, such as

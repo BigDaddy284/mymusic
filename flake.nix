@@ -1,5 +1,5 @@
 {
-  description = "MyTube: Spotify and YouTube Music in one customizable desktop player";
+  description = "MyTube: YouTube Music and your own music in one customizable desktop player";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 

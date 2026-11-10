@@ -38,9 +38,8 @@ body:
       label: Which service
       options:
         - YouTube Music
-        - Spotify (Spotify Connect)
-        - Spotify (played from YouTube Music)
-        - Both, or neither
+        - Music on this computer
+        - Neither
   - type: textarea
     id: more
     attributes:

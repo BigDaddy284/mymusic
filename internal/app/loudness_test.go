@@ -162,7 +162,7 @@ func TestPrepareStreamLearnsTheLoudness(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(cache.Dir, "CHIWNDAwTqQ.webm"), []byte("audio"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	a := &App{resolver: r, cache: cache, matcher: match.New(nil, nil), settings: testSettings(t)}
+	a := &App{resolver: r, cache: cache, matcher: match.New(nil), settings: testSettings(t)}
 	a.loudness = openBook(t, filepath.Join(t.TempDir(), "loudness.json"), func(ctx context.Context, videoID string) (float64, error) {
 		asked.Add(1)
 		return map[string]float64{"3IUqoyTxEU8": -7.93, "CHIWNDAwTqQ": -11.93}[videoID], nil
@@ -170,7 +170,7 @@ func TestPrepareStreamLearnsTheLoudness(t *testing.T) {
 	p := &Player{a: a}
 	for id, want := range map[string]float64{"3IUqoyTxEU8": -7.93, "CHIWNDAwTqQ": -11.93} {
 		track := media.Track{ID: "yt:" + id, Source: media.SourceYouTube}
-		if _, err := p.PrepareStream(context.Background(), track); err != nil {
+		if _, err := p.Prepare(context.Background(), track); err != nil {
 			t.Fatal(err)
 		}
 		if v, ok := a.loudness.soon(context.Background(), id, 5*time.Second); !ok || v != want {
@@ -210,11 +210,11 @@ func TestPrepareStreamAsksOnline(t *testing.T) {
 
 	n.ytdlp.Store(false)
 	n.net.Store(false)
-	if _, err := n.p.PrepareStream(ctx, ytTrack("w3XzgjlKFjc")); !errors.Is(err, player.ErrOffline) {
+	if _, err := n.p.Prepare(ctx, ytTrack("w3XzgjlKFjc")); !errors.Is(err, player.ErrOffline) {
 		t.Fatalf("without the network: %v", err)
 	}
 	for _, id := range held {
-		if _, err := n.p.PrepareStream(ctx, ytTrack(id)); err != nil {
+		if _, err := n.p.Prepare(ctx, ytTrack(id)); err != nil {
 			t.Fatalf("%s offline: %v", id, err)
 		}
 		// soon waits for an ask under way, which ends with the measure.
@@ -226,7 +226,7 @@ func TestPrepareStreamAsksOnline(t *testing.T) {
 	n.net.Store(true)
 	n.p.a.online.Seen()
 	for _, id := range held {
-		if _, err := n.p.PrepareStream(ctx, ytTrack(id)); err != nil {
+		if _, err := n.p.Prepare(ctx, ytTrack(id)); err != nil {
 			t.Fatal(err)
 		}
 		if v, ok := n.p.a.loudness.soon(ctx, id, 5*time.Second); !ok || v != -9 {

@@ -25,7 +25,7 @@ func tr(id string, source media.Source, artist string) media.Track {
 
 func TestLikes(t *testing.T) {
 	l := open(t)
-	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("sp:b", media.SourceSpotify, "B")
+	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("file:b", media.SourceFile, "B")
 	l.SetLiked(a, true)
 	l.SetLiked(b, true)
 	l.SetLiked(a, true) // liking again moves it first
@@ -33,7 +33,7 @@ func TestLikes(t *testing.T) {
 		t.Errorf("liked = %+v", liked)
 	}
 	l.SetLiked(a, false)
-	if l.IsLiked("yt:a") || !l.IsLiked("sp:b") {
+	if l.IsLiked("yt:a") || !l.IsLiked("file:b") {
 		t.Error("unlike failed")
 	}
 }
@@ -48,9 +48,9 @@ func TestMixedPlaylists(t *testing.T) {
 		t.Errorf("created = %+v", p)
 	}
 	_, id, _ := media.ParseID(p.ID)
-	l.AddToPlaylist(id, []media.Track{tr("sp:b", media.SourceSpotify, "B"), tr("yt:a", media.SourceYouTube, "A"), tr("yt:c", media.SourceYouTube, "C")})
+	l.AddToPlaylist(id, []media.Track{tr("file:b", media.SourceFile, "B"), tr("yt:a", media.SourceYouTube, "A"), tr("yt:c", media.SourceYouTube, "C")})
 	got, _ := l.Playlist(id)
-	if len(got.Tracks) != 3 || got.Tracks[1].Source != media.SourceSpotify {
+	if len(got.Tracks) != 3 || got.Tracks[1].Source != media.SourceFile {
 		t.Fatalf("tracks = %+v", got.Tracks)
 	}
 	l.MoveInPlaylist(id, 2, 0)
@@ -74,7 +74,7 @@ func TestHistory(t *testing.T) {
 	l := open(t)
 	now := time.Date(2026, 10, 18, 12, 0, 0, 0, time.UTC)
 	l.now = func() time.Time { return now }
-	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("sp:b", media.SourceSpotify, "B")
+	a, b := tr("yt:a", media.SourceYouTube, "A"), tr("file:b", media.SourceFile, "B")
 	l.RecordPlay(a)
 	now = now.Add(time.Hour)
 	l.RecordPlay(b)

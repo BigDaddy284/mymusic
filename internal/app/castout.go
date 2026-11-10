@@ -295,7 +295,7 @@ func (o *castOut) Pause() {
 	o.do(func(ctx context.Context) { o.command(o.session.Pause(ctx)) })
 }
 
-// Stop stops the media, as a Spotify device takes over: the system's
+// Stop stops the media, as the player stops: the system's
 // media controls let go of it, and the player hears it paused.
 func (o *castOut) Stop() {
 	o.unload()

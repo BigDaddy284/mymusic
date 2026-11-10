@@ -99,8 +99,8 @@ func (a *App) SetVideoPage(page *mygo.Page) { a.videoPage.Store(page) }
 var callerPage = mygo.CallerPage
 
 // videoHandler serves the picture of music videos to their page, and to no
-// other: Google's sign-in, or the page of MyTube's own Spotify device,
-// could otherwise make MyTube find streams, and fetch them.
+// other: Google's sign-in could otherwise make MyTube find streams, and
+// fetch them.
 func (a *App) videoHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if page := a.videoPage.Load(); page == nil || callerPage(r.Context()) != page {

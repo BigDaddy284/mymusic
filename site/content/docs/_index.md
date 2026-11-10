@@ -5,7 +5,7 @@
 # names its group and its order in it on the line after its title, and
 # sitedocs gives the page its title, description, group and weight.
 title = "Docs"
-description = "Guides to MyTube, the free desktop player for Spotify and YouTube Music: getting started, its features, how it works, themes, plugins and contributing."
+description = "Guides to MyTube, the free desktop player for YouTube Music and the music on your computer: getting started, its features, how it works, themes, plugins and contributing."
 sort_by = "weight"
 template = "docs/section.html"
 page_template = "docs/page.html"

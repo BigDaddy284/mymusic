@@ -2,10 +2,8 @@ package player
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"slices"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -65,8 +63,7 @@ func (n *fakeNet) KickOnline() {
 }
 
 // netServices are the fake services with the network, which find no
-// stream and no radio while it is down, as the app's don't: a Spotify
-// Connect track needs no stream.
+// stream and no radio while it is down, as the app's don't.
 type netServices struct {
 	*fakeServices
 	net *fakeNet
@@ -85,13 +82,6 @@ func (s netServices) Prepare(ctx context.Context, t media.Track) (Source, error)
 		return Source{}, errNoNetwork
 	}
 	return src, err
-}
-
-func (s netServices) PrepareStream(ctx context.Context, t media.Track) (Source, error) {
-	if !s.net.Online(ctx) {
-		return Source{}, errNoNetwork
-	}
-	return s.fakeServices.PrepareStream(ctx, t)
 }
 
 func (s netServices) Radio(ctx context.Context, t media.Track) ([]media.Track, error) {
@@ -145,16 +135,28 @@ func TestWaitForTheNetwork(t *testing.T) {
 	}
 }
 
+// besideServices are netServices whose track 1 plays without the
+// network, as a file on this computer does, though they tell the player
+// nothing of it.
+type besideServices struct{ netServices }
+
+func (s besideServices) Prepare(ctx context.Context, t media.Track) (Source, error) {
+	if t.ID == "yt:1" {
+		return s.fakeServices.Prepare(ctx, t)
+	}
+	return s.netServices.Prepare(ctx, t)
+}
+
 // TestToldOfEachLoss tells once that the network is gone, and again once
 // it came back and went: also when the user left the wait for a track
 // that plays without the network.
 func TestToldOfEachLoss(t *testing.T) {
 	net := newNet(false)
-	h := newNetHarness(t, net, func(f *fakeServices) { f.prepare = onDevice })
-	h.p.PlayTracks([]media.Track{track("a"), spotifyTrack("1"), track("b")}, 0)
+	h := newHarnessWith(t, Saved{}, func(f *fakeServices) Services { return besideServices{netServices{f, net}} })
+	h.p.PlayTracks(tracks("a", "1", "b"), 0)
 	h.wait("a waiting", waiting("a", true))
 	h.p.Next()
-	h.wait("the device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
+	h.wait("1 playing", playing("1"))
 	net.set(true)
 	h.wait("the network back", func(p *Player) bool { return !p.toldOffline })
 	net.set(false)
@@ -253,70 +255,6 @@ func TestStreamErrorOnline(t *testing.T) {
 	}
 }
 
-// TestConnectWaitsForTheNetwork has a Spotify track whose device can't be
-// reached for want of the network wait for it, rather than play from
-// YouTube Music, which needs it too.
-func TestConnectWaitsForTheNetwork(t *testing.T) {
-	net := newNet(false)
-	h := newNetHarness(t, net, func(f *fakeServices) { f.prepare = onDevice })
-	h.device.mu.Lock()
-	h.device.playErr = errors.New("Spotify can't be reached")
-	h.device.mu.Unlock()
-	h.p.PlayTracks([]media.Track{spotifyTrack("1")}, 0)
-	h.wait("waiting", func(p *Player) bool { return p.s.Waiting && p.s.WillPlay })
-	for _, n := range h.notices() {
-		if strings.Contains(n.Message, "YouTube Music instead") {
-			t.Errorf("fell back: %q", n.Message)
-		}
-	}
-	h.device.mu.Lock()
-	h.device.playErr = nil
-	h.device.mu.Unlock()
-	net.set(true)
-	h.wait("the device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
-}
-
-// TestWaitLeavesTheDevice has a track that waits for the network after a
-// Spotify device's track wait at its start: the device pauses, and what it
-// tells of its own track neither moves the track that waits nor ends it.
-func TestWaitLeavesTheDevice(t *testing.T) {
-	connectTick, connectAskEvery, connectSettle = 5*time.Millisecond, 10*time.Millisecond, 0
-	t.Cleanup(func() { connectTick, connectAskEvery, connectSettle = time.Second, 3*time.Second, 5*time.Second })
-	found := make(chan struct{})
-	release := sync.OnceFunc(func() { close(found) })
-	net := newNet(true)
-	h := newNetHarness(t, net, func(f *fakeServices) {
-		f.prepare = func(t media.Track) (Source, error) {
-			if t.ID == "yt:b" {
-				<-found
-			}
-			return onDevice(t)
-		}
-	})
-	t.Cleanup(release)
-	sp := spotifyTrack("1")
-	h.p.PlayTracks([]media.Track{sp, track("b"), track("c")}, 0)
-	h.wait("the device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
-	net.set(false)
-	h.p.Next()
-	// While b loads, the device plays on, and tells it nears its end.
-	h.device.set(&DeviceState{Playing: true, Progress: 197 * time.Second, Track: &sp})
-	h.wait("the device near its end", func(p *Player) bool { return p.s.Index == 1 && p.s.Position >= 197*time.Second })
-	release()
-	h.wait("b waiting at its start", func(p *Player) bool { return waiting("b", true)(p) && p.s.Position == 0 })
-	h.wait("the device paused", func(p *Player) bool { return h.device.has("pause") && !p.connect.active() })
-	// The device's track ends, as Spotify plays it again from its start.
-	h.device.set(&DeviceState{Playing: true, Progress: time.Second, Track: &sp})
-	time.Sleep(50 * time.Millisecond)
-	h.on(func(p *Player) {
-		if !waiting("b", true)(p) || p.s.Position != 0 {
-			t.Errorf("index %d, waiting %v, position %v", p.s.Index, p.s.Waiting, p.s.Position)
-		}
-	})
-	net.set(true)
-	h.wait("b playing from its start", func(p *Player) bool { return h.stream.lastLoad() == "load url:yt:b 0s true" && playing("b")(p) })
-}
-
 // TestRadioWaits has the radio, once the queue ran out, wait for the
 // network, and play once it's back.
 func TestRadioWaits(t *testing.T) {
@@ -346,8 +284,7 @@ func TestWokeRetries(t *testing.T) {
 	useRetries(t, h, "a", len(retryWaits))
 }
 
-// TestSleeping pauses what MyTube plays itself as the computer goes to
-// sleep, but not a Spotify Connect device elsewhere.
+// TestSleeping pauses what MyTube plays as the computer goes to sleep.
 func TestSleeping(t *testing.T) {
 	t.Run("stream", func(t *testing.T) {
 		h := newNetHarness(t, newNet(true))
@@ -383,19 +320,6 @@ func TestSleeping(t *testing.T) {
 		h.wait("a waiting", waiting("a", true))
 		h.p.Sleeping()
 		h.wait("a waiting paused", waiting("a", false))
-	})
-	t.Run("connect", func(t *testing.T) {
-		connectTick, connectAskEvery, connectSettle = 5*time.Millisecond, 10*time.Millisecond, 0
-		t.Cleanup(func() { connectTick, connectAskEvery, connectSettle = time.Second, 3*time.Second, 5*time.Second })
-		h := newNetHarness(t, newNet(true), func(f *fakeServices) { f.prepare = onDevice })
-		h.p.PlayTracks([]media.Track{spotifyTrack("1")}, 0)
-		h.wait("the device playing", func(p *Player) bool { return p.connect.active() && p.s.Playing })
-		h.p.Sleeping()
-		h.on(func(*Player) {})
-		time.Sleep(50 * time.Millisecond)
-		if h.device.has("pause") {
-			t.Error("the device elsewhere paused")
-		}
 	})
 }
 

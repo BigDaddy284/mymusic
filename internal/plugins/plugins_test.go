@@ -28,9 +28,6 @@ type testServices struct{ playertest.Services }
 func (testServices) Prepare(_ context.Context, t media.Track) (player.Source, error) {
 	return player.Source{Mode: player.ModeStream, URL: "url:" + t.ID, Track: t}, nil
 }
-func (s testServices) PrepareStream(ctx context.Context, t media.Track) (player.Source, error) {
-	return s.Prepare(ctx, t)
-}
 
 // testStream plays at once, silently: its time moves past where it
 // loaded, as the engine's does once a stream sounds.
@@ -107,7 +104,7 @@ func newTestHost(t *testing.T) *testHost {
 	// before the folder goes.
 	t.Cleanup(a.Close)
 	stream := &testStream{}
-	p := player.New(testServices{}, stream, playertest.Device{}, player.Saved{})
+	p := player.New(testServices{}, stream, player.Saved{})
 	stream.mu.Lock()
 	stream.p = p
 	stream.mu.Unlock()

@@ -16,11 +16,10 @@ func TestHomeShelfKeys(t *testing.T) {
 	got := shelfKeys([]media.Shelf{
 		{Title: "Listen again", Source: media.SourceYouTube, Key: "FEmusic_listen_again"},
 		{Title: "Quick picks", Source: media.SourceYouTube},
-		{Title: "Your top tracks", Source: media.SourceSpotify, Key: "top"},
 		{Title: " Quick picks ", Source: media.SourceYouTube},
 		{Title: "Recently played", Source: media.SourceLocal, Key: "recent"},
 	})
-	want := []string{"youtube:FEmusic_listen_again", "youtube:title:Quick picks", "spotify:top", "youtube:title:Quick picks#2", homeRecent}
+	want := []string{"youtube:FEmusic_listen_again", "youtube:title:Quick picks", "youtube:title:Quick picks#2", homeRecent}
 	if !slices.Equal(got, want) {
 		t.Errorf("keys %q, want %q", got, want)
 	}
@@ -37,7 +36,7 @@ func homeTestGroups(done bool, yours, youtube []string) []*homeGroup {
 	for _, key := range youtube {
 		yt.shelves = append(yt.shelves, homeShelf{key: key, title: key, source: media.SourceYouTube})
 	}
-	return []*homeGroup{own, {key: "home:spotify", source: media.SourceSpotify, done: true}, yt}
+	return []*homeGroup{own, yt}
 }
 
 // placeKeys are the keys of the shelves of places, with "…" where a group
@@ -118,7 +117,7 @@ func TestHomePlacesWait(t *testing.T) {
 	if got, want := placeKeys(homePlaces(layout, groups, media.SourceLocal)), []string{homeRecent, homeMixes}; !slices.Equal(got, want) {
 		t.Errorf("yours, loading: %q, want %q", got, want)
 	}
-	groups[2].done, groups[2].err = true, errors.New("offline")
+	groups[1].done, groups[1].err = true, errors.New("offline")
 	layout = layoutOf(homeRecent, "youtube:a", homeMixes, "youtube:b")
 	if got, want := placeKeys(homePlaces(layout, groups, "")), []string{homeRecent, "!home:youtube", homeMixes}; !slices.Equal(got, want) {
 		t.Errorf("failed: %q, want %q", got, want)
@@ -134,7 +133,7 @@ func TestHomeArranged(t *testing.T) {
 		{Key: "youtube:b", Title: "B of before"},
 		{Key: "youtube:gone", Title: "Gone"},
 		{Key: "youtube:hid", Title: "Hidden", Hidden: true},
-		{Key: "spotify:top", Title: "Top"},
+		{Key: "other:top", Title: "Top"},
 	}
 	rows := []homeRow{{homeRecent, "Recently played"}, {"youtube:a", "A"}, {"youtube:b", "B"}}
 	gone := func(key string) bool { return keySource(key) == media.SourceYouTube }
@@ -142,7 +141,7 @@ func TestHomeArranged(t *testing.T) {
 	want := []settings.HomeShelf{
 		{Key: "youtube:b", Title: "B"},
 		{Key: "youtube:hid", Title: "Hidden", Hidden: true},
-		{Key: "spotify:top", Title: "Top"},
+		{Key: "other:top", Title: "Top"},
 		{Key: homeRecent, Title: "Recently played"},
 		{Key: "youtube:a", Title: "A"},
 	}

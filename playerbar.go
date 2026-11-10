@@ -8,7 +8,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
 // playerBar shows what plays, the transport and where it is in the track,
@@ -79,11 +78,8 @@ func (s *shell) nowPlayingInfo(c *ui.Context) {
 			s.sourceMark(c, t.Source, false)
 			line := names(t.Artists)
 			if src := s.st.Source; src != nil {
-				switch {
-				case src.Mode == player.ModeStream && src.Track.ID != t.ID:
+				if src.Track.ID != t.ID {
 					line += " · via YouTube Music"
-				case src.Mode == player.ModeConnect:
-					line += " · on Spotify"
 				}
 			}
 			// While MyTube plays it at another speed than its own.
@@ -160,7 +156,7 @@ func (s *shell) ratingButton(c *ui.Context, key, name, label string, on bool, si
 }
 
 // setLiked likes a track or no longer, beside the main thread: liking a
-// Spotify track asks Spotify. Liking a disliked track takes the dislike
+// YouTube Music track asks YouTube Music. Liking a disliked track takes the dislike
 // back, which the player hears of at once.
 func (s *shell) setLiked(t media.Track, on bool) {
 	if on && s.a.IsDisliked(t.ID) {
@@ -324,9 +320,6 @@ func (s *shell) playerSide(c *ui.Context) {
 		s.togglePanel("queue")
 	}
 	s.castButton(c)
-	if s.set.SpotifyPlayback == settings.SpotifyPlaybackConnect {
-		s.devicesButton(c)
-	}
 	s.speedButton(c)
 	s.outputButton(c, room)
 	s.volumeControl(c)
@@ -411,43 +404,4 @@ func (s *shell) volumeControl(c *ui.Context) {
 			s.p.SetVolume(s.volume)
 		}
 	})
-}
-
-// devicesButton chooses the Spotify Connect device that plays Spotify
-// tracks.
-func (s *shell) devicesButton(c *ui.Context) {
-	b := s.iconButton(c, "devices", "devices", "Spotify Connect devices", false, 18)
-	b.Menu(func(m *ui.Menu) {
-		chosen := s.set.SpotifyDevice
-		devices := fetch(s, "devices", s.svc.Player.Devices)
-		if m.Item("The active device").Checked(chosen == "").Chosen() {
-			s.setDevice("")
-		}
-		switch {
-		case !devices.done:
-			m.Item("Looking for devices…").Disabled(true)
-		case devices.err != nil:
-			m.Item(devices.err.Error()).Disabled(true)
-		case len(devices.value) == 0:
-			m.Item("Open Spotify on a device to see it here").Disabled(true)
-		}
-		for _, d := range devices.value {
-			label := d.Name
-			if d.Active {
-				label += " · active"
-			}
-			if m.Item(label).Checked(chosen == d.ID).Disabled(d.Restricted).Chosen() {
-				s.setDevice(d.ID)
-			}
-		}
-	})
-	if b.Clicked() {
-		s.forget("devices")
-	}
-}
-
-func (s *shell) setDevice(id string) {
-	if _, err := s.svc.Preferences.Update(func(st *settings.Settings) { st.SpotifyDevice = id }); err != nil {
-		s.notes = append(s.notes, noticeOf(err))
-	}
 }

@@ -4,8 +4,7 @@ package player
 // away from it, as a cast device, which the app puts in the engine's place
 // behind the player's Stream. The player plays the queue as it does; told
 // that the output moved, it loads the stream that plays again there, from
-// where it was. A Spotify track that plays on a Spotify device goes on
-// there: it isn't the engine's.
+// where it was.
 
 import (
 	"math"

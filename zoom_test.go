@@ -8,22 +8,12 @@ import (
 	"testing"
 
 	"github.com/egoist/mygo/ui"
-
-	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
-// newZoomShell is a test shell that plays Spotify tracks from their
-// YouTube Music recordings, so that the player bar has no Spotify Connect
-// devices button, whose room it leaves out.
+// newZoomShell is a test shell for the zoom.
 func newZoomShell(t *testing.T) *shell {
 	s := newTestShell(t)
-	set := s.svc.Preferences.Get()
-	set.SpotifyPlayback = settings.SpotifyPlaybackMatch
-	if _, err := s.svc.Preferences.Set(set); err != nil {
-		t.Fatal(err)
-	}
 	s.drain()
-	s.set = set
 	return s
 }
 
@@ -111,11 +101,6 @@ func TestZoomRoom(t *testing.T) {
 	// Below 100% nothing holds it back, and a window with room shows all.
 	if shownZoom(0.8, 0.5) != 0.8 || shownZoom(1.5, 1.2) != 1.2 || shownZoom(1.5, 0.9) != 1 || shownZoom(2, 2.5) != 2 {
 		t.Error("shownZoom")
-	}
-	// Spotify Connect's devices button and the plugins' pages need room.
-	s.set.SpotifyPlayback = settings.SpotifyPlaybackConnect
-	if r := s.room(1920, 1080); math.Abs(r-1920.0/1050) > 1e-6 {
-		t.Errorf("room with the devices button %v", r)
 	}
 }
 

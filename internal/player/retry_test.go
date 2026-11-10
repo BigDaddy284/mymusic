@@ -205,9 +205,10 @@ func TestStreamRetryPaused(t *testing.T) {
 // once the tries ran out, with why the last one did rather than why the
 // stream failed before.
 func TestStreamRetryNotFound(t *testing.T) {
+	prepare, tries := foundOnce("yt:a", errors.New("YouTube asks to confirm this is not a bot."))
 	h := newHarness(t, Saved{}, func(f *fakeServices) {
 		f.failure = "MyTube could not reach YouTube's audio servers"
-		f.streamErr = errors.New("YouTube asks to confirm this is not a bot.")
+		f.prepare = prepare
 	})
 	h.p.PlayTracks(tracks("a", "b"), 0)
 	h.wait("a playing", playing("a"))
@@ -221,11 +222,9 @@ func TestStreamRetryNotFound(t *testing.T) {
 	if got := retries(h, "a"); got != 0 {
 		t.Errorf("%d tries loaded", got)
 	}
-	h.svc.with(func(f *fakeServices) {
-		if f.streamed != len(retryWaits) {
-			t.Errorf("looked for the stream %d times", f.streamed)
-		}
-	})
+	if n := tries(); n != len(retryWaits) {
+		t.Errorf("looked for the stream %d times", n)
+	}
 }
 
 // TestStreamErrorOfALoad ignores what the engine tells of a stream it no

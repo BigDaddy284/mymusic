@@ -82,6 +82,9 @@ func Open(path string) (*Library, error) {
 		return nil, err
 	}
 	l := &Library{file: f, now: time.Now}
+	if err := l.forgetSpotify(); err != nil {
+		return nil, err
+	}
 	l.indexDisliked()
 	return l, nil
 }

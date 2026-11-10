@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/bigdaddy284/mymusic/internal/match"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/stream"
 	"github.com/bigdaddy284/mymusic/internal/tools"
@@ -26,10 +25,7 @@ var (
 	// errBadAudio is returned for audio that came whole, and doesn't play.
 	errBadAudio = errors.New("the audio that came can't play")
 	// errNotYouTube is returned for a track of no video.
-	errNotYouTube = errors.New("only tracks of YouTube Music, and Spotify tracks through their recording there, download")
-	// errNoMatcher is returned for a Spotify track where nothing finds its
-	// recording.
-	errNoMatcher = errors.New("nothing here finds the recordings of Spotify tracks")
+	errNotYouTube = errors.New("only tracks of YouTube Music download")
 )
 
 // minBest is the bitrate a track the cache holds needs, in kbit/s, to be
@@ -123,7 +119,7 @@ func (m *Manager) pick() (*job, time.Duration, chan struct{}) {
 		return nil, wait, m.kick
 	}
 	ctx, cancel := context.WithCancelCause(m.ctx)
-	j := &job{id: bestID, seq: best.Seq, track: best.Track, recording: best.Recording, quality: best.Quality, cancel: cancel}
+	j := &job{id: bestID, seq: best.Seq, track: best.Track, quality: best.Quality, cancel: cancel}
 	j.size.Store(-1)
 	j.ctx = ctx
 	if v := best.video(); v != "" {
@@ -135,43 +131,10 @@ func (m *Manager) pick() (*job, time.Duration, chan struct{}) {
 	return j, 0, nil
 }
 
-// setPhase tells what a job does.
-func (m *Manager) setPhase(j *job, phase string) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if j.phase != phase {
-		j.phase = phase
-		m.publish()
-	}
-}
-
-// fetch downloads the track of j: it finds a Spotify track's recording,
-// shares the file of a track of the same recording, takes it from the
-// cache, or downloads it.
+// fetch downloads the track of j: it shares the file of a track of the
+// same recording, takes it from the cache, or downloads it.
 func (m *Manager) fetch(j *job) error {
-	rec := j.recording
-	if rec == nil && j.track.Source == media.SourceYouTube {
-		t := j.track
-		rec = &t
-	}
-	if rec == nil {
-		if m.opts.Matcher == nil {
-			return errNoMatcher
-		}
-		m.setPhase(j, "finding its recording on YouTube Music")
-		found, err := m.opts.Matcher.Match(j.ctx, j.track)
-		if err != nil {
-			return err
-		}
-		rec = &found
-		m.mu.Lock()
-		if e := m.idx.Tracks[j.id]; e != nil {
-			e.Recording = rec
-			m.changed()
-		}
-		m.mu.Unlock()
-		m.setPhase(j, "")
-	}
+	rec := j.track
 	_, video, err := media.ParseID(rec.ID)
 	if err != nil || rec.Source != media.SourceYouTube || !stream.ValidVideoID(video) {
 		return errNotYouTube
@@ -399,8 +362,8 @@ func (m *Manager) failed(id string, e *entry, err error) {
 		m.setHold(holdDisk, true, "The disk of your downloads is full: they go on once it has room", now.Add(diskFullFor))
 	case errors.Is(err, tools.ErrNoYTDLP):
 		e.Failed = "it needs yt-dlp, which Settings › Playback installs"
-	case errors.Is(err, stream.ErrUnavailable), errors.Is(err, stream.ErrNoAudio), errors.Is(err, match.ErrNoMatch),
-		errors.Is(err, errBadAudio), errors.Is(err, errNotYouTube), errors.Is(err, errNoMatcher):
+	case errors.Is(err, stream.ErrUnavailable), errors.Is(err, stream.ErrNoAudio),
+		errors.Is(err, errBadAudio), errors.Is(err, errNotYouTube):
 		e.Failed = why
 	case stream.IsNetwork(err) && m.opts.Network != nil:
 		// Gone with the network, it waits for it, without spending a try.
@@ -465,7 +428,7 @@ func (m *Manager) checkNetwork(id, why string) {
 // plain says why a download failed, in plain words.
 func plain(err error) string {
 	switch {
-	case errors.Is(err, match.ErrNoMatch), errors.Is(err, errBadAudio), errors.Is(err, errNotYouTube), errors.Is(err, errNoMatcher):
+	case errors.Is(err, errBadAudio), errors.Is(err, errNotYouTube):
 		return err.Error()
 	case diskFull(err):
 		return "the disk is full"

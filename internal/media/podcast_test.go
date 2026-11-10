@@ -17,8 +17,8 @@ func TestEpisodeJSON(t *testing.T) {
 	if strings.Contains(string(song), "episode") {
 		t.Errorf("a song encodes %s", song)
 	}
-	ep := Track{ID: "sp:e", Source: SourceSpotify, Title: "E", Episode: &Episode{
-		Show: Ref{ID: "sp:s", Name: "Show"}, Released: "2026-10-30", ResumeMs: 5000}}
+	ep := Track{ID: "yt:e", Source: SourceYouTube, Title: "E", Episode: &Episode{
+		Show: Ref{ID: "yt:s", Name: "Show"}, Released: "2026-10-30", ResumeMs: 5000}}
 	data, err := json.Marshal(ep)
 	if err != nil {
 		t.Fatal(err)
