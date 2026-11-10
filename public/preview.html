@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Preview</title>
+    <!--
+      The preview of a video card on the Video side: YouTube's embedded
+      player, muted and without its controls, in a web view the window
+      lays over the card the pointer rests on (preview.go, in the root
+      package), which loads this page once as preview.html?v=<video ID>
+      and later videos with mtPreviewLoad. The speaker button turns the
+      sound on and off; a click elsewhere opens the video, and the pointer
+      leaving, or the wheel, ends the preview. The window asks for all of
+      it with mtPreviewState.
+    -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      #player,
+      iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+      #shield {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+      }
+      #mute {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        padding: 0;
+      }
+      #mute:hover {
+        background: rgba(0, 0, 0, 0.8);
+      }
+      #mute svg {
+        width: 18px;
+        height: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="player"></div>
+    <div id="shield" title="Play the video"></div>
+    <button id="mute" type="button" aria-label="Turn the sound on">
+      <svg id="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+    <script>
+      (function () {
+        var on = '<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>';
+        var off = '<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/>';
+        var muted = true;
+        var player = null;
+        var wanted = new URLSearchParams(location.search).get("v") || "";
+        var state = { hover: false, open: false, playing: false, id: "" };
+        var valid = function (id) {
+          return /^[A-Za-z0-9_-]{6,20}$/.test(id);
+        };
+        var icon = document.getElementById("icon");
+        var button = document.getElementById("mute");
+        function draw() {
+          icon.innerHTML = muted ? off : on;
+          button.setAttribute("aria-label", muted ? "Turn the sound on" : "Turn the sound off");
+        }
+        draw();
+
+        button.addEventListener("click", function (e) {
+          e.stopPropagation();
+          muted = !muted;
+          if (player && player.mute) {
+            if (muted) player.mute();
+            else player.unMute();
+          }
+          draw();
+        });
+        document.getElementById("shield").addEventListener("click", function () {
+          state.open = true;
+        });
+        document.addEventListener("mouseover", function () {
+          state.hover = true;
+        });
+        document.documentElement.addEventListener("mouseleave", function () {
+          state.hover = false;
+        });
+        // The wheel scrolls the page under the preview: the preview ends
+        // so that the next turn of it does.
+        document.addEventListener(
+          "wheel",
+          function () {
+            state.hover = false;
+          },
+          { passive: true },
+        );
+
+        window.mtPreviewLoad = function (id) {
+          if (!valid(id)) return;
+          wanted = id;
+          state.playing = false;
+          state.id = "";
+          if (player && player.loadVideoById) {
+            player.loadVideoById(id);
+            if (muted) player.mute();
+          }
+        };
+        window.mtPreviewStop = function () {
+          wanted = "";
+          state.playing = false;
+          state.id = "";
+          state.hover = false;
+          if (player && player.stopVideo) player.stopVideo();
+        };
+        window.mtPreviewState = function () {
+          var s = { hover: state.hover, open: state.open, playing: state.playing, id: state.id };
+          state.open = false;
+          return s;
+        };
+
+        window.onYouTubeIframeAPIReady = function () {
+          player = new YT.Player("player", {
+            videoId: valid(wanted) ? wanted : "",
+            host: "https://www.youtube.com",
+            playerVars: {
+              autoplay: 1,
+              mute: 1,
+              controls: 0,
+              disablekb: 1,
+              fs: 0,
+              iv_load_policy: 3,
+              playsinline: 1,
+              rel: 0,
+              origin: location.origin,
+            },
+            events: {
+              onReady: function (e) {
+                e.target.mute();
+                if (valid(wanted)) e.target.playVideo();
+              },
+              onStateChange: function (e) {
+                state.playing = e.data === 1;
+                if (state.playing) {
+                  var data = e.target.getVideoData ? e.target.getVideoData() : null;
+                  state.id = (data && data.video_id) || wanted;
+                }
+              },
+            },
+          });
+        };
+        var api = document.createElement("script");
+        api.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(api);
+      })();
+    </script>
+  </body>
+</html>

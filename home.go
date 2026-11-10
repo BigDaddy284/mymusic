@@ -162,6 +162,7 @@ func (s *shell) pageScroll(c *ui.Context, content func()) {
 	})
 	// Once the content took where the page is: it may have moved it.
 	if track != nil {
-		page.TrackScroll(track).HandleInput(s.pullInput)
+		page.TrackScroll(track).HandleInput(s.pageInput)
+		s.followAutoScroll(c, page, track)
 	}
 }

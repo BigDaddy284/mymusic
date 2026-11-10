@@ -23,11 +23,13 @@ func TestParseVideoPage(t *testing.T) {
 	   "ownerText":{"runs":[{"text":"A Channel","navigationEndpoint":{"browseEndpoint":{"browseId":"UC1"}}}]},
 	   "lengthText":{"simpleText":"3:12"},"shortViewCountText":{"simpleText":"12K views"},
 	   "publishedTimeText":{"simpleText":"2 years ago"},
-	   "thumbnail":{"thumbnails":[{"url":"https://i.ytimg.com/vi/vid00000001/hq720.jpg","width":720,"height":404}]}}},
+	   "thumbnail":{"thumbnails":[{"url":"https://i.ytimg.com/vi/vid00000001/hq720.jpg","width":720,"height":404}]},
+	   "thumbnailOverlays":[{"thumbnailOverlayResumePlaybackRenderer":{"percentDurationWatched":37}}]}},
 	  {"reelShelfRenderer":{"items":[{"videoRenderer":{"videoId":"short000001","title":{"runs":[{"text":"A Short"}]}}}]}},
 	  {"lockupViewModel":{"contentId":"vid00000002","contentType":"LOCKUP_CONTENT_TYPE_VIDEO",
 	   "contentImage":{"thumbnailViewModel":{"image":{"sources":[{"url":"https://i.ytimg.com/vi/vid00000002/hq.jpg","width":480,"height":270}]},
-	    "overlays":[{"thumbnailOverlayBadgeViewModel":{"thumbnailBadges":[{"thumbnailBadgeViewModel":{"text":"14:30"}}]}}]}},
+	    "overlays":[{"thumbnailOverlayBadgeViewModel":{"thumbnailBadges":[{"thumbnailBadgeViewModel":{"text":"14:30"}}]}},
+	     {"thumbnailBottomOverlayViewModel":{"progressBar":{"thumbnailOverlayProgressBarViewModel":{"startPercent":100}}}}]}},
 	   "metadata":{"lockupMetadataViewModel":{"title":{"content":"New design"},
 	    "metadata":{"contentMetadataViewModel":{"metadataRows":[
 	     {"metadataParts":[{"text":{"content":"Another Channel"}}]},
@@ -46,6 +48,9 @@ func TestParseVideoPage(t *testing.T) {
 	if lockup.ID != "vid00000002" || lockup.Title != "New design" || lockup.Channel != "Another Channel" ||
 		lockup.Duration != "14:30" || lockup.Views != "48K views" || lockup.Published != "4 years ago" {
 		t.Errorf("the new design reads %+v", lockup)
+	}
+	if old.Watched != 37 || lockup.Watched != 100 {
+		t.Errorf("watched %d%% and %d%%", old.Watched, lockup.Watched)
 	}
 	if page.Continue != "NEXT" {
 		t.Errorf("the next page's token is %q", page.Continue)
@@ -70,5 +75,38 @@ func TestVideoThumbnailFallback(t *testing.T) {
 	th := videoThumbnail("abc", node{})
 	if len(th) == 0 || th[0].URL != "https://i.ytimg.com/vi/abc/mqdefault.jpg" {
 		t.Errorf("the fallback thumbnails are %+v", th)
+	}
+}
+
+// TestParseVideoDetails reads the views and the account's rating of a
+// watch page.
+func TestParseVideoDetails(t *testing.T) {
+	n := decode(t, `{"contents":{"twoColumnWatchNextResults":{"results":{"results":{"contents":[
+	 {"videoPrimaryInfoRenderer":{"viewCount":{"videoViewCountRenderer":{"viewCount":{"simpleText":"12,345 views"},"shortViewCount":{"simpleText":"12K views"}}}}}]}}}},
+	 "frameworkUpdates":{"entityBatchUpdate":{"mutations":[{"payload":{"likeStatusEntity":{"key":"k","likeStatus":"LIKE"}}}]}}}`)
+	if d := parseVideoDetails(n); d.Views != "12K views" || d.Rating != "like" {
+		t.Errorf("details %+v", d)
+	}
+}
+
+// TestParseVideoFeedback reads the tokens of Not interested and Don't
+// recommend channel of a video's menu, of both designs.
+func TestParseVideoFeedback(t *testing.T) {
+	old := decode(t, `{"menuRenderer":{"items":[
+	 {"menuServiceItemRenderer":{"text":{"runs":[{"text":"Add to queue"}]},"icon":{"iconType":"ADD_TO_QUEUE_TAIL"}}},
+	 {"menuServiceItemRenderer":{"text":{"runs":[{"text":"Not interested"}]},"icon":{"iconType":"NOT_INTERESTED"},
+	  "serviceEndpoint":{"feedbackEndpoint":{"feedbackToken":"NI"}}}},
+	 {"menuServiceItemRenderer":{"text":{"runs":[{"text":"Don't recommend channel"}]},"icon":{"iconType":"REMOVE"},
+	  "serviceEndpoint":{"feedbackEndpoint":{"feedbackToken":"NC"}}}}]}}`)
+	if f := parseVideoFeedback(old); f.NotInterested != "NI" || f.NoChannel != "NC" {
+		t.Errorf("the old design's feedback %+v", f)
+	}
+	lockup := decode(t, `{"buttonViewModel":{"onTap":{"innertubeCommand":{"showSheetCommand":{"panelLoadingStrategy":{"inlineContent":{"sheetViewModel":{"content":{"listViewModel":{"listItems":[
+	 {"listItemViewModel":{"title":{"content":"Not interested"},"leadingImage":{"sources":[{"clientResource":{"imageName":"NOT_INTERESTED"}}]},
+	  "rendererContext":{"commandContext":{"onTap":{"innertubeCommand":{"feedbackEndpoint":{"feedbackToken":"NI2"}}}}}}},
+	 {"listItemViewModel":{"title":{"content":"Don't recommend channel"},"leadingImage":{"sources":[{"clientResource":{"imageName":"REMOVE"}}]},
+	  "rendererContext":{"commandContext":{"onTap":{"innertubeCommand":{"feedbackEndpoint":{"feedbackToken":"NC2"}}}}}}}]}}}}}}}}}}`)
+	if f := parseVideoFeedback(lockup); f.NotInterested != "NI2" || f.NoChannel != "NC2" {
+		t.Errorf("the lockup's feedback %+v", f)
 	}
 }

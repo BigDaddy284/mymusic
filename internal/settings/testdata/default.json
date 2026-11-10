@@ -84,5 +84,9 @@
   "globalShortcuts": {},
   "enabledPlugins": [],
   "videoVolume": 100,
-  "videoRate": 1
+  "videoRate": 1,
+  "videoOutput": {
+    "id": "",
+    "name": ""
+  }
 }

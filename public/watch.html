@@ -34,7 +34,19 @@
     <div id="player"></div>
     <script>
       (function () {
-        var id = new URLSearchParams(location.search).get("v") || "";
+        var params = new URLSearchParams(location.search);
+        var id = params.get("v") || "";
+        // window.mtCaptions is whether the user wants captions: YouTube's
+        // player turns them on by itself when the account asks it to, so
+        // the page turns them off again whenever it loads them.
+        window.mtCaptions = params.get("cc") === "1";
+        function keepCaptions(p) {
+          if (window.mtCaptions) return;
+          try {
+            p.unloadModule("captions");
+            p.unloadModule("cc");
+          } catch (e) {}
+        }
         if (!/^[A-Za-z0-9_-]{6,20}$/.test(id)) return;
         var watchPage = "https://www.youtube.com/watch?v=" + encodeURIComponent(id);
 
@@ -57,13 +69,21 @@
             playerVars: {
               autoplay: 1,
               playsinline: 1,
+              cc_load_policy: window.mtCaptions ? 1 : 0,
               rel: 0,
               fs: 1,
               origin: location.origin,
             },
             events: {
               onReady: function (e) {
+                keepCaptions(e.target);
                 e.target.playVideo();
+              },
+              onStateChange: function (e) {
+                keepCaptions(e.target);
+              },
+              onApiChange: function (e) {
+                keepCaptions(e.target);
               },
               onError: function (e) {
                 if (notEmbeddable[e.data]) location.replace(watchPage);

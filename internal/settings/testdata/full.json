@@ -120,5 +120,9 @@
   "videoRate": 1.5,
   "videoCaptions": true,
   "videoShuffle": true,
-  "videoRepeat": 2
+  "videoRepeat": 2,
+  "videoOutput": {
+    "id": "{0.0.0.00000000}.{2b9d5c4e-0d61-4a39-9b6a-6f1d2e3a4b5c}",
+    "name": "TV (HDMI)"
+  }
 }

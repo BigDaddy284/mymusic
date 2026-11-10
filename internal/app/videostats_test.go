@@ -66,18 +66,18 @@ func TestVideoPositions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	vs.leftAt("a", 95)
-	vs.leftAt("b", 40)
-	vs.leftAt("b", 0)
+	vs.leftAt("a", 95, 190)
+	vs.leftAt("b", 40, 100)
+	vs.leftAt("b", 0, 100)
 	vs.flush()
 	again, err := openVideoStats(path)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := again.position("a"); got != 95 {
-		t.Errorf("a was left at %v", got)
+	if got, length := again.position("a"); got != 95 || length != 190 {
+		t.Errorf("a was left at %v of %v", got, length)
 	}
-	if got := again.position("b"); got != 0 {
+	if got, _ := again.position("b"); got != 0 {
 		t.Errorf("b, forgotten, was left at %v", got)
 	}
 }

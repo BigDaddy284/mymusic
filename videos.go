@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/egoist/mygo/ui"
 
@@ -52,8 +53,19 @@ type videosState struct {
 	moreBusy  map[string]bool
 	// rolling is set while Random asks Wikipedia for a topic.
 	rolling bool
-	// The player (watch.go).
-	player videoPlayer
+	// randomShown are the videos random searches showed, by video: the
+	// search that showed it first, the one that may show it again.
+	randomShown map[string]string
+	// hidden are the videos, and the channels by videoChannelKey, the user
+	// told YouTube not to recommend, left off the cards (videomenu.go).
+	hidden map[string]bool
+	// ratings are the account's ratings of videos the user set here, by
+	// video: "like", "dislike", or "" (videorating.go).
+	ratings map[string]string
+	// The player (watch.go), and the preview of the card the pointer
+	// rests on (preview.go).
+	player  videoPlayer
+	preview videoPreview
 }
 
 func videoSearchPath(q string) string    { return "/videos/search?q=" + url.QueryEscape(q) }
@@ -194,6 +206,9 @@ func (s *shell) videoSearchPage(c *ui.Context, q, random string) {
 		}
 		key := "videos:search:" + q
 		res := fetch(s, key, func(ctx context.Context) (youtube.VideoPage, error) { return s.svc.Videos.Search(ctx, q) })
+		if random != "" && res.done && res.err == nil {
+			res = s.freshRandomVideos(q, res)
+		}
 		if res.done && res.err == nil && len(res.value.Videos) == 0 && random == "wikipedia" {
 			// An obscure title finds nothing: a word of the list will.
 			word := randomWord()
@@ -203,6 +218,32 @@ func (s *shell) videoSearchPage(c *ui.Context, q, random string) {
 		}
 		s.videoFeedOf(c, key, true, "No videos match.", res)
 	})
+}
+
+// freshRandomVideos leaves out of the videos a random search for q found
+// those an earlier random search showed, as YouTube answers many an
+// obscure search with the same popular videos.
+func (s *shell) freshRandomVideos(q string, res *loaded[youtube.VideoPage]) *loaded[youtube.VideoPage] {
+	vs := &s.videos
+	if vs.randomShown == nil {
+		vs.randomShown = map[string]string{}
+	}
+	page := res.value
+	fresh := make([]youtube.Video, 0, len(page.Videos))
+	for _, v := range page.Videos {
+		if first, ok := vs.randomShown[v.ID]; ok && first != q {
+			continue
+		}
+		vs.randomShown[v.ID] = q
+		fresh = append(fresh, v)
+	}
+	if len(fresh) == len(page.Videos) {
+		return res
+	}
+	page.Videos = fresh
+	out := *res
+	out.value = page
+	return &out
 }
 
 // randomWord returns a word of the app's own list, replaced in tests.
@@ -310,7 +351,7 @@ func (s *shell) videoFeedOf(c *ui.Context, key string, search bool, empty string
 		s.problem(c, res.err, func() { s.refetch(key) })
 		return
 	}
-	videos := append(append([]youtube.Video{}, res.value.Videos...), vs.more[key]...)
+	videos := s.shownVideos(append(append([]youtube.Video{}, res.value.Videos...), vs.more[key]...))
 	if len(videos) == 0 {
 		s.emptyLine(c, empty)
 		return
@@ -354,22 +395,43 @@ func (s *shell) moreVideos(key string, search bool, token string) {
 	}()
 }
 
-// videoColumns returns how many cards of videos fit in a row of the pane,
-// and their width.
-func (s *shell) videoColumns(c *ui.Context) (int, float32) {
+// videoColumns returns how many cards of videos fit in a row of room
+// wide, and their width: as many as fit at 240 or more, stretched to fill
+// the row. room is the row's width the last frame measured, or, before
+// it did, what the pane leaves.
+func (s *shell) videoColumns(c *ui.Context, room float32) (int, float32) {
 	k := &s.lk
-	pane := s.paneWidth(c) - 2*k.gutter
+	if room <= 0 {
+		room = s.paneWidth(c) - 2*k.gutter
+	}
 	gap := k.gap
 	const least = 240
-	n := max(1, int((pane+gap)/(least+gap)))
-	return n, (pane - gap*float32(n-1)) / float32(n)
+	n := max(1, int((room+gap)/(least+gap)))
+	return n, float32(int((room - gap*float32(n-1)) / float32(n)))
+}
+
+// cardRow is a wrapping row of cards, as wide as the page, and the width
+// of its cards. It asks for another frame when the width it measured
+// changed, so the cards fill a window resized, or a pane opened.
+func (s *shell) cardRow(c *ui.Context, key string) (ui.Element, float32) {
+	k := &s.lk
+	row := ui.Row(c.Key(key)).FillWidth().Wrap().GapX(k.gap).GapY(1.5 * k.gap).AlignItems(ui.Start)
+	room := row.Bounds().W
+	if s.cardRooms == nil {
+		s.cardRooms = map[string]float32{}
+	}
+	if was, ok := s.cardRooms[key]; ok && was != room {
+		c.After(time.Millisecond)
+	}
+	s.cardRooms[key] = room
+	_, w := s.videoColumns(c, room)
+	return row, w
 }
 
 // videoGrid lays the videos as cards, in rows that fill the pane.
 func (s *shell) videoGrid(c *ui.Context, key string, videos []youtube.Video) {
-	k := &s.lk
-	_, w := s.videoColumns(c)
-	ui.Row(c.Key(key + "-grid")).Wrap().GapX(k.gap).GapY(1.5 * k.gap).AlignItems(ui.Start).Children(func() {
+	row, w := s.cardRow(c, key+"-grid")
+	row.Children(func() {
 		for i, v := range videos {
 			s.videoCard(c, key+"-"+count(i), v, w, videos)
 		}
@@ -383,14 +445,7 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 	k := &s.lk
 	h := float32(int(w*9/16 + 0.5))
 	card := s.buttonBase(c.Key(key)).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).Label(v.Title).Cursor(ui.CursorPointer).
-		ContextMenu(func(m *ui.Menu) {
-			if m.Item("Play").Chosen() {
-				s.watch(v, list)
-			}
-			if m.Item("Open on YouTube").Chosen() {
-				go s.svc.System.OpenExternal(youtubeWatchURL(v.ID))
-			}
-		})
+		ContextMenu(func(m *ui.Menu) { s.videoMenu(m, v, list) })
 	if card.Clicked() {
 		s.watch(v, list)
 	}
@@ -398,6 +453,8 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 	card.Children(func() {
 		ui.Box(c).Size(w, h).Shrink(0).Radius(k.radiusSm).Clip().Children(func() {
 			s.videoThumb(c, key+"-thumb", v, w, h)
+			s.watchedBar(c, v, w, 4)
+			s.cardPreview(c, key, v, list, hovered, w, h)
 			if hovered {
 				ui.Box(c).Absolute().Top(0).Left(0).Size(w, h).InsetShadow(0, 0, 0, 3, k.accent).Radius(k.radiusSm)
 			}
@@ -407,15 +464,42 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 				})
 			}
 		})
-		ui.Column(c).Width(w).Gap(2).Children(func() {
-			k.labelWeight(ui.Text(c, v.Title).FontSize(k.bodySize()).SingleLine())
-			if v.Channel != "" {
-				ui.Text(c, v.Channel).FontSize(k.smallSize()).TextColor(k.muted).SingleLine()
-			}
-			if line := videoFacts(v); line != "" {
-				ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine()
-			}
+		ui.Row(c).Width(w).Gap(4).AlignItems(ui.Start).Children(func() {
+			ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
+				k.labelWeight(ui.Text(c, v.Title).FontSize(k.bodySize()).SingleLine().MinWidth(0))
+				if v.Channel != "" {
+					ui.Text(c, v.Channel).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+				}
+				if line := videoFacts(v); line != "" {
+					ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+				}
+			})
+			s.videoMenuButton(c, key, v, list)
 		})
+	})
+}
+
+// youtubeRed is the red of YouTube's bar of what was watched.
+var youtubeRed = ui.RGBA(255, 0, 51, 1)
+
+// watchedShare is how much of v was watched, from 0 to 1: here, as it was
+// left, or, when it wasn't, on any device, as YouTube tells.
+func (s *shell) watchedShare(v youtube.Video) float64 {
+	if share := s.svc.Videos.WatchedShare(v.ID); share > 0 {
+		return share
+	}
+	return min(float64(v.Watched)/100, 1)
+}
+
+// watchedBar is the red bar along the bottom of v's thumbnail, w wide and
+// h high, that tells how much of it was watched, as YouTube's does.
+func (s *shell) watchedBar(c *ui.Context, v youtube.Video, w, h float32) {
+	share := s.watchedShare(v)
+	if share <= 0 {
+		return
+	}
+	ui.Box(c).Absolute().Left(0).Bottom(0).Size(w, h).Background(ui.RGBA(255, 255, 255, 0.35)).Children(func() {
+		ui.Box(c).Size(float32(int(float64(w)*share+0.5)), h).Background(youtubeRed)
 	})
 }
 
@@ -459,9 +543,9 @@ func (s *shell) videoPlaylists(c *ui.Context) {
 		s.problem(c, res.err, func() { s.refetch("videos:playlists") })
 		return
 	}
-	_, w := s.videoColumns(c)
+	row, w := s.cardRow(c, "video-playlists")
 	h := float32(int(w*9/16 + 0.5))
-	ui.Row(c.Key("video-playlists")).Wrap().GapX(k.gap).GapY(1.5 * k.gap).AlignItems(ui.Start).Children(func() {
+	row.Children(func() {
 		for i, p := range res.value {
 			card := s.buttonBase(c.Key("video-playlist-" + count(i))).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).
 				Label(p.Title).Cursor(ui.CursorPointer)
@@ -553,7 +637,8 @@ func (s *shell) videoSearchField(c *ui.Context) {
 	if vs.rolling {
 		label = "finding…"
 	}
-	if s.button(c, "top-random", label, true).Disabled(vs.rolling).Tooltip("Search for a random Wikipedia article").Clicked() {
+	// Random is the height of the search box beside it.
+	if s.button(c, "top-random", label, true).Height(36).PaddingX(20).Radius(s.lk.round(36)).AlignSelf(ui.Center).Disabled(vs.rolling).Tooltip("Search for a random Wikipedia article").Clicked() {
 		s.randomVideoSearch()
 	}
 }

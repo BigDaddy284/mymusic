@@ -51,6 +51,11 @@ func (s *shell) toggleMode() {
 	if m.video {
 		to = m.lastVideo
 	}
+	// The watch page left goes on with the video playing now, which may
+	// have moved on to the next while the window showed Music.
+	if cur := s.videos.player.current.ID; m.video && cur != "" && strings.HasPrefix(to, "/watch/") {
+		to = watchPath(cur)
+	}
 	if to == "" || isVideoPath(to) != m.video {
 		to = "/"
 		if m.video {
