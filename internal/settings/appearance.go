@@ -110,6 +110,10 @@ type Appearance struct {
 	Zoom float64 `json:"zoom"`
 	// SidebarCollapsed shows the sidebar as icons only.
 	SidebarCollapsed bool `json:"sidebarCollapsed"`
+	// SidebarWidth and PanelWidth are the widths, in DIPs, the user
+	// dragged the sidebar and the side panel to; 0 keeps the layout's.
+	SidebarWidth float64 `json:"sidebarWidth,omitempty"`
+	PanelWidth   float64 `json:"panelWidth,omitempty"`
 	// WavyProgress draws the played part of the seek bar as a wave that
 	// moves while the track plays and lies flat while it doesn't (#382).
 	// It is off at first.

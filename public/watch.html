@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Video</title>
+    <!--
+      The player of the Video page: YouTube's own embedded player, in a web
+      view of the main window (videos.go, in the root package), which loads
+      this page as watch.html?v=<video ID>. The player picks the quality, up
+      to the best the video has, and its gear menu changes it. A video whose
+      uploader doesn't let other sites embed it opens on YouTube's own watch
+      page instead, in the same web view. The app's player bar controls the
+      player through window.mtPlayer, YouTube's player API.
+    -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      #player,
+      iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="player"></div>
+    <script>
+      (function () {
+        var id = new URLSearchParams(location.search).get("v") || "";
+        if (!/^[A-Za-z0-9_-]{6,20}$/.test(id)) return;
+        var watchPage = "https://www.youtube.com/watch?v=" + encodeURIComponent(id);
+
+        // Errors of the player that mean the video can't play embedded:
+        // 101 and 150, its uploader doesn't allow it; 152 and 153, YouTube
+        // refused the embedding page.
+        var notEmbeddable = { 101: true, 150: true, 152: true, 153: true };
+
+        // Escape leaves Full App: the window asks for it with the player's
+        // state (watch.go).
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") window.mtEsc = true;
+        });
+
+        window.onYouTubeIframeAPIReady = function () {
+          // window.mtPlayer is what the player bar controls (watch.go).
+          window.mtPlayer = new YT.Player("player", {
+            videoId: id,
+            host: "https://www.youtube.com",
+            playerVars: {
+              autoplay: 1,
+              playsinline: 1,
+              rel: 0,
+              fs: 1,
+              origin: location.origin,
+            },
+            events: {
+              onReady: function (e) {
+                e.target.playVideo();
+              },
+              onError: function (e) {
+                if (notEmbeddable[e.data]) location.replace(watchPage);
+              },
+            },
+          });
+        };
+
+        var api = document.createElement("script");
+        api.src = "https://www.youtube.com/iframe_api";
+        // Without YouTube's script, the page can't embed: the watch page
+        // still plays.
+        api.onerror = function () {
+          location.replace(watchPage);
+        };
+        document.head.appendChild(api);
+      })();
+    </script>
+  </body>
+</html>

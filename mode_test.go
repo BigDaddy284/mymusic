@@ -1,0 +1,132 @@
+package main
+
+import (
+	"testing"
+	"time"
+
+	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/youtube"
+)
+
+// TestModeSwitch switches to Video with the mark, which turns over and
+// names the side, shows the Video menu and its home, and back to Music.
+func TestModeSwitch(t *testing.T) {
+	s := newTestShell(t)
+	tt := testerOf(t, s, 1280, 820)
+	if !tt.HasText("Music") || tt.HasText("trending") {
+		t.Fatalf("the window doesn't start on Music: %q", tt.Texts())
+	}
+	click(t, s, tt, "Switch to Video")
+	s.drain()
+	tt.Frame()
+	tt.Advance(3 * time.Second)
+	if !s.mode.video || s.mode.turn != modeSpin {
+		t.Fatalf("the mark didn't turn to Video: %+v", s.mode)
+	}
+	for _, want := range []string{"Video", "trending", "your playlists", "Search YouTube videos", "Switch to Music"} {
+		if !tt.HasText(want) {
+			t.Errorf("Video doesn't show %q: %q", want, tt.Texts())
+		}
+	}
+	if got := s.router.Path(); got != "/videos" {
+		t.Errorf("Video opens %q, not its home", got)
+	}
+	click(t, s, tt, "Switch to Music")
+	s.drain()
+	tt.Frame()
+	tt.Advance(3 * time.Second)
+	if s.mode.video || s.router.Path() != "/" || tt.HasText("trending") {
+		t.Errorf("the window didn't go back to Music: %q at %q", tt.Texts(), s.router.Path())
+	}
+}
+
+// TestModeFollowsPath puts the window on the side of a page opened by its
+// path, and keeps the side on the pages both share.
+func TestModeFollowsPath(t *testing.T) {
+	s := newTestShell(t)
+	tt := testerOf(t, s, 1280, 820)
+	show(s, tt, "/videos/trending")
+	if !s.mode.video {
+		t.Fatal("a Video page leaves the window on Music")
+	}
+	show(s, tt, "/settings")
+	if !s.mode.video {
+		t.Error("the settings switched the side")
+	}
+	show(s, tt, "/library")
+	if s.mode.video {
+		t.Error("a Music page leaves the window on Video")
+	}
+}
+
+// TestVideoSearchShowsCards shows the videos a search finds as cards.
+func TestVideoSearchShowsCards(t *testing.T) {
+	s := newTestShell(t)
+	s.loads["videos:search:frogs"] = &loaded[youtube.VideoPage]{done: true, value: youtube.VideoPage{Videos: []youtube.Video{
+		{ID: "abcdefghijk", Title: "Frogs of the caatinga", Channel: "Nature Films", Duration: "14:30", Views: "48K views", Published: "4 years ago"},
+	}}}
+	tt := testerOf(t, s, 1280, 820)
+	show(s, tt, videoSearchPath("frogs"))
+	for _, want := range []string{"Frogs of the caatinga", "Nature Films", "14:30", "48K views · 4 years ago"} {
+		if !showsText(tt.Texts(), want) {
+			t.Errorf("the search doesn't show %q: %q", want, tt.Texts())
+		}
+	}
+}
+
+// TestRandomFallsBackToAWord searches a word of the list when the title of
+// the random article finds nothing.
+func TestRandomFallsBackToAWord(t *testing.T) {
+	s := newTestShell(t)
+	randomWord = func() string { return "volcano" }
+	t.Cleanup(func() { randomWord = app.RandomWord })
+	s.loads["videos:search:Obscure title"] = &loaded[youtube.VideoPage]{done: true}
+	s.loads["videos:search:volcano"] = &loaded[youtube.VideoPage]{done: true}
+	tt := testerOf(t, s, 1280, 820)
+	show(s, tt, videoSearchPath("Obscure title")+"&random=wikipedia")
+	tt.Frame()
+	if s.videos.query != "volcano" || !tt.HasText("Random picked a word from its own list.") {
+		t.Errorf("an empty random search doesn't go on to a word: %q, %q", s.videos.query, tt.Texts())
+	}
+}
+
+// TestVideoNext plays up next in order, around with repeat all, and the
+// same video again with repeat one.
+func TestVideoNext(t *testing.T) {
+	s := newTestShell(t)
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	list := []youtube.Video{{ID: "a"}, {ID: "b"}, {ID: "c"}}
+	vp.list, vp.current = list, list[1]
+	s.videoNext(false)
+	if vp.current.ID != "c" {
+		t.Fatalf("next after b plays %q", vp.current.ID)
+	}
+	s.videoNext(true)
+	if vp.current.ID != "c" {
+		t.Errorf("the end of up next without repeat plays %q", vp.current.ID)
+	}
+	vp.repeat = videoRepeatAll
+	s.videoNext(true)
+	if vp.current.ID != "a" {
+		t.Errorf("repeat all goes on to %q, not the first", vp.current.ID)
+	}
+	vp.repeat = videoRepeatOne
+	s.videoNext(true)
+	if vp.current.ID != "a" {
+		t.Errorf("repeat one goes on to %q", vp.current.ID)
+	}
+}
+
+// TestResizerClamps keeps the dragged widths within their bounds.
+func TestResizerClamps(t *testing.T) {
+	s := newTestShell(t)
+	s.set.SidebarWidth = 9999
+	if got := s.railWidth(); got != railMost {
+		t.Errorf("a sidebar dragged too wide is %v wide", got)
+	}
+	s.set.SidebarWidth = 10
+	if got := s.railWidth(); got != railLeast {
+		t.Errorf("a sidebar dragged too narrow is %v wide", got)
+	}
+}

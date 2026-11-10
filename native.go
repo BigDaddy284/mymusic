@@ -175,6 +175,10 @@ type shell struct {
 	liveSince time.Time
 	// video is the picture of music videos on the now playing page.
 	video videoView
+	// videos is the Video page's own state (videos.go).
+	videos videosState
+	// mode is the side shown, Music or Video (mode.go).
+	mode appMode
 	// home is Home's own state, as the user arranges it (homeedit.go).
 	home homeArrange
 	// The pages' own state. local are the home page's own shelves, of the
@@ -393,6 +397,10 @@ func (s *shell) start() {
 		s.win.OnMinimize(func() { s.update(s.idleVideo) }),
 		// Music files dropped on the window play.
 		s.win.OnFileDrop(s.dropFiles),
+		// Escape is the app's in Full App only while the window is in
+		// front (fullscreen.go).
+		s.win.OnFocus(func() { s.update(s.followFocus(true)) }),
+		s.win.OnBlur(func() { s.update(s.followFocus(false)) }),
 		s.closeVideo,
 	)
 }

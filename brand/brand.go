@@ -16,3 +16,10 @@ import _ "embed"
 //
 //go:embed mark.svg
 var Mark []byte
+
+// VideoMark is the Video mark, a record with a play triangle in the same
+// gradient: the back of the Music mark, which the sidebar turns over to
+// switch between Music and Video.
+//
+//go:embed videomark.svg
+var VideoMark []byte

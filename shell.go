@@ -24,6 +24,11 @@ func (s *shell) view(c *ui.Context) {
 	s.keepYouTubePlaylists()
 	s.keepYouTubeSongs()
 	c.SetTheme(&s.lk.theme)
+	if s.fullAppView(c) {
+		s.toasts(c)
+		s.followWatch()
+		return
+	}
 	s.toasts(c)
 	s.fileToast(c)
 	s.runShortcuts(c)
@@ -34,11 +39,13 @@ func (s *shell) view(c *ui.Context) {
 	root.Children(func() {
 		ui.Row(c).Grow(1).MinHeight(0).AlignItems(ui.Stretch).Children(func() {
 			s.rail(c)
+			s.railResizer(c)
 			ui.Column(c).Grow(1).MinWidth(0).Children(func() {
 				s.topBar(c)
 				ui.Row(c).Grow(1).MinHeight(0).AlignItems(ui.Stretch).Children(func() {
 					s.mainPane(c)
 					if s.panel != "" {
+						s.panelResizer(c)
 						// The panel's lyrics refresh with the page.
 						s.collecting = true
 						s.sidePanel(c)
@@ -60,18 +67,27 @@ func (s *shell) view(c *ui.Context) {
 	s.sweepDialogs()
 	s.sweepViews()
 	s.followVideo()
+	s.followWatch()
 	s.keepShown(c)
 }
 
 // mainPane shows the page of the router's path. Pages scroll themselves,
 // as pageScroll does, or as lists, which build only the rows in view.
 func (s *shell) mainPane(c *ui.Context) {
-	s.router.View(c, func(r *ui.Route) { s.page(c, r) }).Grow(1).MinWidth(0)
+	ui.Column(c.Key("main-pane")).Grow(1).MinWidth(0).AlignItems(ui.Stretch).Children(func() {
+		s.router.View(c, func(r *ui.Route) { s.page(c, r) }).Grow(1).MinHeight(0)
+		// The video that plays goes on, small, as the Video side's other
+		// pages show (watch.go).
+		s.floatingMini(c)
+	})
 }
 
 // page builds the page of a route.
 func (s *shell) page(c *ui.Context, r *ui.Route) {
 	s.pagePath = r.Path()
+	if r.Path() == s.router.Path() {
+		s.followMode(r.Path())
+	}
 	// The page shown, not one that slides away, is what a refresh asks
 	// again for.
 	s.collecting = r.Path() == s.router.Path()
@@ -106,6 +122,27 @@ func (s *shell) page(c *ui.Context, r *ui.Route) {
 		s.explorePage(c, r.Param("tab"))
 	case r.Match("/mood/{params}"):
 		s.moodPage(c, r.Param("params"))
+	case r.Match("/videos"):
+		r.Title("Home")
+		s.videosHome(c)
+	case r.Match("/videos/search"):
+		r.Title("Search")
+		s.videoSearchPage(c, r.Query("q"), r.Query("random"))
+	case r.Match("/videos/trending"):
+		r.Title("Trending")
+		s.videoTrendingPage(c)
+	case r.Match("/videos/library"):
+		r.Title("Library")
+		s.videoLibraryPage(c, "")
+	case r.Match("/videos/library/{tab}"):
+		r.Title("Library")
+		s.videoLibraryPage(c, r.Param("tab"))
+	case r.Match("/videos/playlist/{id}"):
+		r.Title("Playlist")
+		s.videoPlaylistPage(c, r.Param("id"))
+	case r.Match("/watch/{id}"):
+		r.Title("Video")
+		s.watchPage(c, r.Param("id"))
 	case r.Match("/stats"):
 		s.statsPage(c)
 	case r.Match("/plugin/{plugin}/{page}"):

@@ -58,6 +58,8 @@ func (s *shell) commands() []command {
 		{"go.downloads", "Downloads", "", "go to", func() { s.navigate("/library/downloads") }},
 		{"go.computer", "On this computer", "", "go to", func() { s.navigate("/library/computer") }},
 		{"go.nowPlaying", "Now playing", "Alt+4", "go to", func() { s.navigate("/now-playing") }},
+		{"view.switchSide", "Switch between Music and Video", "", "view", s.toggleMode},
+		{"go.randomVideo", "Random video search", "", "go to", s.randomVideoSearch},
 		{"go.stats", "Stats", "", "go to", func() { s.navigate("/stats") }},
 		{"go.settings", "Settings", "Mod+,", "go to", func() { s.navigate("/settings") }},
 		{"go.settingsSearch", "Search the settings", "", "go to", s.searchSettings},

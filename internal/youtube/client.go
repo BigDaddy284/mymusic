@@ -114,7 +114,14 @@ type callOptions struct {
 	// the visitor ID, and keeping neither the cookies nor the visitor ID of
 	// the answer, as yt-dlp finds streams.
 	anonymous bool
+	// website asks YouTube's own website, www.youtube.com, rather than
+	// YouTube Music's, with the same session. What it answers never ends
+	// the session: YouTube Music alone tells that.
+	website bool
 }
+
+// websiteOrigin is YouTube's own website, which the Video page reads.
+const websiteOrigin = "https://www.youtube.com"
 
 // callWith is callAs, asking as o says.
 func (c *Client) callWith(ctx context.Context, ic innerClient, endpoint string, body map[string]any, query url.Values, o callOptions) (node, error) {
@@ -145,15 +152,22 @@ func (c *Client) callWith(ctx context.Context, ic innerClient, endpoint string, 
 		query = url.Values{}
 	}
 	query.Set("prettyPrint", "false")
-	u := strings.TrimRight(c.BaseURL, "/") + "/youtubei/v1/" + endpoint + "?" + query.Encode()
+	base, origin := c.BaseURL, defaultBaseURL
+	if o.website {
+		origin = websiteOrigin
+		if c.BaseURL == defaultBaseURL || c.BaseURL == "" {
+			base = websiteOrigin
+		}
+	}
+	u := strings.TrimRight(base, "/") + "/youtubei/v1/" + endpoint + "?" + query.Encode()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, u, bytes.NewReader(data))
 	if err != nil {
 		return node{}, err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", userAgent)
-	req.Header.Set("Origin", defaultBaseURL)
-	req.Header.Set("Referer", defaultBaseURL+"/")
+	req.Header.Set("Origin", origin)
+	req.Header.Set("Referer", origin+"/")
 	req.Header.Set("X-YouTube-Client-Name", ic.id)
 	req.Header.Set("X-YouTube-Client-Version", version)
 	for k, vs := range o.header {
@@ -163,7 +177,7 @@ func (c *Client) callWith(ctx context.Context, ic innerClient, endpoint string, 
 		req.Header.Set("X-Goog-Visitor-Id", v)
 	}
 	now := time.Now()
-	signed := !o.anonymous && c.signRequest(req, now)
+	signed := !o.anonymous && c.signRequest(req, now, origin)
 	res, err := c.HTTP.Do(req)
 	if err != nil {
 		return node{}, fmt.Errorf("youtube music: %w", err)
@@ -172,7 +186,7 @@ func (c *Client) callWith(ctx context.Context, ic innerClient, endpoint string, 
 	if !o.anonymous {
 		c.keepCookies(res.Cookies(), now)
 	}
-	if signed && deniedStatus(res.StatusCode) && !refusable[endpoint] {
+	if signed && !o.website && deniedStatus(res.StatusCode) && !refusable[endpoint] {
 		c.reject()
 	}
 	raw, err := io.ReadAll(io.LimitReader(res.Body, 32<<20))
@@ -193,7 +207,7 @@ func (c *Client) callWith(ctx context.Context, ic innerClient, endpoint string, 
 	if v := n.get("responseContext", "visitorData").str(); v != "" && !o.anonymous {
 		c.setVisitorID(v)
 	}
-	if signed && accountEndpoints[endpoint] && loggedOut(n) {
+	if signed && !o.website && accountEndpoints[endpoint] && loggedOut(n) {
 		c.reject()
 	}
 	return n, nil

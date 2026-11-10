@@ -31,7 +31,11 @@ func (s *shell) topBar(c *ui.Context) {
 			}
 			s.refreshButton(c)
 		})
-		s.searchField(c)
+		if s.mode.video {
+			s.videoSearchField(c)
+		} else {
+			s.searchField(c)
+		}
 		s.topBarHead(c)
 		palette := s.buttonBase(c.Key("palette")).Height(32).PaddingX(8).Radius(k.round(32)).Label("Open the command palette").Cursor(ui.CursorPointer)
 		ink := k.muted

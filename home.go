@@ -6,11 +6,12 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/media"
 )
 
-// homeFilters are the home page's pivots, and the sources they keep.
+// homeFilters are the home page's pivots, and the sources they keep. With
+// YouTube Music the only service, Everything is it and the user's own.
 var homeFilters = []struct {
 	label  string
 	source media.Source
-}{{"Everything", ""}, {"Yours", media.SourceLocal}, {"YouTube Music", media.SourceYouTube}}
+}{{"Everything", ""}, {"Yours", media.SourceLocal}}
 
 // networkOnline tells whether the network answers, as last checked; tests
 // answer for it.
