@@ -176,3 +176,28 @@ func TestVideoTakesMediaKeys(t *testing.T) {
 		t.Errorf("Next plays %q", vp.current.ID)
 	}
 }
+
+// TestVideoCastCommands sends the player bar's commands to the device the
+// video is cast to, and follows where the video is there.
+func TestVideoCastCommands(t *testing.T) {
+	s := newTestShell(t)
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	vp.current = youtube.Video{ID: "a"}
+	vp.casting = &videoCasting{device: app.CastDevice{ID: "tv", Name: "TV"}}
+	vp.casting.set(30, true)
+	s.videoCommand("pause", nil)
+	if vp.casting.playing {
+		t.Error("Pause didn't pause the cast")
+	}
+	s.videoCommand("seek", 90.0)
+	st := videoState{Duration: 600, Playing: true}
+	s.followVideoCast(&st)
+	if st.Playing || st.Time != 90 {
+		t.Errorf("the cast's state: %+v", st)
+	}
+	s.stopWatching()
+	if vp.casting != nil {
+		t.Error("the cast goes on with no video")
+	}
+}

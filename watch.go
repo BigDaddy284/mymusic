@@ -11,6 +11,7 @@ package main
 // twice a second.
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -86,6 +87,9 @@ type videoPlayer struct {
 	ownsScreen  bool
 	takesEscape bool
 	blurred     bool
+	// casting is the cast of the videos, nil while they play here
+	// (videocast.go).
+	casting *videoCasting
 	// musicPlayed is whether music played in the last frame: the video
 	// stops as music starts.
 	musicPlayed bool
@@ -123,6 +127,15 @@ func (s *shell) playVideo(v youtube.Video) {
 		s.p.Pause()
 	}
 	s.loadVideo()
+	// A video chosen while the videos are cast plays on the device, from
+	// where it was left.
+	if vp.casting != nil {
+		at := s.svc.Videos.Position(v.ID)
+		if at <= videoResumeAfter {
+			at = 0
+		}
+		s.castCurrent(at)
+	}
 }
 
 // loadVideo makes the web view, or has it load the video that plays.
@@ -182,6 +195,10 @@ func (s *shell) stopWatching() {
 	if vp.stop != nil {
 		close(vp.stop)
 		vp.stop = nil
+	}
+	if vp.casting != nil {
+		vp.casting = nil
+		go s.svc.Videos.StopVideoCast(context.Background())
 	}
 	if web := vp.web; web != nil {
 		go web.Destroy()
@@ -243,6 +260,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 				v := vp.current
 				go s.svc.Videos.Watched(v, videoPoll.Seconds())
 			}
+			s.followVideoCast(&st)
 			vp.state = st
 			s.settleVideo()
 			s.keepVideoPlace()
@@ -260,6 +278,15 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 
 // videoCommand runs a command of the player, as "play", with its argument.
 func (s *shell) videoCommand(cmd string, arg any) {
+	if s.castCommand(cmd, arg) {
+		return
+	}
+	s.localVideoCommand(cmd, arg)
+}
+
+// localVideoCommand runs a command of the window's player, as "play",
+// with its argument, whether or not the video is cast.
+func (s *shell) localVideoCommand(cmd string, arg any) {
 	web := s.videos.player.web
 	if web == nil {
 		return
@@ -351,19 +378,24 @@ func (s *shell) settleVideo() {
 	w := s.set.Watching
 	switch vp.settled {
 	case 1:
-		s.videoCommand("volume", w.VideoVolume)
-		s.videoCommand("mute", w.VideoMuted)
-		s.videoCommand("rate", w.VideoRate)
+		s.localVideoCommand("volume", w.VideoVolume)
+		s.localVideoCommand("mute", w.VideoMuted)
+		s.localVideoCommand("rate", w.VideoRate)
 		vp.state.Volume, vp.state.Muted, vp.state.Rate = w.VideoVolume, w.VideoMuted, w.VideoRate
 		// The video goes on from where it was left, as tracks do.
 		if at := s.svc.Videos.Position(vp.current.ID); at > videoResumeAfter && at < vp.state.Duration-videoResumeBefore {
-			s.videoCommand("seek", at)
+			s.localVideoCommand("seek", at)
 			vp.state.Time = at
 		}
 		fallthrough
 	case 3, 6:
+		// The player's sound plays in a process of its own, which starts
+		// with the first sound.
+		if vp.settled == 3 && s.set.VideoOutput.ID != "" {
+			s.applyVideoOutput()
+		}
 		if vp.state.Captions != w.VideoCaptions {
-			s.videoCommand("captions", w.VideoCaptions)
+			s.localVideoCommand("captions", w.VideoCaptions)
 			vp.state.Captions = w.VideoCaptions
 		}
 	}
@@ -778,7 +810,7 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 	if s.iconButton(c, "v-queue", "queue", "Up next", s.panel == "queue", 18).Clicked() {
 		s.togglePanel("queue")
 	}
-	s.iconButton(c, "v-cast", "cast", "Casting videos isn't available yet", false, 18).Disabled(true)
+	s.videoCastButton(c, has)
 	speed := s.iconButton(c, "v-speed", "speed", "Speed: "+videoSpeedLabel(st.Rate), st.Rate != 0 && st.Rate != 1, 18).Disabled(!has)
 	speed.Menu(func(m *ui.Menu) {
 		for _, r := range settings.VideoRates {
@@ -790,7 +822,7 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 			}
 		}
 	})
-	s.iconButton(c, "v-output", "speaker", "The video plays on the system's output", false, 18).Disabled(true)
+	s.videoOutputButton(c, has)
 	ui.Row(c).Gap(4).Width(140).MinWidth(80).Children(func() {
 		name, label := "volume", "Mute"
 		if st.Muted || has && st.Volume == 0 {

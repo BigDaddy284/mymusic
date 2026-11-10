@@ -18,6 +18,7 @@ import (
 
 	"github.com/egoist/mygo/netproxy"
 
+	"github.com/bigdaddy284/mymusic/internal/audio/output"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -171,4 +172,14 @@ var randomWords = []string{
 	"submarine", "sundial", "sushi", "tapestry", "telescope", "thunderstorm", "tide pool", "tornado",
 	"treehouse", "tugboat", "typewriter", "volcano", "waterfall", "whale", "windmill", "woodworking",
 	"yo-yo", "zeppelin", "zebra", "zen garden",
+}
+
+// RouteOutput sends the sound of the web views' processes, WebView2's
+// browser process pid and those it started, to the output device id, or,
+// for "", to the system's default device.
+func (v *Videos) RouteOutput(pid int, id string) error {
+	if pid <= 0 {
+		return errors.New("the video player has no process yet")
+	}
+	return output.RouteProcesses(output.ProcessTree(uint32(pid)), id)
 }

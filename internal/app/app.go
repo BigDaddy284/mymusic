@@ -112,6 +112,7 @@ type App struct {
 	library    *library.Library
 	positions  *library.Positions
 	videoStats *videoStats
+	videoCast  videoCast
 	// commandHook sees the player's commands first (OnCommand).
 	commandHook  atomic.Pointer[func(PlayerCommand) bool]
 	youtube      *youtube.Client

@@ -14,6 +14,9 @@ type Watching struct {
 	VideoShuffle  bool `json:"videoShuffle,omitempty"`
 	// VideoRepeat is 0 for off, 1 for all of up next, 2 for one video.
 	VideoRepeat int `json:"videoRepeat,omitempty"`
+	// VideoOutput is the device the videos' sound plays on, apart from
+	// the music's: none for the system's default.
+	VideoOutput OutputDevice `json:"videoOutput"`
 }
 
 func defaultWatching() Watching { return Watching{VideoVolume: 100, VideoRate: 1} }
@@ -30,6 +33,7 @@ func (w Watching) clean() Watching {
 	if !known {
 		w.VideoRate = 1
 	}
+	w.VideoOutput = w.VideoOutput.clean()
 	if w.VideoRepeat < 0 || w.VideoRepeat > 2 {
 		w.VideoRepeat = 0
 	}
