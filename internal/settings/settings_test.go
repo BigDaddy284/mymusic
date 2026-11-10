@@ -28,10 +28,7 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 			Volume:    -1,
 			Equalizer: Equalizer{Gains: []float64{99, -99}},
 		},
-		Tools: Tools{JSRuntime: "python"},
-		Addons: Addons{
-			EnabledPlugins: []string{"sleep-timer", "sleep-timer", "Bad ID", "../x"},
-		},
+		Tools:    Tools{JSRuntime: "python"},
 		Accounts: Accounts{YouTubeChannel: "1234; x"},
 	}.Clean()
 	if s.Theme != DefaultTheme || s.Accent != "" || s.FontScale != 1 {
@@ -40,8 +37,8 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 	if s.Crossfade != 12 || s.Volume != 0 || len(s.Equalizer.Gains) != len(Bands) {
 		t.Errorf("ranges not clamped: %+v", s)
 	}
-	if s.JSRuntime != "" || len(s.EnabledPlugins) != 1 {
-		t.Errorf("tools and add-ons not repaired: %+v", s)
+	if s.JSRuntime != "" {
+		t.Errorf("tools not repaired: %+v", s)
 	}
 	if s.YouTubeChannel != "" {
 		t.Errorf("a channel that is not a page ID was kept: %q", s.YouTubeChannel)
@@ -135,14 +132,12 @@ func TestCleanCopies(t *testing.T) {
 	s := Default()
 	s.ThemeOptions = map[string]map[string]string{"mix": {"texture": "dots"}}
 	s.Shortcuts = map[string]string{"player.toggle": "Space"}
-	s.EnabledPlugins = []string{"spectrum"}
 	c := s.Clean()
 	c.Equalizer.Gains[0] = 6
 	c.ThemeOptions["mix"]["texture"] = "none"
 	c.Shortcuts["player.toggle"] = "K"
-	c.EnabledPlugins[0] = "other"
-	if s.Equalizer.Gains[0] != 0 || s.ThemeOptions["mix"]["texture"] != "dots" || s.Shortcuts["player.toggle"] != "Space" || s.EnabledPlugins[0] != "spectrum" {
-		t.Errorf("changing the cleaned settings changed the settings: %v %v %v %v", s.Equalizer.Gains, s.ThemeOptions, s.Shortcuts, s.EnabledPlugins)
+	if s.Equalizer.Gains[0] != 0 || s.ThemeOptions["mix"]["texture"] != "dots" || s.Shortcuts["player.toggle"] != "Space" {
+		t.Errorf("changing the cleaned settings changed the settings: %v %v %v", s.Equalizer.Gains, s.ThemeOptions, s.Shortcuts)
 	}
 }
 

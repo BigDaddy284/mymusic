@@ -37,6 +37,21 @@ func testerOf(t testing.TB, s *shell, w, h int) *ui.Tester {
 	return tt
 }
 
+// until draws frames until ok, failing the test after a few seconds.
+func until(t *testing.T, s *shell, tt *ui.Tester, what string, ok func() bool) {
+	t.Helper()
+	for deadline := time.Now().Add(5 * time.Second); ; time.Sleep(5 * time.Millisecond) {
+		s.drain()
+		tt.Frame()
+		if ok() {
+			return
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("waiting for %s; the window shows %q", what, tt.Texts())
+		}
+	}
+}
+
 // show shows the page at path, once its transition ends.
 func show(s *shell, tt *ui.Tester, path string) {
 	s.navigate(path)

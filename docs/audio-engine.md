@@ -81,7 +81,7 @@ In order:
 6. **Volume levelling**, when it's on, squeezes loud and quiet moments
    closer together.
 7. **The volume** of the slider.
-8. **The analyser** reads what you hear, for the visualizer and plugins.
+8. **The analyser** reads what you hear, for the visualizer.
 9. **The output** plays it on your device.
 
 Steps 5 to 8 are ports of Chromium's Web Audio, the biquad filters,
@@ -252,8 +252,7 @@ tells why.
 ## The visualizer
 
 The now playing page draws the spectrum of what plays as 48 bars over the
-foot of the cover, in the accent colour, and plugins read the same
-analyser through `api.player.analyser()`. It is the Web Audio
+foot of the cover, in the accent colour. It is the Web Audio
 AnalyserNode of the web player, ported: a Blackman-windowed FFT of 256
 samples (128 bands), with a smoothing time constant of 0.8, from -100 to
 -30 dB. It hears the

@@ -12,7 +12,7 @@ there's nothing to save.
 ## The pages of Settings
 
 Settings has seven sections, named across its top: Appearance, Playback,
-Accounts, Plugins, Desktop, Shortcuts and About. Each is a list of groups,
+Videos, Accounts, Desktop, Shortcuts and About. Each is a list of groups,
 and each group a list of rows.
 
 ### Appearance
@@ -50,14 +50,6 @@ YouTube Music channel you use, the switch that adds what you play to your
 YouTube Music history, and the switch that pauses scrobbling.
 [Accounts](accounts.md) tells each step.
 
-### Plugins
-
-**Installed plugins**: each plugin you have, with what it is, who made it,
-a switch that enables it, and a button that removes it. **open plugins
-folder** opens the folder of your own, and **reload** finds them again.
-Plugins that didn't load are listed with the reason.
-[Themes and plugins](addons.md) tells more.
-
 ### Desktop
 
 The **On the desktop** group:
@@ -80,7 +72,7 @@ The **On the desktop** group:
 
 Every command, by group, with its keys: **From any app** first, the global
 shortcuts, then playback, go to, view, add-ons and settings, then the
-themes and the plugins' commands. See
+themes. See
 [Keyboard shortcuts](#keyboard-shortcuts) below.
 
 ### About
@@ -131,7 +123,6 @@ hasn't read: [the settings' part of the architecture](architecture/settings.md)
 tells how.
 
 - **A key you take out** goes back to its default, as at a new install.
-  Plugins you add to `enabledPlugins` start without asking.
 - **A key MyTube doesn't know** stays until its next save, which drops
   it, and the toast says so. A value out of its range goes back into it,
   and the toast says that too.
@@ -166,8 +157,7 @@ settings.json**. Meanwhile:
 
 <kbd>Ctrl</kbd> <kbd>K</kbd> opens the
 command palette, which lists every command: MyTube's, a "Theme:" command
-for each [theme](look-and-feel.md#themes), and those of your
-[plugins](addons.md#what-a-plugin-can-do), each with its group and its
+for each [theme](look-and-feel.md#themes), each with its group and its
 keys.
 
 - Type to keep the commands whose name or group holds what you typed.
@@ -190,7 +180,7 @@ and forward arrows. It's in the command palette too.
   what it showed, and a toast says why.
 - Home, searches, albums, artists, playlists, Explore, your YouTube Music
   library, the lyrics and Settings' checks
-  refresh. Plugins' pages and widgets render again.
+  refresh.
 - A playlist, an album or a mix you downloaded downloads the
   [songs added to it since](library.md#songs-added-later), as you refresh
   it.
@@ -278,8 +268,6 @@ while you're not typing in a text field. The ID is the command's name in
 | Reload add-ons | none | `addons.reload` |
 | Open the settings file | none | `settings.openFile` |
 | Theme: *name*, one for each theme | none | `theme.<theme id>` |
-
-Plugins' commands follow, with the keys their plugin gives them, if any.
 
 ### Arrows, Space and the other keys
 

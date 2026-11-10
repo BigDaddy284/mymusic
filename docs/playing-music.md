@@ -192,4 +192,4 @@ Quality, in Settings › Playback › Sound, chooses between best and data saver
 
 ## A sleep timer
 
-MyTube has no sleep timer of its own. The example Sleep Timer plugin, in the repository's [examples](../examples/README.md), adds one once you [put it in your plugins folder](addons.md#add-a-theme-or-a-plugin) and enable it: it fades the music out over 30 seconds and pauses it after 15, 30, 45, 60 or 90 minutes, or at the end of the track. It adds a sleep timer page to the sidebar and commands to the command palette, such as "Sleep timer: 30 minutes" and "Sleep timer: cancel".
+MyTube has no sleep timer.

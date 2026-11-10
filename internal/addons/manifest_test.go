@@ -57,24 +57,6 @@ func TestParseThemeRejects(t *testing.T) {
 	}
 }
 
-func TestParsePlugin(t *testing.T) {
-	good := `{"id": "sleep-timer", "name": "Sleep Timer", "version": "1.2.0", "author": "Someone", "main": "index.js",
-		"permissions": ["playback"], "files": ["plugin.json", "index.js"]}`
-	if _, err := ParsePlugin([]byte(good)); err != nil {
-		t.Fatal(err)
-	}
-	for _, bad := range []string{
-		strings.Replace(good, `"main": "index.js"`, `"main": "../index.js"`, 1),
-		strings.Replace(good, `"main": "index.js"`, `"main": "index.ts"`, 1),
-		strings.Replace(good, `["playback"]`, `["root"]`, 1),
-		strings.Replace(good, `"files": ["plugin.json", "index.js"]`, `"files": ["plugin.json"]`, 1),
-	} {
-		if _, err := ParsePlugin([]byte(bad)); err == nil {
-			t.Errorf("accepted %s", bad)
-		}
-	}
-}
-
 func TestValidFile(t *testing.T) {
 	for name, want := range map[string]bool{
 		"theme.css": true, "img/preview.png": true, "a-b_c.js": true,

@@ -24,9 +24,7 @@ Before you open a pull request:
 ```sh
 gofmt -l .                      # prints nothing
 GOOS=windows go vet ./...
-bun run build:plugins           # the example plugins' JavaScript, which tests run
 go test ./...
-bun run typecheck
 ```
 
 [docs/architecture](docs/architecture/README.md) tells where things live. A few
@@ -37,9 +35,6 @@ rules keep the project healthy:
   [docs/themes.md](docs/themes.md): colors, fonts and a radius. Rename or
   remove one only with a plan for the themes that set it, and document new
   ones there.
-- **The plugin API is public.** Change `internal/plugins/api.js`,
-  `sdk/index.d.ts` and [docs/plugins.md](docs/plugins.md) together; the
-  typecheck checks the example plugins against the types.
 - **Tests do not need the network.** Parsers are tested on recorded
   responses in `testdata/`; live tests run only with `MYTUBE_LIVE=1`.
   The Opus decoder's conformance test runs when `OPUS_TESTVECTORS` names
@@ -120,13 +115,13 @@ one change per commit:
 ```
 feat(player): crossfade between tracks
 fix(youtube): read albums without a year
-docs: explain the plugin storage
+docs: explain the theme tokens
 ```
 
 Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`,
 `chore`. Scopes name the part changed: `app`, `player`, `ui`, `theme`,
-`themes`, `plugins`, `youtube`, `stream`, `match`, `lyrics`,
-`library`, `addons`, `examples`, `sdk`, `tools`.
+`themes`, `youtube`, `stream`, `match`, `lyrics`,
+`library`, `addons`, `examples`, `tools`.
 
 A change people will notice also gets an entry in the changelog: a file in
 [changelog.d](changelog.d/README.md), in the folder of its section as

@@ -69,7 +69,6 @@ func (s *shell) nowPlayingPage(c *ui.Context) {
 					s.videoToggle(c)
 				})
 				ui.Column(c).Height(420).Children(func() { s.lyrics(c, true) })
-				s.pluginWidgets(c)
 			})
 		})
 		s.related(c, t)

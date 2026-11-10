@@ -322,6 +322,9 @@ func Inspect(data []byte, s Settings) Report {
 		switch {
 		case !known && strings.EqualFold(key, "discordPresence"):
 			// The key of before 0.5.6, which UnmarshalJSON reads.
+		case !known && strings.EqualFold(key, "enabledPlugins"):
+			// The plugins, which MyTube no longer runs: the next save
+			// drops the key without a word.
 		case !known:
 			r.Unknown = append(r.Unknown, key)
 		default:

@@ -136,10 +136,10 @@ func testMix(t *testing.T, s *shell, tt *ui.Tester) string {
 	return p.ID
 }
 
-// enableMessage is what enabling a plugin that asks for everything says,
-// as long as a question gets.
-const enableMessage = "Plugins can control the player, change your library and reach the internet, whatever they ask for. " +
-	"Enable plugins from authors you trust. It asks for: network, notifications, storage, playback."
+// removeMessage is what removing a theme says, as long as a question
+// gets.
+const removeMessage = "The theme and its files are deleted from the add-ons folder. Your settings, library and mixes stay, " +
+	"and you can put the theme back in the folder whenever you like."
 
 // dialogCases are the dialogs of the window of s.
 func dialogCases(s *shell) []dialogCase {
@@ -158,11 +158,11 @@ func dialogCases(s *shell) []dialogCase {
 				mixes := s.svc.Collection.Playlists()
 				return len(mixes) == 1 && mixes[0].Title == "early morning drive"
 			}},
-		{name: "question", title: "enable An Ambient Visualiser For Late Night Listening", buttons: []string{"cancel", "enable"},
+		{name: "question", title: "remove An Ambient Visualiser Theme For Late Night Listening", buttons: []string{"cancel", "remove"},
 			open: func(t *testing.T, s *shell, tt *ui.Tester) {
-				s.ask("enable An Ambient Visualiser For Late Night Listening", enableMessage, "enable", func() { ran = true })
+				s.ask("remove An Ambient Visualiser Theme For Late Night Listening", removeMessage, "remove", func() { ran = true })
 			},
-			press: "enable", done: func(*shell, *ui.Tester) bool { return ran }, last: "Plugins can"},
+			press: "remove", done: func(*shell, *ui.Tester) bool { return ran }, last: "The theme and"},
 		{name: "delete mix", title: "delete mix", buttons: []string{"cancel", "delete"},
 			open: func(t *testing.T, s *shell, tt *ui.Tester) {
 				s.deleting, s.deleteTitle, s.deleteID = true, "late night drive", testMix(t, s, tt)
@@ -364,10 +364,10 @@ func TestQuestionKeeps(t *testing.T) {
 	s := newTestShell(t)
 	tt := tester(t, s)
 	ran, canceled := false, false
-	s.ask("enable Hello", enableMessage, "enable", func() { ran = true })
+	s.ask("remove Ocean", removeMessage, "remove", func() { ran = true })
 	s.asking.cancel = func() { canceled = true }
 	tt.Frame()
-	if !tt.Focused("enable") || tt.Focused("cancel") {
+	if !tt.Focused("remove") || tt.Focused("cancel") {
 		t.Error("the question opens with the focus elsewhere than on its ok")
 	}
 	tt.ClickAt(5, 5)

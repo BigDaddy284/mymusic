@@ -30,8 +30,7 @@ func (l *loaded[T]) isRefreshing() bool { return l.refreshing }
 
 // refreshPage asks again for what the page shown and the side panel
 // fetched in the frame before, which they go on showing until the answers
-// come, and renders again the views of plugins the window shows. While a
-// refresh is out, it does nothing.
+// come. While a refresh is out, it does nothing.
 func (s *shell) refreshPage() {
 	if s.refreshing() {
 		return
@@ -41,10 +40,6 @@ func (s *shell) refreshPage() {
 		if l, ok := s.loads[key].(refresher); ok && l.refresh() {
 			asked = true
 		}
-	}
-	for v := range s.mountedViews {
-		v.Remount()
-		asked = true
 	}
 	if asked {
 		s.refreshAt, s.refreshTold = s.router.Location(), false
@@ -78,8 +73,8 @@ func (s *shell) refreshFailed(err error) {
 }
 
 // nothingToRefresh tells whether the page shows only what is always
-// current: it fetched nothing, and shows no plugin's view.
-func (s *shell) nothingToRefresh() bool { return len(s.shown) == 0 && len(s.mountedViews) == 0 }
+// current: it fetched nothing.
+func (s *shell) nothingToRefresh() bool { return len(s.shown) == 0 }
 
 // keepShown keeps what the page shown and the side panel fetched in the
 // frame, which a refresh asks again for, and tells screen readers that a

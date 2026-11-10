@@ -7,8 +7,7 @@ belongs to its main thread: what finishes elsewhere comes back through
 
 - **Refresh** (F5, `refresh.go`) asks again for the keys
   the page shown and the side panel fetched in the frame before, as
-  `fetch` collects them, and renders the plugins' views again
-  (`View.Remount`). The page keeps its answers until the new ones come,
+  `fetch` collects them. The page keeps its answers until the new ones come,
   and keeps them when a refresh fails, which one toast tells. Home's own
   tile and shelves read the library as it is, and need no refresh.
 - **Home's arrangement** (`homelayout.go`, `homeshelves.go`,

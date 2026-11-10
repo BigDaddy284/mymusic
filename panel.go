@@ -482,15 +482,6 @@ func (s *shell) trackMenuAt(m *ui.Menu, t media.Track, queued int) {
 		}
 		s.copyLinkItem(m, u)
 	}
-	// What plugins add to the menu of every track.
-	if actions := s.plugins.TrackActions(); len(actions) > 0 {
-		m.Separator()
-		for _, a := range actions {
-			if m.Item(a.Label).Chosen() {
-				a.Run(t)
-			}
-		}
-	}
 }
 
 // copyLinkItem is a menu's way to share what has a page on its service, at

@@ -98,23 +98,15 @@ To tell whether the network answers, MyTube asks YouTube's addresses
 over HTTPS. [Your data and privacy](data-and-privacy.md) lists
 what each of these gets.
 
-## Themes and plugins
+## Themes
 
 - **Themes** are a `theme.json` file of colours, fonts and corners.
   MyTube draws every theme in the layout you choose in Settings ›
   Appearance: Blend (the default), Expressive, Crate or Tiles. It can
   also take its colours from a file that pywal or matugen write, and
   follows the file as it changes. [Themes](themes.md) lists every token.
-- **Plugins** are JavaScript modules, usually compiled from TypeScript.
-  Each plugin you enable runs in a JavaScript engine of its own,
-  [Sobek](https://github.com/grafana/sobek), written in Go, with
-  `console`, timers, `fetch` and MyTube's plugin API. A plugin's pages
-  and widgets are elements that MyTube draws in your theme, and its
-  canvases are drawing calls that MyTube paints. The permissions a
-  plugin lists are shown to you, not enforced, so MyTube asks you to
-  trust a plugin before it enables it. [Plugins](plugins.md) documents the
-  API. MyTube loads the add-ons it ships with and those you put in your
-  add-ons folders; it doesn't download any.
+  MyTube loads the themes it ships with and those you put in your themes
+  folder; it doesn't download any.
 
 ## Updates
 

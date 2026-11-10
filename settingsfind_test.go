@@ -103,7 +103,7 @@ func TestSettingsFindMatches(t *testing.T) {
 		{"5.1", []string{"Play 5.1 surround when a track has it"}, []string{"Volume levelling", "Crossfade"}},
 		{"speakers", []string{"Play 5.1 surround when a track has it"}, []string{"Volume levelling"}},
 		{"startup", []string{"Start at login"}, []string{"Close to the tray"}},
-		{"version", []string{"Version", "This is the newest version"}, []string{"Crossfade"}},
+		{"version", []string{"Version", "open logs folder"}, []string{"Crossfade"}},
 		{"desktop", []string{"Close to the tray", "Reset settings", "Start at login"}, []string{"Crossfade"}},
 		{"TRAY", []string{"Close to the tray"}, []string{"Media keys", "Crossfade"}},
 		{"aurora", []string{"Aurora", "Theme: Aurora"}, []string{"Mochi", "Crossfade"}},
@@ -200,28 +200,14 @@ func TestSettingsFindKeyboard(t *testing.T) {
 
 // TestSettingsFindEverything searches for what nearly every setting holds:
 // every section builds at once, without two of their elements sharing a
-// key, and a plugin installed is found.
+// key.
 func TestSettingsFindEverything(t *testing.T) {
 	s := newTestShell(t)
-	dir := filepath.Join(s.svc.System.Info().DataDir, "addons", "plugins", "hello")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	for name, data := range map[string]string{
-		"plugin.json": `{"id": "hello", "name": "Hello", "version": "1.0.0", "author": "A", "description": "Says hello", "main": "index.js"}`,
-		"index.js":    "export default () => {}",
-	} {
-		if err := os.WriteFile(filepath.Join(dir, name), []byte(data), 0o644); err != nil {
-			t.Fatal(err)
-		}
-	}
-	s.svc.Addons.Reload()
-	s.refresh()
 	tt := testerOf(t, s, 1280, 12000)
-	for _, q := range []string{"e", "a", "s", "says hello"} {
+	for _, q := range []string{"e", "a", "s"} {
 		show(s, tt, settingsPath("playback", q))
-		if !tt.HasText("Hello 1.0.0") {
-			t.Errorf("searching %q doesn't find the plugin: %q", q, tt.Texts())
+		if !tt.HasText("Crossfade") {
+			t.Errorf("searching %q doesn't find the settings: %q", q, tt.Texts())
 		}
 	}
 }
@@ -281,14 +267,12 @@ func TestSettingsFindNothingElse(t *testing.T) {
 			s.set.ColorSource, s.set.ColorFile = settings.ColorsFile, filepath.Join(t.TempDir(), "colors.json")
 		}},
 		{"add-ons that didn't load", func(s *shell) {
-			for _, kind := range []string{"themes", "plugins"} {
-				if err := os.MkdirAll(filepath.Join(s.svc.System.Info().DataDir, "addons", kind, "broken"), 0o755); err != nil {
-					t.Fatal(err)
-				}
+			if err := os.MkdirAll(filepath.Join(s.svc.System.Info().DataDir, "addons", "themes", "broken"), 0o755); err != nil {
+				t.Fatal(err)
 			}
 			s.svc.Addons.Reload()
 			s.refresh()
-			if len(s.inv.Problems) != 2 {
+			if len(s.inv.Problems) != 1 {
 				t.Fatalf("the add-ons' problems are %+v", s.inv.Problems)
 			}
 		}},

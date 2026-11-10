@@ -112,9 +112,6 @@
   "globalShortcuts": {
     "player.toggle": "Mod+Alt+P"
   },
-  "enabledPlugins": [
-    "spectrum"
-  ],
   "videoVolume": 40,
   "videoMuted": true,
   "videoRate": 1.5,

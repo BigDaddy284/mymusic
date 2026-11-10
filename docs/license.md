@@ -34,8 +34,7 @@ typefaces and the code it ports, keep licences of their own, listed below.
   MyTube's decoders in a program of your own. The GPL fits a program
   that is under the GPL itself.
 - **Contributions** are accepted under both licences, so that the whole of
-  MyTube stays under both. That includes the example themes and
-  plugins: opening a pull request for one agrees to it.
+  MyTube stays under both. That includes the example themes: opening a pull request for one agrees to it.
 
 The Go packages anyone can import, `opus`, `aac`, `ac3`, `webm`, `mp4`,
 `flac`, `ogg`, `resample`, `lyrics` and `brand`, come under the same

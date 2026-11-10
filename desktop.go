@@ -102,7 +102,7 @@ func (s *shell) shortcutSettings(c *ui.Context) {
 	// section's introduction.
 	if !s.find.on() {
 		ui.Row(c).Gap(24).AlignItems(ui.Center).Margin(0, 0, 32).Children(func() {
-			ui.Text(c, "Shortcuts of a single key work while you are not typing; "+palette+" lists every command, those of plugins too.").
+			ui.Text(c, "Shortcuts of a single key work while you are not typing; "+palette+" lists every command.").
 				FontSize(k.smallSize()).TextColor(k.muted).Grow(1).MinWidth(0).MaxWidth(640)
 			if (len(s.set.Shortcuts) > 0 || len(s.set.GlobalShortcuts) > 0) && s.link(c, "shortcuts-reset", "reset all") {
 				s.set.Shortcuts, s.set.GlobalShortcuts, s.recording = nil, nil, ""

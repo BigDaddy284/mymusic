@@ -32,7 +32,8 @@ of its own.
   normalization matches titles, searches lists regardless of accents and
   helps write lyrics in Latin letters.
 - **[Sobek](https://github.com/grafana/sobek)**, Grafana's JavaScript
-  engine in Go, a fork of goja with ES modules, which each plugin runs in.
+  engine in Go, a fork of goja with ES modules, which the tests run the
+  video page's script in.
   It builds on [goja](https://github.com/dop251/goja) by Dmitry Panov and
   [otto](https://github.com/robertkrimen/otto) by Robert Krimen.
 - The modules these depend on, listed in [go.mod](../go.mod), among them
@@ -152,9 +153,7 @@ of its own.
 - **[GoReleaser](https://goreleaser.com)**, which publishes the releases,
   and its [nFPM](https://nfpm.goreleaser.com), which makes the RPM
   packages.
-- **[Bun](https://bun.sh)**, which runs the build, and
-  **[TypeScript](https://www.typescriptlang.org)**, which compiles the
-  plugins and checks the plugin SDK's types.
+- **[Bun](https://bun.sh)**, which runs the build.
 - **[NSIS](https://nsis.sourceforge.io)**, which makes the Windows
   installers.
 - **[Zola](https://www.getzola.org)**, which builds this website.

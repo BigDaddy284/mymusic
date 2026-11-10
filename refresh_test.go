@@ -14,7 +14,6 @@ import (
 
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/plugins"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 	"github.com/bigdaddy284/mymusic/lyrics"
 )
@@ -69,7 +68,7 @@ func badAlbum(s *shell) *loaded[media.Album] {
 	return l
 }
 
-// TestRefreshMix shows a mix changed behind its page, by a plugin or the
+// TestRefreshMix shows a mix changed behind its page, by the
 // player's menu, once the page is refreshed.
 func TestRefreshMix(t *testing.T) {
 	s := newTestShell(t)
@@ -263,7 +262,6 @@ func TestRefreshShown(t *testing.T) {
 	}
 	for path, want := range map[string][]string{
 		"/":               {"home:youtube", "releases", "tools"},
-		"/settings/about": {"release"},
 		"/explore/charts": {"charts"},
 	} {
 		show(s, tt, path)
@@ -320,45 +318,6 @@ func TestRefreshShownPageOnly(t *testing.T) {
 	if !s.shown["moods"] || s.shown["explore"] {
 		t.Errorf("the moods, as the new releases slide away, refresh %v", s.shown)
 	}
-}
-
-// TestRefreshPluginPage renders a plugin's page again.
-func TestRefreshPluginPage(t *testing.T) {
-	s := newTestShell(t)
-	dir := filepath.Join(s.svc.System.Info().DataDir, "addons", "plugins", "again")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	files := map[string]string{
-		"plugin.json": `{"id": "again", "name": "Again", "version": "1.0.0", "author": "A", "main": "index.js", "api": 2}`,
-		"index.js": `
-export default function activate(api) {
-  let renders = 0;
-  api.ui.addPage({ name: "home", title: "again", render(view) { view.set(api.ui.text("rendered " + ++renders)) } });
-}`,
-	}
-	for name, data := range files {
-		if err := os.WriteFile(filepath.Join(dir, name), []byte(data), 0o644); err != nil {
-			t.Fatal(err)
-		}
-	}
-	st := s.svc.Preferences.Get()
-	st.EnabledPlugins = []string{"again"}
-	if _, err := s.svc.Preferences.Set(st); err != nil {
-		t.Fatal(err)
-	}
-	s.svc.Addons.Reload()
-	s.refresh()
-	s.plugins = plugins.New(s.a, s.p)
-	s.plugins.SetUI(pluginUI{s})
-	t.Cleanup(s.plugins.Close)
-	s.syncPlugins()
-	tt := tester(t, s)
-	until(t, s, tt, "the plugin's page", func() bool { return s.plugins.Page("/plugin/again/home") != nil })
-	show(s, tt, "/plugin/again/home")
-	until(t, s, tt, "the first render", func() bool { return tt.HasText("rendered 1") })
-	pressRefresh(t, tt)
-	until(t, s, tt, "the render of the refresh", func() bool { return tt.HasText("rendered 2") })
 }
 
 // TestRenderRefresh draws the top bar's refresh button, idle, as a spinner

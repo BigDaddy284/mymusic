@@ -300,8 +300,6 @@ func TestRender(t *testing.T) {
 	renderTo(t, s, tt, dir, "settings-appearance")
 	s.navigate("/settings/accounts")
 	renderTo(t, s, tt, dir, "settings-accounts")
-	s.navigate("/settings/plugins")
-	renderTo(t, s, tt, dir, "settings-plugins")
 	tall := ui.NewTester(s.view, 1280, 1500)
 	s.navigate("/settings/appearance")
 	renderTo(t, s, tall, dir, "settings-appearance-tall")
@@ -430,7 +428,7 @@ func TestRenderDialogs(t *testing.T) {
 		scale float64
 	}{{"", 1280, 820, 1}, {"-short", 911, 425, 1.3}, {"-shorter", 640, 360, 1.3}} {
 		s := shell("mix", size.scale)
-		s.ask("enable Hello", enableMessage, "enable", func() {})
+		s.ask("remove Ocean", removeMessage, "remove", func() {})
 		renderTo(t, s, testerOf(t, s, size.w, size.h), dir, "dialog-question"+size.name)
 
 		s = shell("mix", size.scale)

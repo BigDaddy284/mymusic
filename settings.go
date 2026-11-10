@@ -12,7 +12,7 @@ import (
 )
 
 // settingsTabs are the settings' sections, by their paths' last part.
-var settingsTabs = []string{"appearance", "playback", "videos", "accounts", "plugins", "desktop", "shortcuts", "about"}
+var settingsTabs = []string{"appearance", "playback", "videos", "accounts", "desktop", "shortcuts", "about"}
 
 // settingsPage shows the settings, by section, or, searched for q, what
 // every section holds of it.
@@ -233,13 +233,9 @@ func (s *shell) hint(c *ui.Context, text string) {
 
 // problems tells of the add-ons of a kind that didn't load.
 func (s *shell) problems(c *ui.Context, kind addons.Kind) {
-	what := "theme"
-	if kind == addons.KindPlugin {
-		what = "plugin"
-	}
 	for _, p := range s.inv.Problems {
 		if p.Kind == kind {
-			text := "The " + what + " in “" + p.Folder + "” did not load: " + p.Error
+			text := "The theme in “" + p.Folder + "” did not load: " + p.Error
 			s.found(c, "", text, func() {
 				ui.Text(c, text).FontSize(s.lk.smallSize()).TextColor(s.lk.danger).Padding(8, 0)
 			})

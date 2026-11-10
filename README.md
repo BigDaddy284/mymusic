@@ -6,7 +6,7 @@
 
 <p align="center"><strong>One player for YouTube Music and the music on your computer.</strong></p>
 
-<p align="center">YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
+<p align="center">YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics and themes.</p>
 
 <p align="center"><sub>MyTube is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
 
@@ -48,7 +48,7 @@ libraries. MyTube puts both in one player:
   windows on the GPU. There is no browser inside it to download or keep in
   memory.
 - **Yours to change.** Four layouts and fourteen themes come with it, you
-  can add themes and plugins of your own, and any command can have a key
+  can add themes of your own, and any command can have a key
   of your own.
 - **Private.** MyTube has no account, server, analytics or telemetry of
   its own.
@@ -114,10 +114,8 @@ libraries. MyTube puts both in one player:
   tune, one theme for light mode and one for dark mode, and an accent
   color of your own or taken from the artwork that plays. Material and
   Material Dark make every color of the cover's.
-- **Plugins** add pages, commands, track actions and widgets through a
-  typed API, drawn in your theme.
 - **Keyboard first.** Shortcuts for everything common, a key of your own for
-  any command, plugins' commands included, keys that control the music
+  any command, keys that control the music
   from any app, and a command palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) for
   the rest.
 - **A settings file.** Your settings are `settings.json` in your data folder
@@ -225,9 +223,7 @@ data stays apart from an installed MyTube, under the name
 `MyTube Dev`.
 
 ```sh
-bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
-bun run typecheck              # the plugin SDK and the example plugins
 bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
@@ -258,7 +254,6 @@ fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
 internal/player      the queue, played by the audio engine or on a cast device
 internal/audio       MyTube's audio engine, and the system's audio output
-internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
 internal/match       the songs of YouTube Music's videos
@@ -267,11 +262,10 @@ internal/library     liked and disliked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
-internal/addons      themes and plugins
+internal/addons      themes
 builtin/themes       the themes MyTube ships with
 public/              the page of the picture of music videos
-sdk/                 the types of the plugin API
-examples/            example themes and plugins
+examples/            example themes
 ```
 
 The packages you can import:
@@ -287,9 +281,9 @@ lyrics/              synced lyrics from Unison and LRCLIB, and translations
 brand/               MyTube's logo, for code that draws it
 ```
 
-## Themes and plugins
+## Themes
 
-Themes and plugins load from your add-ons folders, and you can make your
+Themes load from your themes folder, and you can make your
 own. [docs/addons.md](docs/addons.md) tells how to add one.
 
 ### Make a theme
@@ -299,15 +293,6 @@ show in the layout the user chose.
 [docs/themes.md](docs/themes.md) lists every token and shows a complete
 theme. To try yours, put its folder in the themes folder (Settings ›
 Appearance › open themes folder) and choose it in Settings › Appearance.
-
-### Make a plugin
-
-A plugin is a small module, written in TypeScript or JavaScript, that adds
-pages, commands, track actions and widgets.
-[docs/plugins.md](docs/plugins.md) documents the API, with its
-[types](sdk/index.d.ts) for your editor. The
-[sleep timer](examples/plugins/sleep-timer) and
-[spectrum](examples/plugins/spectrum) in `examples/` are working examples.
 
 ## Privacy
 
@@ -362,20 +347,17 @@ MyTube is built on these projects:
 - **[MyGo](https://github.com/egoist/mygo)**, the desktop framework MyTube
   is built with. MyTube uses MyGo's native UI: MyGo draws every window
   itself, in Go, without a webview, from the pages and the player bar to the
-  mini player. Its command line packages the app, with its installers and
-  the signed updates it updates itself from.
+  mini player. Its command line packages the app, with its installers.
 - **[Go](https://go.dev)**, the language of the app, with
   [purego](https://github.com/ebitengine/purego), which calls the system's
   libraries without cgo, and [golang.org/x/image](https://pkg.go.dev/golang.org/x/image)
   and [golang.org/x/text](https://pkg.go.dev/golang.org/x/text).
-- **[Sobek](https://github.com/grafana/sobek)**, the JavaScript engine each
-  plugin runs in.
+- **[Sobek](https://github.com/grafana/sobek)**, the JavaScript engine
+  the tests run the video page's script in.
 - **[Nix](https://nixos.org)**, which pins the tools releases are built
   with.
 - **[GoReleaser](https://goreleaser.com)**, which publishes the releases.
-- **[Bun](https://bun.sh)**, which runs the build, and
-  **[TypeScript](https://www.typescriptlang.org)**, which compiles the
-  plugins and checks the plugin SDK's types.
+- **[Bun](https://bun.sh)**, which runs the build.
 - **[Zola](https://www.getzola.org)**, which builds the website.
 - **[NSIS](https://nsis.sourceforge.io)**, which makes the Windows
   installers.
@@ -408,7 +390,7 @@ MyTube is built on these projects:
 
 ## Contributing
 
-Fixes, features, themes, plugins and bug reports are all welcome.
+Fixes, features, themes and bug reports are all welcome.
 
 - **Report a problem** by [opening an issue](https://github.com/bigdaddy284/mymusic/issues/new).
 - **Send a change** as a pull request. [CONTRIBUTING.md](CONTRIBUTING.md)

@@ -42,8 +42,7 @@ an installed copy's data.
   and where it was.
 - `positions.json`: where you left the latest 500 podcast episodes.
 - `lastfm-queue.json`: the scrobbles still to send, as while offline.
-- `addons/`: the themes and plugins you installed, and what plugins keep
-  in `addons/.storage`.
+- `addons/`: the themes you installed.
 - `bin/`: MyTube's own yt-dlp.
 - `youtube-session.bin`: your YouTube Music session, encrypted with a key
   that the credential store keeps.
@@ -112,10 +111,6 @@ Where the credential store can't keep a secret:
 | Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyTube while you cast |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
 | Knowing whether the network answers | YouTube | a request over HTTPS for an empty answer |
-
-- **Plugins** can send what they like: a plugin's permissions are shown
-  to you, not enforced, which is why MyTube asks you to trust a plugin
-  before it enables it.
 
 ## What stays on your computer
 

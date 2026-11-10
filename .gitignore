@@ -34,9 +34,6 @@ Thumbs.db
 PRODUCT.md
 DESIGN.md
 
-# The example plugins compile to JavaScript (bun run build:plugins),
-# which main does not keep.
-/examples/plugins/*/*.js
 # What `go build` writes at the root.
 /mytube
 /mytube.exe

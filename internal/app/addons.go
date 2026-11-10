@@ -1,18 +1,15 @@
 package app
 
 import (
-	"io/fs"
-
 	"github.com/egoist/mygo"
 
 	"github.com/bigdaddy284/mymusic/internal/addons"
 )
 
-// Addons lists and removes themes and plugins, and keeps what
-// plugins store.
+// Addons lists and removes themes.
 type Addons struct{ a *App }
 
-// List returns the themes and plugins available, and those that could not
+// List returns the themes available, and those that could not
 // load.
 func (s *Addons) List() addons.Inventory { return s.a.addons.List() }
 
@@ -42,18 +39,3 @@ func (s *Addons) OpenFolder(kind addons.Kind) error {
 	}
 	return mygo.Shell.OpenPath(dir)
 }
-
-// AddonFiles returns the files of an add-on, for the native interface's
-// plugins.
-func (a *App) AddonFiles(kind addons.Kind, id string) (fs.FS, error) { return a.addons.Files(kind, id) }
-
-// Storage returns every value a plugin keeps.
-func (s *Addons) Storage(plugin string) (map[string]string, error) { return s.a.storage.All(plugin) }
-
-// StorageSet keeps a value of a plugin.
-func (s *Addons) StorageSet(plugin, key, value string) error {
-	return s.a.storage.Set(plugin, key, value)
-}
-
-// StorageDelete removes a value of a plugin.
-func (s *Addons) StorageDelete(plugin, key string) error { return s.a.storage.Delete(plugin, key) }

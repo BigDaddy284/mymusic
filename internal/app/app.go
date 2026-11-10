@@ -131,7 +131,6 @@ type App struct {
 	translations *translations
 	romaji       *romaji.Dictionary
 	addons       *addons.Manager
-	storage      *addons.Storage
 	lyricsMemo   *memo[lyrics.Lyrics]
 	related      *memo[[]media.Shelf]
 	artwork      *artwork.Client
@@ -292,7 +291,6 @@ func New(opts Options) (*App, error) {
 	a.artwork.Store = a.artStore
 	a.colors = newMemo[string](500)
 	a.addons = addons.NewManager(filepath.Join(opts.DataDir, "addons"), opts.Builtin)
-	a.storage = addons.NewStorage(filepath.Join(opts.DataDir, "addons", ".storage"))
 	a.openDownloads(s.DownloadsFolder)
 	if err := a.openLocalFiles(); err != nil {
 		return nil, fmt.Errorf("opening the index of the music on this computer: %w", err)

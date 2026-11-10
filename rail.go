@@ -101,8 +101,7 @@ func (s *shell) rail(c *ui.Context) {
 	if collapsed {
 		pad = 17
 	}
-	items := s.plugins.SidebarItems()
-	entries := float32(len(nav) + len(items))
+	entries := float32(len(nav))
 	navLeast := entries*s.leastEntry() + (entries-1)*4
 	ui.Column(c).Width(s.railWidth()).Shrink(0).Padding(0, pad, railFoot).Gap(railGap).Background(k.bg).Clip().Children(func() {
 		least := s.brand(c, collapsed, s.railWidth()-2*pad) + railGap + navLeast + railGap + railFoot
@@ -111,9 +110,6 @@ func (s *shell) rail(c *ui.Context) {
 		ui.Column(c).Gap(4).MinHeight(navLeast).Children(func() {
 			for _, n := range entries0 {
 				s.navEntry(c, "nav-"+n.id, k.words(n.label), icon(n.icon), n.path, n.id == current)
-			}
-			for _, it := range items {
-				s.navEntry(c, "plugin-"+it.ID, k.words(it.Label), s.svgOf(it.Icon), it.Path, path == it.Path)
 			}
 		})
 		if !collapsed && s.mode.video {

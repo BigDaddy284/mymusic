@@ -25,7 +25,7 @@
     {"@type": "SoftwareApplication",
      "name": "MyTube",
      "url": {{ root | json_encode | safe }},
-     "description": "A free, open-source desktop player for YouTube Music and the music on your computer: one search, one queue and one library across both, with synced lyrics, podcasts, downloads, themes and plugins.",
+     "description": "A free, open-source desktop player for YouTube Music and the music on your computer: one search, one queue and one library across both, with synced lyrics, podcasts, downloads and themes.",
      "applicationCategory": "MultimediaApplication",
      "operatingSystem": "Windows 10 and 11",
      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -548,12 +548,7 @@
           <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-palette" /></svg>Make a theme</h3>
           <p>A theme is a folder with a <code>theme.json</code>: eighteen colours, the fonts and a corner radius. MyTube draws everything with them, in every layout, so a theme keeps working as the app changes. Let it follow your computer, with one theme for light mode and one for dark, or wear the colours pywal or matugen make of your wallpaper.</p>
           <a class="link" href="{{ get_url(path='@/docs/themes/index.md') }}">Theme guide<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
-        </div>
-        <div class="column">
-          <h3><svg class="icon" width="22" height="22" aria-hidden="true"><use href="#i-puzzle" /></svg>Add a plugin</h3>
-          <p>Plugins are ES modules that add pages, commands, track actions and widgets through a typed API, and go in your plugins folder, like a sleep timer or a spectrum on now playing. Every plugin can use the whole API, and MyTube tells you so before you enable one.</p>
-          <a class="link" href="{{ get_url(path='@/docs/plugins/index.md') }}">Plugin guide<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
-          <a class="link" href="https://github.com/bigdaddy284/mymusic/tree/main/examples">Example themes and plugins<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
+          <a class="link" href="https://github.com/bigdaddy284/mymusic/tree/main/examples">Example themes<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
         </div>
       </div>
     </section>
@@ -602,7 +597,7 @@
     <section class="section section-open" id="open-source" aria-labelledby="open-title">
       <div class="open-copy">
         <h2 id="open-title">Built in the open</h2>
-        <p>MyTube is open source under the MIT license or the GNU GPL, version 3: one Go program built on MyGo, which draws its windows itself on the GPU, with no browser inside. Fixes, features, themes, plugins and reports of what does not work are all welcome.</p>
+        <p>MyTube is open source under the MIT license or the GNU GPL, version 3: one Go program built on MyGo, which draws its windows itself on the GPU, with no browser inside. Fixes, features, themes and reports of what does not work are all welcome.</p>
         <a class="link" href="{{ get_url(path='@/docs/_index.md') }}">Read the docs<svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-external" /></svg></a>
       </div>
       <ul class="links">

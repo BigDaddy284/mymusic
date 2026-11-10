@@ -24,7 +24,7 @@ func builtinTheme(t *testing.T, s *shell, id string) addons.Theme {
 }
 
 // TestMaterialThemesAreTheirSeeds checks that the colours the Material
-// themes' manifests list, for the plugins, are those
+// themes' manifests list are those
 // of their seed's scheme, which the windows make.
 func TestMaterialThemesAreTheirSeeds(t *testing.T) {
 	s := newTestShell(t)

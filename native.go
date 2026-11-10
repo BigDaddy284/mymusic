@@ -22,7 +22,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/downloads"
 	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/plugins"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
@@ -51,7 +50,6 @@ func Open(a *app.App, hidden bool) *mygo.Window {
 	fitOnScreen(s.win)
 	s.start()
 	s.useKeypad()
-	s.usePlugins()
 	s.offerCrashReport()
 	s.captureFromEnv()
 	return s.win
@@ -298,17 +296,6 @@ type shell struct {
 	// find is the search of the settings.
 	find settingsFind
 
-	// plugins runs the app's plugins, for the main window; nil in others.
-	plugins *plugins.Host
-	// mountedViews are the plugins' views the window mounted, seenViews
-	// those the frame showed; pluginInputs the texts of their inputs,
-	// canvasSizes the sizes their canvases drew at, cssColors the colours
-	// they drew in, and svgs their icons.
-	mountedViews, seenViews map[*plugins.View]bool
-	pluginInputs            map[string]*string
-	canvasSizes             map[*plugins.Canvas][2]float32
-	cssColors               map[string]ui.Color
-	svgs                    map[string]*ui.SVG
 	// licenseOpen is the license shown.
 	licenseOpen int
 	// trackInfo is the dialog of a track's Track info (trackinfo.go).
@@ -328,8 +315,6 @@ type shell struct {
 	// themeCommands choose the themes, made once for the add-ons.
 	plainKeys     []plainKey
 	themeCommands []command
-	// The add-on installing, and the plugin whose install the user
-	// confirms.
 	// The downloads: what the pages miss of their collections, the
 	// collection the downloads page shows, the tracks it lists, and the
 	// move of their folder under way, which moveDone of moveTotal bytes
@@ -360,8 +345,6 @@ type shell struct {
 func newShell(a *app.App, p *player.Player) *shell {
 	s := &shell{a: a, svc: a.Services(), p: p, router: ui.NewRouter("/"), loads: map[string]any{}, drafts: map[string]*draft{}, shelfScroll: map[string]*ui.ScrollState{},
 		wells: map[string]*colorWell{}, tools: map[string]*trackTool{}, listTops: map[string]float32{}, keeping: map[string]bool{}, licenseOpen: -1,
-		mountedViews: map[*plugins.View]bool{}, seenViews: map[*plugins.View]bool{}, pluginInputs: map[string]*string{},
-		canvasSizes: map[*plugins.Canvas][2]float32{}, cssColors: map[string]ui.Color{}, svgs: map[string]*ui.SVG{},
 		dialogScrolls: map[string]*dialogScroll{}, shown: map[string]bool{}, showing: map[string]bool{}, missingMemos: map[string]missingMemo{}}
 	s.queueList.Selected = new(int)
 	*s.queueList.Selected = -1
@@ -508,7 +491,6 @@ func (s *shell) refresh() {
 	}
 	s.refetch("accounts")
 	s.restyle()
-	s.syncPlugins()
 }
 
 // restyle makes the look again, of the settings, the colour file, the
@@ -546,7 +528,6 @@ func (s *shell) restyle() {
 		}
 	}
 	s.art.phosphor = s.lk.fx.phosphor
-	s.plugins.SetTheme(pluginTheme(&s.lk))
 }
 
 // artColorRetry is how long the accent waits to ask for the colour of
