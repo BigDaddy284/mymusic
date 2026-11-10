@@ -12,6 +12,15 @@ Accounts, and MyTube keeps each sign-in in your system's
 one the Credential Manager can't keep goes in a file encrypted for your
 Windows account.
 
+## Before you sign in
+
+MyTube is provided as is, without warranty: use it at your own risk.
+Signed in, MyTube holds your session, which works as a signed-in browser
+tab does until it's signed out. It keeps it encrypted for your Windows
+account, and sends it to Google alone. To end it everywhere, sign out in
+MyTube, then sign the session out under Google Account › Security › Your
+devices.
+
 ## YouTube Music
 
 Settings › Accounts › YouTube Music offers three ways to sign in. The

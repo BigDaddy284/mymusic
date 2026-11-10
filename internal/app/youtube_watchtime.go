@@ -103,7 +103,21 @@ func watchedEpisode(np NowPlaying) string {
 // reportWatchtime follows what plays, as the player reports it, for the
 // watch time of YouTube Music's episodes; on is the history setting.
 func (a *App) reportWatchtime(np NowPlaying, on bool) {
-	w := &a.watchtime
+	id := watchedEpisode(np)
+	trackID := ""
+	if np.Track != nil {
+		trackID = np.Track.ID
+	}
+	a.followWatchtime(&a.watchtime, trackID, id, time.Duration(np.PositionMs)*time.Millisecond,
+		np.Playing, np.speed(), np.Loading, on, false)
+}
+
+// followWatchtime follows the playback of w: of trackID, the video id, ""
+// for none or one not reported, at pos, playing or not, at speed, and on
+// the history setting. A playback whose watch starts with it, as a
+// video's, starts its watch at once: an episode's waits for its play to
+// count (countWatchtime).
+func (a *App) followWatchtime(w *watchtime, trackID, id string, pos time.Duration, playing bool, speed float64, loading, on, startNow bool) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	now := w.clock()
@@ -115,27 +129,25 @@ func (a *App) reportWatchtime(np NowPlaying, on bool) {
 		w.cur, w.counted = nil, ""
 		return
 	}
-	id := watchedEpisode(np)
-	if p := w.cur; p != nil && (id == "" || p.trackID != np.Track.ID) {
-		a.endPlay(p, now)
+	if p := w.cur; p != nil && (id == "" || p.trackID != trackID) {
+		a.endPlay(w, p, now)
 		w.cur = nil
 	}
 	if id == "" {
 		return
 	}
-	pos := time.Duration(np.PositionMs) * time.Millisecond
 	if w.cur == nil {
-		w.cur = &episodePlay{trackID: np.Track.ID, videoID: id, started: now, seen: now, at: pos, speed: np.speed()}
-		if w.counted == np.Track.ID {
-			a.startWatch(w.cur)
+		w.cur = &episodePlay{trackID: trackID, videoID: id, started: now, seen: now, at: pos, speed: speed}
+		if startNow || w.counted == trackID {
+			a.startWatch(w, w.cur)
 		}
 		w.counted = ""
 	}
-	if np.Loading {
+	if loading {
 		return
 	}
 	p := w.cur
-	paused, resumed := p.follow(now, pos, np.Playing, np.speed())
+	paused, resumed := p.follow(now, pos, playing, speed)
 	if p.watch == nil {
 		return
 	}
@@ -163,7 +175,7 @@ func (a *App) reportWatchtime(np NowPlaying, on bool) {
 	default:
 		return
 	}
-	a.sendWatchtime(p, p.report(now, false))
+	a.sendWatchtime(w, p, p.report(now, false))
 }
 
 // follow takes the player's report that the playback is at pos, playing or
@@ -220,11 +232,11 @@ func (p *episodePlay) report(now time.Time, final bool) youtube.WatchReport {
 
 // endPlay sends a playback's last report, as another track plays or none
 // does, once its watch came.
-func (a *App) endPlay(p *episodePlay, now time.Time) {
+func (a *App) endPlay(w *watchtime, p *episodePlay, now time.Time) {
 	if p.watch == nil || p.dropped {
 		return
 	}
-	a.sendWatchtime(p, p.report(now, true))
+	a.sendWatchtime(w, p, p.report(now, true))
 }
 
 // countWatchtime starts the watch of the playback of a YouTube Music
@@ -235,15 +247,14 @@ func (a *App) countWatchtime(t media.Track) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if p := w.cur; p != nil && p.trackID == t.ID {
-		a.startWatch(p)
+		a.startWatch(w, p)
 		return
 	}
 	w.counted = t.ID
 }
 
-// startWatch starts the watch of a playback, once. a.watchtime.mu is held.
-func (a *App) startWatch(p *episodePlay) {
-	w := &a.watchtime
+// startWatch starts the watch of a playback of w, once. w.mu is held.
+func (a *App) startWatch(w *watchtime, p *episodePlay) {
 	if p.watch != nil || p.asking || p.failed {
 		return
 	}
@@ -270,7 +281,7 @@ func (a *App) startWatch(p *episodePlay) {
 		if w.cur != p {
 			// It ended while its watch started: its last report goes now.
 			p.fresh = false
-			a.endPlay(p, w.clock())
+			a.endPlay(w, p, w.clock())
 		}
 	}()
 }
@@ -284,10 +295,9 @@ func (a *App) youtubeWatch(ctx context.Context, videoID string) (watchReporter, 
 	return watch, nil
 }
 
-// sendWatchtime sends a report of a playback, after the one sent before:
-// they go in their order. a.watchtime.mu is held.
-func (a *App) sendWatchtime(p *episodePlay, r youtube.WatchReport) {
-	w := &a.watchtime
+// sendWatchtime sends a report of a playback of w, after the one sent
+// before: they go in their order. w.mu is held.
+func (a *App) sendWatchtime(w *watchtime, p *episodePlay, r youtube.WatchReport) {
 	watch, prev, done := p.watch, w.last, make(chan struct{})
 	w.last = done
 	go func() {

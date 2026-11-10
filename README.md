@@ -1,5 +1,3 @@
-<p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.id.md">Bahasa Indonesia</a></p>
-
 <p align="center">
   <img src="brand/icon.png" width="112" height="112" alt="MyTube's icon: five sound bars in a blue to purple gradient on a dark rounded tile" />
 </p>
@@ -440,6 +438,6 @@ derives from SharpJaad, under [its MIT license](aac/LICENSE.sharpjaad), and
 the HCT color science is a port of Material Color Utilities, under
 [its Apache license](internal/hct/LICENSE.material-color-utilities).
 
-MyTube is not affiliated with, endorsed by or sponsored by Google. It
-plays what YouTube Music offers its users, through its own interfaces; use
-it as its terms allow. YouTube Music is a trademark of its owner.
+MyTube is not affiliated with, endorsed by or sponsored by Google, and
+is provided as is, without warranty: use it at your own risk. YouTube
+and YouTube Music are trademarks of Google.

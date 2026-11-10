@@ -209,16 +209,6 @@ The [website](site/templates/index.html) and the docs' pages are built with
 https://bigdaddy284.github.io/mymusic/, whenever what they're built from
 changes on main.
 
-## Translations of the README
-
-[README.zh-CN.md](README.zh-CN.md) (Simplified Chinese) and
-[README.id.md](README.id.md) (Indonesian) translate
-[README.md](README.md), which stays the one that's current. A pull request
-that changes the README needn't change them: say in it which sections
-changed, so that a translator can follow. Corrections and new languages are
-welcome, as `README.<language code>.md` with a link in each README's
-language line.
-
 ## Reports
 
 Open an [issue](https://github.com/bigdaddy284/mymusic/issues) with what you did,
