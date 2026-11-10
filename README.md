@@ -440,12 +440,6 @@ derives from SharpJaad, under [its MIT license](aac/LICENSE.sharpjaad), and
 the HCT color science is a port of Material Color Utilities, under
 [its Apache license](internal/hct/LICENSE.material-color-utilities).
 
-MyTube is not affiliated with, endorsed by or sponsored by Google. It
-plays what YouTube and YouTube Music offer their users, through their
-own internal interfaces rather than Google's public API, as an
-unofficial client. Google's terms of service don't allow unofficial
-clients, and Google may limit, suspend or close an account it finds
-breaking them: use MyTube at your own risk, and consider signing it in
-with a Google account other than your main one
-([more](docs/accounts.md#before-you-sign-in)). YouTube and YouTube Music
-are trademarks of Google.
+MyTube is not affiliated with, endorsed by or sponsored by Google, and
+is provided as is, without warranty: use it at your own risk. YouTube
+and YouTube Music are trademarks of Google.
