@@ -27,6 +27,7 @@ var iconPaths = map[string]string{
 	"volumeMute":   "M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5",
 	"plus":         "M12 4.5v15M4.5 12h15",
 	"more":         "M5.5 12h.01M12 12h.01M18.5 12h.01",
+	"moreVertical": "M12 5.5v.01M12 12v.01M12 18.5v.01",
 	"close":        "M5.5 5.5l13 13M18.5 5.5l-13 13",
 	"back":         "M14.5 5.5 8 12l6.5 6.5M8.5 12H20",
 	"forward":      "M9.5 5.5 16 12l-6.5 6.5M15.5 12H4",

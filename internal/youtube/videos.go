@@ -34,6 +34,8 @@ type Video struct {
 	// Watched is how much of it the account watched, in percent, as
 	// YouTube's red bar under the thumbnail shows it: on any device.
 	Watched int `json:"watched,omitempty"`
+	// Feedback are the tokens of the video's menu, of a feed signed in.
+	Feedback VideoFeedback `json:"feedback,omitzero"`
 }
 
 // VideoPlaylist is a playlist of YouTube's website.
@@ -280,6 +282,7 @@ func parseVideoRenderer(r node) (Video, bool) {
 	}
 	v.Thumbnail = videoThumbnail(id, r.get("thumbnail", "thumbnails"))
 	v.Watched = r.find("thumbnailOverlayResumePlaybackRenderer").get("percentDurationWatched").number()
+	v.Feedback = parseVideoFeedback(r.get("menu"))
 	return v, v.Title != ""
 }
 
@@ -348,6 +351,7 @@ func parseVideoLockup(r node) (Video, bool) {
 	v.Duration = badgeText(image)
 	v.Thumbnail = videoThumbnail(id, image.find("image").get("sources"))
 	v.Watched = image.find("thumbnailOverlayProgressBarViewModel").get("startPercent").number()
+	v.Feedback = parseVideoFeedback(meta.get("menuButton"))
 	return v, id != "" && v.Title != ""
 }
 

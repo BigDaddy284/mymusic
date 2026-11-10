@@ -55,6 +55,9 @@ type videosState struct {
 	// randomShown are the videos random searches showed, by video: the
 	// search that showed it first, the one that may show it again.
 	randomShown map[string]string
+	// hidden are the videos, and the channels by videoChannelKey, the user
+	// told YouTube not to recommend, left off the cards (videomenu.go).
+	hidden map[string]bool
 	// ratings are the account's ratings of videos the user set here, by
 	// video: "like", "dislike", or "" (videorating.go).
 	ratings map[string]string
@@ -347,7 +350,7 @@ func (s *shell) videoFeedOf(c *ui.Context, key string, search bool, empty string
 		s.problem(c, res.err, func() { s.refetch(key) })
 		return
 	}
-	videos := append(append([]youtube.Video{}, res.value.Videos...), vs.more[key]...)
+	videos := s.shownVideos(append(append([]youtube.Video{}, res.value.Videos...), vs.more[key]...))
 	if len(videos) == 0 {
 		s.emptyLine(c, empty)
 		return
@@ -420,14 +423,7 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 	k := &s.lk
 	h := float32(int(w*9/16 + 0.5))
 	card := s.buttonBase(c.Key(key)).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).Label(v.Title).Cursor(ui.CursorPointer).
-		ContextMenu(func(m *ui.Menu) {
-			if m.Item("Play").Chosen() {
-				s.watch(v, list)
-			}
-			if m.Item("Open on YouTube").Chosen() {
-				go s.svc.System.OpenExternal(youtubeWatchURL(v.ID))
-			}
-		})
+		ContextMenu(func(m *ui.Menu) { s.videoMenu(m, v, list) })
 	if card.Clicked() {
 		s.watch(v, list)
 	}
@@ -446,14 +442,17 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 				})
 			}
 		})
-		ui.Column(c).Width(w).Gap(2).Children(func() {
-			k.labelWeight(ui.Text(c, v.Title).FontSize(k.bodySize()).SingleLine())
-			if v.Channel != "" {
-				ui.Text(c, v.Channel).FontSize(k.smallSize()).TextColor(k.muted).SingleLine()
-			}
-			if line := videoFacts(v); line != "" {
-				ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine()
-			}
+		ui.Row(c).Width(w).Gap(4).AlignItems(ui.Start).Children(func() {
+			ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
+				k.labelWeight(ui.Text(c, v.Title).FontSize(k.bodySize()).SingleLine().MinWidth(0))
+				if v.Channel != "" {
+					ui.Text(c, v.Channel).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+				}
+				if line := videoFacts(v); line != "" {
+					ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+				}
+			})
+			s.videoMenuButton(c, key, v, list)
 		})
 	})
 }

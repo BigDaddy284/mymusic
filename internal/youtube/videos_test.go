@@ -88,3 +88,25 @@ func TestParseVideoDetails(t *testing.T) {
 		t.Errorf("details %+v", d)
 	}
 }
+
+// TestParseVideoFeedback reads the tokens of Not interested and Don't
+// recommend channel of a video's menu, of both designs.
+func TestParseVideoFeedback(t *testing.T) {
+	old := decode(t, `{"menuRenderer":{"items":[
+	 {"menuServiceItemRenderer":{"text":{"runs":[{"text":"Add to queue"}]},"icon":{"iconType":"ADD_TO_QUEUE_TAIL"}}},
+	 {"menuServiceItemRenderer":{"text":{"runs":[{"text":"Not interested"}]},"icon":{"iconType":"NOT_INTERESTED"},
+	  "serviceEndpoint":{"feedbackEndpoint":{"feedbackToken":"NI"}}}},
+	 {"menuServiceItemRenderer":{"text":{"runs":[{"text":"Don't recommend channel"}]},"icon":{"iconType":"REMOVE"},
+	  "serviceEndpoint":{"feedbackEndpoint":{"feedbackToken":"NC"}}}}]}}`)
+	if f := parseVideoFeedback(old); f.NotInterested != "NI" || f.NoChannel != "NC" {
+		t.Errorf("the old design's feedback %+v", f)
+	}
+	lockup := decode(t, `{"buttonViewModel":{"onTap":{"innertubeCommand":{"showSheetCommand":{"panelLoadingStrategy":{"inlineContent":{"sheetViewModel":{"content":{"listViewModel":{"listItems":[
+	 {"listItemViewModel":{"title":{"content":"Not interested"},"leadingImage":{"sources":[{"clientResource":{"imageName":"NOT_INTERESTED"}}]},
+	  "rendererContext":{"commandContext":{"onTap":{"innertubeCommand":{"feedbackEndpoint":{"feedbackToken":"NI2"}}}}}}},
+	 {"listItemViewModel":{"title":{"content":"Don't recommend channel"},"leadingImage":{"sources":[{"clientResource":{"imageName":"REMOVE"}}]},
+	  "rendererContext":{"commandContext":{"onTap":{"innertubeCommand":{"feedbackEndpoint":{"feedbackToken":"NC2"}}}}}}}]}}}}}}}}}}`)
+	if f := parseVideoFeedback(lockup); f.NotInterested != "NI2" || f.NoChannel != "NC2" {
+		t.Errorf("the lockup's feedback %+v", f)
+	}
+}

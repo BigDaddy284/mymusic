@@ -197,3 +197,14 @@ func (v *Videos) Details(ctx context.Context, id string) (youtube.VideoDetails, 
 func (v *Videos) Rate(ctx context.Context, id, rating string) error {
 	return v.a.youtube.RateVideo(ctx, id, rating)
 }
+
+// Save adds the video id to the account's playlist, as youtube.WatchLater.
+func (v *Videos) Save(ctx context.Context, playlistID, id string) error {
+	return v.a.youtube.SaveVideo(ctx, playlistID, id)
+}
+
+// Feedback sends YouTube the feedback of a token of a video's menu, as
+// Not interested.
+func (v *Videos) Feedback(ctx context.Context, token string) error {
+	return v.a.youtube.SendVideoFeedback(ctx, token)
+}
