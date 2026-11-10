@@ -102,6 +102,8 @@ type videoPlayer struct {
 	volume  float64
 	// segments follows SponsorBlock's segments of the video (segments.go).
 	segments segmentState
+	// pop is the pop-out window the video plays in (popout.go).
+	pop popOut
 }
 
 // watch plays v, with list as up next, on the watch page.
@@ -215,6 +217,10 @@ func (s *shell) stopWatching() {
 	if web := vp.web; web != nil {
 		go web.Destroy()
 	}
+	if win := vp.pop.win; win != nil {
+		vp.pop.win = nil
+		win.Close()
+	}
 	vp.web, vp.loaded, vp.current, vp.state, vp.fullApp, vp.fullScreen = nil, "", youtube.Video{}, videoState{}, false, false
 	// The watching's last report goes.
 	s.svc.Videos.ReportWatching("", 0, false, 1, false)
@@ -289,6 +295,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 				s.leaveFullApp()
 			}
 			s.followFullScreen()
+			s.followPopScreen()
 			if st.Ended && vp.endedOf != vp.current.ID {
 				vp.endedOf = vp.current.ID
 				s.videoNext(true)
@@ -540,6 +547,8 @@ func (s *shell) placeVideo(c *ui.Context, key string, w, h float32) {
 					go s.svc.System.OpenExternal(youtubeWatchURL(vp.current.ID))
 				}
 			})
+		case vp.popped():
+			s.poppedOutFrame(c, key, w, h)
 		case vp.web == nil:
 			s.loadVideo()
 			ui.Row(c).Size(w, h).AlignItems(ui.Center).Justify(ui.Center).Children(func() { ui.Spinner(c).Label("Loading the video") })
@@ -921,7 +930,18 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 			s.save()
 		}
 	})
-	if s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has).Clicked() {
+	pop := "Pop out: watch in a small window over your other apps"
+	if vp.popped() {
+		pop = "Bring the video back to this window"
+	}
+	if s.iconButton(c, "v-pop-out", "external", pop, vp.popped(), 18).Disabled(!has || vp.casting != nil).Clicked() {
+		if vp.popped() {
+			s.closePopOut()
+		} else {
+			s.popOutVideo()
+		}
+	}
+	if s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has || vp.popped()).Clicked() {
 		vp.fullApp = true
 	}
 }

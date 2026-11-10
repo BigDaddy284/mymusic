@@ -21,7 +21,7 @@ const escapeKey = "Escape"
 // videoFullScreen tells whether the video fills the screen: the app's
 // Full screen button, or the player's own, asked for it.
 func (vp *videoPlayer) videoFullScreen() bool {
-	return vp.current.ID != "" && (vp.fullScreen || vp.state.FS)
+	return vp.current.ID != "" && !vp.popped() && (vp.fullScreen || vp.state.FS)
 }
 
 // filling tells whether the video fills the window: Full App or full
