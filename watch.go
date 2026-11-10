@@ -93,6 +93,8 @@ type videoPlayer struct {
 	// musicPlayed is whether music played in the last frame: the video
 	// stops as music starts.
 	musicPlayed bool
+	// pausedForMusic is when music starting paused the video last.
+	pausedForMusic time.Time
 	// seeking and seekTo follow the seek bar while it's dragged; volume
 	// follows the volume's slider.
 	seeking bool
@@ -269,6 +271,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 				go s.svc.Videos.Watched(v, videoPoll.Seconds())
 			}
 			s.followVideoCast(&st)
+			s.videoStarts(st)
 			vp.state = st
 			s.settleVideo()
 			s.keepVideoPlace()
@@ -281,6 +284,18 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 				s.videoNext(true)
 			}
 		})
+	}
+}
+
+// videoStarts pauses the music when the player tells the video started to
+// play, as from YouTube's own button in it, as the bar's button does: but
+// for the moments after music paused the video, while the player still
+// tells it plays.
+func (s *shell) videoStarts(st videoState) {
+	vp := &s.videos.player
+	if st.Playing && !vp.state.Playing && s.st.Playing && time.Since(vp.pausedForMusic) > 2*time.Second {
+		s.p.Pause()
+		s.st.Playing = false
 	}
 }
 
@@ -910,6 +925,7 @@ func (s *shell) followWatch() {
 	if started && vp.current.ID != "" && vp.state.Playing {
 		s.videoCommand("pause", nil)
 		vp.state.Playing = false
+		vp.pausedForMusic = time.Now()
 	}
 	s.videoKeys.Store(vp.current.ID != "")
 }

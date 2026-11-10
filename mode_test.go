@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/bigdaddy284/mymusic/internal/app"
+	"github.com/bigdaddy284/mymusic/internal/player"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -258,4 +259,22 @@ func TestVideoSideBackToThePlayingVideo(t *testing.T) {
 	if vp.current.ID != "second00001" || s.router.Path() != watchPath("second00001") {
 		t.Errorf("back on Video, %q plays at %q", vp.current.ID, s.router.Path())
 	}
+}
+
+// TestVideoPlayPausesMusic pauses the music when the video starts from
+// YouTube's own button, but not as music has just paused the video.
+func TestVideoPlayPausesMusic(t *testing.T) {
+	s := playing(t)
+	vp := &s.videos.player
+	vp.problem = "no web view in tests"
+	vp.current = youtube.Video{ID: "a"}
+	s.st = s.p.State()
+	vp.pausedForMusic = time.Now()
+	s.videoStarts(videoState{Playing: true})
+	if !s.st.Playing {
+		t.Fatal("the player telling the video plays, just after music paused it, paused the music")
+	}
+	vp.pausedForMusic = time.Time{}
+	s.videoStarts(videoState{Playing: true})
+	s.settle(t, func(st player.State) bool { return !st.Playing })
 }
