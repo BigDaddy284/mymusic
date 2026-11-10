@@ -58,23 +58,13 @@ func Default() Settings {
 // idRe matches the ID of a theme.
 var idRe = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,63}$`)
 
-// UnmarshalJSON reads settings, those of the versions before 0.5.6 too,
-// where Discord showed nothing until the user turned it on and pasted the
-// ID of an application of theirs. Those settings show what plays now,
-// unless the user had pasted an ID and turned it off.
+// UnmarshalJSON reads settings.
 func (s *Settings) UnmarshalJSON(data []byte) error {
 	type plain Settings
 	if err := json.Unmarshal(data, (*plain)(s)); err != nil {
 		return err
 	}
 	s.readPaths()
-	var keys struct {
-		Before *bool `json:"discordPresence"`
-		Now    *bool `json:"showOnDiscord"`
-	}
-	if json.Unmarshal(data, &keys) == nil && keys.Now == nil && keys.Before != nil {
-		s.DiscordPresence = *keys.Before || strings.TrimSpace(s.DiscordAppID) == ""
-	}
 	return nil
 }
 

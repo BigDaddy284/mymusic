@@ -30,10 +30,9 @@ func TestDecode(t *testing.T) {
 			if s.Theme != "aurora" || s.Crossfade != 6 {
 				t.Errorf("theme %q, crossfade %d", s.Theme, s.Crossfade)
 			}
-			// Keys of later versions take their defaults; Discord shows
-			// what plays, as for every file of before 0.5.6 without an ID.
-			if s.Zoom != 1 || !s.Loudness || !s.ShowInTitle || !s.DiscordPresence {
-				t.Errorf("zoom %v, loudness %v, title %v, Discord %v", s.Zoom, s.Loudness, s.ShowInTitle, s.DiscordPresence)
+			// Keys of later versions take their defaults.
+			if s.Zoom != 1 || !s.Loudness || !s.ShowInTitle {
+				t.Errorf("zoom %v, loudness %v, title %v", s.Zoom, s.Loudness, s.ShowInTitle)
 			}
 		}},
 		// Out-File and > write UTF-16 with a byte order mark.
@@ -169,7 +168,7 @@ func TestInspect(t *testing.T) {
 	}{
 		{"as kept", `{"theme": "aurora", "volume": 0.50, "crossfade": 2}`, false, nil, nil},
 		{"a typo", `{"crosfade": 6, "theme": "aurora"}`, false, []string{"crosfade"}, nil},
-		{"the key of before 0.5.6", `{"discordPresence": true}`, false, nil, nil},
+		{"the Discord status, which is gone", `{"discordPresence": true, "showOnDiscord": false}`, false, nil, nil},
 		{"keys in another case", `{"Theme": "aurora", "FONTSCALE": 1.1}`, false, nil, nil},
 		{"out of range", `{"fontScale": 2, "crossfade": 60, "theme": "Not A Theme"}`, false, nil, []string{"crossfade", "fontScale", "theme"}},
 		{"nulls", `{"theme": null, "equalizer": null}`, false, nil, nil},

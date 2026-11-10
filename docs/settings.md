@@ -60,7 +60,6 @@ The **On the desktop** group:
 | Media keys | The keyboard's play, next and previous keys control MyTube. On at first. |
 | [Notifications](desktop.md#notifications) | Tells what starts playing while neither MyTube's window nor the mini player is in front. On at first. |
 | [Show what plays in the window title](desktop.md#the-window-title) | The window's title names the track that plays. On at first. |
-| [Show what plays on Discord](desktop.md#discord) | Your Discord profile shows what you listen to. On at first. Under it, **Discord application ID**, to show another application's name, a preview of your status, and [what it shows](desktop.md#what-your-discord-status-shows): its two lines, the cover, the service's badge, the time left, a Listen button, and whether it stays while paused. |
 | [Keep on top](desktop.md#keep-the-window-on-top) | MyTube's window stays above your other windows. Off at first. |
 | [Start at login](desktop.md#start-at-login) | Starts MyTube, hidden, when you sign in to your computer. |
 | Settings file | **open** opens `settings.json`, **show in folder** shows it in its folder. |

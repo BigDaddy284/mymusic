@@ -143,7 +143,6 @@ type App struct {
 	// releases keeps what the artists the user follows put out lately.
 	releases releaseBook
 
-	presence presence
 	// watchtime reports the listening to YouTube Music's episodes to the
 	// history there.
 	watchtime watchtime
@@ -312,12 +311,6 @@ func (a *App) apply(s settings.Settings) {
 	// Whether they can register yet, hotkeys tells, which tests give
 	// their own. The settings' save tells the windows of the problems.
 	a.applyGlobalShortcuts(false)
-	// Discord shows what plays as the settings now choose, or nothing, at
-	// once, even while paused, when no report comes.
-	a.mu.Lock()
-	np := a.nowPlaying
-	a.mu.Unlock()
-	a.presence.update(s.Desktop, np)
 	if p := a.goPlayer.Load(); p != nil {
 		p.SettingsChanged(s)
 		a.applyEngine(s)

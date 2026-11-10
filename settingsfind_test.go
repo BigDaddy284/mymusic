@@ -258,7 +258,7 @@ func TestSettingsFindNothingElse(t *testing.T) {
 			}}
 		}},
 		{"following the system", func(s *shell) {
-			s.set.FollowSystem, s.set.DiscordPresence = true, true
+			s.set.FollowSystem = true
 			s.licenseOpen = 0
 		}},
 		{"looking for the tools", func(s *shell) { s.loads["tools"] = &loaded[tools.Status]{} }},

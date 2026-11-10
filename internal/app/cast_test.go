@@ -377,7 +377,7 @@ func newCastApp(t *testing.T, r *casttest.Responder) (*App, *player.Player, *qui
 		t.Fatal(err)
 	}
 	st := a.settings.Get()
-	st.DiscordPresence, st.Notifications = false, false
+	st.Notifications = false
 	if err := a.settings.Set(st); err != nil {
 		t.Fatal(err)
 	}

@@ -2,7 +2,7 @@
 <!-- docs: group=using order=60 -->
 
 MyTube on your desktop: the mini player, the tray,
-media keys and media controls, global shortcuts, notifications and Discord.
+media keys and media controls, global shortcuts and notifications.
 
 Most of what this page covers is in [Settings › Desktop](settings.md#desktop),
 and the global shortcuts are in [Settings › Shortcuts](settings.md#shortcuts).
@@ -190,42 +190,6 @@ shows the track already. The tray icon's tip names what plays too.
 - MyTube waits up to 2 seconds for a cover it hasn't downloaded yet:
   without one by then, the notification shows without it. When the next
   track starts meanwhile, only the next one's shows.
-
-## Discord
-
-While the Discord app runs on your computer, your Discord profile shows
-what you listen to: the title, the artists, the cover and the time left.
-Pausing clears it, and a live stream shows how long it has played. You
-can [choose what it shows](#what-your-discord-status-shows). Discord's
-member list says "Listening to MyTube". There's nothing to set up: turn
-it off with **Show what plays on Discord** in Settings › Desktop.
-
-- **Discord application ID**, under the switch, shows the name of a Discord
-  application of your own in place of MyTube's: create one in Discord's
-  [developer portal](https://discord.com/developers/applications) and paste
-  its application ID.
-- Under them, a **preview** shows your status as Discord's card does, of
-  what plays, or of a song while nothing does, and follows what you choose
-  below it, the lines as you type them.
-- MyTube finds Discord's Canary build too.
-
-### What your Discord status shows
-
-The rows under the preview choose what your profile says. At first it
-says what it always did: the title, the artists, the cover and the time
-left, and a pause clears it.
-
-| Row | What it does |
-|---|---|
-| First line, Second line | What the two lines say. Type text and placeholders: `{title}`, `{artist}`, `{album}` and `{service}` (YouTube Music or my computer), as `{artist} · {album}`. A placeholder at a line's start or end with nothing to show, as the album of a single, takes the separator beside it along. Anything else in braces shows as typed, and the row says so in red. A line holds 128 characters, as many as Discord shows; an empty one shows nothing. **reset** puts back `{title}` or `{artist}`. |
-| Cover | The track's cover, where its service has one online. A file on your computer has none Discord can read. On at first. |
-| Service badge | A small round mark at the cover's corner: a red square for YouTube Music, a record for a file on your computer. Without a cover, the badge takes its place. Off at first. |
-| Time left | How long the track has played and how long it has left, as a bar; a live stream, how long it has played. On at first. |
-| Listen button | A **Listen on YouTube Music** button that opens the track there. Discord shows it to the others who see your profile, not always to you. A file on your computer has none. Off at first. |
-| Keep while paused | A paused track stays, marked with a pause badge, whose tip says Paused, and without its time. Off, a pause clears your status, as before. |
-
-Discord reads the badges from MyTube's GitHub repository, and an
-application of your own shows them as MyTube's does.
 
 ## Start at login
 

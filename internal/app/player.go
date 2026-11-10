@@ -183,7 +183,7 @@ func streamURL(videoID string) string {
 }
 
 // Report tells the app what the player plays, for the tray, the main
-// window's title, notifications, the system's media controls, Discord and
+// window's title, notifications, the system's media controls and
 // Last.fm.
 func (p *Player) Report(np NowPlaying) {
 	p.a.mu.Lock()
@@ -197,7 +197,6 @@ func (p *Player) Report(np NowPlaying) {
 	p.a.scrobble(np)
 	p.a.keepPosition(np)
 	p.a.reportWatchtime(np, s.YouTubeHistory)
-	p.a.presence.update(s.Desktop, np)
 	p.a.reportControls(np)
 	if bar != nil {
 		bar.Show(np.plays(), np.Track != nil)

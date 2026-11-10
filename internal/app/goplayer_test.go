@@ -14,7 +14,7 @@ import (
 )
 
 // newQuietApp is an app in a folder of its own, with options set changes,
-// whose player plays at once and silently. Neither Discord nor
+// whose player plays at once and silently. No
 // notifications: a notification would wait for MyGo's loop, which doesn't
 // run here.
 func newQuietApp(t *testing.T, set func(o *Options)) *App {
@@ -29,7 +29,7 @@ func newQuietApp(t *testing.T, set func(o *Options)) *App {
 		t.Fatal(err)
 	}
 	st := a.settings.Get()
-	st.DiscordPresence, st.Notifications = false, false
+	st.Notifications = false
 	if err := a.settings.Set(st); err != nil {
 		t.Fatal(err)
 	}

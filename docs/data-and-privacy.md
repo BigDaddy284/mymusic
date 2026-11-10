@@ -107,7 +107,6 @@ Where the credential store can't keep a secret:
 | Translate, or romanized Arabic, while it's on beside the lyrics | Unison, which has Google translate them | the lyrics of the track that plays, with its video ID |
 | Romaji, the first time you turn it on | GitHub | a download of the dictionary of kanji readings; the lyrics stay on your computer |
 | Last.fm, once you connect it | Last.fm | the title, artists, album and length of what you play, and when |
-| Discord, unless you turn it off in Settings › Desktop | the Discord app on your computer | the title, artists, album and cover address of what plays, and its times, as you choose them; with the Listen button, the track's link on its service |
 | Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyTube while you cast |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
 | Knowing whether the network answers | YouTube | a request over HTTPS for an empty answer |
@@ -116,8 +115,8 @@ Where the credential store can't keep a secret:
 
 - Your settings, your library, your history and your searches.
 - The [music on this computer](local-music.md#privacy): MyTube plays it
-  from its files, and sends no file anywhere. Last.fm and Discord hear of
-  what plays as of any track, as their settings say.
+  from its files, and sends no file anywhere. Last.fm hears of
+  what plays as of any track, as its settings say.
 - Latin letters for lyrics, Japanese romaji included: MyTube makes them
   itself, and sends no lyrics for them. Only Arabic's come from Unison,
   while romanize is on.

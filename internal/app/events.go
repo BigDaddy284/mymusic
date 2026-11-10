@@ -17,7 +17,7 @@ const (
 )
 
 // NowPlaying is what the player plays, as it reports it to the tray,
-// notifications, the system's media controls, Discord and Last.fm.
+// notifications, the system's media controls and Last.fm.
 type NowPlaying struct {
 	Track   *media.Track `json:"track"`
 	Playing bool         `json:"playing"`

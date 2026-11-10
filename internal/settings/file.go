@@ -301,6 +301,19 @@ type Report struct {
 // Empty tells whether the report has nothing to tell.
 func (r Report) Empty() bool { return !r.NotUTF8 && len(r.Unknown) == 0 && len(r.Adjusted) == 0 }
 
+// retiredKeys are the keys of features MyTube no longer has: the plugins,
+// the Discord status and the colours from a file.
+var retiredKeys = []string{
+	"enabledPlugins",
+	"discordPresence", "showOnDiscord", "discordAppId", "discordFirstLine", "discordSecondLine",
+	"discordCover", "discordServiceBadge", "discordTimeLeft", "discordListenButton", "discordKeepWhilePaused",
+}
+
+// retired tells whether key is one of retiredKeys.
+func retired(key string) bool {
+	return slices.ContainsFunc(retiredKeys, func(k string) bool { return strings.EqualFold(k, key) })
+}
+
 // Inspect tells what of a settings file, data, the settings s that Decode
 // read of it don't take as it is. It compares only what the file sets:
 // an object member by member, as "equalizer": {"enabled": true}, which
@@ -320,11 +333,9 @@ func Inspect(data []byte, s Settings) Report {
 	for key, v := range file {
 		name, t, known := field(reflect.TypeFor[Settings](), key)
 		switch {
-		case !known && strings.EqualFold(key, "discordPresence"):
-			// The key of before 0.5.6, which UnmarshalJSON reads.
-		case !known && strings.EqualFold(key, "enabledPlugins"):
-			// The plugins, which MyTube no longer runs: the next save
-			// drops the key without a word.
+		case !known && retired(key):
+			// A setting of a feature MyTube no longer has: the next save
+			// drops it without a word.
 		case !known:
 			r.Unknown = append(r.Unknown, key)
 		default:

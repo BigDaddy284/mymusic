@@ -9,7 +9,7 @@ import (
 func init() { addSettings("desktop", 10, (*shell).desktopSettings) }
 
 // desktopRows are the rows of Settings › On the desktop that register
-// from their features' files, below Discord's.
+// from their features' files.
 const desktopRows = "desktop › On the desktop"
 
 func (s *shell) desktopSettings(c *ui.Context) {
@@ -25,21 +25,6 @@ func (s *shell) desktopSettings(c *ui.Context) {
 		toggle("media-keys", "Media keys", "The keyboard's play, next and previous keys control MyTube. Keys of your own that work everywhere are in Settings › Shortcuts.", &s.set.MediaKeys)
 		toggle("notifications", "Notifications", "Tell what starts playing while MyTube is in the background.", &s.set.Notifications)
 		toggle("title", "Show what plays in the window title", "The window's title names the track that plays, for the taskbar, the window switcher and screen readers.", &s.set.ShowInTitle)
-		toggle("discord", "Show what plays on Discord", "While Discord runs, your profile says what you listen to: you choose its lines, cover, time and button.", &s.set.DiscordPresence)
-		if s.set.DiscordPresence {
-			describe := func() {
-				ui.Text(c, "Discord shows the name of MyTube's application. To show another, create one in the ")
-				s.linkOf(c, "developer portal", "https://discord.com/developers/applications")
-				ui.Text(c, " and paste its application ID.")
-			}
-			s.rowWith(c, "Discord application ID", describe, func() {
-				in, _ := s.settingInput(c, "discord-app", s.set.DiscordAppID, func(id string) {
-					s.set.DiscordAppID = id
-					s.save()
-				})
-				in.Placeholder("MyTube's").Width(260).Label("Discord application ID")
-			}, "Discord shows the name of MyTube's application. To show another, create one in the developer portal and paste its application ID.")
-		}
 		s.settingsOf(c, desktopRows)
 		s.row(c, "Start at login", "", func() {
 			// The system says, beside the main thread.

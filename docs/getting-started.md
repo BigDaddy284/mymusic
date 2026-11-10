@@ -85,7 +85,6 @@ With no account at all, MyTube:
 - searches YouTube Music and plays it, with its home shelves, Explore, artists, albums, playlists, [podcasts](podcasts.md) and [radios](playing-music.md#autoplay-and-radios);
 - keeps your liked songs, dislikes, mixes, history and stats on your computer, in [your library](library.md);
 - shows [lyrics](lyrics.md), [downloads tracks](library.md#downloads) to play without the network, and keeps the tracks you played in its [offline cache](library.md#the-offline-cache);
-- shows what plays on your [Discord profile](desktop.md#discord), from the Discord app on your computer, with nothing to set up (Settings › Desktop turns it off).
 
 Every account is optional, and you add them in Settings › Accounts: [Accounts](accounts.md) tells each step.
 

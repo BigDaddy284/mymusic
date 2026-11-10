@@ -100,8 +100,6 @@ libraries. MyTube puts both in one player:
 - `mytube://` links.
 - **Last.fm:** every track you hear joins your profile, and scrobbles made
   offline are sent once you are back online.
-- **Discord:** your profile shows what plays, with its artwork and the time
-  left.
 
 ### Make it yours
 
@@ -179,8 +177,6 @@ the portable zip, unpack it anywhere and open `MyTube.exe`.
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (any name, no callback URL), paste its API key and shared secret in
   Settings › Accounts, and approve MyTube in your browser.
-- **Discord:** while the Discord app runs, your profile shows what you
-  listen to. Turn it off in Settings › Desktop.
 
 Something not working? [docs/troubleshooting.md](docs/troubleshooting.md)
 covers the common problems and the known issues.
@@ -260,7 +256,6 @@ internal/match       the songs of YouTube Music's videos
 internal/romaji      Japanese lyrics in romaji, kanji read by kagome
 internal/library     liked and disliked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
-internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
 internal/addons      themes
 builtin/themes       the themes MyTube ships with
@@ -316,8 +311,6 @@ talks to:
   readings of kanji (11.7 MB). Romaji is made on your computer: the
   lyrics aren't sent.
 - **Last.fm,** once you connect it: what you play.
-- **Discord,** unless you turn it off: what plays, sent to the Discord app
-  on your computer, which shows it on your profile.
 
 What it keeps on your computer:
 
