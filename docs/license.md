@@ -85,6 +85,8 @@ Settings › About › Licenses shows each of them in the app.
 ## Trademarks
 
 MyTube is not affiliated with, endorsed by or sponsored by Google. It
-plays what YouTube Music offers its users, through the service's own
-interfaces; use it as its terms allow. YouTube and YouTube Music are
-trademarks of Google.
+plays what YouTube and YouTube Music offer their users, through their
+own internal interfaces rather than Google's public API, as an
+unofficial client, which Google's terms of service don't allow: use it
+at your own risk ([more](accounts.md#before-you-sign-in)). YouTube and
+YouTube Music are trademarks of Google.

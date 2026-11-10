@@ -12,6 +12,24 @@ Accounts, and MyTube keeps each sign-in in your system's
 one the Credential Manager can't keep goes in a file encrypted for your
 Windows account.
 
+## Before you sign in
+
+MyTube is an unofficial client. It talks to YouTube and YouTube Music
+through the same internal interfaces their own websites and apps use,
+not Google's public API, which offers no access to YouTube Music, the
+home feeds or the watch history. Google's terms of service don't allow
+unofficial clients, as they don't allow yt-dlp or other third-party
+players. Google hasn't been known to act on the accounts of people who
+use such apps, but it could: it may limit, suspend or close an account
+it finds breaking its terms. Use MyTube at your own risk, and if you'd
+rather not risk your main Google account, sign MyTube in with another.
+
+Signed in, MyTube holds your session, which works as a signed-in browser
+tab does, on YouTube and other Google services, until it's signed out.
+It keeps it encrypted for your Windows account, and sends it to Google
+alone. To end it everywhere, sign out in MyTube, then sign the session
+out under Google Account › Security › Your devices.
+
 ## YouTube Music
 
 Settings › Accounts › YouTube Music offers three ways to sign in. The
