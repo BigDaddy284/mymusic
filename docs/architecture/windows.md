@@ -156,11 +156,7 @@ belongs to its main thread: what finishes elsewhere comes back through
   still. Flat, it is the theme's slider to the pixel, which
   `TestWavyProgress` checks.
 - **Lyrics** light the line sung now, and its words as they are sung when
-  they have times (`lyricswords.go`); in Latin letters made on the
-  computer, under the line or in its place, each word's romanization
-  lights at its word's times (`lyricsromanize.go`, `sungText`), where
-  Unison's and romaji's, which have no words, light whole, as below.
-  Lines of TTML synced word by word
+  they have times (`lyricswords.go`, `sungText`). Lines of TTML synced word by word
   keep their words' times (`lyrics.Line.Words`): each span with a begin
   time is a word, or a syllable, and a line with sung text outside of them
   has none. The line's text element is clear, and its Draw paints the
@@ -168,8 +164,7 @@ belongs to its main thread: what finishes elsewhere comes back through
   sung in the accent. The song's time moves on from the position the
   player last told, at the track's speed, for 1.5 s at most, so the words
   fill in frames that only paint again; Reduce Motion lights each word
-  whole as it starts. Lines shown in Latin letters in their place light
-  whole.
+  whole as it starts.
 - **The mini player's volume** (`minivolume.go`) is a button that mutes,
   and the player bar's slider above it, in a popover that shows while the
   pointer is over either, a drag holds it or the keyboard's focus is on

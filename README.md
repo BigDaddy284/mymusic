@@ -253,7 +253,6 @@ internal/audio       MyTube's audio engine, and the system's audio output
 internal/youtube     YouTube Music's catalog, and your account there
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
 internal/match       the songs of YouTube Music's videos
-internal/romaji      Japanese lyrics in romaji, kanji read by kagome
 internal/library     liked and disliked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
 internal/diag        the log, without secrets, and the reports of crashes
@@ -301,15 +300,11 @@ talks to:
   Music history.
 - **Unison:** the video ID of the track that plays, or, without one, its
   title, artists, album and length, to find its lyrics. Only while you
-  turn on translate, or romanize, beside the lyrics, the lyrics of the
+  turn on translate beside the lyrics, the lyrics of the
   track that plays, with its video ID, which Unison has Google translate.
 - **LRCLIB:** the title, artists, album and length of the track that plays,
   to find its lyrics.
-- **GitHub:** a check for a new version at start and every few hours,
-  which you can turn off in Settings › About; the downloads of yt-dlp; and, the first time
-  you turn on romaji beside Japanese lyrics, the dictionary of the
-  readings of kanji (11.7 MB). Romaji is made on your computer: the
-  lyrics aren't sent.
+- **GitHub:** the downloads of yt-dlp.
 - **Last.fm,** once you connect it: what you play.
 
 What it keeps on your computer:
@@ -319,8 +314,7 @@ What it keeps on your computer:
 - The tracks you played, in the cache, as much as you allow in Settings ›
   Playback, and how loud YouTube measured them.
 - The covers you saw, up to 256 MB.
-- The translations of lyrics you turned on, by track and language, and
-  the dictionary romaji reads kanji with, once you turned it on.
+- The translations of lyrics you turned on, by track and language.
 - Your sign-ins, the YouTube Music session included, in Windows'
   Credential Manager. When it can't keep one, it goes in a file encrypted
   for your Windows account.
@@ -359,12 +353,6 @@ MyTube is built on these projects:
 - **[Unison](https://unison.boidu.dev)**, the open, crowdsourced database of
   lyrics, under the ODbL, and **[LRCLIB](https://lrclib.net)**, the open
   database of synced lyrics.
-- **[kagome](https://github.com/ikawaha/kagome)**, the Japanese
-  morphological analyser that reads the kanji of lyrics for their romaji,
-  with the IPA dictionary of
-  [kagome-dict](https://github.com/ikawaha/kagome-dict), made from
-  mecab-ipadic, which MyTube downloads the first time romaji is turned
-  on.
 - **[libopus](https://opus-codec.org)**, whose decoder the Opus decoder is a
   port of, and **[SharpJaad](https://github.com/jimm98y/SharpJaad)**, the C#
   port of [JAAD](https://sourceforge.net/projects/jaadec/) the AAC decoder

@@ -62,8 +62,6 @@ an installed copy's data.
   follow, for [New from artists you follow](library.md#new-releases).
 - `lyrics-translations/`: the translations of lyrics you turned on, by
   track and language.
-- `romaji/`: the dictionary of the readings of kanji, once you turn on
-  romaji (11.7 MB).
 - `yt-dlp/`: what yt-dlp keeps of YouTube's player.
 
 ### The logs folder
@@ -104,8 +102,7 @@ Where the credential store can't keep a secret:
 | Lyrics | Unison (`unison.boidu.dev`) | the video ID of the track that plays, or, without one, its title, artists, album and length |
 | Lyrics, when Unison has none | LRCLIB (`lrclib.net`) | the title, artists, album and length of the track that plays |
 | Lyrics of a track on this computer | Unison, then LRCLIB | its title, artists, album and length, as its tags tell, unless they name no artist; never its file |
-| Translate, or romanized Arabic, while it's on beside the lyrics | Unison, which has Google translate them | the lyrics of the track that plays, with its video ID |
-| Romaji, the first time you turn it on | GitHub | a download of the dictionary of kanji readings; the lyrics stay on your computer |
+| Translate, while it's on beside the lyrics | Unison, which has Google translate them | the lyrics of the track that plays, with its video ID |
 | Last.fm, once you connect it | Last.fm | the title, artists, album and length of what you play, and when |
 | Casting | the cast device you choose, on your network | the title, artist and cover of what plays; the device fetches the audio from MyTube while you cast |
 | yt-dlp, when you install or update it | GitHub | a download of yt-dlp's latest release |
@@ -117,9 +114,6 @@ Where the credential store can't keep a secret:
 - The [music on this computer](local-music.md#privacy): MyTube plays it
   from its files, and sends no file anywhere. Last.fm hears of
   what plays as of any track, as its settings say.
-- Latin letters for lyrics, Japanese romaji included: MyTube makes them
-  itself, and sends no lyrics for them. Only Arabic's come from Unison,
-  while romanize is on.
 - The audio: the offline cache, the downloads, and what the visualizer
   hears of what MyTube plays. MyTube analyzes that audio in memory, and
   never records or sends it.

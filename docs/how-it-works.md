@@ -81,16 +81,11 @@ talks to:
 - **Lyrics:** [Unison](https://unison.boidu.dev), an open, crowdsourced
   database of lyrics, first, then [LRCLIB](https://lrclib.net), then
   YouTube Music's own lyrics. Unison also translates lyrics, through
-  Google, and romanizes Arabic, but only while you turn those on.
-- **Latin letters for lyrics** are made on your computer for every other
-  script. Japanese romaji reads kanji with a dictionary MyTube downloads
-  from GitHub the first time you turn romaji on (11.7 MB); the readings of
-  Chinese are built in.
+  Google, but only while you turn that on.
 - **Last.fm**, once you connect it: what you play, to scrobble.
 - **Cast devices** on your network, such as Chromecasts and Nest
   speakers, which MyTube finds and speaks to itself, in Go.
-- **GitHub**, for new versions of MyTube, for yt-dlp, and for the kanji
-  dictionary.
+- **GitHub**, for yt-dlp.
 
 To tell whether the network answers, MyTube asks YouTube's addresses
 over HTTPS. [Your data and privacy](data-and-privacy.md) lists

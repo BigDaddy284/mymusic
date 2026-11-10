@@ -48,11 +48,8 @@ choice, with the licences of the code they derive from, below.
 | The AAC decoder, `aac` | derived from SharpJaad, the C# port of JAAD, whose authors placed it in the public domain | MIT | [aac/LICENSE.sharpjaad](../aac/LICENSE.sharpjaad) |
 | The equalizer's filters, the compressor and the analyser, in `internal/audio` | ports of Blink's biquad, DynamicsCompressor and AnalyserNode, of Chromium | Blink's BSD licenses | [internal/audio/LICENSE.blink](../internal/audio/LICENSE.blink) |
 | The colours of the Material themes, `internal/hct` | a port of Material Color Utilities, by Google | Apache 2.0 | [internal/hct/LICENSE.material-color-utilities](../internal/hct/LICENSE.material-color-utilities) |
-| The readings of Chinese, built in | made from the Unihan database of Unicode, and from mozillazg's pinyin-data and phrase-pinyin-data | the Unicode License v3, and MIT | [LICENSE.unicode](../internal/romanize/LICENSE.unicode), [LICENSE.pinyin-data](../internal/romanize/LICENSE.pinyin-data), [LICENSE.phrase-pinyin-data](../internal/romanize/LICENSE.phrase-pinyin-data) |
-| kagome, which reads kanji for romaji | a Go module, by ikawaha | MIT | [internal/romaji/LICENSE.kagome](../internal/romaji/LICENSE.kagome) |
 | go-mp3, which decodes MP3 files | a Go module, by Hajime Hoshi and its authors | Apache 2.0 | [internal/audio/LICENSE.go-mp3](../internal/audio/LICENSE.go-mp3) |
 | jfreymuth/vorbis, which decodes Vorbis files | a Go module, by Johann Freymuth | MIT | [internal/audio/LICENSE.vorbis](../internal/audio/LICENSE.vorbis) |
-| The IPA dictionary, downloaded the first time you turn romaji on | kagome-dict's, made from mecab-ipadic 2.7.0-20070801 | MIT for kagome-dict, and the notice of mecab-ipadic | [LICENSE.kagome-dict](../internal/romaji/LICENSE.kagome-dict), [NOTICE.ipadic](../internal/romaji/NOTICE.ipadic) |
 | Selawik, the interface's face | by Microsoft | SIL Open Font License 1.1 | [fonts/OFL.txt](../fonts/OFL.txt) |
 | Quicksand, the Mochi theme's face | by Andrew Paglinawan | SIL Open Font License 1.1 | [fonts/quicksand-OFL.txt](../fonts/quicksand-OFL.txt) |
 | Roboto Flex, the Material themes' face | by Google Fonts | SIL Open Font License 1.1 | [fonts/robotoflex-OFL.txt](../fonts/robotoflex-OFL.txt) |

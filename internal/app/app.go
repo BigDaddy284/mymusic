@@ -28,7 +28,6 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/nowplaying"
 	"github.com/bigdaddy284/mymusic/internal/online"
 	"github.com/bigdaddy284/mymusic/internal/player"
-	"github.com/bigdaddy284/mymusic/internal/romaji"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 	"github.com/bigdaddy284/mymusic/internal/store"
 	"github.com/bigdaddy284/mymusic/internal/stream"
@@ -80,10 +79,6 @@ type Options struct {
 	// told of, a second when zero: tests shorten it, at once when
 	// negative.
 	ProblemWait time.Duration
-	// RomajiURL is where the dictionary of the readings of kanji, which
-	// romaji downloads, comes from: romaji.DictionaryURL when empty. Tests
-	// give their own.
-	RomajiURL string
 	// CastBrowse, when set, finds the cast devices on the network in place
 	// of mDNS: tests set it.
 	CastBrowse func(ctx context.Context) ([]cast.Device, error)
@@ -129,7 +124,6 @@ type App struct {
 	lyrics       *lyrics.Client
 	unison       *lyrics.Unison
 	translations *translations
-	romaji       *romaji.Dictionary
 	addons       *addons.Manager
 	lyricsMemo   *memo[lyrics.Lyrics]
 	related      *memo[[]media.Shelf]
@@ -281,7 +275,6 @@ func New(opts Options) (*App, error) {
 	a.lyrics = lyrics.New(userAgent)
 	a.unison = lyrics.NewUnison(userAgent)
 	a.translations = newTranslations(filepath.Join(opts.CacheDir, "lyrics-translations"))
-	a.romaji = newRomaji(opts, userAgent)
 	a.lyricsMemo = newMemo[lyrics.Lyrics](200)
 	a.related = newMemo[[]media.Shelf](100)
 	a.episodeDetails = newMemo[media.EpisodeDetails](100)

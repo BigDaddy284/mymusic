@@ -97,6 +97,6 @@ Every account is optional, and you add them in Settings › Accounts: [Accounts]
 
 - [Playing music](playing-music.md): search, the queue, radios, the sound and speed.
 - [Your library](library.md): liked songs, mixes, downloads, history and stats.
-- [Lyrics](lyrics.md): synced lyrics, translations and Latin letters.
+- [Lyrics](lyrics.md): synced lyrics and translations.
 - [Podcasts](podcasts.md): shows, episodes and where you left them.
 - [Troubleshooting](troubleshooting.md), when something doesn't work.

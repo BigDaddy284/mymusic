@@ -21,8 +21,7 @@ cache folder holds audio, the covers shown (`artwork/`), the covers of
 the music on the computer (`local-art/`), matches, how loud
 YouTube measured the tracks played (`loudness.json`), the videos YouTube
 labels as made with AI, for 30 days (`ai-labels.json`), the releases of
-the artists followed (`releases.json`), the dictionary of
-the readings of kanji romaji downloads (`romaji/`), and yt-dlp's cache,
+the artists followed (`releases.json`), and yt-dlp's cache,
 and the logs folder the log and the crash reports. The downloads are in a
 folder of their own, which the user can move in Settings › Playback
 (`downloadsFolder` in `settings.json`): by default

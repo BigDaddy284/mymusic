@@ -302,9 +302,9 @@ type Report struct {
 func (r Report) Empty() bool { return !r.NotUTF8 && len(r.Unknown) == 0 && len(r.Adjusted) == 0 }
 
 // retiredKeys are the keys of features MyTube no longer has: the plugins,
-// the Discord status and the colours from a file.
+// the Discord status, lyrics in Latin letters and the colours from a file.
 var retiredKeys = []string{
-	"enabledPlugins",
+	"enabledPlugins", "lyricsRomanize",
 	"discordPresence", "showOnDiscord", "discordAppId", "discordFirstLine", "discordSecondLine",
 	"discordCover", "discordServiceBadge", "discordTimeLeft", "discordListenButton", "discordKeepWhilePaused",
 }

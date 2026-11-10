@@ -44,10 +44,6 @@ jobs:
           mkdir -p "$RUNNER_TEMP/opus-vectors"
           # Windows paths start with a drive letter, which GNU tar reads as a remote host.
           cd "$RUNNER_TEMP" && tar -xzf opus-vectors.tar.gz -C opus-vectors
-      # The romaji tests read the IPA dictionary, which the app downloads,
-      # from its module, checked against go.sum: the app doesn't build it in.
-      - name: Download the dictionary of the romaji tests
-        run: go mod download github.com/ikawaha/kagome-dict/ipa@v1.2.6
       - name: Test
         run: go test ./...
         env:

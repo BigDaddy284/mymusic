@@ -59,8 +59,7 @@ it when it's at the foot of the screen, one at a time:
   for its menu, as in [Up next](playing-music.md#the-queue-and-up-next).
   A page its menu goes to, as Go to album, opens in the main window.
 - **Lyrics:** the line sung now, which lights up word by word where the
-  [lyrics](lyrics.md) have the words' times, and the line after it, in
-  Latin letters where the lyrics panel shows them so. Lyrics without times
+  [lyrics](lyrics.md) have the words' times, and the line after it. Lyrics without times
   show whole. For a podcast's episode, the chapter that plays, and the
   next.
 - **Output device:** the [output devices](playing-music.md#the-output-device)

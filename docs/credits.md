@@ -29,8 +29,7 @@ of its own.
   controls; [golang.org/x/image](https://pkg.go.dev/golang.org/x/image),
   which reads WebP covers and scales images; and
   [golang.org/x/text](https://pkg.go.dev/golang.org/x/text), whose Unicode
-  normalization matches titles, searches lists regardless of accents and
-  helps write lyrics in Latin letters.
+  normalization matches titles and searches lists regardless of accents.
 - **[Sobek](https://github.com/grafana/sobek)**, Grafana's JavaScript
   engine in Go, a fork of goja with ES modules, which the tests run the
   video page's script in.
@@ -74,48 +73,16 @@ of its own.
   **[Bun](https://bun.sh)** and **[QuickJS](https://bellard.org/quickjs/)**,
   the JavaScript runtimes yt-dlp solves YouTube's challenges with.
 
-## Lyrics and their Latin letters
+## Lyrics
 
 - **[Unison](https://unison.boidu.dev)**, the open, crowdsourced database
   of lyrics, most of them timed word by word, under the
   [ODbL](https://opendatacommons.org/licenses/odbl/). As its licence asks,
   the lyrics panel credits it under each of its lyrics: "lyrics from
-  Unison (https://unison.boidu.dev)". Unison also translates lyrics, and
-  romanizes Arabic, while you turn those on.
+  Unison (https://unison.boidu.dev)". Unison also translates lyrics, while
+  you turn that on.
 - **[LRCLIB](https://lrclib.net)**, the open database of synced lyrics,
   which MyTube asks when Unison has none.
-- **[kagome](https://github.com/ikawaha/kagome)**, by ikawaha, the
-  Japanese morphological analyser that reads the kanji of lyrics for
-  their romaji, with the IPA dictionary of
-  [kagome-dict](https://github.com/ikawaha/kagome-dict), made from
-  mecab-ipadic 2.7.0-20070801 of the Nara Institute of Science and
-  Technology, much of it from ICOT's free software. MyTube downloads the
-  dictionary the first time you turn romaji on.
-- **The [Unihan database](https://www.unicode.org/charts/unihan.html)** of
-  the Unicode Consortium, and mozillazg's
-  [pinyin-data](https://github.com/mozillazg/pinyin-data) and
-  [phrase-pinyin-data](https://github.com/mozillazg/phrase-pinyin-data),
-  from which MyTube makes the readings of Chinese it builds in.
-- **The romanization standards** MyTube writes lyrics in Latin letters
-  by, on your computer:
-  - Japanese: Hepburn romaji;
-  - Korean: the Revised Romanization of Korean (2000);
-  - Chinese: Hanyu Pinyin, with tone marks;
-  - Cyrillic: BGN/PCGN for Russian, Kazakh and Kyrgyz, Ukraine's national
-    system of 2010, Belarus's of 2007, Bulgaria's Streamlined System,
-    Gaj's Latin alphabet for Serbian, Macedonia's official system of 2008,
-    and MNS 5217:2012 for Mongolian;
-  - Greek: ELOT 743, as the UN adopted it;
-  - Armenian: BGN/PCGN (1981); Georgian: its national system of 2002;
-  - the Brahmic scripts of India and Sri Lanka: Hunterian, India's
-    national system;
-  - Thai: the Royal Thai General System;
-  - Lao: BGN/PCGN (1966); Khmer: the UN's system of 1972; Burmese:
-    BGN/PCGN (1970);
-  - Tibetan: Extended Wylie;
-  - Hebrew: the rules of the Academy of the Hebrew Language (2006);
-    Arabic, Persian and Urdu: the plain form of ALA-LC's;
-  - Amharic: BGN/PCGN (1967).
 
 ## The look
 
