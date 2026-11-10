@@ -461,6 +461,11 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 			s.videoThumb(c, key+"-thumb", v, w, h)
 			s.watchedBar(c, v, w, 4)
 			s.cardPreview(c, key, v, list, hovered, w, h)
+			// Over the preview, nothing else: the page takes the pointer
+			// only where nothing is painted over it.
+			if s.previewShows(key, v) {
+				return
+			}
 			if hovered {
 				ui.Box(c).Absolute().Top(0).Left(0).Size(w, h).InsetShadow(0, 0, 0, 3, k.accent).Radius(k.radiusSm)
 			}
