@@ -432,6 +432,12 @@ func (s *shell) follow(stop ...func()) {
 		s.svc.Downloads.OnNetwork(func(online bool) { s.update(func() { s.followNetwork(online) }) }),
 		mygo.Theme.OnUpdated(func() { s.update(s.restyle) }),
 	)
+	// The music and the video pause each other while the main window draws
+	// no frames too, as when it's minimized under the mini player and the
+	// pop-out video.
+	if s.main {
+		s.stop = append(s.stop, s.p.Subscribe(func(player.Event) { s.update(s.followWatch) }))
+	}
 	s.stop = append(s.stop, stop...)
 	s.win.OnClosed(func() {
 		for _, fn := range s.stop {

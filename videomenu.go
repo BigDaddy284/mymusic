@@ -8,10 +8,12 @@ package main
 import (
 	"context"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/egoist/mygo/ui"
 
+	"github.com/bigdaddy284/mymusic/internal/media"
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
@@ -22,6 +24,16 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 	}
 	if m.Item("Add to queue").Chosen() {
 		s.queueVideo(v)
+	}
+	if m.Item("Keep in a tab").Disabled(s.hasVideoTab(v.ID)).Tooltip("Keeps it along the top bar, to come back to").Chosen() {
+		s.addVideoTab(v)
+	}
+	if m.Item("Play as audio").Tooltip("Plays its sound on the music side, with the EQ, speed and loudness, and the screen free").Chosen() {
+		s.playVideoAudio(v)
+	}
+	if m.Item("Add to music queue").Chosen() {
+		s.p.PlayNext([]media.Track{v.Track()})
+		s.notes = append(s.notes, notice("Playing "+v.Title+" next on the music side"))
 	}
 	m.Separator()
 	signed := s.svc.Videos.SignedIn()
@@ -50,6 +62,9 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 			}
 		}
 	}).Disabled(!signed)
+	if m.Item("Go to channel").Disabled(v.ChannelID == "").Chosen() {
+		s.openChannel(v)
+	}
 	if m.Item("Share: copy the link").Chosen() {
 		copyText(youtubeWatchURL(v.ID))
 		s.notes = append(s.notes, notice("Copied the link to "+v.Title))
@@ -62,6 +77,10 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 	if m.Item("Don't recommend channel").Disabled(v.Feedback.NoChannel == "").
 		Tooltip("YouTube shows this for videos of your home feed").Chosen() {
 		s.videoFeedback(v, v.Feedback.NoChannel, true)
+	}
+	if m.Item("Block " + orWord(v.Channel, "the channel")).Disabled(v.Channel == "").
+		Tooltip("Keeps its videos off every page: Settings › Videos lists them").Chosen() {
+		s.blockChannel(v)
 	}
 	if m.Item("Report on YouTube").Chosen() {
 		go s.svc.System.OpenExternal(youtubeWatchURL(v.ID))
@@ -155,13 +174,97 @@ func videoChannelKey(v youtube.Video) string {
 }
 
 // shownVideos are the videos of list the user didn't ask YouTube not to
-// recommend.
+// recommend, nor block in Settings › Videos, and no Shorts, unless the
+// settings show them.
 func (s *shell) shownVideos(list []youtube.Video) []youtube.Video {
 	hidden := s.videos.hidden
-	if len(hidden) == 0 {
+	w := s.set.Watching
+	if len(hidden) == 0 && len(w.BlockedChannels) == 0 && len(w.BlockedWords) == 0 && w.ShowShorts {
 		return list
 	}
+	words := make([]string, len(w.BlockedWords))
+	for i, x := range w.BlockedWords {
+		words[i] = strings.ToLower(x)
+	}
 	return slices.DeleteFunc(list, func(v youtube.Video) bool {
-		return hidden[v.ID] || v.Channel != "" && hidden[videoChannelKey(v)]
+		if hidden[v.ID] || v.Channel != "" && hidden[videoChannelKey(v)] || v.Short && !w.ShowShorts {
+			return true
+		}
+		if s.channelBlocked(v) {
+			return true
+		}
+		title := strings.ToLower(v.Title)
+		for _, x := range words {
+			if strings.Contains(title, x) {
+				return true
+			}
+		}
+		return false
 	})
+}
+
+// channelBlocked reports whether the settings block v's channel.
+func (s *shell) channelBlocked(v youtube.Video) bool {
+	if v.Channel == "" {
+		return false
+	}
+	for _, ch := range s.set.BlockedChannels {
+		if strings.EqualFold(strings.TrimSpace(ch), strings.TrimSpace(v.Channel)) {
+			return true
+		}
+	}
+	return false
+}
+
+// blockChannel blocks v's channel in Settings › Videos, with an undo.
+func (s *shell) blockChannel(v youtube.Video) {
+	if v.Channel == "" || s.channelBlocked(v) {
+		return
+	}
+	s.set.BlockedChannels = append(s.set.BlockedChannels, v.Channel)
+	s.save()
+	s.actionToasts = append(s.actionToasts, actionToast{"Blocked " + v.Channel, "undo", func() {
+		s.set.BlockedChannels = slices.DeleteFunc(s.set.BlockedChannels, func(ch string) bool { return strings.EqualFold(ch, v.Channel) })
+		s.save()
+	}})
+}
+
+// orWord is word, or else, when it's blank, or.
+func orWord(word, or string) string {
+	if strings.TrimSpace(word) == "" {
+		return or
+	}
+	return word
+}
+
+// playVideoAudio plays v's sound on the music side, as a track, and stops
+// the video, which played it, from where it was.
+func (s *shell) playVideoAudio(v youtube.Video) {
+	vp := &s.videos.player
+	t := v.Track()
+	at := 0.0
+	if vp.current.ID == v.ID {
+		at = vp.state.Time
+		s.stopWatching()
+	}
+	s.p.PlayTracks([]media.Track{t}, 0)
+	if at > videoResumeAfter {
+		// The track goes on from where the video was, once it loaded: a
+		// track that loads isn't moved.
+		go func() {
+			for range 75 {
+				time.Sleep(200 * time.Millisecond)
+				st := s.p.State()
+				cur, ok := st.Current()
+				if !ok || cur.Track.ID != t.ID {
+					return
+				}
+				if !st.Loading {
+					s.p.Seek(time.Duration(at * float64(time.Second)))
+					return
+				}
+			}
+		}()
+	}
+	s.notes = append(s.notes, notice("Playing "+v.Title+" as audio"))
 }

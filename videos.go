@@ -32,6 +32,11 @@ var videoLibraryTabs = []struct{ id, label string }{
 	{"liked", "Liked videos"},
 }
 
+// videoSearchChips are the filters of a search of the Video side: the
+// videos of YouTube's website, or the songs of YouTube Music, which play
+// on the music side.
+var videoSearchChips = []string{"Videos", "Songs"}
+
 // videoTrending are the topics of the Trending page, each a search of this
 // week's videos: YouTube no longer has a trending page of its own.
 var videoTrending = []string{"Music", "Gaming", "News", "Sports", "Comedy", "Film trailers", "Science", "Live"}
@@ -40,8 +45,8 @@ var videoTrending = []string{"Music", "Gaming", "News", "Sports", "Comedy", "Fil
 type videosState struct {
 	// query is what the search box holds.
 	query string
-	// homeChip and trendingChip are the filters chosen.
-	homeChip, trendingChip int
+	// homeChip, trendingChip and searchChip are the filters chosen.
+	homeChip, trendingChip, searchChip int
 	// known are the videos the pages showed, by ID, which the watch page
 	// tells of; titles the playlists' titles, by ID.
 	known  map[string]youtube.Video
@@ -62,6 +67,11 @@ type videosState struct {
 	// ratings are the account's ratings of videos the user set here, by
 	// video: "like", "dislike", or "" (videorating.go).
 	ratings map[string]string
+	// channelNames are the names of channels opened, by ID, which their
+	// page shows while it loads; subscribed the subscriptions the user
+	// changed here (videochannel.go).
+	channelNames map[string]string
+	subscribed   map[string]bool
 	// The player (watch.go), and the preview of the card the pointer
 	// rests on (preview.go).
 	player  videoPlayer
@@ -162,6 +172,7 @@ func (s *shell) randomVideoSearch() {
 		return
 	}
 	vs.rolling = true
+	vs.searchChip = 0
 	go func() {
 		topic, wiki := s.svc.Videos.RandomTopic(context.Background())
 		s.update(func() {
@@ -199,7 +210,11 @@ func (s *shell) videoSearchPage(c *ui.Context, q, random string) {
 			})
 			return
 		}
-		s.pageHeader(c, q, nil, nil)
+		s.videoHeader(c, q, videoSearchChips, &s.videos.searchChip)
+		if s.videos.searchChip == 1 {
+			s.songResults(c, q)
+			return
+		}
 		switch random {
 		case "wikipedia":
 			ui.RichText(c).FontSize(k.smallSize()).TextColor(k.muted).Margin(0, 0, 24).Children(func() {
@@ -479,7 +494,7 @@ func (s *shell) videoCard(c *ui.Context, key string, v youtube.Video, w float32,
 			ui.Column(c).Grow(1).MinWidth(0).Gap(2).Children(func() {
 				k.labelWeight(ui.Text(c, v.Title).FontSize(k.bodySize()).SingleLine().MinWidth(0))
 				if v.Channel != "" {
-					ui.Text(c, v.Channel).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+					s.channelLink(c, key+"-channel", v, k.smallSize())
 				}
 				if line := videoFacts(v); line != "" {
 					ui.Text(c, line).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
@@ -544,7 +559,6 @@ func (s *shell) videoThumb(c *ui.Context, key string, v youtube.Video, w, h floa
 
 // videoPlaylists shows the account's playlists of YouTube's website.
 func (s *shell) videoPlaylists(c *ui.Context) {
-	k := &s.lk
 	res := s.videoPlaylistsLoad()
 	switch {
 	case !res.done:
@@ -554,11 +568,18 @@ func (s *shell) videoPlaylists(c *ui.Context) {
 		s.problem(c, res.err, func() { s.refetch("videos:playlists") })
 		return
 	}
-	row, w := s.cardRow(c, "video-playlists")
+	s.playlistGrid(c, "video-playlists", res.value)
+}
+
+// playlistGrid lays playlists of YouTube's website as cards, in rows that
+// fill the pane: clicked, one opens its page.
+func (s *shell) playlistGrid(c *ui.Context, key string, lists []youtube.VideoPlaylist) {
+	k := &s.lk
+	row, w := s.cardRow(c, key)
 	h := float32(int(w*9/16 + 0.5))
 	row.Children(func() {
-		for i, p := range res.value {
-			card := s.buttonBase(c.Key("video-playlist-" + count(i))).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).
+		for i, p := range lists {
+			card := s.buttonBase(c.Key(key + "-" + count(i))).Width(w).Shrink(0).Column().AlignItems(ui.Start).Gap(8).
 				Label(p.Title).Cursor(ui.CursorPointer)
 			if card.Clicked() {
 				if s.videos.titles == nil {
@@ -615,7 +636,12 @@ func (s *shell) videoPlaylists(c *ui.Context) {
 func (s *shell) videoSearchField(c *ui.Context) {
 	k := &s.lk
 	vs := &s.videos
-	box := ui.Row(c).Height(36).MaxWidth(520).Grow(1).Shrink(1).MinWidth(160).Gap(8).PaddingX(12).
+	// With tabs, the box leaves them more of the bar.
+	most := float32(520)
+	if len(s.set.VideoTabs) > 0 {
+		most = 380
+	}
+	box := ui.Row(c).Height(36).MaxWidth(most).Grow(1).Shrink(1).MinWidth(160).Gap(8).PaddingX(12).
 		Radius(k.round(36)).Background(k.bg).Cursor(ui.CursorText)
 	if box.Clicked() {
 		s.searchBox.Focus()

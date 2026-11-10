@@ -110,6 +110,7 @@ Where the credential store can't keep a secret:
 | The audio of a track | YouTube's player API (`www.youtube.com`) and media servers; yt-dlp, which asks YouTube too | the video's ID, always signed out |
 | Your YouTube Music history, signed in, while "Add what you play to your YouTube Music history" is on | YouTube Music | the tracks you play, once they played a while, and how far you got in episodes |
 | Skip songs made with AI, while it's on | YouTube (`www.youtube.com`), signed out | the video's ID, once a video |
+| SponsorBlock, unless you turn it off in Settings › Videos | SponsorBlock (`sponsor.ajay.app`) | the first 4 characters of a hash of the video's ID, once a video: never the ID itself, nor who you are |
 | Covers | the image servers of YouTube and Google | the image asked for |
 | Lyrics | Unison (`unison.boidu.dev`) | the video ID of the track that plays, or, without one, its title, artists, album and length |
 | Lyrics, when Unison has none | LRCLIB (`lrclib.net`) | the title, artists, album and length of the track that plays |

@@ -12,7 +12,7 @@ import (
 )
 
 // settingsTabs are the settings' sections, by their paths' last part.
-var settingsTabs = []string{"appearance", "playback", "accounts", "plugins", "desktop", "shortcuts", "about"}
+var settingsTabs = []string{"appearance", "playback", "videos", "accounts", "plugins", "desktop", "shortcuts", "about"}
 
 // settingsPage shows the settings, by section, or, searched for q, what
 // every section holds of it.

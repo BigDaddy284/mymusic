@@ -100,6 +100,10 @@ type videoPlayer struct {
 	seeking bool
 	seekTo  float64
 	volume  float64
+	// segments follows SponsorBlock's segments of the video (segments.go).
+	segments segmentState
+	// pop is the pop-out window the video plays in (popout.go).
+	pop popOut
 }
 
 // watch plays v, with list as up next, on the watch page.
@@ -213,6 +217,10 @@ func (s *shell) stopWatching() {
 	if web := vp.web; web != nil {
 		go web.Destroy()
 	}
+	if win := vp.pop.win; win != nil {
+		vp.pop.win = nil
+		win.Close()
+	}
 	vp.web, vp.loaded, vp.current, vp.state, vp.fullApp, vp.fullScreen = nil, "", youtube.Video{}, videoState{}, false, false
 	// The watching's last report goes.
 	s.svc.Videos.ReportWatching("", 0, false, 1, false)
@@ -281,11 +289,13 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 				s.svc.Videos.ReportWatching(vp.current.ID, st.Time, st.Playing, st.Rate, st.Duration <= 0)
 			}
 			s.settleVideo()
+			s.followSegments()
 			s.keepVideoPlace()
 			if st.Esc {
 				s.leaveFullApp()
 			}
 			s.followFullScreen()
+			s.followPopScreen()
 			if st.Ended && vp.endedOf != vp.current.ID {
 				vp.endedOf = vp.current.ID
 				s.videoNext(true)
@@ -300,7 +310,7 @@ func (s *shell) pollVideo(web *mygo.WebView, stop chan struct{}) {
 // tells it plays.
 func (s *shell) videoStarts(st videoState) {
 	vp := &s.videos.player
-	if st.Playing && !vp.state.Playing && s.st.Playing && time.Since(vp.pausedForMusic) > 2*time.Second {
+	if st.Playing && !vp.state.Playing && s.p.State().Playing && time.Since(vp.pausedForMusic) > 2*time.Second {
 		s.p.Pause()
 		s.st.Playing = false
 	}
@@ -537,6 +547,8 @@ func (s *shell) placeVideo(c *ui.Context, key string, w, h float32) {
 					go s.svc.System.OpenExternal(youtubeWatchURL(vp.current.ID))
 				}
 			})
+		case vp.popped():
+			s.poppedOutFrame(c, key, w, h)
 		case vp.web == nil:
 			s.loadVideo()
 			ui.Row(c).Size(w, h).AlignItems(ui.Center).Justify(ui.Center).Children(func() { ui.Spinner(c).Label("Loading the video") })
@@ -786,17 +798,23 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 		// sits in the middle of the bar on top of the seek row.
 		top := max(0, (k.player-videoControlsHeight)/2)
 		ui.Column(c).Grow(1).Basis(0).MinWidth(220).Gap(1).AlignSelf(ui.Start).Margin(top, 0, 0, 0).Children(func() {
-			title, sub := "Nothing playing", "Pick a video, or press Random"
-			if vp.current.ID != "" {
-				title, sub = vp.current.Title, vp.current.Channel
+			if vp.current.ID == "" {
+				ui.Text(c, "Nothing playing").FontSize(k.bodySize()).SingleLine().MinWidth(0)
+				ui.Text(c, "Pick a video, or press Random").FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
+				return
 			}
-			ui.Text(c, title).FontSize(k.bodySize()).SingleLine().MinWidth(0)
-			ui.Text(c, sub).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0)
-			if vp.current.ID != "" {
-				s.videoRatingRow(c, vp.current)
-			}
+			ui.Text(c, vp.current.Title).FontSize(k.bodySize()).SingleLine().MinWidth(0)
+			// The channel opens its page; the chapter that plays follows it.
+			ui.Row(c).Gap(0).MinWidth(0).Children(func() {
+				s.channelLink(c, "v-channel", vp.current, k.smallSize())
+				chapters := s.videoChapters(vp.current.ID)
+				if i := videoChapterAt(chapters, st.Time); i >= 0 {
+					ui.Text(c, " · "+chapters[i].Title).FontSize(k.smallSize()).TextColor(k.muted).SingleLine().MinWidth(0).Shrink(1)
+				}
+			})
+			s.videoRatingRow(c, vp.current)
 		})
-		ui.Column(c).Grow(1.6).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
+		ui.Column(c).Grow(1.3).Basis(0).MinWidth(320).Gap(6).AlignItems(ui.Center).Children(func() {
 			ui.Row(c).Gap(12).Children(func() {
 				if s.iconButton(c, "v-shuffle", "shuffle", "Shuffle", s.set.VideoShuffle, 18).Clicked() {
 					s.set.VideoShuffle = !s.set.VideoShuffle
@@ -833,7 +851,14 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 			ui.Row(c).Gap(8).FillWidth().MaxWidth(640).Children(func() {
 				ui.Text(c, clock(time.Duration(vp.seekTo*float64(time.Second)))).FontSize(k.captionSize()).TextColor(k.muted).
 					FontFeatures("tnum").Width(44).TextAlign(ui.End)
-				seek := s.seekSlider(c, &vp.seekTo, max(st.Duration, 1)).Grow(1).MinWidth(0).KeepFocus().Label("Seek").Disabled(!has || st.Duration <= 0)
+				// The segments and chapters mark the track, under the bar.
+				var seek ui.Element
+				track := ui.Box(c.Key("v-seek-track")).Grow(1).MinWidth(0)
+				tw := track.Bounds().W
+				track.Children(func() {
+					s.seekMarks(c, tw, st.Duration)
+					seek = s.seekSlider(c, &vp.seekTo, max(st.Duration, 1)).FillWidth().KeepFocus().Label("Seek").Disabled(!has || st.Duration <= 0)
+				})
 				_, _, held := seek.Dragged()
 				if has && !held && (vp.seeking || seek.Changed()) {
 					s.videoCommand("seek", vp.seekTo)
@@ -843,7 +868,7 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 				ui.Text(c, clock(time.Duration(st.Duration*float64(time.Second)))).FontSize(k.captionSize()).TextColor(k.muted).FontFeatures("tnum").Width(44)
 			})
 		})
-		ui.Row(c).Grow(1).Basis(0).MinWidth(220).Gap(4).Justify(ui.End).Children(func() { s.videoSide(c, has) })
+		ui.Row(c).Grow(1.2).Basis(0).MinWidth(220).Gap(4).Justify(ui.End).Children(func() { s.videoSide(c, has) })
 	})
 }
 
@@ -878,7 +903,15 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		}
 	})
 	s.videoOutputButton(c, has)
-	ui.Row(c).Gap(4).Width(140).MinWidth(80).Children(func() {
+	// In a narrow window the volume's slider makes room for the buttons
+	// after it: the mute button stays.
+	winW, _ := c.Size()
+	narrow := winW < 1180
+	vol := ui.Row(c).Gap(4).Width(140).MinWidth(80)
+	if narrow {
+		vol.Width(34).MinWidth(34)
+	}
+	vol.Children(func() {
 		name, label := "volume", "Mute"
 		if st.Muted || has && st.Volume == 0 {
 			name, label = "volumeMute", "Unmute"
@@ -896,6 +929,9 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 		if !has {
 			vp.volume = 1
 		}
+		if narrow {
+			return
+		}
 		if ui.Slider(c.Key("v-volume"), &vp.volume, 0, 1).Grow(1).MinWidth(0).KeepFocus().Label("Volume").Disabled(!has).Changed() {
 			v := float64(int(vp.volume*100 + 0.5))
 			s.videoCommand("volume", v)
@@ -904,9 +940,11 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 			s.save()
 		}
 	})
-	if s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has).Clicked() {
+	// Narrow, Full App goes in the menu of ⋮.
+	if !narrow && s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has || vp.popped()).Clicked() {
 		vp.fullApp = true
 	}
+	s.videoMoreButton(c, has, narrow)
 }
 
 // videoSpeedLabel writes a speed as YouTube's player does: "Normal", "1.5×".
@@ -926,7 +964,9 @@ func (s *shell) followWatch() {
 	// The video goes on as the Music side shows, until music starts to
 	// play, which pauses it, as a video started while music plays pauses
 	// the music (playVideo): it stays where it shows, to go back to.
-	playing := s.st.Playing
+	// The player's own state: the frame's may be older, as no frame drew
+	// while the window was minimized.
+	playing := s.p.State().Playing
 	started := playing && !vp.musicPlayed
 	vp.musicPlayed = playing
 	if started && vp.current.ID != "" && vp.state.Playing {
