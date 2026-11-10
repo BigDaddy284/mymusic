@@ -384,6 +384,7 @@ func (s *shell) pageHeaderCounts(c *ui.Context, title string, pivots []string, c
 						}
 					})
 				}
+				s.pivotsAfter()
 			})
 		}
 	})
@@ -454,7 +455,17 @@ func (s *shell) chips(c *ui.Context, pivots []string, counts []int, selected *in
 				}
 			})
 		}
+		s.pivotsAfter()
 	})
+}
+
+// pivotsAfter builds what a page asked to show after its header's pivots,
+// once: Home's Edit home button.
+func (s *shell) pivotsAfter() {
+	if fn := s.afterPivots; fn != nil {
+		s.afterPivots = nil
+		fn()
+	}
 }
 
 // sectionTitle titles a section over its content, on a 1px accent rule.

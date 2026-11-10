@@ -86,6 +86,9 @@ type videoPlayer struct {
 	ownsScreen  bool
 	takesEscape bool
 	blurred     bool
+	// musicPlayed is whether music played in the last frame: the video
+	// stops as music starts.
+	musicPlayed bool
 	// seeking and seekTo follow the seek bar while it's dragged; volume
 	// follows the volume's slider.
 	seeking bool
@@ -550,25 +553,40 @@ func (s *shell) videoMini(c *ui.Context, key string, w float32) {
 	})
 }
 
-// showsMini reports whether the video that plays shows small: on the
-// Video side, on any page but its own.
+// showsMini reports whether the video that plays shows small: on any
+// page but its own, and Music's home, which shows it in a tile.
 func (s *shell) showsMini() bool {
 	vp := &s.videos.player
 	p := s.router.Path()
-	return s.mode.video && vp.current.ID != "" && !vp.filling() && p != watchPath(vp.current.ID)
+	if vp.current.ID == "" || vp.filling() {
+		return false
+	}
+	if s.mode.video {
+		return p != watchPath(vp.current.ID)
+	}
+	return p != "/" || s.home.editing
 }
 
-// floatingMini shows the video that plays in the corner of the page, when
-// the side panel, which shows it otherwise, is closed.
+// floatingMini shows the video that plays in the corner of the page: on
+// the Video side when the side panel, which shows it otherwise, is
+// closed, and on the Music side, whose side panel is the music's.
 func (s *shell) floatingMini(c *ui.Context) {
-	if !s.showsMini() || s.panel != "" {
+	if !s.showsMini() || s.mode.video && s.panel == "queue" {
 		return
 	}
 	k := &s.lk
-	ui.Box(c).Absolute().Right(20).Bottom(16).Padding(10).Radius(k.radiusSm).Background(k.surface2).
-		Shadow(0, 12, 32, -8, ui.RGBA(0, 0, 0, 0.55)).Children(func() {
-		s.videoMini(c, "mini-float", 320)
-	})
+	// On the Music side it goes at the top right, beside the page's
+	// title; on the Video side, at the bottom right.
+	box := ui.Box(c).Absolute().Right(20).Padding(10).Radius(k.radiusSm).Background(k.surface2).
+		Shadow(0, 12, 32, -8, ui.RGBA(0, 0, 0, 0.55))
+	w := float32(320)
+	if s.mode.video {
+		box.Bottom(16)
+	} else {
+		box.Top(8)
+		w = 280
+	}
+	box.Children(func() { s.videoMini(c, "mini-float", w) })
 }
 
 // videoQueuePanel is the Up next panel of the Video side: the video that
@@ -783,15 +801,32 @@ func videoSpeedLabel(r float64) string {
 func (s *shell) followWatch() {
 	vp := &s.videos.player
 	defer s.followFullScreen()
-	if vp.web == nil {
-		return
-	}
-	if !s.mode.video {
+	// The video goes on as the Music side shows, until music starts to
+	// play: a video started while music plays pauses it (playVideo).
+	playing := s.st.Playing
+	started := playing && !vp.musicPlayed
+	vp.musicPlayed = playing
+	if started && vp.current.ID != "" {
 		s.stopWatching()
+	}
+}
+
+// homeVideo is the tile of Music's home that shows the video that plays,
+// beside Jump back in, two columns wide and two rows high.
+func (s *shell) homeVideo(c *ui.Context, columns int) {
+	vp := &s.videos.player
+	if vp.current.ID == "" || vp.filling() {
 		return
 	}
-	if s.st.Playing && vp.state.Playing {
-		s.videoCommand("pause", nil)
-		vp.state.Playing = false
+	k := &s.lk
+	gap := k.gap / 2
+	grid := min(s.paneWidth(c)-2*k.gutter, 1040)
+	w := grid
+	if columns == 4 {
+		w = (grid-3*gap)/2 + gap
 	}
+	w = float32(int(max(w, 200)))
+	ui.Box(c.Key("tile-video")).ColumnSpan(min(2, columns)).RowSpan(2).Radius(k.radius).Clip().Children(func() {
+		s.videoMini(c, "home-video", w)
+	})
 }

@@ -206,18 +206,18 @@ func TestSpaceAfterClicks(t *testing.T) {
 		click(t, s, tt, "yours")
 		spacePlays(t, s, tt, "a click on a pivot")
 	})
-	t.Run("back to a tile", func(t *testing.T) {
+	t.Run("back to a page", func(t *testing.T) {
 		s := playing(t)
 		tt := testerOf(t, s, 1600, 1000)
 		for _, back := range []func(){
 			func() { click(t, s, tt, "Back") },
 			func() { tt.Key(0, ui.KeyBack); tt.Frame() },
 		} {
-			click(t, s, tt, "Liked songs")
+			click(t, s, tt, "explore")
 			tt.Advance(time.Second)
 			back()
 			tt.Advance(time.Second)
-			spacePlays(t, s, tt, "going back to the page of a tile clicked")
+			spacePlays(t, s, tt, "going back to the page of a link clicked")
 			tt.Advance(time.Second)
 			if got := s.router.Path(); got != "/" {
 				t.Errorf("Space went to %q", got)
@@ -306,15 +306,16 @@ func TestSpaceAfterSearch(t *testing.T) {
 	}
 }
 
-// TestSpaceAfterTab leaves Space to a tile Tab reached, which opens it.
+// TestSpaceAfterTab leaves Space to a button of Home Tab reached, which
+// presses it.
 func TestSpaceAfterTab(t *testing.T) {
 	s := playing(t)
 	tt := testerOf(t, s, 1600, 1000)
-	tabTo(t, tt, "Liked songs", "jump back in")
-	spaceStays(t, s, tt, "Tab to a tile")
+	tabTo(t, tt, "edit home", "")
+	spaceStays(t, s, tt, "Tab to a button")
 	tt.Advance(time.Second)
-	if got := s.router.Path(); got != "/library/liked" {
-		t.Errorf("Space on the tile Tab reached went to %q", got)
+	if !s.home.editing {
+		t.Error("Space on the button Tab reached didn't press it")
 	}
 }
 

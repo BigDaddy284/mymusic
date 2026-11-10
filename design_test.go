@@ -97,14 +97,17 @@ func TestHomeTilesLayOut(t *testing.T) {
 		t.Run(string(layout), func(t *testing.T) {
 			s, tt := themed(t, "mix", layout)
 			show(s, tt, "/")
-			r, ok := tt.Find("0 tracks")
+			r, ok := tt.Find("Teardrop - Massive Attack")
 			if !ok {
-				t.Fatalf("no tile of liked songs: %q", tt.Texts())
+				r, ok = tt.Find("Teardrop - Massive Attack")
+			}
+			if !ok {
+				t.Fatalf("no tile of Jump back in: %q", tt.Texts())
 			}
 			// Left of the caption, in the tile's padding.
 			fill := s.lk.surface
 			if layout == settings.LayoutTiles {
-				fill = s.lk.tile(1)
+				fill = s.lk.tile(0)
 			}
 			want := col(over(nrgba(fill), nrgba(s.lk.bg)))
 			if got := at(tt.Image(), int(r.X)-6, int(r.Y+r.H/2)); got != want {
