@@ -489,7 +489,6 @@ kbd {
 .tile .ly-past { color: #6e6e6e; font-size: 1.125rem; font-weight: 600; }
 .tile .ly-now { margin-top: 6px; color: #8c8c8c; font-size: 1.75rem; font-weight: 800; }
 .tile .ly-sung { color: #ff8cc6; }
-.tile .ly-roman { color: #d4d4d4; font: 600 1.0625rem/1.3 var(--font); }
 .tile .ly-trans { color: #a3a3a3; font: 500 0.9375rem/1.3 var(--font); }
 
 /* Layouts: each one's shapes, as small sketches. */

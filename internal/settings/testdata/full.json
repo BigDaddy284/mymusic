@@ -10,8 +10,6 @@
   },
   "accent": "#ff8800",
   "dynamicAccent": true,
-  "colorSource": "file",
-  "colorFile": "~/colors.json",
   "density": "compact",
   "layout": "crate",
   "fontScale": 1.1,
@@ -24,9 +22,6 @@
     "ja",
     ""
   ],
-  "lyricsRomanize": {
-    "ja": "under"
-  },
   "skippedYtdlp": "2026.10.22",
   "homeShelves": [
     {
@@ -95,15 +90,6 @@
   "keepOnTop": true,
   "miniPanel": "lyrics",
   "mediaKeys": false,
-  "showOnDiscord": false,
-  "discordAppId": "123456789012345678",
-  "discordFirstLine": "{artist} · {title}",
-  "discordSecondLine": "on {album}",
-  "discordCover": false,
-  "discordServiceBadge": true,
-  "discordTimeLeft": false,
-  "discordListenButton": true,
-  "discordKeepWhilePaused": true,
   "ytdlpPath": "/usr/local/bin/yt-dlp",
   "jsRuntime": "deno",
   "shortcuts": {
@@ -112,9 +98,6 @@
   "globalShortcuts": {
     "player.toggle": "Mod+Alt+P"
   },
-  "enabledPlugins": [
-    "spectrum"
-  ],
   "videoVolume": 40,
   "videoMuted": true,
   "videoRate": 1.5,

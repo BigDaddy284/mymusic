@@ -1,9 +1,9 @@
 # Lyrics
 <!-- docs: group=using order=30 -->
 
-MyTube shows synced and word-by-word lyrics for YouTube Music tracks and the music on your computer, and can translate them or show them in Latin letters.
+MyTube shows synced and word-by-word lyrics for YouTube Music tracks and the music on your computer, and can translate them.
 
-Lyrics come from Unison, LRCLIB and YouTube Music, for the track that plays, whichever service it's from. Nothing needs setting up. The lyrics themselves go to Unison, for their translation or for the romanization of Arabic, only while you turn those on.
+Lyrics come from Unison, LRCLIB and YouTube Music, for the track that plays, whichever service it's from. Nothing needs setting up. The lyrics themselves go to Unison, for their translation, only while you turn it on.
 
 ## Where lyrics show
 
@@ -51,7 +51,7 @@ Lyrics timed word by word, as Unison has many, light each word of the line sung 
 - words sung stay lit, and words to come keep the colour of the lines to come;
 - background vocals light the same way.
 
-Lines shown in Latin letters made on your computer light word by word too. Romaji, and Arabic's romanization from Unison, don't: shown in place of the line, they light a whole line at a time, as lyrics timed line by line do. While your system asks for [less motion](look-and-feel.md#reduced-motion), each word lights whole as it starts.
+While your system asks for [less motion](look-and-feel.md#reduced-motion), each word lights whole as it starts.
 
 ## Translate
 
@@ -63,70 +63,6 @@ Lyrics in another language can show their translation: turn on Translate above t
 - **Once per song:** each translation is kept on disk, by track and language, so a song is translated once.
 - **While it comes,** the panel says "Translation is on its way…". When the service is busy, the lyrics show untranslated, with "Translation isn't available right now." and try again.
 
-With romaji or Latin letters on too, each line shows the original, then its Latin letters, then its translation, as screen readers read them:
-
-```
-今日はいい天気
-kyō wa ii tenki
-The weather is nice today.
-```
-
-![The now playing page of アイドル with Translate and Romaji on, and Romaji under chosen: each line of its lyrics with its romaji under it, then its English translation](shots/lyrics-translate.webp)
-
-## Japanese lyrics in romaji
-
-Japanese lyrics can show in romaji, Japanese in Latin letters by the Hepburn system: turn on Romaji above them, then choose:
-
-- **Romaji under:** each line with its romaji under it;
-- **Romaji only:** the romaji in place of the line.
-
-For 今日はいい天気, the romaji is "kyō wa ii tenki".
-
-- **Made on your computer.** MyTube reads the kanji with kagome, a Japanese morphological analyser, and its IPA dictionary. The lyrics aren't sent anywhere for it.
-- **The dictionary.** The first time you turn romaji on, MyTube downloads the dictionary of the readings of kanji, 11.7 MB, from GitHub, and keeps it in its cache folder. Until it's there, or while it can't be downloaded, kana show in romaji and kanji as they are: the panel says "The readings of kanji are downloading: kanji show as they are until then.", or that they couldn't be downloaded, with try again.
-- **Memory.** While Japanese lyrics show in romaji, MyTube uses some 90 MB more memory, which it gives back a few minutes after.
-- **It's remembered** for the next Japanese song.
-
-## Other scripts in Latin letters
-
-Lyrics in the other scripts can show in Latin letters too: turn on Romanize above them, then choose Romanized under, each line with its romanization under it, or Romanized only, in place of the line. The switch shows as soon as the lyrics show, and the choice is remembered for the next song in the same language.
-
-These are romanized on your computer, and nothing of them is sent, each by the official or the most used standard of its language:
-
-| Language or script | How it's written in Latin letters |
-|---|---|
-| Korean | The Revised Romanization of Korean (2000), with its sound changes within a word: 한국어 is "hangugeo" |
-| Chinese, simplified and traditional | Hanyu Pinyin with tone marks, a character of several readings read by its word: 银行 is "yín háng" |
-| Russian | BGN/PCGN |
-| Ukrainian | Ukraine's national system of 2010 |
-| Belarusian | Belarus's national system of 2007 |
-| Bulgarian | The Streamlined System |
-| Serbian | Gaj's Latin alphabet |
-| Macedonian | The official system of 2008 |
-| Kazakh and Kyrgyz | BGN/PCGN (1979) |
-| Mongolian | MNS 5217:2012 |
-| Greek | ELOT 743, as the UN adopted it |
-| Armenian | BGN/PCGN (1981) |
-| Georgian | Georgia's national system of 2002 |
-| Hindi, Bengali, Punjabi, Gujarati, Odia, Tamil, Telugu, Kannada, Malayalam, Sinhala, and the other languages of their scripts | Hunterian, India's national system, with its long vowels marked |
-| Thai | The Royal Thai General System, a syllable apart |
-| Lao | BGN/PCGN (1966), a syllable apart: ຫຼວງພະບາງ is "louang pha bang" |
-| Khmer | The UN's system of 1972, its vowels read by their consonants, a syllable apart: ភ្នំពេញ is "phnum pénh" |
-| Burmese | BGN/PCGN (1970), its sounds voiced as said, a syllable apart: မင်္ဂလာပါ is "min ga la ba" |
-| Tibetan | Extended Wylie |
-| Hebrew | The rules of the Academy of the Hebrew Language (2006) |
-| Persian and Urdu | The plain form of ALA-LC's romanization |
-| Amharic | BGN/PCGN (1967), for its Ethiopic script |
-
-- **The Latin letters of a line,** as the English in a K-pop song, stay as they are.
-- **Lyrics said to be in another language,** as English lyrics with lines in Hangul, are romanized as the language of their script.
-
-### Arabic
-
-Arabic doesn't write its short vowels, which no rule can tell, so Arabic's romanization comes from Unison, which has Google romanize the lyrics with them. While Romanize is on, the lyrics of the track playing and its video ID go to Unison. Until its romanization comes, and when it can't, Arabic shows in Latin letters made on your computer, by ALA-LC's plain form.
-
-For lyrics in another script that MyTube doesn't romanize itself, the Romanize switch shows once you turn on Translate and their translation from Unison comes with Latin letters.
-
 ## Credits
 
-Lyrics from [Unison](https://unison.boidu.dev), an open, crowdsourced database of lyrics, under the Open Database License (ODbL). The lyrics panel ends Unison's lyrics with "lyrics from Unison (https://unison.boidu.dev)", as their licence asks. Synced lyrics also come from [LRCLIB](https://lrclib.net), the open database of synced lyrics. Romaji reads kanji with [kagome](https://github.com/ikawaha/kagome) and the IPA dictionary of [kagome-dict](https://github.com/ikawaha/kagome-dict), made from mecab-ipadic.
+Lyrics from [Unison](https://unison.boidu.dev), an open, crowdsourced database of lyrics, under the Open Database License (ODbL). The lyrics panel ends Unison's lyrics with "lyrics from Unison (https://unison.boidu.dev)", as their licence asks. Synced lyrics also come from [LRCLIB](https://lrclib.net), the open database of synced lyrics.

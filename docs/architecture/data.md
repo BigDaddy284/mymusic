@@ -7,7 +7,7 @@ Everything lives in the user's data folder (`%AppData%\MyTube`): `settings.json`
 `addons/`, `bin/` (yt-dlp), the YouTube session
 (`youtube-session.bin`, encrypted with a key of the system's credential
 store, which also keeps the Last.fm connection), the
-scrobbles still to send, and `updater.json`, the update preferences. A
+and the scrobbles still to send. A
 secret the Credential Manager can't keep, as in a logon session without
 credentials, is sealed for the user with DPAPI in `lastfm.dpapi` or `youtube-session-key.dpapi`. `secretStore` (`internal/app/secrets.go`) moves a
 secret found in a file into the credential store once it can keep it.
@@ -21,8 +21,7 @@ cache folder holds audio, the covers shown (`artwork/`), the covers of
 the music on the computer (`local-art/`), matches, how loud
 YouTube measured the tracks played (`loudness.json`), the videos YouTube
 labels as made with AI, for 30 days (`ai-labels.json`), the releases of
-the artists followed (`releases.json`), the dictionary of
-the readings of kanji romaji downloads (`romaji/`), and yt-dlp's cache,
+the artists followed (`releases.json`), and yt-dlp's cache,
 and the logs folder the log and the crash reports. The downloads are in a
 folder of their own, which the user can move in Settings › Playback
 (`downloadsFolder` in `settings.json`): by default

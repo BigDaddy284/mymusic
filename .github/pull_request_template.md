@@ -6,10 +6,9 @@
 
 - [ ] `gofmt -l .` prints nothing, and `go vet ./...` passes for Windows
 - [ ] `go test ./...` passes
-- [ ] `bun run typecheck` passes
 - [ ] A change people will notice has its entry in `changelog.d/` (not CHANGELOG.md)
 - [ ] Tried in the app; screenshots below for visible changes
 
 ## Screenshots
 
-<!-- For changes to the interface, or a new theme or plugin. -->
+<!-- For changes to the interface, or a new theme. -->

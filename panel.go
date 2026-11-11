@@ -217,8 +217,8 @@ func (s *shell) lyricsPanel(c *ui.Context) {
 
 // lyricsState is the lyrics views' own: the track they show, and where
 // the panel's and the now playing page's lyrics scrolled, which show at
-// once. Whether synced lyrics show as plain text is a setting, as are
-// their translation and romanization.
+// once. Whether synced lyrics show as plain text is a setting, as is
+// their translation.
 type lyricsState struct {
 	track       string
 	panel, page lyricsScroll
@@ -226,10 +226,6 @@ type lyricsState struct {
 	// language lyrics translate to, once asked for.
 	system    string
 	languages []string
-	// romaji is what they know of the romaji of Japanese lyrics.
-	romaji romajiView
-	// local is what they know of the lyrics romanized on the computer.
-	local romanizeView
 }
 
 // lyricsScroll is where a lyrics view scrolled, the line it last scrolled
@@ -314,7 +310,7 @@ func (s *shell) lyrics(c *ui.Context, large bool) {
 			return
 		}
 		line := ly.Lines[i]
-		text, roman, meaning := x.line(i, line.Text)
+		text, meaning := line.Text, x.line(i)
 		if text == "" {
 			text = "♪"
 		}
@@ -326,23 +322,19 @@ func (s *shell) lyrics(c *ui.Context, large bool) {
 			ink = k.muted
 		}
 		// The line sung now lights word by word, when its words have times
-		// (lyricswords.go), and so does its romanization made on the
-		// computer (lyricsromanize.go).
-		var words, romanWords []lyrics.Word
+		// (lyricswords.go).
+		var words []lyrics.Word
 		if synced && i == active {
-			words, romanWords = x.words(i, line, text, roman)
+			words = line.Words
 		}
 		var p ui.Element
-		if roman == "" && meaning == "" {
+		if meaning == "" {
 			p = s.lyricsText(c, text, size, ink, words, 24, 4)
 		} else {
-			// The line, then in Latin letters, then its translation, which
-			// screen readers read in this order too.
+			// The line, then its translation, which screen readers read in
+			// this order too.
 			p = ui.Column(c).Padding(4, 24).Gap(2).Children(func() {
 				s.lyricsText(c, text, size, ink, words, 0, 0)
-				if roman != "" {
-					s.lyricsRoman(c, roman, sub, romanWords)
-				}
 				if meaning != "" {
 					ui.Text(c, meaning).FontSize(sub).TextColor(k.muted)
 				}
@@ -481,15 +473,6 @@ func (s *shell) trackMenuAt(m *ui.Menu, t media.Track, queued int) {
 			go s.svc.System.OpenExternal(u)
 		}
 		s.copyLinkItem(m, u)
-	}
-	// What plugins add to the menu of every track.
-	if actions := s.plugins.TrackActions(); len(actions) > 0 {
-		m.Separator()
-		for _, a := range actions {
-			if m.Item(a.Label).Chosen() {
-				a.Run(t)
-			}
-		}
 	}
 }
 

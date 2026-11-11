@@ -10,9 +10,9 @@ MyTube puts both in one window: one search looks through YouTube Music and your 
 Download the file for Windows 10 or 11, on x64 or Arm, from the
 [latest release](https://github.com/bigdaddy284/mymusic/releases/latest): the installer, `mytube-<version>-windows-<arch>-setup.exe`, or the portable zip, `mytube-<version>-windows-<arch>-portable.zip`, which you unpack anywhere and start with `MyTube.exe`.
 
-`<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists `SHA256SUMS` to check the downloads with, and files you don't need, which installed copies update from. The [README](../README.md#install) has the full table of downloads.
+`<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists `SHA256SUMS` to check the downloads with. The [README](../README.md#install) has the full table of downloads.
 
-The installer and the portable zip update themselves: MyTube looks for a new version at start and every few hours, and asks before it installs one, unless you let it install updates by itself. [Settings › About](settings.md#about) shows your version and the newest one.
+MyTube doesn't update itself: download a new release when you want it. [Settings › About](settings.md#about) shows your version.
 
 ## The first launch
 
@@ -27,7 +27,7 @@ MyTube opens on Home in the [Blend layout](look-and-feel.md#layouts). Your setti
 
 ### The sidebar
 
-The sidebar on the left goes to MyTube's pages: Home, Search, Explore, Library, Stats and [Settings](settings.md), then the pages plugins add. Under them, Your mixes lists your liked songs, your downloads once you have some, and each [mix](library.md#mixes) you made, with how many tracks each holds; its + button makes a new mix. At its foot, a card shows what plays, and opens the now playing page. The button beside MyTube's name folds the sidebar to its icons, as Ctrl+B does; in a narrow window it folds by itself.
+The sidebar on the left goes to MyTube's pages: Home, Search, Explore, Library, Stats and [Settings](settings.md). Under them, Your mixes lists your liked songs, your downloads once you have some, and each [mix](library.md#mixes) you made, with how many tracks each holds; its + button makes a new mix. At its foot, a card shows what plays, and opens the now playing page. The button beside MyTube's name folds the sidebar to its icons, as Ctrl+B does; in a narrow window it folds by itself.
 
 - **Home** has your own tiles first: Jump back in plays the track you played last, then Liked songs and Your mixes. Then come your shelves, such as Recently played, [New from artists you follow](library.md#new-releases), and those of YouTube Music. The pivots at the top keep Everything, only Yours or only YouTube Music's, and [Edit home](home.md#arrange-home) moves, hides and adds its shelves.
 - **Explore** has YouTube Music's new albums, singles and trending songs, its charts, and its moods and genres, each with playlists of its own.
@@ -50,13 +50,13 @@ The player bar runs along the foot of the window. In the Expressive layout it fl
 
 - **Up next,** the queue, opens at the right of the window from the Queue button, or with Ctrl+J: the track playing, then what plays after it. See [The queue and Up next](playing-music.md#the-queue-and-up-next).
 - **The lyrics panel** opens in the same place from the Lyrics button, or with Ctrl+Shift+L: see [Lyrics](lyrics.md). For a podcast episode, the same button shows [its details](podcasts.md#episode-details-and-chapters).
-- **The now playing page** gives the track the whole window: open it with its cover in the player bar, the card in the sidebar, or Alt+4. It shows the cover with a visualizer over its foot (or the [picture of a music video](playing-music.md#the-picture-of-music-videos), if you turn that on), the artists and the album, the seek bar, play and next, like and dislike, the lyrics, the [widgets of plugins](addons.md#what-a-plugin-can-do), and at its foot the songs, playlists and artists YouTube Music relates to the track.
+- **The now playing page** gives the track the whole window: open it with its cover in the player bar, the card in the sidebar, or Alt+4. It shows the cover with a visualizer over its foot (or the [picture of a music video](playing-music.md#the-picture-of-music-videos), if you turn that on), the artists and the album, the seek bar, play and next, like and dislike, the lyrics, and at its foot the songs, playlists and artists YouTube Music relates to the track.
 
 ![The now playing page of アイドル by YOASOBI: its cover with the visualizer over its foot, the seek bar, play, next, like and dislike, and its synced lyrics under the Synced, Plain text, Translate and Romaji switches, with Up next open at the right of the window](shots/now-playing.webp)
 
 ### The command palette and shortcuts
 
-The command palette, Ctrl+K, finds every command by its name, plugins' commands too, with its key beside it. Type anything and it also offers to search for it, and to search the settings for it. These keys work from the start; [Settings › Shortcuts](settings.md#change-a-shortcut) changes any of them, and gives keys to the commands that have none:
+The command palette, Ctrl+K, finds every command by its name, with its key beside it. Type anything and it also offers to search for it, and to search the settings for it. These keys work from the start; [Settings › Shortcuts](settings.md#change-a-shortcut) changes any of them, and gives keys to the commands that have none:
 
 | Keys | What they do |
 |---|---|
@@ -85,7 +85,6 @@ With no account at all, MyTube:
 - searches YouTube Music and plays it, with its home shelves, Explore, artists, albums, playlists, [podcasts](podcasts.md) and [radios](playing-music.md#autoplay-and-radios);
 - keeps your liked songs, dislikes, mixes, history and stats on your computer, in [your library](library.md);
 - shows [lyrics](lyrics.md), [downloads tracks](library.md#downloads) to play without the network, and keeps the tracks you played in its [offline cache](library.md#the-offline-cache);
-- shows what plays on your [Discord profile](desktop.md#discord), from the Discord app on your computer, with nothing to set up (Settings › Desktop turns it off).
 
 Every account is optional, and you add them in Settings › Accounts: [Accounts](accounts.md) tells each step.
 
@@ -98,6 +97,6 @@ Every account is optional, and you add them in Settings › Accounts: [Accounts]
 
 - [Playing music](playing-music.md): search, the queue, radios, the sound and speed.
 - [Your library](library.md): liked songs, mixes, downloads, history and stats.
-- [Lyrics](lyrics.md): synced lyrics, translations and Latin letters.
+- [Lyrics](lyrics.md): synced lyrics and translations.
 - [Podcasts](podcasts.md): shows, episodes and where you left them.
 - [Troubleshooting](troubleshooting.md), when something doesn't work.

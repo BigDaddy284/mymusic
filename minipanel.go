@@ -448,8 +448,12 @@ func (s *shell) miniLyrics(c *ui.Context) {
 	lines := ly.Lines
 	pos := s.st.Position + lyricsLead(s.st.Speed)
 	at := sort.Search(len(lines), func(i int) bool { return ms(lines[i].TimeMs) > pos }) - 1
-	latin, how := s.latinLines(t, ly)
-	line := func(i int) string { return compactLine(lines, latin, how, i) }
+	line := func(i int) string {
+		if i < 0 || i >= len(lines) || lines[i].Text == "" {
+			return "♪"
+		}
+		return lines[i].Text
+	}
 	ui.Column(c).Grow(1).MinHeight(0).Padding(4, 12, 8).Gap(6).Justify(ui.Center).Children(func() {
 		text := line(at)
 		var words []lyrics.Word
@@ -457,9 +461,6 @@ func (s *shell) miniLyrics(c *ui.Context) {
 			words = lines[at].Words
 		}
 		s.lyricsText(c, text, k.size(1.25), k.accent, words, 0, 0).MinWidth(0)
-		if under := compactUnder(latin, how, at); under != "" {
-			ui.Text(c, under).FontSize(k.smallSize()).TextColor(k.muted).MinWidth(0)
-		}
 		if at+1 < len(lines) {
 			ui.Text(c, line(at+1)).FontSize(k.bodySize()).TextColor(k.muted).MaxLines(2).MinWidth(0)
 		}

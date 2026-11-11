@@ -54,10 +54,10 @@ func TestFlush(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Neither Discord nor a notification: the notification would wait for
+	// No notification: the notification would wait for
 	// MyGo's loop, which doesn't run here.
 	st := a.settings.Get()
-	st.DiscordPresence, st.Notifications = false, false
+	st.Notifications = false
 	if err := a.settings.Set(st); err != nil {
 		t.Fatal(err)
 	}

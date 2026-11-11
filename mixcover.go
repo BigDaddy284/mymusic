@@ -32,6 +32,11 @@ type mixCovering struct {
 }
 
 // chosenCover reports whether art is a cover the user chose for a mix.
+
+// openFileDialog asks the user for files, as MyGo's dialog does; tests
+// replace it.
+var openFileDialog = func(opts mygo.OpenDialogOptions) ([]string, error) { return mygo.Dialog.Open(opts) }
+
 func chosenCover(art []media.Image) bool {
 	if len(art) != 1 {
 		return false

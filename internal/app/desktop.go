@@ -57,13 +57,10 @@ func (a *App) Start() {
 	a.tellStart()
 	a.setupTray()
 	a.applyMediaKeys(a.settings.Get().MediaKeys)
-	// The colour file New read: from now on, as it changes.
-	a.followColorFile(a.settings.Get().Clean())
 	// Keys that were in use at the last start may be free now.
 	if a.applyGlobalShortcuts(false) {
 		notify()
 	}
-	a.watchUpdates()
 	a.watchNetwork()
 	a.watchCast()
 	a.downloads.Start()

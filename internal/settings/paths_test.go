@@ -15,7 +15,6 @@ import (
 // one name of each is UTF-8, decomposed, and one isn't.
 func pathSettings(dir string) Settings {
 	s := Default()
-	s.ColorFile = filepath.Join(dir, "colo\xefrs.json")
 	s.DownloadsFolder = filepath.Join(dir, "Café")
 	s.MusicFolders = []string{filepath.Join(dir, "Café"), filepath.Join(dir, "caf\xe9")}
 	s.YTDLPPath = filepath.Join(dir, "\xffyt-dlp")
@@ -38,7 +37,7 @@ func TestPathsNotUTF8(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(got, s.Clean()) {
-		t.Errorf("read back: %q %q %q %q", got.ColorFile, got.DownloadsFolder, got.MusicFolders, got.YTDLPPath)
+		t.Errorf("read back: %q %q %q", got.DownloadsFolder, got.MusicFolders, got.YTDLPPath)
 	}
 	if r := Inspect(data, got); !r.Empty() {
 		t.Errorf("the file read back is reported: %+v", r)

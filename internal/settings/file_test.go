@@ -30,10 +30,9 @@ func TestDecode(t *testing.T) {
 			if s.Theme != "aurora" || s.Crossfade != 6 {
 				t.Errorf("theme %q, crossfade %d", s.Theme, s.Crossfade)
 			}
-			// Keys of later versions take their defaults; Discord shows
-			// what plays, as for every file of before 0.5.6 without an ID.
-			if s.Zoom != 1 || !s.Loudness || !s.ShowInTitle || !s.DiscordPresence {
-				t.Errorf("zoom %v, loudness %v, title %v, Discord %v", s.Zoom, s.Loudness, s.ShowInTitle, s.DiscordPresence)
+			// Keys of later versions take their defaults.
+			if s.Zoom != 1 || !s.Loudness || !s.ShowInTitle {
+				t.Errorf("zoom %v, loudness %v, title %v", s.Zoom, s.Loudness, s.ShowInTitle)
 			}
 		}},
 		// Out-File and > write UTF-16 with a byte order mark.
@@ -89,7 +88,7 @@ func TestDecodeErrors(t *testing.T) {
 		key, msg   string
 	}{
 		{"trailing comma", string(readTestdata(t, "trailing-comma.json")), 4, 1, "", "a comma before } has nothing after it"},
-		{"trailing comma in a list", `{"enabledPlugins": ["a",]}`, 1, 25, "", "a comma before ] has nothing after it"},
+		{"trailing comma in a list", `{"musicFolders": ["a",]}`, 1, 23, "", "a comma before ] has nothing after it"},
 		{"missing comma", "{\n  \"theme\": \"aurora\"\n  \"crossfade\": 6\n}", 3, 3, "", "a comma is missing before this"},
 		{"missing comma after a number", `{"crossfade": 6 "theme": "aurora"}`, 1, 17, "", "a comma is missing before this"},
 		{"comment", "{\n  // the theme\n  \"theme\": \"aurora\"\n}", 2, 3, "", "JSON has no comments"},
@@ -113,7 +112,7 @@ func TestDecodeErrors(t *testing.T) {
 		{"wrong type of a shortcut", `{"shortcuts": {"player.next": 1}}`, 0, 0, "shortcuts.player.next", "shortcuts.player.next should be text in quotes"},
 		{"whole number", `{"crossfade": 2.5}`, 0, 0, "crossfade", "crossfade should be a whole number"},
 		{"switch", `{"autoplay": "yes"}`, 0, 0, "autoplay", "autoplay should be true or false"},
-		{"list of plugins", `{"enabledPlugins": "lyrics"}`, 0, 0, "enabledPlugins", "enabledPlugins should be a list in [ ]"},
+		{"list of folders", `{"musicFolders": "C:\\Music"}`, 0, 0, "musicFolders", "musicFolders should be a list in [ ]"},
 	} {
 		t.Run(c.name, func(t *testing.T) {
 			s, err := Decode([]byte(c.text))
@@ -169,7 +168,7 @@ func TestInspect(t *testing.T) {
 	}{
 		{"as kept", `{"theme": "aurora", "volume": 0.50, "crossfade": 2}`, false, nil, nil},
 		{"a typo", `{"crosfade": 6, "theme": "aurora"}`, false, []string{"crosfade"}, nil},
-		{"the key of before 0.5.6", `{"discordPresence": true}`, false, nil, nil},
+		{"the Discord status, which is gone", `{"discordPresence": true, "showOnDiscord": false}`, false, nil, nil},
 		{"keys in another case", `{"Theme": "aurora", "FONTSCALE": 1.1}`, false, nil, nil},
 		{"out of range", `{"fontScale": 2, "crossfade": 60, "theme": "Not A Theme"}`, false, nil, []string{"crossfade", "fontScale", "theme"}},
 		{"nulls", `{"theme": null, "equalizer": null}`, false, nil, nil},
@@ -179,7 +178,9 @@ func TestInspect(t *testing.T) {
 		{"a typo in the equalizer", `{"equalizer": {"enabld": true}}`, false, []string{"equalizer.enabld"}, nil},
 		{"theme options", `{"themeOptions": {"mix": {"grain": "on"}}}`, false, nil, nil},
 		{"shortcuts", `{"shortcuts": {"player.next": "Mod+N"}}`, false, nil, nil},
-		{"plugins twice", `{"enabledPlugins": ["lyrics", "lyrics"]}`, false, nil, []string{"enabledPlugins"}},
+		{"a word twice", `{"blockedWords": ["live", "live"]}`, false, nil, []string{"blockedWords"}},
+		// The plugins, which MyTube no longer runs, go without a word.
+		{"plugins", `{"enabledPlugins": ["lyrics"]}`, false, nil, nil},
 		// The file and the settings both read the byte that isn't UTF-8 as
 		// a replacement character.
 		{"code page", "{\"ytdlpPath\": \"C:\\\\\x91\\\\yt-dlp\"}", true, nil, nil},

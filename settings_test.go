@@ -8,9 +8,6 @@ import (
 	"image/png"
 	"net/http"
 	"net/http/httptest"
-	"os"
-	"path/filepath"
-	"slices"
 	"testing"
 	"time"
 
@@ -109,54 +106,6 @@ func TestColoursKept(t *testing.T) {
 	s.keepColors()
 	if got := s.svc.Preferences.Get().Accent; got != "#abcdef" {
 		t.Errorf("keeping with nothing waiting saved the accent %q", got)
-	}
-}
-
-// TestPluginSettings enables a plugin, which asks first, disables it, and
-// removes it, which asks too.
-func TestPluginSettings(t *testing.T) {
-	s := newTestShell(t)
-	dir := filepath.Join(s.svc.System.Info().DataDir, "addons", "plugins", "hello")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	for name, data := range map[string]string{
-		"plugin.json": `{"id": "hello", "name": "Hello", "version": "1.0.0", "author": "A", "main": "index.js", "permissions": ["playback"]}`,
-		"index.js":    "export default () => {}",
-	} {
-		if err := os.WriteFile(filepath.Join(dir, name), []byte(data), 0o644); err != nil {
-			t.Fatal(err)
-		}
-	}
-	s.svc.Addons.Reload()
-	s.refresh()
-	enabled := func() bool { return slices.Contains(s.svc.Preferences.Get().EnabledPlugins, "hello") }
-	tt := tester(t, s)
-	show(s, tt, "/settings/plugins")
-
-	click(t, s, tt, "Enable Hello")
-	if enabled() {
-		t.Fatal("the plugin was enabled without asking")
-	}
-	if !tt.HasText("It asks for: playback.") {
-		t.Errorf("the question doesn't tell what the plugin asks for: %q", tt.Texts())
-	}
-	click(t, s, tt, "enable")
-	if !enabled() {
-		t.Fatal("the plugin wasn't enabled")
-	}
-	click(t, s, tt, "Enable Hello")
-	if enabled() {
-		t.Fatal("the plugin wasn't disabled")
-	}
-
-	click(t, s, tt, "Remove Hello")
-	if len(s.svc.Addons.List().Plugins) != 1 {
-		t.Fatal("the plugin was removed without asking")
-	}
-	click(t, s, tt, "remove")
-	if n := len(s.svc.Addons.List().Plugins); n != 0 {
-		t.Errorf("%d plugins are left", n)
 	}
 }
 

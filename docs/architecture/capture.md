@@ -19,8 +19,7 @@ first suggestion of that kind, as a click would,
 `act:refresh` refreshes the page, as F5 does,
 `act:panel:<queue|lyrics|none>` shows a side panel, `act:scroll:<y|end>`
 scrolls the page, `act:theme:<id>` wears a theme,
-`act:colors:<off|pywal|matugen|path>` takes the colours from a file, as
-Settings › Appearance does, `act:mini` opens the mini player, which saves
+`act:mini` opens the mini player, which saves
 `mini.png`, `act:library:<add|remove>:<search>` saves the first YouTube
 Music song a search finds to the library there, or takes it out, as its
 menu does, `act:title` logs the window's title, which the screenshots

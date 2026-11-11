@@ -44,4 +44,4 @@ body:
     id: more
     attributes:
       label: Anything else
-      description: Error messages, screenshots, the theme and plugins you use. Report a problem in Settings › About fills in your setup here.
+      description: Error messages, screenshots, and the theme you use.

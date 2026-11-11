@@ -59,13 +59,11 @@ func (s *shell) view(c *ui.Context) {
 	})
 	s.palette(c)
 	s.coverDialog(c)
-	s.updateOffer(c)
 	s.questionDialog(c)
 	s.trackInfoDialog(c)
 	s.promptDialog(c)
 	s.failureDialog(c)
 	s.sweepDialogs()
-	s.sweepViews()
 	s.followVideo()
 	s.followWatch()
 	s.keepShown(c)
@@ -151,8 +149,6 @@ func (s *shell) page(c *ui.Context, r *ui.Route) {
 		s.watchPage(c, r.Param("id"))
 	case r.Match("/stats"):
 		s.statsPage(c)
-	case r.Match("/plugin/{plugin}/{page}"):
-		s.pluginPage(c, "/plugin/"+r.Param("plugin")+"/"+r.Param("page"))
 	default:
 		s.lost(c, "This page isn't one of MyTube's.")
 	}

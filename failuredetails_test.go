@@ -127,7 +127,7 @@ func TestFailureDetails(t *testing.T) {
 }
 
 // TestRecentPlaybackErrors lists the tracks that couldn't play in Settings
-// › About, between Updates and Licenses, with their details, and says
+// › About, between the version and Licenses, with their details, and says
 // none did before; a search for "playback errors" finds them.
 func TestRecentPlaybackErrors(t *testing.T) {
 	s := newTestShell(t)
@@ -140,7 +140,6 @@ func TestRecentPlaybackErrors(t *testing.T) {
 	s, tt = failedShell(t)
 	tt.SetSize(1280, 2400)
 	show(s, tt, "/settings/about")
-	// Updates show only in builds that update themselves.
 	var above float32
 	for _, text := range []string{"open logs folder", s.lk.words("Recent playback errors"), "Broken Song, by The Band", s.lk.words("Licenses")} {
 		r, ok := tt.Find(text)

@@ -6,13 +6,12 @@
 
 <p align="center"><strong>One player for YouTube Music and the music on your computer.</strong></p>
 
-<p align="center">YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics, themes and plugins.</p>
+<p align="center">YouTube Music and local music player for Windows. YouTube Music works with no account. One search, one queue, mixed playlists, synced lyrics and themes.</p>
 
 <p align="center"><sub>MyTube is a fork of <a href="https://github.com/fzn0x/mixmusic">MixMusic</a> by fzn0x and its contributors, used under the MIT license.</sub></p>
 
 <p align="center">
   <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/bigdaddy284/mymusic/actions/workflows/pages.yml"><img src="https://github.com/bigdaddy284/mymusic/actions/workflows/pages.yml/badge.svg" alt="Website" /></a>
   <a href="https://github.com/bigdaddy284/mymusic/releases/latest"><img src="https://img.shields.io/github/v/release/bigdaddy284/mymusic" alt="Latest release" /></a>
   <a href="https://github.com/bigdaddy284/mymusic/releases"><img src="https://img.shields.io/github/downloads/bigdaddy284/mymusic/total" alt="Downloads" /></a>
   <a href="https://pkg.go.dev/github.com/bigdaddy284/mymusic"><img src="https://pkg.go.dev/badge/github.com/bigdaddy284/mymusic.svg" alt="Go Reference" /></a>
@@ -48,7 +47,7 @@ libraries. MyTube puts both in one player:
   windows on the GPU. There is no browser inside it to download or keep in
   memory.
 - **Yours to change.** Four layouts and fourteen themes come with it, you
-  can add themes and plugins of your own, and any command can have a key
+  can add themes of your own, and any command can have a key
   of your own.
 - **Private.** MyTube has no account, server, analytics or telemetry of
   its own.
@@ -100,11 +99,6 @@ libraries. MyTube puts both in one player:
 - `mytube://` links.
 - **Last.fm:** every track you hear joins your profile, and scrobbles made
   offline are sent once you are back online.
-- **Discord:** your profile shows what plays, with its artwork and the time
-  left.
-- **Updates:** MyTube checks for a new release at start and every few
-  hours, checks its signature, and installs it when you say so, or by
-  itself if you choose.
 
 ### Make it yours
 
@@ -117,10 +111,8 @@ libraries. MyTube puts both in one player:
   tune, one theme for light mode and one for dark mode, and an accent
   color of your own or taken from the artwork that plays. Material and
   Material Dark make every color of the cover's.
-- **Plugins** add pages, commands, track actions and widgets through a
-  typed API, drawn in your theme.
 - **Keyboard first.** Shortcuts for everything common, a key of your own for
-  any command, plugins' commands included, keys that control the music
+  any command, keys that control the music
   from any app, and a command palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) for
   the rest.
 - **A settings file.** Your settings are `settings.json` in your data folder
@@ -152,12 +144,10 @@ MyTube runs on Windows 10 and 11. Download it from the
 | Portable, no installation | [`mytube-<version>-windows-<arch>-portable.zip`](https://github.com/bigdaddy284/mymusic/releases/latest) |
 
 `<arch>` is `amd64` for x64 and `arm64` for Arm. Each release lists
-`SHA256SUMS` to check the downloads with. You don't need the files named
-`update-…`, `….delta` or `-windows-<arch>.tar.gz`: installed apps update
-from them.
+`SHA256SUMS` to check the downloads with.
 
-The installer and the portable zip update themselves. For the portable
-zip, unpack it anywhere and open `MyTube.exe`.
+MyTube doesn't update itself: download a new release when you want it. For
+the portable zip, unpack it anywhere and open `MyTube.exe`.
 
 ### The first launch
 
@@ -185,8 +175,6 @@ zip, unpack it anywhere and open `MyTube.exe`.
   [last.fm/api/account/create](https://www.last.fm/api/account/create)
   (any name, no callback URL), paste its API key and shared secret in
   Settings › Accounts, and approve MyTube in your browser.
-- **Discord:** while the Discord app runs, your profile shows what you
-  listen to. Turn it off in Settings › Desktop.
 
 Something not working? [docs/troubleshooting.md](docs/troubleshooting.md)
 covers the common problems and the known issues.
@@ -229,9 +217,7 @@ data stays apart from an installed MyTube, under the name
 `MyTube Dev`.
 
 ```sh
-bun run build:plugins          # the plugins' JavaScript, from their TypeScript
 go test ./...                  # the app's tests
-bun run typecheck              # the plugin SDK and the example plugins
 bun run build                  # the installer and the app, in build/
 bun run build -- -platform windows/amd64,windows/arm64
 ```
@@ -262,20 +248,16 @@ fonts/               the typefaces the windows draw with
 internal/app         the services the windows call, and the desktop integration
 internal/player      the queue, played by the audio engine or on a cast device
 internal/audio       MyTube's audio engine, and the system's audio output
-internal/plugins     plugins, each in a JavaScript engine of its own
 internal/youtube     YouTube Music's catalog, and your account there
 internal/stream      audio streams, from YouTube or yt-dlp, opened for the engine
 internal/match       the songs of YouTube Music's videos
-internal/romaji      Japanese lyrics in romaji, kanji read by kagome
 internal/library     liked and disliked songs, mixes, history and stats
 internal/lastfm      scrobbling to Last.fm
-internal/discord     what plays, on your Discord profile
 internal/diag        the log, without secrets, and the reports of crashes
-internal/addons      themes and plugins
+internal/addons      themes
 builtin/themes       the themes MyTube ships with
 public/              the page of the picture of music videos
-sdk/                 the types of the plugin API
-examples/            example themes and plugins
+examples/            example themes
 ```
 
 The packages you can import:
@@ -291,9 +273,9 @@ lyrics/              synced lyrics from Unison and LRCLIB, and translations
 brand/               MyTube's logo, for code that draws it
 ```
 
-## Themes and plugins
+## Themes
 
-Themes and plugins load from your add-ons folders, and you can make your
+Themes load from your themes folder, and you can make your
 own. [docs/addons.md](docs/addons.md) tells how to add one.
 
 ### Make a theme
@@ -303,15 +285,6 @@ show in the layout the user chose.
 [docs/themes.md](docs/themes.md) lists every token and shows a complete
 theme. To try yours, put its folder in the themes folder (Settings ›
 Appearance › open themes folder) and choose it in Settings › Appearance.
-
-### Make a plugin
-
-A plugin is a small module, written in TypeScript or JavaScript, that adds
-pages, commands, track actions and widgets.
-[docs/plugins.md](docs/plugins.md) documents the API, with its
-[types](sdk/index.d.ts) for your editor. The
-[sleep timer](examples/plugins/sleep-timer) and
-[spectrum](examples/plugins/spectrum) in `examples/` are working examples.
 
 ## Privacy
 
@@ -325,18 +298,12 @@ talks to:
   Music history.
 - **Unison:** the video ID of the track that plays, or, without one, its
   title, artists, album and length, to find its lyrics. Only while you
-  turn on translate, or romanize, beside the lyrics, the lyrics of the
+  turn on translate beside the lyrics, the lyrics of the
   track that plays, with its video ID, which Unison has Google translate.
 - **LRCLIB:** the title, artists, album and length of the track that plays,
   to find its lyrics.
-- **GitHub:** a check for a new version at start and every few hours,
-  which you can turn off in Settings › About; the downloads of yt-dlp; and, the first time
-  you turn on romaji beside Japanese lyrics, the dictionary of the
-  readings of kanji (11.7 MB). Romaji is made on your computer: the
-  lyrics aren't sent.
+- **GitHub:** the downloads of yt-dlp.
 - **Last.fm,** once you connect it: what you play.
-- **Discord,** unless you turn it off: what plays, sent to the Discord app
-  on your computer, which shows it on your profile.
 
 What it keeps on your computer:
 
@@ -345,8 +312,7 @@ What it keeps on your computer:
 - The tracks you played, in the cache, as much as you allow in Settings ›
   Playback, and how loud YouTube measured them.
 - The covers you saw, up to 256 MB.
-- The translations of lyrics you turned on, by track and language, and
-  the dictionary romaji reads kanji with, once you turned it on.
+- The translations of lyrics you turned on, by track and language.
 - Your sign-ins, the YouTube Music session included, in Windows'
   Credential Manager. When it can't keep one, it goes in a file encrypted
   for your Windows account.
@@ -366,20 +332,17 @@ MyTube is built on these projects:
 - **[MyGo](https://github.com/egoist/mygo)**, the desktop framework MyTube
   is built with. MyTube uses MyGo's native UI: MyGo draws every window
   itself, in Go, without a webview, from the pages and the player bar to the
-  mini player. Its command line packages the app, with its installers and
-  the signed updates it updates itself from.
+  mini player. Its command line packages the app, with its installers.
 - **[Go](https://go.dev)**, the language of the app, with
   [purego](https://github.com/ebitengine/purego), which calls the system's
   libraries without cgo, and [golang.org/x/image](https://pkg.go.dev/golang.org/x/image)
   and [golang.org/x/text](https://pkg.go.dev/golang.org/x/text).
-- **[Sobek](https://github.com/grafana/sobek)**, the JavaScript engine each
-  plugin runs in.
+- **[Sobek](https://github.com/grafana/sobek)**, the JavaScript engine
+  the tests run the video page's script in.
 - **[Nix](https://nixos.org)**, which pins the tools releases are built
   with.
 - **[GoReleaser](https://goreleaser.com)**, which publishes the releases.
-- **[Bun](https://bun.sh)**, which runs the build, and
-  **[TypeScript](https://www.typescriptlang.org)**, which compiles the
-  plugins and checks the plugin SDK's types.
+- **[Bun](https://bun.sh)**, which runs the build.
 - **[Zola](https://www.getzola.org)**, which builds the website.
 - **[NSIS](https://nsis.sourceforge.io)**, which makes the Windows
   installers.
@@ -388,12 +351,6 @@ MyTube is built on these projects:
 - **[Unison](https://unison.boidu.dev)**, the open, crowdsourced database of
   lyrics, under the ODbL, and **[LRCLIB](https://lrclib.net)**, the open
   database of synced lyrics.
-- **[kagome](https://github.com/ikawaha/kagome)**, the Japanese
-  morphological analyser that reads the kanji of lyrics for their romaji,
-  with the IPA dictionary of
-  [kagome-dict](https://github.com/ikawaha/kagome-dict), made from
-  mecab-ipadic, which MyTube downloads the first time romaji is turned
-  on.
 - **[libopus](https://opus-codec.org)**, whose decoder the Opus decoder is a
   port of, and **[SharpJaad](https://github.com/jimm98y/SharpJaad)**, the C#
   port of [JAAD](https://sourceforge.net/projects/jaadec/) the AAC decoder
@@ -412,11 +369,9 @@ MyTube is built on these projects:
 
 ## Contributing
 
-Fixes, features, themes, plugins and bug reports are all welcome.
+Fixes, features, themes and bug reports are all welcome.
 
-- **Report a problem** from Settings › About › report a problem. It opens a
-  new GitHub issue with your version, system, theme and plugins filled in.
-  Or [open an issue](https://github.com/bigdaddy284/mymusic/issues/new) yourself.
+- **Report a problem** by [opening an issue](https://github.com/bigdaddy284/mymusic/issues/new).
 - **Send a change** as a pull request. [CONTRIBUTING.md](CONTRIBUTING.md)
   explains the checks to run, the commit style, and the changelog entry
   that a change people will notice needs.

@@ -40,8 +40,7 @@ func (s *shell) lyricsText(c *ui.Context, text string, size float32, ink ui.Colo
 }
 
 // sungText makes e, the text element of a line of lyrics in font, light
-// its words up as they are sung: the part sung in lit, the rest in dim. A
-// line in Latin letters under its line lights so too (lyricsromanize.go).
+// its words up as they are sung: the part sung in lit, the rest in dim.
 func (s *shell) sungText(c *ui.Context, e ui.Element, text string, font ui.Font, lit, dim ui.Color, words []lyrics.Word, padX, padY float32) ui.Element {
 	l := ui.Local(e, "sung", func() sungLine { return sungLine{} })
 	clock := l.follow(s.st, c.Now())

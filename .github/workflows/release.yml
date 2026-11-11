@@ -90,8 +90,6 @@ jobs:
           echo "WINDOWS_CERTIFICATE_FILE=$RUNNER_TEMP/code-signing.pfx" >> "$GITHUB_ENV"
       - name: Build
         env:
-          # Signs the update files; without it the build skips them.
-          MYGO_UPDATER_PRIVATE_KEY: ${{ secrets.MYGO_UPDATER_PRIVATE_KEY }}
           # Opens the code signing certificate, when it has a password.
           MYGO_WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         run: nix develop --command bash .github/scripts/build.sh windows/amd64,windows/arm64
@@ -107,15 +105,12 @@ jobs:
           for dir in build/*/; do
             target="$(basename "$dir")" # windows-amd64, windows-arm64
             arch="${target#*-}"
-            # What installed apps update from, under the names their manifests use.
-            for f in "$dir"update-*.json "$dir"*.delta "$dir"mytube-"$v"-"$target".tar.g[z]; do cp "$f" release/; done
             # mygo build names it mytube-setup-<version>-<arch>.exe.
             for f in "$dir"*-setup-*.exe; do cp "$f" "release/mytube-$v-windows-$arch-setup.exe"; done
           done
           ls -l release
-          # Two installers and two portable zips, not counting the update
-          # files, which only signed builds make.
-          count="$(ls release | { grep -v -E '^update-|\.delta$|-windows-[a-z0-9]+\.tar\.gz$' || true; } | wc -l | tr -d ' ')"
+          # Two installers and two portable zips.
+          count="$(ls release | wc -l | tr -d ' ')"
           if [ "$count" -ne 4 ]; then
             echo "Expected 4 downloads, made $count" >&2
             exit 1
@@ -139,41 +134,6 @@ jobs:
         with:
           path: release
           merge-multiple: true
-      - name: Every app finds its update
-        working-directory: release
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          v="${TAG#v}"
-          manifests=(update-*.json)
-          if [ "${#manifests[@]}" -eq 0 ]; then
-            echo "No update files: the build was not signed"
-            exit 0
-          fi
-          # The target of each archive, as windows-amd64, has a manifest
-          # of this version, which names files of this release.
-          for archive in mytube-"$v"-*.tar.gz; do
-            target="${archive#mytube-"$v"-}"
-            if [ ! -f "update-${target%.tar.gz}.json" ]; then
-              echo "$archive has no update-${target%.tar.gz}.json" >&2
-              exit 1
-            fi
-          done
-          base="https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/"
-          for m in "${manifests[@]}"; do
-            if [ "$(jq -r .version "$m")" != "$v" ]; then
-              echo "$m is of version $(jq -r .version "$m"), not $v" >&2
-              exit 1
-            fi
-            for url in $(jq -r '.url, (.deltas // [])[].url' "$m"); do
-              file="${url#"$base"}"
-              if [ "$file" = "$url" ] || [ ! -f "$file" ]; then
-                echo "$m names $url, which this release does not have" >&2
-                exit 1
-              fi
-            done
-          done
-          ls update-*.json
       - name: Release notes
         env:
           # With this secret, the build signs or fails.

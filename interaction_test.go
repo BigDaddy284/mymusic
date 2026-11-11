@@ -32,13 +32,24 @@ func testerOf(t testing.TB, s *shell, w, h int) *ui.Tester {
 	for _, key := range []string{"home:youtube", "explore", "charts"} {
 		s.loads[key] = &loaded[[]media.Shelf]{done: true}
 	}
-	// About asks GitHub for the newest release, unless the test tells it.
-	if _, ok := s.loads["release"]; !ok {
-		s.loads["release"] = &loaded[app.Release]{done: true}
-	}
 	tt := ui.NewTester(s.view, w, h)
 	tt.Frame()
 	return tt
+}
+
+// until draws frames until ok, failing the test after a few seconds.
+func until(t *testing.T, s *shell, tt *ui.Tester, what string, ok func() bool) {
+	t.Helper()
+	for deadline := time.Now().Add(5 * time.Second); ; time.Sleep(5 * time.Millisecond) {
+		s.drain()
+		tt.Frame()
+		if ok() {
+			return
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("waiting for %s; the window shows %q", what, tt.Texts())
+		}
+	}
 }
 
 // show shows the page at path, once its transition ends.
@@ -268,41 +279,6 @@ func TestAlbumPlayPastAI(t *testing.T) {
 	tt.Frame()
 	click(t, s, tt, "Play "+testTracks[0].Title)
 	s.settle(t, func(st player.State) bool { return st.Playing && st.Index == 0 && st.Queue[0].Track.ID == "yt:1" })
-}
-
-// TestUpdateOffer offers what this copy can do with a new version, install
-// it or download what replaces it, and what's new.
-func TestUpdateOffer(t *testing.T) {
-	s := newTestShell(t)
-	s.offer = &app.Release{Version: "9.9.9", Newer: true, Page: "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
-		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mytube-9.9.9-windows-amd64-setup.exe",
-		File:     "mytube-9.9.9-windows-amd64-setup.exe"}
-	tt := tester(t, s)
-	u := s.svc.System.Updates()
-	act := downloadLabel(u.Kind)
-	if u.Enabled {
-		act = "install 9.9.9"
-	}
-	for _, text := range []string{"mytube 9.9.9 is out", "what's new", "later", "skip this version", act} {
-		if !tt.HasText(text) {
-			t.Errorf("the offer doesn't show %q: %q", text, tt.Texts())
-		}
-	}
-	if !u.Enabled && tt.HasText("install 9.9.9") {
-		t.Error("a copy that can't replace itself offers to install")
-	}
-}
-
-func TestReplacing(t *testing.T) {
-	if got := replacing("installer", "m-setup.exe"); !strings.Contains(got, "run m-setup.exe") {
-		t.Errorf("the installer says %q", got)
-	}
-	if got := downloadLabel("portable"); got != "download the portable zip" {
-		t.Errorf("the portable copy's download is %q", got)
-	}
-	if got := downloadLabel("unknown"); got != "download it" {
-		t.Errorf("an unknown kind's download is %q", got)
-	}
 }
 
 // The tools' rows tell how to get a JavaScript runtime for yt-dlp, or
@@ -1586,36 +1562,6 @@ func TestShortcutName(t *testing.T) {
 	written := "Ctrl+K"
 	if !sameShortcut("Mod+K", written) || sameShortcut("Mod+K", "Mod+J") {
 		t.Errorf("sameShortcut tells Mod+K from %s, or not from Mod+J", written)
-	}
-}
-
-// TestAboutRelease tells on About that a newer version is out, with what
-// it brings and its install or download, or that this is the newest.
-func TestAboutRelease(t *testing.T) {
-	s := newTestShell(t)
-	s.loads["release"] = &loaded[app.Release]{done: true, value: app.Release{Version: "9.9.9", Newer: true, Date: "2026-10-12T09:00:00Z",
-		Page:     "https://github.com/bigdaddy284/mymusic/releases/tag/v9.9.9",
-		Download: "https://github.com/bigdaddy284/mymusic/releases/download/v9.9.9/mytube-9.9.9-windows-amd64-setup.exe",
-		File:     "mytube-9.9.9-windows-amd64-setup.exe"}}
-	tt := testerOf(t, s, 1280, 2400)
-	show(s, tt, "/settings/about")
-	u := s.svc.System.Updates()
-	act := downloadLabel(u.Kind)
-	if u.Enabled {
-		act = "install 9.9.9"
-	}
-	for _, text := range []string{"MyTube 9.9.9 is out", "Out since 12 Oct 2026.", "what's new", "check again", act, "contribute"} {
-		if !tt.HasText(text) {
-			t.Errorf("About doesn't show %q: %q", text, tt.Texts())
-		}
-	}
-	if build := buildNames[u.Kind]; build != "" && !tt.HasText(build) {
-		t.Errorf("About doesn't say the copy is a %s", build)
-	}
-	s.loads["release"] = &loaded[app.Release]{done: true, value: app.Release{Version: "0.4.0"}}
-	tt.Frame()
-	if !tt.HasText("This is the newest version") || tt.HasText("is out") {
-		t.Errorf("the newest version shows as %q", tt.Texts())
 	}
 }
 

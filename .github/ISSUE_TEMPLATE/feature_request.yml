@@ -16,10 +16,8 @@ body:
   - type: dropdown
     id: where
     attributes:
-      label: Could it be a plugin or a theme?
-      description: Many ideas fit as plugins, which anyone can write and share.
+      label: Could it be a theme?
       options:
         - It needs a change to the app
-        - It could be a plugin
         - It could be a theme
         - Not sure

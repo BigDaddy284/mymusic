@@ -24,9 +24,7 @@ Before you open a pull request:
 ```sh
 gofmt -l .                      # prints nothing
 GOOS=windows go vet ./...
-bun run build:plugins           # the example plugins' JavaScript, which tests run
 go test ./...
-bun run typecheck
 ```
 
 [docs/architecture](docs/architecture/README.md) tells where things live. A few
@@ -37,9 +35,6 @@ rules keep the project healthy:
   [docs/themes.md](docs/themes.md): colors, fonts and a radius. Rename or
   remove one only with a plan for the themes that set it, and document new
   ones there.
-- **The plugin API is public.** Change `internal/plugins/api.js`,
-  `sdk/index.d.ts` and [docs/plugins.md](docs/plugins.md) together; the
-  typecheck checks the example plugins against the types.
 - **Tests do not need the network.** Parsers are tested on recorded
   responses in `testdata/`; live tests run only with `MYTUBE_LIVE=1`.
   The Opus decoder's conformance test runs when `OPUS_TESTVECTORS` names
@@ -120,13 +115,13 @@ one change per commit:
 ```
 feat(player): crossfade between tracks
 fix(youtube): read albums without a year
-docs: explain the plugin storage
+docs: explain the theme tokens
 ```
 
 Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`,
 `chore`. Scopes name the part changed: `app`, `player`, `ui`, `theme`,
-`themes`, `plugins`, `youtube`, `stream`, `match`, `lyrics`,
-`library`, `addons`, `examples`, `sdk`, `tools`.
+`themes`, `youtube`, `stream`, `match`, `lyrics`,
+`library`, `addons`, `examples`, `tools`.
 
 A change people will notice also gets an entry in the changelog: a file in
 [changelog.d](changelog.d/README.md), in the folder of its section as
@@ -164,19 +159,11 @@ release, and the page reads the latest version from GitHub's API. Once the
 release is published, set the two `data-version` spans to it, for when the
 API does not answer.
 
-Installed apps update themselves from the latest release. Its update files are
-signed with the key whose public half is `updates.publicKey` in
-[mygo.config.ts](mygo.config.ts); the secret half is the repository's
-`MYGO_UPDATER_PRIVATE_KEY` secret, which the workflow signs with. Without it, the
-release has no update files and apps stay on the version they have.
-
 ### Signing
 
 The workflow signs the Windows apps and installers once their secrets are
 in the repository; without them it says so in a notice and skips that
-part, and the release goes out as before. `mygo build` signs, before it
-makes the update archives, so that updates install the signed app too:
-see the comments of [mygo.config.ts](mygo.config.ts) and of the workflow.
+part, and the release goes out as before: see the comments of [mygo.config.ts](mygo.config.ts) and of the workflow.
 
 | Secret | What it holds |
 |---|---|
@@ -204,10 +191,8 @@ too. The release notes leave it out by themselves.
 
 The [website](site/templates/index.html) and the docs' pages are built with
 [Zola](https://www.getzola.org) from `site/` and `docs/` (see
-[site/zola.toml](site/zola.toml)), and
-[pages.yml](.github/workflows/pages.yml) publishes them to GitHub Pages, at
-https://bigdaddy284.github.io/mymusic/, whenever what they're built from
-changes on main.
+[site/zola.toml](site/zola.toml)). CI builds them to check their links;
+nothing publishes them.
 
 ## Reports
 

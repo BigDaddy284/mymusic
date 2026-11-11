@@ -8,7 +8,6 @@ import (
 	"github.com/egoist/mygo/ui"
 
 	"github.com/bigdaddy284/mymusic/internal/addons"
-	"github.com/bigdaddy284/mymusic/internal/colorfile"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
@@ -88,10 +87,8 @@ var fallbackTheme = map[string]string{
 // newLook is the look of the active theme of s, among themes, in the
 // layout design of s; dark tells whether the computer is in dark mode,
 // for themes that follow it, and artwork is the colour of the artwork
-// playing, "" for none. While the settings take the colours from a file,
-// file's colours replace the theme's, which keeps its type, corners and
-// effects.
-func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork string, file colorfile.Colors) look {
+// playing, "" for none.
+func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork string) look {
 	design := designOf(s.Layout)
 	id := s.ActiveTheme(dark)
 	var th addons.Theme
@@ -105,11 +102,6 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	if th.ID != "" && th.Scheme == "light" {
 		mode = "light"
 	}
-	var fromFile map[string]color.NRGBA
-	fileDark := false
-	if s.ColorSource != settings.ColorsTheme {
-		fromFile, fileDark = fileTokens(file, mode)
-	}
 	var fx effects
 	if th.Builtin {
 		fx = themeEffects(th, s.ThemeOptions[th.ID])
@@ -119,10 +111,9 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	if s.DynamicAccent && artwork != "" {
 		pick = artwork
 	}
-	// The Material themes make all their colours of it, as their seed,
-	// unless a colour file gives the colours.
+	// The Material themes make all their colours of it, as their seed.
 	var mat *materialColors
-	if fx.material && fromFile == nil {
+	if fx.material {
 		seed := materialSeed
 		if a, ok := parseColor(pick); ok && pick != "" {
 			seed = a
@@ -139,35 +130,15 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 		c, _ := parseColor(fallbackTheme[name])
 		return c
 	}
-	tok := func(name string) color.NRGBA {
-		c, ok := fromFile[name]
-		if !ok {
-			return themeTok(name)
-		}
-		// The theme's glass, as Aurora's and Glasshouse's surfaces, which
-		// show the lights of its ground through, stays glass, which shows
-		// the file's colour over the ground.
-		if t := themeTok(name); t.A < 255 && (name == "surface" || name == "surface-2" || name == "surface-3") {
-			ground := fromFile["bg"]
-			return glassOf(over(c, ground), ground, t.A)
-		}
-		return c
-	}
-	p := paletteOf(tok)
+	p := paletteOf(themeTok)
 	p.bg.A = 255
 	whiteTiles := th.Builtin && th.ID == "mix" && optionValue(th, s.ThemeOptions[th.ID], "white-tiles") == "true"
 	if whiteTiles {
 		// Classic white ink on tiles, for those who prefer it to contrast.
 		p.tileText = white
 	}
-	if fromFile != nil {
-		p.keepReadable(whiteTiles)
-	}
 	bg, text := p.bg, p.text
 	k := look{dark: mode == "dark", systemDark: dark, scale: float32(s.FontScale), compact: s.Density == settings.DensityCompact}
-	if fromFile != nil {
-		k.dark = fileDark
-	}
 	k.themeAccent = col(p.accent)
 	// Other themes take the accent as it reads on the ground: at 3:1, or,
 	// in the layouts of tonal controls, which set it as small text on
@@ -182,8 +153,7 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 		}
 		p.accent, p.accentText = a, inkOn(a)
 	} else if design.tonal && mat == nil {
-		// The theme's own accent too, or the colour file's, chosen for
-		// the ground.
+		// The theme's own accent too, chosen for the ground.
 		if a := readableAt(p.accent, surface, 4.5); a != p.accent {
 			p.accent, p.accentText = a, inkOn(a)
 		}
@@ -203,7 +173,7 @@ func newLook(s settings.Settings, themes []addons.Theme, dark bool, artwork stri
 	k.fx = fx
 	k.hover = col(alpha(text, 0.07))
 	k.press = col(alpha(text, 0.13))
-	if fromFile == nil && mat == nil {
+	if mat == nil {
 		if c, ok := parseColor(th.Colors["hover"]); ok {
 			k.hover = col(c)
 		}
@@ -342,3 +312,31 @@ func fontFamily(stack string) string {
 
 // monospace is Windows' monospaced family.
 func monospace() string { return "Consolas" }
+
+// palette is the colours of the theme's tokens.
+type palette struct {
+	bg, surface, surface2, surface3, border color.NRGBA
+	text, muted, accent, accentText         color.NRGBA
+	danger, success, youtube                color.NRGBA
+	tiles                                   [4]color.NRGBA
+	tileText                                color.NRGBA
+}
+
+// paletteOf is the palette of the colours tok gives the tokens.
+func paletteOf(tok func(name string) color.NRGBA) palette {
+	p := palette{
+		bg: tok("bg"), surface: tok("surface"), surface2: tok("surface-2"), surface3: tok("surface-3"), border: tok("border"),
+		text: tok("text"), muted: tok("text-muted"), accent: tok("accent"), accentText: tok("accent-text"),
+		danger: tok("danger"), success: tok("success"), youtube: tok("youtube"),
+		tileText: tok("tile-text"),
+	}
+	for i := range p.tiles {
+		p.tiles[i] = tok("tile-" + strconv.Itoa(i+1))
+	}
+	return p
+}
+
+var (
+	black = color.NRGBA{A: 255}
+	white = color.NRGBA{R: 255, G: 255, B: 255, A: 255}
+)

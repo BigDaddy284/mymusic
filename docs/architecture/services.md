@@ -7,7 +7,7 @@
   `Playlist.ReadOn` reads on a page at a time, asks again after 1, 2 and
   4 seconds for a page that fails, and stops at `MaxTracks`, 20,000, past
   which the playlist is `Cut`. `Catalog.Playlist` reads one whole, for
-  what takes all of it, as a download or a plugin.
+  what takes all of it, as a download.
 - **`internal/youtube`** reads YouTube Music through the API its website uses:
   search, suggestions (searches, then songs, albums, artists and
   playlists), the home and explore pages, charts, moods and genres, albums,
@@ -58,53 +58,6 @@
   the video's radio starts from: YouTube Music makes the radio of a video
   out of videos.
 - **`lyrics`** finds synced lyrics on Unison and LRCLIB, reads TTML and LRC,
-  and translates and romanizes lyrics on Unison.
-- **`internal/romaji`** writes Japanese lyrics in Hepburn romaji on the
-  computer, as Unison gives none for Japanese: kana from a table, and kanji
-  by the readings that kagome's tokenizer finds in its IPA dictionary,
-  word by word. The dictionary isn't built in, which would grow the app by
-  11.7 MB: `Dictionary` downloads it from kagome-dict's module on GitHub
-  the first time romaji is on for Japanese lyrics, checks it against the
-  SHA-256 written in the package, keeps it in the cache's `romaji/`, and
-  checks it again each time it loads. A download that fails or isn't the
-  dictionary goes, and is tried again after 30 seconds, twice as long
-  after each failure in a row, up to 10 minutes. Until it is there, the
-  lines' kana are in romaji and their kanji stay as they are. Loaded, the
-  dictionary takes some 89 MB of memory: it loads in about 0.4 s when
-  lines need it, and goes 5 minutes after they last did. The windows make
-  each track's romaji once, with its lyrics. Its tests read the
-  dictionary from the Go module cache, where
-  `go mod download github.com/ikawaha/kagome-dict/ipa@v1.2.6` puts it.
-- **`internal/romanize`** writes lyrics in the other scripts in Latin
-  letters on the computer, each run of a script of a line by the standard
-  of its language, as the package's doc lists them: the Revised
-  Romanization for Korean, with its sound changes; pinyin for Chinese;
-  the systems of each language of Cyrillic, told by its letters when the
-  lyrics' language isn't known; ELOT 743 for Greek; Hunterian for the
-  Brahmic scripts, by one engine over their aligned blocks; RTGS for
-  Thai, by a syllabifier of rules; BGN/PCGN for Lao and Burmese and the
-  UN's system for Khmer, each parted into syllables by its script's own
-  structure (`syllables.go` places them); EWTS for Tibetan; and the vowel
-  points of Hebrew and Arabic where they're written. `Words` gives each
-  word of a line synced word by word its part of the line in Latin
-  letters. Chinese reads `pinyin.bin`, 177 KB built in, which
-  `tools/pinyindata` makes from Unihan and mozillazg's pinyin-data and
-  phrase-pinyin-data: each character's reading, and only the words read
-  otherwise than their characters, 8,799 of 47,152. It is read the first
-  time Chinese is romanized, in 4 ms, and holds 1.3 MB. The windows make
-  each track's romanization once, with its lyrics (`lyricsromanize.go`),
-  and ask Unison for none, but Arabic's, whose romanization by Google
-  has the vowels Arabic doesn't write.
+  and translates lyrics on Unison.
 - **`internal/lastfm`** signs in to Last.fm with the user's API account and
   scrobbles by Last.fm's rules, keeping what fails offline for later.
-- **`internal/discord`** shows what plays on the user's Discord profile, over
-  Discord's local pipe or socket: an activity's lines, times, picture, the
-  small image at its corner and up to two buttons, fitted to Discord's
-  limits. What the activity holds is the app's choice
-  (`internal/app/discordstatus.go`): `DiscordActivity` makes it of what
-  plays and the settings, as a pure function that the settings page's
-  preview draws too, and `presence` sends it again whenever the track, the
-  play or pause, the position or those settings change. The badges of
-  the services and of a pause are `brand/discord`'s PNGs, drawn by
-  `tools/discordbadges`, which Discord reads from GitHub by their
-  addresses, whatever the application.

@@ -28,10 +28,7 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 			Volume:    -1,
 			Equalizer: Equalizer{Gains: []float64{99, -99}},
 		},
-		Tools: Tools{JSRuntime: "python"},
-		Addons: Addons{
-			EnabledPlugins: []string{"sleep-timer", "sleep-timer", "Bad ID", "../x"},
-		},
+		Tools:    Tools{JSRuntime: "python"},
 		Accounts: Accounts{YouTubeChannel: "1234; x"},
 	}.Clean()
 	if s.Theme != DefaultTheme || s.Accent != "" || s.FontScale != 1 {
@@ -40,8 +37,8 @@ func TestCleanClampsAndRepairs(t *testing.T) {
 	if s.Crossfade != 12 || s.Volume != 0 || len(s.Equalizer.Gains) != len(Bands) {
 		t.Errorf("ranges not clamped: %+v", s)
 	}
-	if s.JSRuntime != "" || len(s.EnabledPlugins) != 1 {
-		t.Errorf("tools and add-ons not repaired: %+v", s)
+	if s.JSRuntime != "" {
+		t.Errorf("tools not repaired: %+v", s)
 	}
 	if s.YouTubeChannel != "" {
 		t.Errorf("a channel that is not a page ID was kept: %q", s.YouTubeChannel)
@@ -135,47 +132,12 @@ func TestCleanCopies(t *testing.T) {
 	s := Default()
 	s.ThemeOptions = map[string]map[string]string{"mix": {"texture": "dots"}}
 	s.Shortcuts = map[string]string{"player.toggle": "Space"}
-	s.EnabledPlugins = []string{"spectrum"}
 	c := s.Clean()
 	c.Equalizer.Gains[0] = 6
 	c.ThemeOptions["mix"]["texture"] = "none"
 	c.Shortcuts["player.toggle"] = "K"
-	c.EnabledPlugins[0] = "other"
-	if s.Equalizer.Gains[0] != 0 || s.ThemeOptions["mix"]["texture"] != "dots" || s.Shortcuts["player.toggle"] != "Space" || s.EnabledPlugins[0] != "spectrum" {
-		t.Errorf("changing the cleaned settings changed the settings: %v %v %v %v", s.Equalizer.Gains, s.ThemeOptions, s.Shortcuts, s.EnabledPlugins)
-	}
-}
-
-// TestDiscordPresence shows what plays on Discord in new installs and in
-// the settings of earlier versions, where it was off until the user set it
-// up, unless they set it up and turned it off.
-func TestDiscordPresence(t *testing.T) {
-	if d := Default(); !d.DiscordPresence || d.DiscordApp() != DefaultDiscordAppID {
-		t.Errorf("a new install shows on Discord %v, as %q", d.DiscordPresence, d.DiscordApp())
-	}
-	const own = "123456789012345678"
-	for _, c := range []struct {
-		file string
-		want bool
-	}{
-		{`{}`, true},
-		{`{"discordPresence":false}`, true},
-		{`{"discordPresence":false,"discordAppId":"  "}`, true},
-		{`{"discordPresence":true,"discordAppId":"` + own + `"}`, true},
-		{`{"discordPresence":false,"discordAppId":"` + own + `"}`, false},
-		{`{"showOnDiscord":false}`, false},
-		{`{"showOnDiscord":true,"discordPresence":false,"discordAppId":"` + own + `"}`, true},
-	} {
-		s := Default()
-		if err := json.Unmarshal([]byte(c.file), &s); err != nil {
-			t.Fatal(err)
-		}
-		if s.DiscordPresence != c.want {
-			t.Errorf("%s shows on Discord %v, not %v", c.file, s.DiscordPresence, c.want)
-		}
-	}
-	if got := (Settings{Desktop: Desktop{DiscordAppID: own}}).DiscordApp(); got != own {
-		t.Errorf("the user's application became %q", got)
+	if s.Equalizer.Gains[0] != 0 || s.ThemeOptions["mix"]["texture"] != "dots" || s.Shortcuts["player.toggle"] != "Space" {
+		t.Errorf("changing the cleaned settings changed the settings: %v %v %v", s.Equalizer.Gains, s.ThemeOptions, s.Shortcuts)
 	}
 }
 
@@ -273,37 +235,6 @@ func TestCleanLayout(t *testing.T) {
 		LayoutExpressive: LayoutExpressive, LayoutCrate: LayoutCrate, LayoutTiles: LayoutTiles} {
 		if got := (Settings{Appearance: Appearance{Layout: in}}).Clean().Layout; got != want {
 			t.Errorf("Clean of layout %q = %q, want %q", in, got, want)
-		}
-	}
-}
-
-// TestColorSource starts with the theme's colours, drops a source it
-// doesn't know and a path too long to be one, and keeps a pasted path
-// without its spaces and quotes.
-func TestColorSource(t *testing.T) {
-	if d := Default(); d.ColorSource != ColorsTheme || d.ColorFile != "" {
-		t.Errorf("a new install reads a colour file: %q %q", d.ColorSource, d.ColorFile)
-	}
-	for _, source := range []ColorSource{ColorsTheme, ColorsPywal, ColorsMatugen, ColorsFile} {
-		if got := (Settings{Appearance: Appearance{ColorSource: source}}).Clean().ColorSource; got != source {
-			t.Errorf("Clean made %q %q", source, got)
-		}
-	}
-	if got := (Settings{Appearance: Appearance{ColorSource: "wallust"}}).Clean().ColorSource; got != ColorsTheme {
-		t.Errorf("an unknown source stayed: %q", got)
-	}
-	for in, want := range map[string]string{
-		"  ~/.cache/wal/colors.json ":    "~/.cache/wal/colors.json",
-		`"C:\Users\me\colors.json"`:      `C:\Users\me\colors.json`,
-		` " /home/me/my colours.json " `: "/home/me/my colours.json",
-		`"`:                              `"`,
-		"/" + strings.Repeat("a", 5000):  "",
-		"/" + strings.Repeat("a", 4095):  "/" + strings.Repeat("a", 4095),
-		`/home/me/"quoted" name.json`:    `/home/me/"quoted" name.json`,
-		"":                               "",
-	} {
-		if got := (Settings{Appearance: Appearance{ColorFile: in}}).Clean().ColorFile; got != want {
-			t.Errorf("Clean made the colour file %q %q, want %q", in, got, want)
 		}
 	}
 }

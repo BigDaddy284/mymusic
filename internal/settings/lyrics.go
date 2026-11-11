@@ -5,14 +5,6 @@ import (
 	"slices"
 )
 
-// The ways of showing lyrics in Latin letters (LyricsRomanize).
-const (
-	// RomanizeUnder shows each line in Latin letters under it.
-	RomanizeUnder = "under"
-	// RomanizeOnly shows the lines in Latin letters in place of theirs.
-	RomanizeOnly = "only"
-)
-
 // languageRe matches the code of a language, as "ja" or "zh-Hant".
 var languageRe = regexp.MustCompile(`^[a-z]{2,3}(-[A-Z][a-z]{3})?$`)
 
@@ -25,17 +17,12 @@ type Lyrics struct {
 	// codes of ISO 639-1 as "ja": their translation shows under each line.
 	// "" stands for lyrics whose language MyTube can't tell.
 	LyricsTranslate []string `json:"lyricsTranslate"`
-	// LyricsRomanize shows the lyrics of a language in Latin letters,
-	// RomanizeUnder or RomanizeOnly, by the language's code; lyrics of
-	// other languages show as they are written.
-	LyricsRomanize map[string]string `json:"lyricsRomanize"`
 }
 
 // defaultLyrics is how a new install shows the lyrics.
 func defaultLyrics() Lyrics {
 	var l Lyrics
 	l.LyricsTranslate = []string{}
-	l.LyricsRomanize = map[string]string{}
 	return l
 }
 
@@ -48,13 +35,6 @@ func (l Lyrics) clean() Lyrics {
 		}
 	}
 	l.LyricsTranslate = translate
-	romanize := map[string]string{}
-	for lang, how := range l.LyricsRomanize {
-		if (lang == "" || languageRe.MatchString(lang)) && (how == RomanizeUnder || how == RomanizeOnly) && len(romanize) < 200 {
-			romanize[lang] = how
-		}
-	}
-	l.LyricsRomanize = romanize
 	return l
 }
 

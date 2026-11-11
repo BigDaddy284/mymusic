@@ -7,8 +7,7 @@ belongs to its main thread: what finishes elsewhere comes back through
 
 - **Refresh** (F5, `refresh.go`) asks again for the keys
   the page shown and the side panel fetched in the frame before, as
-  `fetch` collects them, and renders the plugins' views again
-  (`View.Remount`). The page keeps its answers until the new ones come,
+  `fetch` collects them. The page keeps its answers until the new ones come,
   and keeps them when a refresh fails, which one toast tells. Home's own
   tile and shelves read the library as it is, and need no refresh.
 - **Home's arrangement** (`homelayout.go`, `homeshelves.go`,
@@ -138,16 +137,14 @@ belongs to its main thread: what finishes elsewhere comes back through
   came, up to 256 MB, and logs a host's failures at most once a minute,
   without the addresses.
 - **Themes** give their tokens: colours, fonts, radius (`theme.go`), and
-  the accent follows the artwork of what plays. A colour file's colours
-  replace the theme's, kept readable (`colorfile.go`). The layout design
+  the accent follows the artwork of what plays. The layout design
   the user chose, Blend, Expressive, Crate or Tiles, sets the shapes, the
   density and the styles of the parts in whatever theme (`layout.go`).
   The windows draw the effects of the built-in themes, as their options
   say (`effects.go`): Mix's textures, Aurora's drifting lights and frosted
   dialogs, Sakura's petals, Terminal's scanlines, glow and phosphor
   artwork. The Material themes make their colours of a seed in HCT
-  (`material.go`, `internal/hct`, a port of Material Color Utilities),
-  unless a colour file gives them.
+  (`material.go`, `internal/hct`, a port of Material Color Utilities).
 - **The wavy progress bar** (`wavy.go`), while Settings asks for it, is a
   `SliderBase` drawn as the theme draws its sliders, but for the played
   part: a wave whose points its `Draw` works out from `p.Now()`, so that
@@ -157,11 +154,7 @@ belongs to its main thread: what finishes elsewhere comes back through
   still. Flat, it is the theme's slider to the pixel, which
   `TestWavyProgress` checks.
 - **Lyrics** light the line sung now, and its words as they are sung when
-  they have times (`lyricswords.go`); in Latin letters made on the
-  computer, under the line or in its place, each word's romanization
-  lights at its word's times (`lyricsromanize.go`, `sungText`), where
-  Unison's and romaji's, which have no words, light whole, as below.
-  Lines of TTML synced word by word
+  they have times (`lyricswords.go`, `sungText`). Lines of TTML synced word by word
   keep their words' times (`lyrics.Line.Words`): each span with a begin
   time is a word, or a syllable, and a line with sung text outside of them
   has none. The line's text element is clear, and its Draw paints the
@@ -169,8 +162,7 @@ belongs to its main thread: what finishes elsewhere comes back through
   sung in the accent. The song's time moves on from the position the
   player last told, at the track's speed, for 1.5 s at most, so the words
   fill in frames that only paint again; Reduce Motion lights each word
-  whole as it starts. Lines shown in Latin letters in their place light
-  whole.
+  whole as it starts.
 - **The mini player's volume** (`minivolume.go`) is a button that mutes,
   and the player bar's slider above it, in a popover that shows while the
   pointer is over either, a drag holds it or the keyboard's focus is on

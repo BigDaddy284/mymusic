@@ -11,7 +11,6 @@ import (
 	"github.com/egoist/mygo/ui"
 
 	"github.com/bigdaddy284/mymusic/internal/addons"
-	"github.com/bigdaddy284/mymusic/internal/colorfile"
 	"github.com/bigdaddy284/mymusic/internal/settings"
 )
 
@@ -62,9 +61,6 @@ func (s *shell) themeSettings(c *ui.Context) {
 		}
 	}, func() {
 		follow := "Show one theme while the computer is in light mode and another in dark mode. The theme you pick below is the one for the mode it is in now."
-		if s.oneMode {
-			follow = "Show one theme in light mode and another in dark mode. Your colour file's colours are light or dark, so the theme of their mode shows."
-		}
 		s.row(c, "Follow the computer", follow, func() {
 			if s.switchOf(c.Key("follow"), &s.set.FollowSystem).Label("Follow the computer").Changed() {
 				s.save()
@@ -73,9 +69,6 @@ func (s *shell) themeSettings(c *ui.Context) {
 		if s.set.FollowSystem {
 			s.row(c, "In light mode", "", func() { s.themeSelect(c, "light-theme", "Theme in light mode", &s.set.LightTheme) })
 			s.row(c, "In dark mode", "", func() { s.themeSelect(c, "dark-theme", "Theme in dark mode", &s.set.DarkTheme) })
-		}
-		if !s.wornColors().Empty() {
-			s.hint(c, "Your colour file sets the colours. The theme sets the type, corners and effects.")
 		}
 		// The search finds a theme's card by the theme's name, who made it,
 		// and whether it is light or dark.
@@ -132,10 +125,6 @@ func init() { addSettings(colorTypeRows, 20, (*shell).accentRows) }
 // accentRows choose where the accent colour comes from.
 func (s *shell) accentRows(c *ui.Context) {
 	artwork, accent := "Take the accent colour from the artwork of what plays.", "Replaces the theme's accent when the artwork does not set it."
-	if s.set.ColorSource != settings.ColorsTheme {
-		artwork = "Take the accent colour from the artwork of what plays, over your colour file's."
-		accent = "Replaces your colour file's accent when the artwork does not set it."
-	}
 	s.row(c, "Follow the artwork", artwork, func() {
 		if s.switchOf(c.Key("dynamic-accent"), &s.set.DynamicAccent).Label("Follow the artwork").Changed() {
 			s.save()
@@ -280,7 +269,7 @@ func (s *shell) cardLook(id string) *look {
 	}
 	tk, ok := s.cardLooks[id]
 	if !ok {
-		l := newLook(settings.Settings{Appearance: settings.Appearance{Theme: id, FontScale: 1, Layout: s.set.Layout}}, themes, false, "", colorfile.Colors{})
+		l := newLook(settings.Settings{Appearance: settings.Appearance{Theme: id, FontScale: 1, Layout: s.set.Layout}}, themes, false, "")
 		tk = &l
 		s.cardLooks[id] = tk
 	}
@@ -290,11 +279,7 @@ func (s *shell) cardLook(id string) *look {
 // accentControl chooses the accent colour.
 func (s *shell) accentControl(c *ui.Context) {
 	s.colorControl(c, "accent", "Accent colour", s.chosenAccent(), func(hex string) { s.set.Accent = hex })
-	whose := "use the theme's"
-	if !s.wornColors().Empty() {
-		whose = "use the file's"
-	}
-	if s.set.Accent != "" && s.link(c, "accent-theme", whose) {
+	if s.set.Accent != "" && s.link(c, "accent-theme", "use the theme's") {
 		s.set.Accent = ""
 		s.wells["accent"].edits = 0
 		s.save()
@@ -446,13 +431,4 @@ func (s *shell) chosenAccent() ui.Color {
 		return col(a)
 	}
 	return s.lk.themeAccent
-}
-
-// wornColors are the colour file's colours the look wears, none while the
-// theme's show.
-func (s *shell) wornColors() colorfile.Colors {
-	if s.set.ColorSource == settings.ColorsTheme {
-		return colorfile.Colors{}
-	}
-	return s.colorFile.Colors
 }

@@ -81,61 +81,31 @@ talks to:
 - **Lyrics:** [Unison](https://unison.boidu.dev), an open, crowdsourced
   database of lyrics, first, then [LRCLIB](https://lrclib.net), then
   YouTube Music's own lyrics. Unison also translates lyrics, through
-  Google, and romanizes Arabic, but only while you turn those on.
-- **Latin letters for lyrics** are made on your computer for every other
-  script. Japanese romaji reads kanji with a dictionary MyTube downloads
-  from GitHub the first time you turn romaji on (11.7 MB); the readings of
-  Chinese are built in.
+  Google, but only while you turn that on.
 - **Last.fm**, once you connect it: what you play, to scrobble.
-- **Discord**, through the Discord app on your computer, over its local
-  pipe or socket: what plays, for your profile.
 - **Cast devices** on your network, such as Chromecasts and Nest
   speakers, which MyTube finds and speaks to itself, in Go.
-- **GitHub**, for new versions of MyTube, for yt-dlp, and for the kanji
-  dictionary.
+- **GitHub**, for yt-dlp.
 
 To tell whether the network answers, MyTube asks YouTube's addresses
 over HTTPS. [Your data and privacy](data-and-privacy.md) lists
 what each of these gets.
 
-## Themes and plugins
+## Themes
 
 - **Themes** are a `theme.json` file of colours, fonts and corners.
   MyTube draws every theme in the layout you choose in Settings ›
-  Appearance: Blend (the default), Expressive, Crate or Tiles. It can
-  also take its colours from a file that pywal or matugen write, and
-  follows the file as it changes. [Themes](themes.md) lists every token.
-- **Plugins** are JavaScript modules, usually compiled from TypeScript.
-  Each plugin you enable runs in a JavaScript engine of its own,
-  [Sobek](https://github.com/grafana/sobek), written in Go, with
-  `console`, timers, `fetch` and MyTube's plugin API. A plugin's pages
-  and widgets are elements that MyTube draws in your theme, and its
-  canvases are drawing calls that MyTube paints. The permissions a
-  plugin lists are shown to you, not enforced, so MyTube asks you to
-  trust a plugin before it enables it. [Plugins](plugins.md) documents the
-  API. MyTube loads the add-ons it ships with and those you put in your
-  add-ons folders; it doesn't download any.
+  Appearance: Blend (the default), Expressive, Crate or Tiles.
+  [Themes](themes.md) lists every token.
+  MyTube loads the themes it ships with and those you put in your themes
+  folder; it doesn't download any.
 
 ## Updates
 
 ### MyTube itself
 
-- **When it looks.** MyTube asks GitHub for its newest release 10
-  seconds after it starts, then every 6 hours, and when the computer
-  wakes after a check was due. A check that fails is tried again an hour
-  later. Settings › About › Updates has the switches: Check for updates,
-  and Install updates without asking. A development copy, run with
-  `bun run dev`, never looks.
-- **What it offers.** A new version asks to install in a pop-up, unless
-  you chose to install updates without asking. Later asks again at the
-  next start, or after a day; skip this version waits for the version
-  after it.
-- **How it installs.** The installer and the portable zip replace
-  themselves. They download the update file of the release made for
-  their system, or a smaller delta from the version
-  before. Each is signed with MyTube's key, whose public half is built
-  into the app: a file whose signature doesn't match is never installed.
-  The new version runs once MyTube restarts.
+MyTube doesn't look for new versions of itself, or install them: get a
+new one from the releases page when you want it.
 
 ### yt-dlp and the JavaScript runtime
 

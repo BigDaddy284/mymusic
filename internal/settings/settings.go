@@ -35,7 +35,6 @@ type Settings struct {
 	Desktop
 	Tools
 	Keys
-	Addons
 	Watching
 }
 
@@ -52,35 +51,24 @@ func Default() Settings {
 	s.Accounts = defaultAccounts()
 	s.Desktop = defaultDesktop()
 	s.Keys = defaultKeys()
-	s.Addons = defaultAddons()
 	s.Watching = defaultWatching()
 	return s
 }
 
-// idRe matches the ID of a theme or a plugin.
+// idRe matches the ID of a theme.
 var idRe = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,63}$`)
 
-// UnmarshalJSON reads settings, those of the versions before 0.5.6 too,
-// where Discord showed nothing until the user turned it on and pasted the
-// ID of an application of theirs. Those settings show what plays now,
-// unless the user had pasted an ID and turned it off.
+// UnmarshalJSON reads settings.
 func (s *Settings) UnmarshalJSON(data []byte) error {
 	type plain Settings
 	if err := json.Unmarshal(data, (*plain)(s)); err != nil {
 		return err
 	}
 	s.readPaths()
-	var keys struct {
-		Before *bool `json:"discordPresence"`
-		Now    *bool `json:"showOnDiscord"`
-	}
-	if json.Unmarshal(data, &keys) == nil && keys.Now == nil && keys.Before != nil {
-		s.DiscordPresence = *keys.Before || strings.TrimSpace(s.DiscordAppID) == ""
-	}
 	return nil
 }
 
-// ValidID reports whether id can name a theme or a plugin: lowercase
+// ValidID reports whether id can name a theme: lowercase
 // letters, digits and dashes.
 func ValidID(id string) bool { return idRe.MatchString(id) }
 
@@ -111,7 +99,6 @@ func (s Settings) Clean() Settings {
 	s.Desktop = s.Desktop.clean()
 	s.Tools = s.Tools.clean()
 	s.Keys = s.Keys.clean()
-	s.Addons = s.Addons.clean()
 	s.Watching = s.Watching.clean()
 	return s
 }

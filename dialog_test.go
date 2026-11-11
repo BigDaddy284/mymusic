@@ -8,7 +8,6 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"github.com/bigdaddy284/mymusic/internal/app"
 	"github.com/bigdaddy284/mymusic/internal/player"
 )
 
@@ -79,45 +78,15 @@ func TestPaletteFollowsArrows(t *testing.T) {
 	shows(t, tt, h, themes[len(themes)-1], 36)
 }
 
-// TestOfferFirstFocus opens the update offer with the focus on later, not
-// on skip this version, which a Space pressed for the music, or typed in
-// the search box the offer takes the focus from, would press.
-func TestOfferFirstFocus(t *testing.T) {
-	offer := &app.Release{Version: "9.9.9", Newer: true, Page: "https://example.invalid/notes",
-		Download: "https://example.invalid/m.exe", File: "mytube-setup-9.9.9-amd64.exe"}
-	s := newTestShell(t)
-	tt := tester(t, s)
-	s.offer = offer
-	tt.Frame()
-	// Focused holds for an element holding the focus too, as the dialog's
-	// panel would: skip this version has it then.
-	if !tt.Focused("later") || tt.Focused("skip this version") {
-		t.Error("the offer opens with the focus elsewhere than on later")
-	}
-
-	s = newTestShell(t)
-	tt = tester(t, s)
-	tt.Key(ui.Cmd, ui.KeyF)
-	tt.Frame()
-	tt.Type("lua")
-	tt.Frame()
-	s.offer = offer
-	tt.Frame()
-	if !tt.Focused("later") || tt.Focused("skip this version") {
-		t.Error("the offer, opening over the search box, leaves the focus elsewhere than on later")
-	}
-}
-
 // longNotes are the notes of a release longer than a short window shows.
 const longNotes = "Added\n- Dislike songs, and skip the ones you dislike.\n- Podcasts on YouTube Music, with their episodes.\n" +
 	"- A sleep timer that fades the music out.\nFixed\n- The saved queue resumes on the right track past 500 tracks.\n" +
 	"- Shuffle no longer repeats a track before the rest have played.\n- A stream that stalls retries from where it stopped.\n" +
 	"- The mini player keeps its place on a second display.\n- Lyrics follow a seek at once."
 
-// testOffer is a release whose notes take more room than a short window
-// has.
-var testOffer = app.Release{Version: "9.9.9", Newer: true, Page: "https://example.invalid/notes",
-	Download: "https://example.invalid/m.exe", File: "mytube-setup-9.9.9-amd64.exe", Notes: longNotes}
+// askLong asks a question whose message takes more room than a short
+// window has, whose ok is "later".
+func askLong(s *shell) { s.ask("A long question", longNotes, "later", func() {}) }
 
 // atTextSize sets the text size of the shell's settings.
 func atTextSize(t *testing.T, s *shell, scale float64) {
@@ -167,26 +136,15 @@ func testMix(t *testing.T, s *shell, tt *ui.Tester) string {
 	return p.ID
 }
 
-// enableMessage is what enabling a plugin that asks for everything says,
-// as long as a question gets.
-const enableMessage = "Plugins can control the player, change your library and reach the internet, whatever they ask for. " +
-	"Enable plugins from authors you trust. It asks for: network, notifications, storage, playback."
+// removeMessage is what removing a theme says, as long as a question
+// gets.
+const removeMessage = "The theme and its files are deleted from the add-ons folder. Your settings, library and mixes stay, " +
+	"and you can put the theme back in the folder whenever you like."
 
 // dialogCases are the dialogs of the window of s.
 func dialogCases(s *shell) []dialogCase {
-	u := s.svc.System.Updates()
-	act := downloadLabel(u.Kind)
-	if u.Enabled {
-		act = "install 9.9.9"
-	}
 	named, ran := "", false
 	return []dialogCase{
-		{name: "update offer", title: "mytube 9.9.9 is out", buttons: []string{"skip this version", "what's new", "later", act},
-			open: func(t *testing.T, s *shell, tt *ui.Tester) {
-				offer := testOffer
-				s.offer = &offer
-			},
-			press: "later", done: func(s *shell, _ *ui.Tester) bool { return s.offer == nil }, last: "You have "},
 		{name: "new mix", title: "new mix", buttons: []string{"cancel", "create"},
 			open: func(t *testing.T, s *shell, tt *ui.Tester) {
 				s.promptName("New mix", "Name", "late night drive", "create", func(name string) { named = name })
@@ -200,11 +158,11 @@ func dialogCases(s *shell) []dialogCase {
 				mixes := s.svc.Collection.Playlists()
 				return len(mixes) == 1 && mixes[0].Title == "early morning drive"
 			}},
-		{name: "question", title: "enable An Ambient Visualiser For Late Night Listening", buttons: []string{"cancel", "enable"},
+		{name: "question", title: "remove An Ambient Visualiser Theme For Late Night Listening", buttons: []string{"cancel", "remove"},
 			open: func(t *testing.T, s *shell, tt *ui.Tester) {
-				s.ask("enable An Ambient Visualiser For Late Night Listening", enableMessage, "enable", func() { ran = true })
+				s.ask("remove An Ambient Visualiser Theme For Late Night Listening", removeMessage, "remove", func() { ran = true })
 			},
-			press: "enable", done: func(*shell, *ui.Tester) bool { return ran }, last: "Plugins can"},
+			press: "remove", done: func(*shell, *ui.Tester) bool { return ran }, last: "The theme and"},
 		{name: "delete mix", title: "delete mix", buttons: []string{"cancel", "delete"},
 			open: func(t *testing.T, s *shell, tt *ui.Tester) {
 				s.deleting, s.deleteTitle, s.deleteID = true, "late night drive", testMix(t, s, tt)
@@ -266,14 +224,12 @@ func TestDialogsInShortWindows(t *testing.T) {
 					if body, ok := tt.Find("more of " + d.title); ok {
 						tt.Scroll(body.X+body.W/2, body.Y+body.H/2, 0, 1e4)
 						tt.Frame()
-					} else if h <= 360 && (d.name == "update offer" || d.name == "question" && scale > 1) {
+					} else if h <= 360 && d.name == "question" && scale > 1 {
 						// Where the text wraps can differ by system and from
 						// one run to the next: with text at its usual size,
 						// the question is only about 40 DIPs too tall for
-						// this window here. These are too tall in any: the
-						// offer by its
-						// eight lines of notes, and the question with text
-						// at its largest, by a third of the room.
+						// this window here. With text at its largest it is
+						// too tall in any, by a third of the room.
 						t.Error("the body doesn't scroll in a window too short for it")
 					}
 					if r, ok := tt.Find(textStarting(tt, d.last)); d.last != "" && (!ok || r.H < 10 || r.Y+r.H > top+0.5) {
@@ -305,11 +261,10 @@ func TestDialogBodyKeys(t *testing.T) {
 	s.p.SetVolume(0.5)
 	s.settle(t, func(st player.State) bool { return st.Playing && st.Volume == 0.5 })
 	tt := testerOf(t, s, 911, 425)
-	offer := testOffer
-	s.offer = &offer
+	askLong(s)
 	tt.Frame()
 	tt.Advance(time.Second)
-	body := "more of mytube 9.9.9 is out"
+	body := "more of A long question"
 	for range 8 {
 		if tt.Focused(body) {
 			break
@@ -320,7 +275,7 @@ func TestDialogBodyKeys(t *testing.T) {
 	if !tt.Focused(body) {
 		t.Fatal("Tab doesn't reach the body")
 	}
-	sc := &s.dialogScrolls["offer"].state
+	sc := &s.dialogScrolls["question"].state
 	tt.Key(0, ui.KeyDown)
 	tt.Frame()
 	tt.Advance(time.Second)
@@ -346,8 +301,8 @@ func TestDialogBodyKeys(t *testing.T) {
 	}
 	tt.Key(0, ui.KeyEnter)
 	tt.Frame()
-	if s.offer != nil {
-		t.Error("Enter on later left the offer")
+	if s.asking != nil {
+		t.Error("Enter on later left the question")
 	}
 }
 
@@ -356,18 +311,18 @@ func TestDialogBodyKeys(t *testing.T) {
 func TestDialogsInTallWindows(t *testing.T) {
 	s := newTestShell(t)
 	tt := tester(t, s)
-	offer := testOffer
-	s.offer = &offer
+	askLong(s)
 	tt.Frame()
 	tt.Advance(time.Second)
 	for range 6 {
 		tt.Key(0, ui.KeyTab)
 		tt.Frame()
-		if tt.HasText("more of mytube 9.9.9 is out") {
-			t.Fatal("the body of an offer the window shows whole takes the focus")
+		if tt.HasText("more of A long question") {
+			t.Fatal("the body of a question the window shows whole takes the focus")
 		}
 	}
-	s.offer = nil
+	s.asking = nil
+	tt.Frame()
 	s.promptName("New mix", "Name", "", "create", func(string) {})
 	tt.Frame()
 	if !tt.Focused("Name") || tt.Focused("cancel") {
@@ -380,25 +335,24 @@ func TestDialogOpensAtTop(t *testing.T) {
 	s := newTestShell(t)
 	atTextSize(t, s, 1.3)
 	tt := testerOf(t, s, 911, 425)
-	offer := testOffer
-	s.offer = &offer
+	askLong(s)
 	tt.Frame()
 	tt.Advance(time.Second)
-	body, ok := tt.Find("more of mytube 9.9.9 is out")
+	body, ok := tt.Find("more of A long question")
 	if !ok {
-		t.Fatal("the offer's body doesn't scroll")
+		t.Fatal("the question's body doesn't scroll")
 	}
 	tt.Scroll(body.X+body.W/2, body.Y+body.H/2, 0, 1e4)
 	tt.Frame()
-	if s.dialogScrolls["offer"].state.Y == 0 {
+	if s.dialogScrolls["question"].state.Y == 0 {
 		t.Fatal("the body didn't scroll")
 	}
 	click(t, s, tt, "later")
-	s.offer = &offer
+	askLong(s)
 	tt.Frame()
 	tt.Advance(time.Second)
-	if y := s.dialogScrolls["offer"].state.Y; y != 0 {
-		t.Errorf("the offer opened again scrolled to %v", y)
+	if y := s.dialogScrolls["question"].state.Y; y != 0 {
+		t.Errorf("the question opened again scrolled to %v", y)
 	}
 }
 
@@ -410,10 +364,10 @@ func TestQuestionKeeps(t *testing.T) {
 	s := newTestShell(t)
 	tt := tester(t, s)
 	ran, canceled := false, false
-	s.ask("enable Hello", enableMessage, "enable", func() { ran = true })
+	s.ask("remove Ocean", removeMessage, "remove", func() { ran = true })
 	s.asking.cancel = func() { canceled = true }
 	tt.Frame()
-	if !tt.Focused("enable") || tt.Focused("cancel") {
+	if !tt.Focused("remove") || tt.Focused("cancel") {
 		t.Error("the question opens with the focus elsewhere than on its ok")
 	}
 	tt.ClickAt(5, 5)

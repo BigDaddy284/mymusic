@@ -15,7 +15,7 @@ type command struct {
 	run                        func()
 }
 
-// commands are MyTube's own commands, and those of plugins.
+// commands are MyTube's commands.
 func (s *shell) commands() []command {
 	cur, playing := s.st.Current()
 	cmds := []command{
@@ -75,17 +75,12 @@ func (s *shell) commands() []command {
 		{"view.zoomOut", "Zoom out", "Mod+-", "view", func() { s.zoomBy(-1) }},
 		{"view.zoomReset", "Reset zoom", "Mod+0", "view", func() { s.setZoom(1) }},
 		{"addons.reload", "Reload add-ons", "", "add-ons", func() {
-			s.plugins.Retry()
 			s.svc.Addons.Reload()
 			s.notes = append(s.notes, notice("Add-ons reloaded"))
 		}},
 		{"settings.openFile", "Open the settings file", "", "settings", s.openSettingsFile},
 	}
-	cmds = append(cmds, s.themeCommands...)
-	for _, pc := range s.plugins.Commands() {
-		cmds = append(cmds, command{pc.ID, pc.Title, pc.Shortcut, "plugins", pc.Run})
-	}
-	return cmds
+	return append(cmds, s.themeCommands...)
 }
 
 // stepSpeed moves the speed of the kind of track that plays, songs or

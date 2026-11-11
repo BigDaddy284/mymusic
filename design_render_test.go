@@ -200,7 +200,7 @@ func renderDesign(t *testing.T, dir string, layout settings.Layout, theme string
 	s.paletteOpen = true
 	renderTo(t, s, tt, dir, name+"-palette")
 	s.paletteOpen = false
-	s.ask("enable Hello", enableMessage, "enable", func() {})
+	s.ask("remove Ocean", removeMessage, "remove", func() {})
 	renderTo(t, s, tt, dir, name+"-dialog")
 	s.asking = nil
 	renderTo(t, s, ui.NewTester(s.miniView, 420, 132), dir, name+"-mini")

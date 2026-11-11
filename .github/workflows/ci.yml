@@ -44,17 +44,6 @@ jobs:
           mkdir -p "$RUNNER_TEMP/opus-vectors"
           # Windows paths start with a drive letter, which GNU tar reads as a remote host.
           cd "$RUNNER_TEMP" && tar -xzf opus-vectors.tar.gz -C opus-vectors
-      # The example plugins' JavaScript, which tests run: main keeps their
-      # TypeScript only.
-      - uses: oven-sh/setup-bun@v2
-      - name: Compile the example plugins
-        run: |
-          bun install --frozen-lockfile
-          bun run build:plugins
-      # The romaji tests read the IPA dictionary, which the app downloads,
-      # from its module, checked against go.sum: the app doesn't build it in.
-      - name: Download the dictionary of the romaji tests
-        run: go mod download github.com/ikawaha/kagome-dict/ipa@v1.2.6
       - name: Test
         run: go test ./...
         env:
@@ -62,28 +51,7 @@ jobs:
       - name: Changelog fragments
         run: go run ./tools/changelog -check
 
-  # The plugin API's types, and the example plugins against them.
-  sdk:
-    name: Plugin SDK
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-      - run: bun install --frozen-lockfile
-      - run: bun run typecheck
-      # The plugin API is written in TypeScript, and ships the JavaScript it
-      # compiles to, which the Go side embeds: main keeps it, and it must be
-      # what its TypeScript compiles to. The example plugins compile too,
-      # into JavaScript main doesn't keep.
-      - name: The plugins compile, and api.js is what api.ts compiles to
-        run: |
-          bun run build:plugins
-          if ! git diff --exit-code -- internal/plugins/api.js; then
-            echo "Run bun run build:plugins, and commit internal/plugins/api.js" >&2
-            exit 1
-          fi
-
-  # The website, as pages.yml builds it: the docs' pages made from
+  # The website: the docs' pages made from
   # docs/*.md and the folders of docs with a README.md, which fails on a
   # link to a file the repository lacks, and
   # the site built with Zola, which fails on a broken link between them.
@@ -105,7 +73,7 @@ jobs:
   # Ubuntu cross-compiles it, and NSIS makes its installer.
   build:
     name: Build windows/amd64
-    needs: [go, sdk]
+    needs: [go]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

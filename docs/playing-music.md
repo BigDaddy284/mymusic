@@ -138,7 +138,7 @@ YouTube's live streams play, such as its 24/7 radio channels, from about 15 seco
 - A live stream ends only when its broadcast does.
 - After a pause of up to about an hour, it goes on from where it was; after a longer one, from near the live edge.
 - It plays at its own level, as YouTube measures none for Even loudness, and at its own speed. Data saver plays its 22 kHz stream.
-- It isn't kept in the [offline cache](library.md#the-offline-cache), doesn't download, and isn't scrobbled to Last.fm, which hears only that it plays. [Discord](desktop.md#discord) shows how long it played. Live streams don't [cast](casting.md) yet.
+- It isn't kept in the [offline cache](library.md#the-offline-cache), doesn't download, and isn't scrobbled to Last.fm, which hears only that it plays. Live streams don't [cast](casting.md) yet.
 
 ## The picture of music videos
 
@@ -192,4 +192,4 @@ Quality, in Settings › Playback › Sound, chooses between best and data saver
 
 ## A sleep timer
 
-MyTube has no sleep timer of its own. The example Sleep Timer plugin, in the repository's [examples](../examples/README.md), adds one once you [put it in your plugins folder](addons.md#add-a-theme-or-a-plugin) and enable it: it fades the music out over 30 seconds and pauses it after 15, 30, 45, 60 or 90 minutes, or at the end of the track. It adds a sleep timer page to the sidebar and commands to the command palette, such as "Sleep timer: 30 minutes" and "Sleep timer: cancel".
+MyTube has no sleep timer.

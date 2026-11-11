@@ -51,7 +51,7 @@ func TestSettingsOrder(t *testing.T) {
 	tt := testerOf(t, s, 1280, 4400)
 	for path, texts := range map[string][]string{
 		"/settings/appearance": {"layout", "Layout", "theme", "Follow the computer", "mix options", "colour and type",
-			"Colours from a file", "Follow the artwork", "Accent colour", "Zoom", "Text size", "Density", "Icons only in the sidebar"},
+			"Follow the artwork", "Accent colour", "Zoom", "Text size", "Density", "Icons only in the sidebar"},
 		"/settings/playback": {"sound", "Quality", "Crossfade", "Even loudness",
 			"Volume levelling", "Play 5.1 surround when a track has it", "Autoplay", "Skip songs made with AI",
 			"Skip songs you dislike", "speed", "music videos", "equalizer", "lyrics", "offline cache", "downloads", "tools"},

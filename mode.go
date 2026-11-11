@@ -76,7 +76,7 @@ func isVideoPath(path string) bool {
 func isSharedPath(path string) bool {
 	first, _, _ := strings.Cut(strings.TrimPrefix(path, "/"), "/")
 	first, _, _ = strings.Cut(first, "?")
-	return first == "settings" || first == "stats" || first == "plugin"
+	return first == "settings" || first == "stats"
 }
 
 // followMode puts the window on the side of the page path, when it is one

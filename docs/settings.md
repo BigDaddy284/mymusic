@@ -12,7 +12,7 @@ there's nothing to save.
 ## The pages of Settings
 
 Settings has seven sections, named across its top: Appearance, Playback,
-Accounts, Plugins, Desktop, Shortcuts and About. Each is a list of groups,
+Videos, Accounts, Desktop, Shortcuts and About. Each is a list of groups,
 and each group a list of rows.
 
 ### Appearance
@@ -24,7 +24,7 @@ How MyTube looks; [Look and feel](look-and-feel.md) tells all of it.
 | [Layout](look-and-feel.md#layouts) | Blend, Expressive, Crate or Tiles. |
 | [Theme](look-and-feel.md#themes) | **Follow the computer**, with **In light mode** and **In dark mode**; a card for each theme, and **open themes folder**. Themes that didn't load are listed with the reason. |
 | [*Theme* options](look-and-feel.md#theme-options) | The options of a built-in theme that has some, as Aurora's drifting lights and glass blur. |
-| Colour and type | **[Colours from a file](look-and-feel.md#colours-from-a-file)** (pywal, matugen or a file of your own) and its **Colour file**, **[Follow the artwork](look-and-feel.md#the-accent-and-the-artwork)**, **Accent colour**, **[Zoom](look-and-feel.md#density-text-size-and-zoom)**, **Text size**, **Density**, **Icons only in the sidebar** and **Wavy progress bar**. |
+| Colour and type | **[Follow the artwork](look-and-feel.md#the-accent-and-the-artwork)**, **Accent colour**, **[Zoom](look-and-feel.md#density-text-size-and-zoom)**, **Text size**, **Density**, **Icons only in the sidebar** and **Wavy progress bar**. |
 
 ### Playback
 
@@ -50,14 +50,6 @@ YouTube Music channel you use, the switch that adds what you play to your
 YouTube Music history, and the switch that pauses scrobbling.
 [Accounts](accounts.md) tells each step.
 
-### Plugins
-
-**Installed plugins**: each plugin you have, with what it is, who made it,
-a switch that enables it, and a button that removes it. **open plugins
-folder** opens the folder of your own, and **reload** finds them again.
-Plugins that didn't load are listed with the reason.
-[Themes and plugins](addons.md) tells more.
-
 ### Desktop
 
 The **On the desktop** group:
@@ -68,7 +60,6 @@ The **On the desktop** group:
 | Media keys | The keyboard's play, next and previous keys control MyTube. On at first. |
 | [Notifications](desktop.md#notifications) | Tells what starts playing while neither MyTube's window nor the mini player is in front. On at first. |
 | [Show what plays in the window title](desktop.md#the-window-title) | The window's title names the track that plays. On at first. |
-| [Show what plays on Discord](desktop.md#discord) | Your Discord profile shows what you listen to. On at first. Under it, **Discord application ID**, to show another application's name, a preview of your status, and [what it shows](desktop.md#what-your-discord-status-shows): its two lines, the cover, the service's badge, the time left, a Listen button, and whether it stays while paused. |
 | [Keep on top](desktop.md#keep-the-window-on-top) | MyTube's window stays above your other windows. Off at first. |
 | [Start at login](desktop.md#start-at-login) | Starts MyTube, hidden, when you sign in to your computer. |
 | Settings file | **open** opens `settings.json`, **show in folder** shows it in its folder. |
@@ -80,26 +71,17 @@ The **On the desktop** group:
 
 Every command, by group, with its keys: **From any app** first, the global
 shortcuts, then playback, go to, view, add-ons and settings, then the
-themes and the plugins' commands. See
+themes. See
 [Keyboard shortcuts](#keyboard-shortcuts) below.
 
 ### About
 
 | Group | What's there |
 |---|---|
-| MyTube | The **Version**, with the system and how this copy was [installed](getting-started.md#install); whether a newer version is out, with **what's new** and **install** (or its download, for a copy that can't replace itself); the folder your [data](data-and-privacy.md#where-mytube-keeps-its-data) lives in; and **source code**, **contribute**, **report a problem** and **open logs folder** (see [Troubleshooting](troubleshooting.md)). |
-| Memory use | **Record memory use**, for a report of MyTube taking too much memory: while it's on, MyTube writes how it uses its memory to `memory.log` in [the logs folder](data-and-privacy.md#the-logs-folder) each minute, and saves a heap profile there once it passes 1 GB, and **save a heap profile** saves one at once. It's off again at the next start. |
-| [Updates](how-it-works.md#mytube-itself) | **Check for updates**, at start and every few hours, and **Install updates without asking**, which downloads them in the background for the next launch. |
+| MyTube | The **Version**, with the system and how this copy was [installed](getting-started.md#install), the folder your [data](data-and-privacy.md#where-mytube-keeps-its-data) lives in, and **open logs folder** (see [Troubleshooting](troubleshooting.md)). |
 | [Recent playback errors](troubleshooting.md#tracks-that-fail-to-play) | The last 10 tracks that couldn't play since MyTube started, the latest first, with the time and why, each with **details**: what was tried, and **copy**. |
 | Licenses | The licenses of the code and the typefaces MyTube includes, each with **show**: see [License](license.md) and [Credits](credits.md). |
 
-![Settings › About: the MyTube group, with the version, MyTube 0.5.9 · windows amd64 · portable, "This is the newest version" with Check again, where your data lives, its folder covered here, and the Source code, Contribute, Report a problem and Open logs folder buttons; then Updates, with Check for updates on and Install updates without asking off](shots/about.webp)
-
-Without Install updates without asking, a new version asks in a pop-up:
-**install** it, **later**, which asks again at the next start, or **skip
-this version**.
-**report a problem** opens a new issue on GitHub with your version,
-system, theme and plugins filled in.
 
 ## Find a setting by typing
 
@@ -140,7 +122,6 @@ hasn't read: [the settings' part of the architecture](architecture/settings.md)
 tells how.
 
 - **A key you take out** goes back to its default, as at a new install.
-  Plugins you add to `enabledPlugins` start without asking.
 - **A key MyTube doesn't know** stays until its next save, which drops
   it, and the toast says so. A value out of its range goes back into it,
   and the toast says that too.
@@ -175,8 +156,7 @@ settings.json**. Meanwhile:
 
 <kbd>Ctrl</kbd> <kbd>K</kbd> opens the
 command palette, which lists every command: MyTube's, a "Theme:" command
-for each [theme](look-and-feel.md#themes), and those of your
-[plugins](addons.md#what-a-plugin-can-do), each with its group and its
+for each [theme](look-and-feel.md#themes), each with its group and its
 keys.
 
 - Type to keep the commands whose name or group holds what you typed.
@@ -199,7 +179,7 @@ and forward arrows. It's in the command palette too.
   what it showed, and a toast says why.
 - Home, searches, albums, artists, playlists, Explore, your YouTube Music
   library, the lyrics and Settings' checks
-  refresh. Plugins' pages and widgets render again.
+  refresh.
 - A playlist, an album or a mix you downloaded downloads the
   [songs added to it since](library.md#songs-added-later), as you refresh
   it.
@@ -287,8 +267,6 @@ while you're not typing in a text field. The ID is the command's name in
 | Reload add-ons | none | `addons.reload` |
 | Open the settings file | none | `settings.openFile` |
 | Theme: *name*, one for each theme | none | `theme.<theme id>` |
-
-Plugins' commands follow, with the keys their plugin gives them, if any.
 
 ### Arrows, Space and the other keys
 

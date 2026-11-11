@@ -21,8 +21,6 @@ import (
 const (
 	roomWidth  = 920
 	roomHeight = 480
-	// roomPerPage is the height each page a plugin adds to the rail takes.
-	roomPerPage = 46
 )
 
 // room is the largest zoom the main window has room for, w by h DIPs of
@@ -32,8 +30,7 @@ func (s *shell) room(w, h float32) float64 {
 	if s.castShown() {
 		width += roomCast
 	}
-	height := float32(roomHeight + roomPerPage*len(s.plugins.SidebarItems()))
-	return float64(min(w/width, h/height))
+	return float64(min(w/width, h/roomHeight))
 }
 
 // shownZoom is the zoom a window with room for room shows of the zoom
