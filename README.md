@@ -80,7 +80,8 @@ MyTube runs on Windows 10 and 11. There are no published releases yet, so
 get a build from CI:
 
 1. Open the [Actions tab](https://github.com/BigDaddy284/mytube/actions/workflows/ci.yml)
-   and pick a green run (for a pull request, its run on the PR's branch).
+   and pick a green run (for a pull request, its run on the PR's branch),
+   or press **Run workflow** to build any branch.
 2. Scroll to **Artifacts** at the bottom of the run's page and download
    **windows-amd64**. You must be signed in to GitHub, and artifacts are
    kept for 7 days.
