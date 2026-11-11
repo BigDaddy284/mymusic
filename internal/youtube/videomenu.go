@@ -102,3 +102,21 @@ func (c *Client) SaveVideo(ctx context.Context, playlistID, id string) error {
 	}
 	return nil
 }
+
+// UnsaveVideo takes the video id off the account's playlist, as
+// WatchLater, by its ID, as YouTube's website does from a video's menu.
+func (c *Client) UnsaveVideo(ctx context.Context, playlistID, id string) error {
+	if err := c.session(); err != nil {
+		return err
+	}
+	playlistID = strings.TrimPrefix(playlistID, "VL")
+	action := map[string]any{"action": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID", "removedVideoId": id}
+	n, err := c.callWith(ctx, websiteClient, "browse/edit_playlist", map[string]any{"playlistId": playlistID, "actions": []any{action}}, nil, callOptions{website: true})
+	if err != nil {
+		return c.refusedOrEnded(ctx, err, errors.New("YouTube refused: the playlist may be another account's"))
+	}
+	if !strings.Contains(n.get("status").str(), "SUCCEEDED") {
+		return refusedEdit(n, errors.New("YouTube didn't take the video off"))
+	}
+	return nil
+}

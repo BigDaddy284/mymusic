@@ -93,7 +93,7 @@ func (s *shell) youtubeAccount(c *ui.Context, yt app.YouTubeAccount) {
 			}
 		}, "sign out, log out")
 		s.youtubeChannels(c)
-		s.row(c, "Add what you play to your history", "YouTube Music makes its home and its radios of your history. Tracks join it once they played a while, as they do on Last.fm, and episodes and videos keep where you left them, for YouTube to go on from there on your other devices, and for Continue watching.", func() {
+		s.row(c, "Add what you play to your history", "YouTube Music makes its home and its radios of your history. Tracks join it once they played a while, as they do on Last.fm, and episodes and videos keep where you left them, for YouTube to go on from there on your other devices, and for History on the Video side's home.", func() {
 			if s.switchOf(c.Key("youtube-history"), &s.set.YouTubeHistory).Label("Add what you play and watch to your YouTube history").Changed() {
 				s.save()
 			}

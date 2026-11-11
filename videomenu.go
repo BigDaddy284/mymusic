@@ -37,8 +37,17 @@ func (s *shell) videoMenu(m *ui.Menu, v youtube.Video, list []youtube.Video) {
 	}
 	m.Separator()
 	signed := s.svc.Videos.SignedIn()
-	if m.Item("Save to Watch Later").Disabled(!signed).Chosen() {
-		s.saveVideo(v, youtube.WatchLater, "Watch Later")
+	saved := signed && s.inWatchLater(v.ID)
+	later := "Save to Watch Later"
+	if saved {
+		later = "Remove from Watch Later"
+	}
+	if m.Item(later).Disabled(!signed).Chosen() {
+		if saved {
+			s.unsaveVideo(v)
+		} else {
+			s.saveVideo(v, youtube.WatchLater, "Watch Later")
+		}
 	}
 	m.Submenu("Save to playlist", func(m *ui.Menu) {
 		lists := s.videoPlaylistsLoad()
@@ -127,9 +136,65 @@ func (s *shell) saveVideo(v youtube.Video, id, name string) {
 				return
 			}
 			s.notes = append(s.notes, notice("Saved to "+name))
-			if id != youtube.WatchLater {
+			if id == youtube.WatchLater {
+				s.markWatchLater(v.ID, true)
+			} else {
 				s.refetch("videos:playlist:" + id)
 			}
+		})
+	}()
+}
+
+// watchLaterKey is the key of the list of Watch Later's videos.
+const watchLaterKey = "videos:playlist:" + youtube.WatchLater
+
+// inWatchLater reports whether the video id is in Watch Later: as it was
+// saved or taken off here, else as its list, which this loads, has it.
+func (s *shell) inWatchLater(id string) bool {
+	if on, ok := s.videos.watchLater[id]; ok {
+		return on
+	}
+	res := fetch(s, watchLaterKey, func(ctx context.Context) (youtube.VideoPage, error) {
+		return s.svc.Videos.Playlist(ctx, youtube.WatchLater)
+	})
+	if !res.done || res.err != nil {
+		return false
+	}
+	has := func(v youtube.Video) bool { return v.ID == id }
+	return slices.ContainsFunc(res.value.Videos, has) || slices.ContainsFunc(s.videos.more[watchLaterKey], has)
+}
+
+// markWatchLater keeps whether the video id is in Watch Later, on as it
+// was saved, off as it was taken off.
+func (s *shell) markWatchLater(id string, on bool) {
+	vs := &s.videos
+	if vs.watchLater == nil {
+		vs.watchLater = map[string]bool{}
+	}
+	vs.watchLater[id] = on
+}
+
+// unsaveVideo takes v off Watch Later, and off its list at once, back on
+// it if YouTube refuses.
+func (s *shell) unsaveVideo(v youtube.Video) {
+	vs := &s.videos
+	before, had := vs.watchLater[v.ID]
+	s.markWatchLater(v.ID, false)
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+		defer cancel()
+		err := s.svc.Videos.Unsave(ctx, youtube.WatchLater, v.ID)
+		s.update(func() {
+			if err != nil {
+				if had {
+					vs.watchLater[v.ID] = before
+				} else {
+					delete(vs.watchLater, v.ID)
+				}
+				s.notes = append(s.notes, noticeOf(err))
+				return
+			}
+			s.notes = append(s.notes, notice("Removed from Watch Later"))
 		})
 	}()
 }

@@ -10,6 +10,7 @@ import (
 	"context"
 	"log"
 	"net/url"
+	"slices"
 	"strings"
 	"time"
 
@@ -19,18 +20,9 @@ import (
 	"github.com/bigdaddy284/mymusic/internal/youtube"
 )
 
-// videoHomeChips are the filters of the Video side's home page.
-var videoHomeChips = []string{"All", "Subscriptions", "Continue watching"}
-
-// videoLibraryTabs are the tabs of the Video side's library: their paths
-// and labels.
-var videoLibraryTabs = []struct{ id, label string }{
-	{"subscriptions", "Subscriptions"},
-	{"history", "History"},
-	{"playlists", "Playlists"},
-	{"watch-later", "Watch later"},
-	{"liked", "Liked videos"},
-}
+// videoHomeChips are the filters of the Video side's home page: the home
+// feed, then the account's own lists.
+var videoHomeChips = []string{"All", "Subscriptions", "History", "Playlists", "Watch later", "Liked videos"}
 
 // videoSearchChips are the filters of a search of the Video side: the
 // videos of YouTube's website, or the songs of YouTube Music, which play
@@ -64,6 +56,9 @@ type videosState struct {
 	// hidden are the videos, and the channels by videoChannelKey, the user
 	// told YouTube not to recommend, left off the cards (videomenu.go).
 	hidden map[string]bool
+	// watchLater are the videos saved to Watch Later here, true, or taken
+	// off it, false, by ID, which its list may not show yet (videomenu.go).
+	watchLater map[string]bool
 	// ratings are the account's ratings of videos the user set here, by
 	// video: "like", "dislike", or "" (videorating.go).
 	ratings map[string]string
@@ -128,8 +123,8 @@ func (s *shell) videosHome(c *ui.Context) {
 		}
 		was := vs.homeChip
 		s.videoHeader(c, "Home", videoHomeChips, &vs.homeChip)
-		// Continue watching asks again each time it's chosen: what was
-		// just watched here joins the history YouTube tells.
+		// History asks again each time it's chosen: what was just watched
+		// here joins the history YouTube tells.
 		if vs.homeChip == 2 && was != 2 {
 			s.refetch("videos:history")
 		}
@@ -138,6 +133,12 @@ func (s *shell) videosHome(c *ui.Context) {
 			s.videoFeed(c, "videos:subscriptions", false, "No new videos from your subscriptions.", s.svc.Videos.Subscriptions)
 		case 2:
 			s.videoFeed(c, "videos:history", false, "Nothing in your watch history.", s.svc.Videos.History)
+		case 3:
+			s.videoPlaylists(c)
+		case 4:
+			s.playlistFeed(c, youtube.WatchLater, "Nothing saved to watch later.")
+		case 5:
+			s.playlistFeed(c, "LL", "No liked videos yet.")
 		default:
 			s.videoFeed(c, "videos:home", false, "YouTube recommends nothing yet: watch a few videos, or press Random.", s.svc.Videos.Home)
 		}
@@ -283,43 +284,6 @@ func (s *shell) videoTrendingPage(c *ui.Context) {
 	})
 }
 
-// videoLibraryPage is the Video side's library, at tab: one of
-// videoLibraryTabs, or none, which shows the first.
-func (s *shell) videoLibraryPage(c *ui.Context, tab string) {
-	selected := 0
-	labels := make([]string, len(videoLibraryTabs))
-	for i, t := range videoLibraryTabs {
-		labels[i] = t.label
-		if t.id == tab {
-			selected = i
-		}
-	}
-	s.pageScroll(c, func() {
-		if !s.svc.Videos.SignedIn() {
-			s.pageHeader(c, "Library", nil, nil)
-			s.videosSignedOut(c)
-			return
-		}
-		before := selected
-		s.pageHeader(c, "Library", labels, &selected)
-		if selected != before {
-			s.router.Replace("/videos/library/" + videoLibraryTabs[selected].id)
-		}
-		switch videoLibraryTabs[selected].id {
-		case "subscriptions":
-			s.videoFeed(c, "videos:subscriptions", false, "No new videos from your subscriptions.", s.svc.Videos.Subscriptions)
-		case "history":
-			s.videoFeed(c, "videos:history", false, "Nothing in your watch history.", s.svc.Videos.History)
-		case "playlists":
-			s.videoPlaylists(c)
-		case "watch-later":
-			s.playlistFeed(c, "WL", "Nothing saved to watch later.")
-		case "liked":
-			s.playlistFeed(c, "LL", "No liked videos yet.")
-		}
-	})
-}
-
 // videoPlaylistPage shows the videos of a playlist of YouTube's website.
 func (s *shell) videoPlaylistPage(c *ui.Context, id string) {
 	title := s.videos.titles[id]
@@ -373,6 +337,9 @@ func (s *shell) videoFeedOf(c *ui.Context, key string, search bool, empty string
 		return
 	}
 	videos := s.shownVideos(append(append([]youtube.Video{}, res.value.Videos...), vs.more[key]...))
+	if key == watchLaterKey {
+		videos = slices.DeleteFunc(videos, func(v youtube.Video) bool { on, ok := vs.watchLater[v.ID]; return ok && !on })
+	}
 	if len(videos) == 0 {
 		s.emptyLine(c, empty)
 		return
