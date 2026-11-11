@@ -127,7 +127,6 @@ var videoNav = []navItem{
 	{"vhome", "Home", "home", "/videos"},
 	{"vsearch", "Search", "search", "/videos/search"},
 	{"vtrending", "Trending", "compass", "/videos/trending"},
-	{"vlibrary", "Library", "library", "/videos/library"},
 	{"stats", "Stats", "stats", "/stats"},
 	{"settings", "Settings", "settings", "/settings"},
 }
@@ -145,8 +144,6 @@ func (s *shell) navItems(path string) ([]navItem, string) {
 		return videoNav, "vsearch"
 	case strings.HasPrefix(p, "/videos/trending"):
 		return videoNav, "vtrending"
-	case strings.HasPrefix(p, "/videos/library"), strings.HasPrefix(p, "/videos/playlist/"):
-		return videoNav, "vlibrary"
 	}
 	return videoNav, section(path)
 }

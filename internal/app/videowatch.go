@@ -3,7 +3,7 @@ package app
 // The watching of the Video side's videos, reported to the account's
 // history on YouTube as its own player reports it: the embedded player
 // plays signed out, so without this YouTube wouldn't know of it, nor show
-// the videos in the history, in Continue watching, or with their red bars
+// the videos in the history, or with their red bars
 // on other devices. It goes as the episodes' listening does
 // (youtube_watchtime.go): on a schedule while the video plays, as it
 // pauses and plays again, and a last time as another video plays or none

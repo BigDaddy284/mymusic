@@ -18,6 +18,7 @@ import (
 	"math/rand/v2"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/egoist/mygo"
@@ -104,6 +105,9 @@ type videoPlayer struct {
 	segments segmentState
 	// pop is the pop-out window the video plays in (popout.go).
 	pop popOut
+	// from is the last page shown other than a watch page, which the dock
+	// button goes back to.
+	from string
 }
 
 // watch plays v, with list as up next, on the watch page.
@@ -515,11 +519,34 @@ func (s *shell) videoPrevious() {
 
 // playNext plays v, and follows it with the watch page when that shows.
 func (s *shell) playNext(v youtube.Video) {
-	onWatch := len(s.router.Path()) > len("/watch/") && s.router.Path()[:len("/watch/")] == "/watch/"
+	onWatch := isWatchPath(s.router.Path())
 	s.playVideo(v)
 	if onWatch {
 		s.router.Replace(watchPath(v.ID))
 	}
+}
+
+// isWatchPath reports whether p is a watch page's.
+func isWatchPath(p string) bool { return strings.HasPrefix(p, "/watch/") }
+
+// dockVideo docks the video that plays: it keeps playing small, in the
+// corner or the Up next panel, and the page shown before its watch page
+// shows again. Docked, it opens the watch page again.
+func (s *shell) dockVideo() {
+	vp := &s.videos.player
+	if vp.current.ID == "" {
+		return
+	}
+	if s.showsMini() {
+		s.navigate(watchPath(vp.current.ID))
+		return
+	}
+	vp.fullApp = false
+	to := vp.from
+	if to == "" {
+		to = "/videos"
+	}
+	s.navigate(to)
 }
 
 // videoIndex is the index of id in list, or -1.
@@ -940,6 +967,14 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 			s.save()
 		}
 	})
+	docked := s.showsMini()
+	dock := "Dock: keep it playing small and go back to the page before"
+	if docked {
+		dock = "Back to the video"
+	}
+	if s.iconButton(c, "v-dock", "dock", dock, docked, 18).Disabled(!has || vp.popped()).Clicked() {
+		s.dockVideo()
+	}
 	// Narrow, Full App goes in the menu of ⋮.
 	if !narrow && s.iconButton(c, "v-full-app", "mini", "Full App: fill the window with the video", vp.fullApp, 18).Disabled(!has || vp.popped()).Clicked() {
 		vp.fullApp = true
@@ -966,6 +1001,9 @@ func (s *shell) followWatch() {
 	// the music (playVideo): it stays where it shows, to go back to.
 	// The player's own state: the frame's may be older, as no frame drew
 	// while the window was minimized.
+	if !isWatchPath(s.router.Path()) {
+		vp.from = s.router.Location()
+	}
 	playing := s.p.State().Playing
 	started := playing && !vp.musicPlayed
 	vp.musicPlayed = playing

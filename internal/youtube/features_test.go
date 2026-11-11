@@ -614,3 +614,33 @@ func TestReportPlay(t *testing.T) {
 		t.Error("reported a play to a host that is not YouTube's")
 	}
 }
+
+// TestSaveAndUnsaveVideo saves a video to Watch Later and takes it off
+// again, by its ID, as YouTube's website does.
+func TestSaveAndUnsaveVideo(t *testing.T) {
+	status := "STATUS_SUCCEEDED"
+	c, requests, _ := fakeYouTube(t, func(string) any { return map[string]any{"status": status} })
+	c.SetCookies(session)
+	ctx := context.Background()
+	if err := c.SaveVideo(ctx, WatchLater, "v1"); err != nil {
+		t.Fatal(err)
+	}
+	if err := c.UnsaveVideo(ctx, "VL"+WatchLater, "v1"); err != nil {
+		t.Fatal(err)
+	}
+	status = "STATUS_FAILED"
+	if err := c.UnsaveVideo(ctx, WatchLater, "v1"); err == nil {
+		t.Error("a failed status gave no error")
+	}
+	got := requests()
+	if len(got) != 3 {
+		t.Fatalf("%d requests", len(got))
+	}
+	remove := got[1].body
+	if got[1].path != "/youtubei/v1/browse/edit_playlist" || remove["playlistId"] != WatchLater {
+		t.Errorf("unsave went to %s with %v", got[1].path, remove["playlistId"])
+	}
+	if a := remove["actions"].([]any)[0].(map[string]any); a["action"] != "ACTION_REMOVE_VIDEO_BY_VIDEO_ID" || a["removedVideoId"] != "v1" {
+		t.Errorf("unsave action = %v", a)
+	}
+}

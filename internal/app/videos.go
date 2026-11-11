@@ -203,6 +203,12 @@ func (v *Videos) Save(ctx context.Context, playlistID, id string) error {
 	return v.a.youtube.SaveVideo(ctx, playlistID, id)
 }
 
+// Unsave takes the video id off the account's playlist, as
+// youtube.WatchLater.
+func (v *Videos) Unsave(ctx context.Context, playlistID, id string) error {
+	return v.a.youtube.UnsaveVideo(ctx, playlistID, id)
+}
+
 // Feedback sends YouTube the feedback of a token of a video's menu, as
 // Not interested.
 func (v *Videos) Feedback(ctx context.Context, token string) error {
