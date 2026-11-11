@@ -715,7 +715,7 @@ func (s *shell) showsMini() bool {
 // the Video side when the side panel, which shows it otherwise, is
 // closed, and on the Music side, whose side panel is the music's.
 func (s *shell) floatingMini(c *ui.Context) {
-	if !s.showsMini() || s.mode.video && s.panel == "queue" {
+	if !s.showsMini() || s.mode.video && (s.panel == "queue" || s.panel == "about") {
 		return
 	}
 	k := &s.lk
@@ -900,7 +900,7 @@ func (s *shell) videoPlayerBar(c *ui.Context) {
 }
 
 // videoSide is the buttons at the side of the Video side's player bar, as
-// the music's: captions in place of lyrics, up next, casting, the speed,
+// the music's: captions in place of lyrics, up next, the description, casting, the speed,
 // the device, the volume, and Full App in place of the mini player.
 func (s *shell) videoSide(c *ui.Context, has bool) {
 	vp := &s.videos.player
@@ -916,6 +916,9 @@ func (s *shell) videoSide(c *ui.Context, has bool) {
 	}
 	if s.iconButton(c, "v-queue", "queue", "Up next", s.panel == "queue", 18).Clicked() {
 		s.togglePanel("queue")
+	}
+	if s.iconButton(c, "v-about", "details", "Description", s.panel == "about", 18).Clicked() {
+		s.togglePanel("about")
 	}
 	s.videoCastButton(c, has)
 	speed := s.iconButton(c, "v-speed", "speed", "Speed: "+videoSpeedLabel(st.Rate), st.Rate != 0 && st.Rate != 1, 18).Disabled(!has)

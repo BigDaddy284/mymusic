@@ -58,6 +58,7 @@ func (s *shell) videoRatingRow(c *ui.Context, v youtube.Video) {
 	k := &s.lk
 	views := v.Views
 	d := s.videoDetails(v.ID)
+	s.fillFromDetails(v.ID, d)
 	if d.done && d.err == nil && d.value.Views != "" {
 		views = d.value.Views
 	}

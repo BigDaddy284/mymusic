@@ -25,9 +25,13 @@ func (s *shell) sidePanel(c *ui.Context) {
 	}
 	panel.Children(func() {
 		if s.mode.video {
-			// The Video side has up next alone: its lyrics are captions,
-			// which show over the video.
-			s.videoQueuePanel(c)
+			// The Video side has up next, and the video's description: its
+			// lyrics are captions, which show over the video.
+			if s.panel == "about" {
+				s.videoAboutPanel(c)
+			} else {
+				s.videoQueuePanel(c)
+			}
 			return
 		}
 		if s.panel == "queue" {
