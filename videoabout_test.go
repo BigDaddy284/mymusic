@@ -38,6 +38,14 @@ func TestVideoAboutPanel(t *testing.T) {
 	if s.panel != "about" || !tt.HasText("Close description") {
 		t.Fatalf("the Description panel didn't open: %q", tt.Texts())
 	}
+	// The settings saved, as read back from settings.json, keep it open.
+	old := s.set
+	s.set = s.set.Clean()
+	s.followSettings(old)
+	tt.Frame()
+	if s.panel != "about" || !tt.HasText("Close description") {
+		t.Fatalf("the settings read back closed the Description panel: %q", s.panel)
+	}
 	if !showsText(tt.Texts(), "541 views") || !showsText(tt.Texts(), "11 Nov 2026") || !showsText(tt.Texts(), "Resources: ") {
 		t.Errorf("the panel shows %q", tt.Texts())
 	}
