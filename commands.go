@@ -65,6 +65,7 @@ func (s *shell) commands() []command {
 		{"go.settingsSearch", "Search the settings", "", "go to", s.searchSettings},
 		{"view.queue", "Show or hide the queue", "Mod+J", "view", func() { s.togglePanel("queue") }},
 		{"view.lyrics", "Show or hide the lyrics", "Mod+Shift+L", "view", func() { s.togglePanel("lyrics") }},
+		{"view.description", "Show or hide the video's description", "", "view", func() { s.togglePanel("about") }},
 		{"view.palette", "Command palette", "Mod+K", "view", func() { s.paletteOpen = !s.paletteOpen }},
 		{"view.mini", "Mini player", "Mod+M", "view", s.showMini},
 		{"view.keepOnTop", "Keep the window on top, or not", "", "view", s.toggleOnTop},

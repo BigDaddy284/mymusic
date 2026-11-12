@@ -492,6 +492,8 @@ type VideoDetails struct {
 	// Chapters are the video's chapters, by their start, as its seek bar
 	// on YouTube shows them: none when it has none.
 	Chapters []Chapter `json:"chapters,omitempty"`
+	// The rest is what the watch page shows under the video (description.go).
+	About VideoAbout `json:"about"`
 }
 
 // Chapter is a chapter of a video: its title, and where it starts, in
@@ -508,7 +510,9 @@ func (c *Client) VideoDetailsOf(ctx context.Context, id string) (VideoDetails, e
 	if err != nil {
 		return VideoDetails{}, err
 	}
-	return parseVideoDetails(n), nil
+	d := parseVideoDetails(n)
+	d.About = parseVideoAbout(n, id)
+	return d, nil
 }
 
 // parseVideoDetails reads the watch page's details.

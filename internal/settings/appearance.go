@@ -93,8 +93,9 @@ type Appearance struct {
 	// moves while the track plays and lies flat while it doesn't (#382).
 	// It is off at first.
 	WavyProgress bool `json:"wavyProgress"`
-	// Panel is the side panel beside the pages: "queue", "lyrics" or
-	// "none". Settings from before it show the queue.
+	// Panel is the side panel beside the pages: "queue", "lyrics",
+	// "about", the Video side's description, or "none". Settings from
+	// before it show the queue.
 	Panel string `json:"panel"`
 }
 
@@ -145,7 +146,7 @@ func (a Appearance) clean(d Appearance) Appearance {
 	if a.Accent != "" && !colorRe.MatchString(a.Accent) {
 		a.Accent = ""
 	}
-	if a.Panel != "lyrics" && a.Panel != "none" {
+	if a.Panel != "lyrics" && a.Panel != "about" && a.Panel != "none" {
 		a.Panel = d.Panel
 	}
 	if a.Density != DensityCompact {
