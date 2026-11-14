@@ -327,7 +327,7 @@ func (s *shell) playlistPage(c *ui.Context, id string) {
 			h.play = func() { s.whenRead(r, "plays", func(t []media.Track) { s.p.PlayAll(t, false) }) }
 			h.shuffle = func() { s.whenRead(r, "shuffles", s.shuffled) }
 		}
-		if !local && !p.Editable && s.signedIn(p.Source) {
+		if !local && !p.Editable && savable(p.ID) && s.signedIn(p.Source) {
 			h.keep, h.keepLabel, h.keptLabel, h.keeping = &res.value.Saved, "save", "saved", s.keeping[key]
 			h.onKeep = func(on bool) {
 				s.keep(key, string(p.Source)+":playlists", p.Title, "saved", &res.value.Saved, on, func(ctx context.Context) error {
@@ -726,4 +726,16 @@ func (s *shell) relatedArtists(c *ui.Context, related []media.Ref) {
 			chip.Children(func() { ui.Text(c, r.Name).FontSize(s.lk.smallSize()).SingleLine() })
 		}
 	})
+}
+
+// accountPlaylists are YouTube Music's own lists of the signed-in account:
+// liked music and episodes for later. They are always in the library, and
+// YouTube answers a request to save one with "not found".
+var accountPlaylists = map[string]bool{"LM": true, "SE": true}
+
+// savable reports whether a playlist can be saved to the library, which
+// the account's own lists cannot.
+func savable(id string) bool {
+	source, native, err := media.ParseID(id)
+	return err != nil || source != media.SourceYouTube || !accountPlaylists[native]
 }

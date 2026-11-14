@@ -52,11 +52,17 @@ func (s *shell) homePage(c *ui.Context) {
 		s.tileGrid(c, func(columns int) {
 			title, caption, label := "Start here", k.words("Search for something to play"), "Search for music"
 			var art []media.Image
+			span := tileLarge
 			if last != nil {
 				title, caption, label = "Jump back in", trackLine(*last), "Play "+last.Title+" again"
 				art = last.Artwork
+				// As a card, its artwork sits below the title: one row
+				// holds them, where two left a gap between.
+				if k.cards && len(art) > 0 {
+					span = tileWide
+				}
 			}
-			if s.flatTile(c, "tile-last", 0, tileLarge, columns, title, caption, label, icon("search"), art) {
+			if s.flatTile(c, "tile-last", 0, span, columns, title, caption, label, icon("search"), art) {
 				if last != nil {
 					s.p.PlayTracks([]media.Track{*last}, 0)
 				} else {

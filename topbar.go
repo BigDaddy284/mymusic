@@ -156,7 +156,23 @@ func (s *shell) searchField(c *ui.Context) {
 		} else if in.Submitted() {
 			search(s.query)
 		}
+		if s.searchGo(c, "search-go", s.query) {
+			cb.SetOpen(false)
+			search(s.query)
+		}
 	})
+}
+
+// searchGo is the button at the end of a search box, which searches what
+// was typed as Enter does. It shows in the accent once there is something
+// to search, and reports whether it was pressed then.
+func (s *shell) searchGo(c *ui.Context, key, query string) bool {
+	typed := strings.TrimSpace(query) != ""
+	b := s.iconButton(c, key, "forward", "Search", typed, 18).Size(28, 28).Margin(0, -6, 0, 0)
+	if !typed {
+		b.Opacity(0.6)
+	}
+	return b.Clicked() && typed
 }
 
 // suggestions are what the box suggests: the searches, what was typed,

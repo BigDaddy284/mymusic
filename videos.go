@@ -631,7 +631,7 @@ func (s *shell) videoSearchField(c *ui.Context) {
 		if vs.query != "" {
 			in.OnShortcut(0, ui.KeyEscape, func() { vs.query = "" })
 		}
-		if in.Submitted() {
+		if in.Submitted() || s.searchGo(c, "video-search-go", vs.query) {
 			if q := strings.TrimSpace(vs.query); q != "" {
 				s.navigate(videoSearchPath(q))
 			}

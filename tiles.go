@@ -105,6 +105,7 @@ func (s *shell) cardTile(c *ui.Context, t ui.Element, tone int, large bool, titl
 	}
 	t.Column().AlignItems(ui.Start).Justify(ui.SpaceBetween).Padding(pad)
 	if len(art) > 0 {
+		t.Justify(ui.Start).Gap(12)
 		shows := s.inView(c, t)
 		t.Children(func() {
 			heading()
@@ -168,7 +169,16 @@ func (k *look) sections() float32 { return 3 * k.gap }
 // circle. It tells whether it was opened or its play circle clicked. In a
 // theme of filled cards, it is a card, a step lighter while hovered.
 func (s *shell) artTile(c *ui.Context, key string, art []media.Image, title, subtitle string, source media.Source, round, active, playable bool, menu func(m *ui.Menu)) (open, play bool) {
+	return s.ratedArtTile(c, key, art, title, subtitle, source, round, active, playable, menu, nil)
+}
+
+// ratedArtTile is an artTile that, given a track, rates it from the
+// artwork: a heart at its top left likes it and a thumb at its top right
+// dislikes it, both while hovered, so a song needn't play to be rated. A
+// liked or disliked track keeps its mark when the pointer goes.
+func (s *shell) ratedArtTile(c *ui.Context, key string, art []media.Image, title, subtitle string, source media.Source, round, active, playable bool, menu func(m *ui.Menu), rated *media.Track) (open, play bool) {
 	k := &s.lk
+	rating := false
 	size := k.cover
 	tile := s.buttonBase(c.Key(key)).Width(k.tileWidth()).Shrink(0).Column().AlignItems(ui.Start).Gap(8).Label(title).Cursor(ui.CursorPointer)
 	if menu != nil {
@@ -211,6 +221,18 @@ func (s *shell) artTile(c *ui.Context, key string, art []media.Image, title, sub
 				}
 				p.Children(func() { ui.Icon(c, icon("play")).FontSize(18).TextColor(ink) })
 			}
+			if rated != nil {
+				t := *rated
+				liked, disliked := s.a.IsLiked(t.ID), s.a.IsDisliked(t.ID)
+				if (hovered || liked) && s.artRating(c, key+"-like", "heart", liked, true) {
+					rating = true
+					s.setLiked(t, !liked)
+				}
+				if (hovered || disliked) && s.artRating(c, key+"-dislike", "dislike", disliked, false) {
+					rating = true
+					s.setDisliked(t, !disliked)
+				}
+			}
 		})
 		ui.Column(c).Width(size).Gap(2).Children(func() {
 			k.labelWeight(ui.Text(c, title).FontSize(k.bodySize()).SingleLine())
@@ -220,7 +242,37 @@ func (s *shell) artTile(c *ui.Context, key string, art []media.Image, title, sub
 			})
 		})
 	})
-	return open && !play, play
+	return open && !play && !rating, play
+}
+
+// artRating is a round button on a tile's artwork, at its top left or top
+// right, of the icon name: white on a dark disc, filled with the accent
+// when on. It reports whether it was clicked.
+func (s *shell) artRating(c *ui.Context, key, name string, on, left bool) bool {
+	k := &s.lk
+	labels := map[string][2]string{"heart": {"Like", "Remove from liked songs"}, "dislike": {"Dislike", "Remove the dislike"}}[name]
+	label := labels[0]
+	if on {
+		label = labels[1]
+	}
+	b := s.buttonBase(c.Key(key)).Size(30, 30).Radius(15).Absolute().Top(8).Center().
+		Label(label).Tooltip(label).Cursor(ui.CursorPointer).Background(ui.RGBA(0, 0, 0, 0.55))
+	if left {
+		b.Left(8)
+	} else {
+		b.Right(8)
+	}
+	if b.Hovered() {
+		b.Background(ui.RGBA(0, 0, 0, 0.75))
+	}
+	ink := ui.RGBA(255, 255, 255, 1)
+	svg := icons[name]
+	if on {
+		ink, svg = k.accent, solidIcons[name]
+	}
+	clicked := b.Clicked()
+	b.Children(func() { ui.Icon(c, svg).FontSize(16).TextColor(ink) })
+	return clicked
 }
 
 // shelf is a titled row of tiles that scrolls sideways.
@@ -367,7 +419,7 @@ func (s *shell) artistTile(c *ui.Context, key string, a media.Artist) {
 func (s *shell) trackTile(c *ui.Context, key string, t media.Track, queue []media.Track) {
 	cur, ok := s.st.Current()
 	active := ok && cur.Track.ID == t.ID
-	open, play := s.artTile(c, key, t.Artwork, t.Title, names(t.Artists), t.Source, false, active, true, func(m *ui.Menu) { s.trackMenu(m, t) })
+	open, play := s.ratedArtTile(c, key, t.Artwork, t.Title, names(t.Artists), t.Source, false, active, true, func(m *ui.Menu) { s.trackMenu(m, t) }, &t)
 	switch {
 	case play:
 		s.playFrom(queue, t)

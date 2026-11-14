@@ -549,6 +549,12 @@ func (s *shell) dockVideo() {
 	s.navigate(to)
 }
 
+// leaveVideo stops the video that plays and goes to Video's home.
+func (s *shell) leaveVideo() {
+	s.navigate("/videos")
+	s.stopWatching()
+}
+
 // videoIndex is the index of id in list, or -1.
 func videoIndex(list []youtube.Video, id string) int {
 	for i, v := range list {
@@ -604,7 +610,19 @@ func (s *shell) watchPage(c *ui.Context, id string) {
 		// black around it.
 		_, winH := c.Size()
 		w := s.paneWidth(c) - 2*k.gutter
-		h := float32(int(max(240, winH-k.barRoom()-48)))
+		// The video is a window of its own, which nothing draws over: its
+		// close button goes above it, at its right.
+		closed := false
+		ui.Row(c).Width(w).Justify(ui.End).Margin(8, 0, -8).Children(func() {
+			if s.iconButton(c, "watch-close", "close", "Close the video", false, 18).Clicked() {
+				closed = true
+			}
+		})
+		if closed {
+			s.leaveVideo()
+			return
+		}
+		h := float32(int(max(240, winH-k.barRoom()-48-32)))
 		ui.Box(c).Margin(16, 0, 32).Children(func() {
 			if vp.filling() {
 				ui.Box(c).Size(w, h).Radius(k.radiusSm).Background(ui.RGBA(0, 0, 0, 1))
