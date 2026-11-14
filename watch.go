@@ -549,14 +549,9 @@ func (s *shell) dockVideo() {
 	s.navigate(to)
 }
 
-// leaveVideo stops the video that plays and goes back to the page shown
-// before its watch page, as Home, or to Video's home.
+// leaveVideo stops the video that plays and goes to Video's home.
 func (s *shell) leaveVideo() {
-	to := s.videos.player.from
-	if to == "" || isWatchPath(to) {
-		to = "/videos"
-	}
-	s.navigate(to)
+	s.navigate("/videos")
 	s.stopWatching()
 }
 
